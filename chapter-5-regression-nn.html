@@ -50,6 +50,7 @@
       <a href="#building-the-network"><span class="toc-num">5</span>Building the Network</a>
       <a href="#hyperparameters"><span class="toc-num">6</span>Hyperparameters, Activations &amp; Training Difficulty</a>
       <a href="#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a>
+      <a href="#exercises"><span class="toc-num">8</span>Sprint Exercises</a>
     </div>
   </div>
 </nav>
@@ -75,6 +76,7 @@
       <a href="#building-the-network"><span class="toc-num">5</span>Building the Network</a>
       <a href="#hyperparameters"><span class="toc-num">6</span>Hyperparameters, Activations &amp; Training Difficulty</a>
       <a href="#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a>
+      <a href="#exercises"><span class="toc-num">8</span>Sprint Exercises</a>
     </div>
   </aside>
 
@@ -99,6 +101,7 @@
       <li><a href="#building-the-network"><span class="toc-num">5</span>Building the Network</a></li>
       <li><a href="#hyperparameters"><span class="toc-num">6</span>Hyperparameters, Activations &amp; Training Difficulty</a></li>
       <li><a href="#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a></li>
+      <li><a href="#exercises"><span class="toc-num">8</span>Sprint Exercises</a></li>
     </ul>
   </div>
 
@@ -302,6 +305,24 @@ x_normalized = (x − μ) / σ</div>
       <li>Tune hyperparameters</li>
     </ol>
     <p><em>"Neural networks are the second-best way to do everything"</em> — a specialized method often beats a generic NN for any one task, but a NN is a strong fallback when nothing more specialized fits.</p>
+  </section>
+
+  <!-- ============ 8 ============ -->
+  <section class="chapter" id="exercises">
+    <div class="chapter-head"><span class="chapter-num">8</span><h2>Sprint Exercises</h2></div>
+    <p class="chapter-dek">The professor's actual hands-on assignments for this chapter.</p>
+
+    <h3>Exercise 8 — Heating Load Regression</h3>
+    <p>Predicting a building's heating load from 8 architectural features (UCI Energy Efficiency, 768 samples). Plain linear regression fits well (R² = 0.90) but its coefficients are nonsense — <code>Surface_Area</code>, <code>Wall_Area</code>, and <code>Roof_Area</code> are near-perfectly correlated, so the model assigns them enormous, canceling-out weights (~10¹⁴) instead of anything interpretable.</p>
+    <div class="formula-block"><span class="label">Lasso resolves the multicollinearity Linear Regression can't</span>alphas = np.logspace(-4, 0, 50)
+lasso_cv = GridSearchCV(Lasso(max_iter=10000), {"alpha": alphas}, cv=5)
+lasso_cv.fit(X_train_scaled, y_train)   # best alpha ≈ 0.00139</div>
+    <p>Lasso's L1 penalty (§2) zeroes out the redundant features and leaves <code>Overall_Height</code> and <code>Relative_Compactness</code> as the real, interpretable drivers.</p>
+
+    <h3>Exercise 9 — Logistic Regression vs. a Neural Network on CIFAR-10</h3>
+    <p>Same 10-class image classification task (32×32×3 pixels, flattened), two models: <code>LogisticRegression(solver='saga')</code> and a small Keras net (<code>Flatten → Dense(128, relu) → Dense(10, softmax)</code>).</p>
+    <div class="callout rule"><span class="tag">Result</span><p>Logistic regression: <strong>34%</strong> test accuracy. The neural network: <strong>45%</strong> after 50 epochs — both well above the 10% random baseline, but the gap between them is the whole point of this chapter's title.</p></div>
+    <div class="callout watch"><span class="tag">Gotcha</span><p>Sweeping the learning rate (0.001 / 0.01 / 0.1, §7) requires rebuilding and recompiling the model each time — reusing one already-trained model across learning rates silently invalidates the comparison. The observed pattern matches the theory exactly: 0.001 is stable but slow, 0.01 balances convergence and generalization best, 0.1 overshoots and destabilizes training.</p></div>
   </section>
 
   <footer class="page-footer">

@@ -48,6 +48,7 @@
       <a href="#choosing-k"><span class="toc-num">3</span>Choosing K</a>
       <a href="#where-it-breaks"><span class="toc-num">4</span>Where K-Means Breaks</a>
       <a href="#evaluating"><span class="toc-num">5</span>Evaluating &amp; Interpreting Clusters</a>
+      <a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a>
     </div>
   </div>
 </nav>
@@ -71,6 +72,7 @@
       <a href="#choosing-k"><span class="toc-num">3</span>Choosing K</a>
       <a href="#where-it-breaks"><span class="toc-num">4</span>Where K-Means Breaks</a>
       <a href="#evaluating"><span class="toc-num">5</span>Evaluating &amp; Interpreting Clusters</a>
+      <a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a>
     </div>
   </aside>
 
@@ -93,6 +95,7 @@
       <li><a href="#choosing-k"><span class="toc-num">3</span>Choosing K</a></li>
       <li><a href="#where-it-breaks"><span class="toc-num">4</span>Where K-Means Breaks</a></li>
       <li><a href="#evaluating"><span class="toc-num">5</span>Evaluating &amp; Interpreting Clusters</a></li>
+      <li><a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a></li>
     </ul>
   </div>
 
@@ -192,6 +195,25 @@
       </table>
     </div>
     <div class="callout rule"><span class="tag">Rule</span><p>The metric that technically optimizes a clustering isn't necessarily the most useful one to <em>report</em>. Real value comes from profiling each cluster — dominant characteristics, mean/median/mode per feature, which variables actually differentiate the groups — and giving clusters meaningful names ("loyal customers," "support complainers") rather than just cluster IDs.</p></div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="chapter" id="exercises">
+    <div class="chapter-head"><span class="chapter-num">6</span><h2>Sprint Exercise</h2></div>
+    <p class="chapter-dek">The professor's actual hands-on assignment for this chapter, with solution.</p>
+
+    <h3>Exercise 7 — Customer Segmentation with RFM + K-Means</h3>
+    <p>~541K UK e-commerce transactions ("Online Retail," UCI) reduced to three engineered features per customer — <strong>R</strong>ecency, <strong>F</strong>requency, <strong>M</strong>onetary value — then clustered.</p>
+    <div class="formula-block"><span class="label">RFM feature engineering</span>rfm = data.groupby('CustomerID').agg(
+    Recency=('InvoiceDate', lambda x: (reference_date - x.max()).days),
+    Frequency=('InvoiceNo', 'nunique'),
+    Monetary=('TotalPrice', 'sum')
+).reset_index()</div>
+    <p>IQR-trimmed, scaled, then K chosen via the elbow method (§3) before the final fit:</p>
+    <div class="formula-block">kmeans = KMeans(n_clusters=4, random_state=42)
+kmeans.fit(rfm_scaled)</div>
+    <div class="callout rule"><span class="tag">Result</span><p>Four clusters emerged with clearly different profiles: <strong>loyal</strong> (Recency 38d, Monetary £2,340), <strong>medium-value</strong> (£1,101), <strong>new/infrequent</strong> (£411), and <strong>churned</strong> (Recency 244d — far higher than the rest). Comparing raw means across clusters is misleading until each metric is normalized by its max — days, counts, and currency don't share a scale.</p></div>
+    <div class="callout watch"><span class="tag">Gotcha</span><p>~25% of rows have no <code>CustomerID</code> and can't be imputed (there's nothing to infer it from) — they're dropped outright rather than patched.</p></div>
   </section>
 
   <footer class="page-footer">

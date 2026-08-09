@@ -47,6 +47,7 @@
       <a href="#training-inference"><span class="toc-num">2</span>Training &amp; Inference</a>
       <a href="#why-rag"><span class="toc-num">3</span>Why RAG?</a>
       <a href="#rag-pipeline"><span class="toc-num">4</span>The RAG Pipeline</a>
+      <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
     </div>
   </div>
 </nav>
@@ -69,6 +70,7 @@
       <a href="#training-inference"><span class="toc-num">2</span>Training &amp; Inference</a>
       <a href="#why-rag"><span class="toc-num">3</span>Why RAG?</a>
       <a href="#rag-pipeline"><span class="toc-num">4</span>The RAG Pipeline</a>
+      <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
     </div>
   </aside>
 
@@ -90,6 +92,7 @@
       <li><a href="#training-inference"><span class="toc-num">2</span>Training &amp; Inference</a></li>
       <li><a href="#why-rag"><span class="toc-num">3</span>Why RAG?</a></li>
       <li><a href="#rag-pipeline"><span class="toc-num">4</span>The RAG Pipeline</a></li>
+      <li><a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a></li>
     </ul>
   </div>
 
@@ -243,6 +246,20 @@ How does the Marketing team make strategic decisions?
 
 [Instruction]
 Using the provided context, answer the question concisely and cite your sources.</div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="chapter" id="exercises">
+    <div class="chapter-head"><span class="chapter-num">5</span><h2>Sprint Exercise</h2></div>
+    <p class="chapter-dek">The professor's actual hands-on assignment for this chapter.</p>
+
+    <h3>RAG Tutorial — Open-Source LLM + Pinecone</h3>
+    <p>A full RAG pipeline answering questions over a folder of course documents, built entirely on open tooling — no hosted LLM API call anywhere in the generation step.</p>
+    <div class="formula-block"><span class="label">Embed with a local model, retrieve from Pinecone, generate with a local LLM</span>embedder = SentenceTransformer("all-MiniLM-L6-v2")        # 384-dim
+results  = index.query(vector=question_vector, top_k=10, include_metadata=True)
+response = OllamaLLM(model="llama3.2").invoke(prompt)      # runs locally via Ollama</div>
+    <p>Chunking uses <code>RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)</code> — on the course's full document set this produced roughly 13,700 chunks, each upserted into a cosine-metric Pinecone index in batches of 50 to stay under the payload limit.</p>
+    <div class="callout watch"><span class="tag">Gotcha</span><p>Generation runs entirely on-device (Ollama + <code>llama3.2</code> must be installed locally) rather than through a cloud API, and the Pinecone key is read from a local file — never hardcoded. The example run also shows a real retrieval failure: the model hedges because several near-duplicate "lecturer" chunks from different course modules get retrieved together — a live example of why chunk boundaries and retrieval precision (§4) matter in practice.</p></div>
   </section>
 
   <footer class="page-footer">

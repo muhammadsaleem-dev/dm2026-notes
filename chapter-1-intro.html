@@ -48,6 +48,7 @@
       <a href="#data-representation"><span class="toc-num">3</span>Data Representation</a>
       <a href="#data-types-and-tasks"><span class="toc-num">4</span>Types of Data &amp; Core Tasks</a>
       <a href="#communicating-results"><span class="toc-num">5</span>Communicating Results &amp; Tooling</a>
+      <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
     </div>
   </div>
 </nav>
@@ -71,6 +72,7 @@
       <a href="#data-representation"><span class="toc-num">3</span>Data Representation</a>
       <a href="#data-types-and-tasks"><span class="toc-num">4</span>Types of Data &amp; Core Tasks</a>
       <a href="#communicating-results"><span class="toc-num">5</span>Communicating Results &amp; Tooling</a>
+      <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
     </div>
   </aside>
 
@@ -93,6 +95,7 @@
       <li><a href="#data-representation"><span class="toc-num">3</span>Data Representation</a></li>
       <li><a href="#data-types-and-tasks"><span class="toc-num">4</span>Types of Data &amp; Core Tasks</a></li>
       <li><a href="#communicating-results"><span class="toc-num">5</span>Communicating Results &amp; Tooling</a></li>
+      <li><a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a></li>
     </ul>
   </div>
 
@@ -233,6 +236,30 @@
 
     <h3>Pre-reads worth refreshing</h3>
     <p>Vectors &amp; matrices (multiplication, norms, eigenvalues), derivatives/gradients, exponential &amp; log functions, basic statistics (Bayes' theorem, mean, variance, distributions), covariance matrices, and PCA — all resurface starting in Chapter 2.</p>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="chapter" id="exercises">
+    <div class="chapter-head"><span class="chapter-num">6</span><h2>Sprint Exercises</h2></div>
+    <p class="chapter-dek">The professor's actual hands-on assignments for this chapter, with solutions.</p>
+
+    <h3>Exercise 1 — Python &amp; NumPy Basics</h3>
+    <p>A warm-up covering Jupyter shortcuts, mutable vs. immutable objects, list comprehensions, and vectorization — the point being to avoid explicit loops wherever NumPy can do the work instead.</p>
+    <div class="formula-block"><span class="label">Vectorized sigmoid &amp; loss functions</span>def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+def L1(yhat, y):
+    return np.sum(np.abs(y - yhat))
+
+def L2(yhat, y):
+    return np.sum((y - yhat) ** 2)</div>
+    <p>Also implemented from scratch: <code>cumulative_sum</code>, <code>is_palindrome</code>, <code>fibonacci</code>, <code>is_prime</code> — small building blocks that reappear once loss functions and gradients show up for real in Chapter 5.</p>
+
+    <h3>Exercise 2 — Pandas on the Titanic Dataset</h3>
+    <p>First real dataset: load Titanic via <code>seaborn.load_dataset('titanic')</code>, then practice <code>.info()</code>/<code>.describe()</code>/<code>.isnull().sum()</code>, <code>.loc</code>/<code>.iloc</code> indexing, boolean filtering, and <code>groupby</code>.</p>
+    <div class="formula-block"><span class="label">Mini project: survival rate by age group</span>df["age_group"] = df["age"].apply(lambda x: "child" if x < 16 else "adult")
+df.groupby("age_group")["survived"].mean()</div>
+    <div class="callout rule"><span class="tag">Result</span><p>Children (&lt;16) survived at <strong>59%</strong> vs. <strong>36%</strong> for adults — the first hands-on look at a pattern ("women and children first") that resurfaces as the running SHAP example in Chapters 3 and 7.</p></div>
   </section>
 
   <footer class="page-footer">

@@ -47,6 +47,7 @@
       <a href="#random-forests"><span class="toc-num">2</span>Random Forests</a>
       <a href="#adaboost"><span class="toc-num">3</span>Adaptive Boosting (AdaBoost)</a>
       <a href="#xai-intro"><span class="toc-num">4</span>Explainability &amp; Causality (intro)</a>
+      <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
     </div>
   </div>
 </nav>
@@ -69,6 +70,7 @@
       <a href="#random-forests"><span class="toc-num">2</span>Random Forests</a>
       <a href="#adaboost"><span class="toc-num">3</span>Adaptive Boosting (AdaBoost)</a>
       <a href="#xai-intro"><span class="toc-num">4</span>Explainability &amp; Causality (intro)</a>
+      <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
     </div>
   </aside>
 
@@ -90,6 +92,7 @@
       <li><a href="#random-forests"><span class="toc-num">2</span>Random Forests</a></li>
       <li><a href="#adaboost"><span class="toc-num">3</span>Adaptive Boosting (AdaBoost)</a></li>
       <li><a href="#xai-intro"><span class="toc-num">4</span>Explainability &amp; Causality (intro)</a></li>
+      <li><a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a></li>
     </ul>
   </div>
 
@@ -221,6 +224,28 @@ clf = RandomForestClassifier(n_estimators=20)  # 20 trees</div>
         </tbody>
       </table>
     </div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="chapter" id="exercises">
+    <div class="chapter-head"><span class="chapter-num">5</span><h2>Sprint Exercise</h2></div>
+    <p class="chapter-dek">The professor's actual hands-on assignment for this chapter, with solution.</p>
+
+    <h3>Exercise 6 — Classification Pipeline with a Random Forest</h3>
+    <p>Predicting <code>cancer_type</code> from cell-nuclei measurements and age (398 records). The notable part isn't the model — it's the discipline around it: a <strong>config dictionary</strong> declares every preprocessing/hyperparameter choice up front, <strong>before</strong> any code touches the data.</p>
+    <div class="formula-block"><span class="label">Declare choices before writing pipeline code</span>config = {
+    "missing_value_strategy": "replace_by_mean_cancer_type",
+    "scaling_method": "StandardScaler",
+    "RDF": {"n_estimators": 1000, "max_depth": 6, "min_samples_split": 2,
+            "min_samples_leaf": 2, "max_features": 0.7, "class_weight": "balanced"}
+}</div>
+    <p>Outliers are flagged via IQR (computed on train only) and folded into the same imputation step as real missing values, rather than handled separately:</p>
+    <div class="formula-block">Q1, Q3 = X_train.quantile(0.25), X_train.quantile(0.75)
+IQR = Q3 - Q1
+outlier_mask = (X_train < Q1 - 1.5*IQR) | (X_train > Q3 + 1.5*IQR)
+X_train = X_train.where(~outlier_mask, np.nan)</div>
+    <div class="callout rule"><span class="tag">Result</span><p><code>RandomForestClassifier(n_estimators=1000, max_depth=6, class_weight='balanced')</code> reached <strong>90% test accuracy</strong>. The exercise then asks students to drop <code>n_estimators</code> to 10 and watch performance degrade — a direct feel for how much ensemble size (§2) actually matters.</p></div>
+    <div class="callout watch"><span class="tag">Gotcha</span><p>The final "production" model is refit on train+test combined — at which point you explicitly lose the ability to measure its accuracy. The earlier test-set score is your only honest estimate of how it'll perform.</p></div>
   </section>
 
   <footer class="page-footer">

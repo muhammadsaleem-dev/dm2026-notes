@@ -48,6 +48,7 @@
       <a href="#permutation-importance"><span class="toc-num">3</span>Permutation Feature Importance</a>
       <a href="#shap"><span class="toc-num">4</span>Shapley Values (SHAP)</a>
       <a href="#causality"><span class="toc-num">5</span>Causality: Beyond Correlation</a>
+      <a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a>
     </div>
   </div>
 </nav>
@@ -71,6 +72,7 @@
       <a href="#permutation-importance"><span class="toc-num">3</span>Permutation Feature Importance</a>
       <a href="#shap"><span class="toc-num">4</span>Shapley Values (SHAP)</a>
       <a href="#causality"><span class="toc-num">5</span>Causality: Beyond Correlation</a>
+      <a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a>
     </div>
   </aside>
 
@@ -93,6 +95,7 @@
       <li><a href="#permutation-importance"><span class="toc-num">3</span>Permutation Feature Importance</a></li>
       <li><a href="#shap"><span class="toc-num">4</span>Shapley Values (SHAP)</a></li>
       <li><a href="#causality"><span class="toc-num">5</span>Causality: Beyond Correlation</a></li>
+      <li><a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a></li>
     </ul>
   </div>
 
@@ -202,6 +205,22 @@
         </tbody>
       </table>
     </div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="chapter" id="exercises">
+    <div class="chapter-head"><span class="chapter-num">6</span><h2>Sprint Exercise</h2></div>
+    <p class="chapter-dek">The professor's actual hands-on assignment for this chapter, with solution.</p>
+
+    <h3>Explainability Exercise — Three Methods, One Model</h3>
+    <p>One <code>RandomForestClassifier</code> trained on the Titanic dataset, explained three different ways so the differences between the methods (§2–4) become concrete rather than theoretical: built-in impurity-based <code>feature_importances_</code>, <code>permutation_importance</code> (scored on F1), and full SHAP (summary bar, beeswarm, and a local <code>force_plot</code> for one passenger).</p>
+    <div class="formula-block"><span class="label">Same model, three lenses</span>result = permutation_importance(model, X_test, y_test, scoring='f1', n_repeats=10)
+
+explainer = shap.TreeExplainer(model)
+shap_values = explainer.shap_values(X_test)
+shap.summary_plot(shap_values[:,:,1], X_test)   # beeswarm</div>
+    <div class="callout rule"><span class="tag">Result</span><p>All three methods agree: <code>sex</code> dominates, with the beeswarm plot showing female (low-encoded) pushing predictions toward survival and male pushing away from it — the same "women and children first" pattern first spotted in Chapter 1's Titanic exercise, now visible feature-by-feature.</p></div>
+    <div class="callout watch"><span class="tag">Gotcha</span><p>The notebook flags the beeswarm-plot interpretation (dot position = SHAP value, color = feature value, ranking = mean |SHAP|) as required knowledge for the exam — worth re-reading §4 alongside this exercise.</p></div>
   </section>
 
   <footer class="page-footer">

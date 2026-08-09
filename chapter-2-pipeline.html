@@ -48,6 +48,7 @@
       <a href="#pca-tsne"><span class="toc-num">3</span>PCA &amp; t-SNE</a>
       <a href="#evaluation"><span class="toc-num">4</span>Validating &amp; Evaluating Models</a>
       <a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a>
+      <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
     </div>
   </div>
 </nav>
@@ -71,6 +72,7 @@
       <a href="#pca-tsne"><span class="toc-num">3</span>PCA &amp; t-SNE</a>
       <a href="#evaluation"><span class="toc-num">4</span>Validating &amp; Evaluating Models</a>
       <a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a>
+      <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
     </div>
   </aside>
 
@@ -93,6 +95,7 @@
       <li><a href="#pca-tsne"><span class="toc-num">3</span>PCA &amp; t-SNE</a></li>
       <li><a href="#evaluation"><span class="toc-num">4</span>Validating &amp; Evaluating Models</a></li>
       <li><a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a></li>
+      <li><a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a></li>
     </ul>
   </div>
 
@@ -354,6 +357,26 @@ Pᵢⱼ = (P(j|i) + P(i|j)) / 2N
         </tbody>
       </table>
     </div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="chapter" id="exercises">
+    <div class="chapter-head"><span class="chapter-num">6</span><h2>Sprint Exercises</h2></div>
+    <p class="chapter-dek">The professor's actual hands-on assignments for this chapter, with solutions.</p>
+
+    <h3>Exercises 3 &amp; 4 — Titanic Survival Prediction Pipeline</h3>
+    <p>A full walk through the pipeline from §2: clean placeholder values, engineer features (a title extracted from name, a cabin letter), split <strong>before</strong> touching missing data, add missing-indicator columns, impute with the train median, collapse rare categories into <code>"Rare"</code>, one-hot encode, scale, then fit a regularized logistic regression.</p>
+    <div class="formula-block"><span class="label">Impute using train statistics only</span>X_train['age_NA'] = np.where(X_train['age'].isnull(), 1, 0)
+median_val = X_train['age'].median()
+X_train['age'] = X_train['age'].fillna(median_val)
+X_test['age']  = X_test['age'].fillna(median_val)   # reuse the TRAIN median</div>
+    <div class="callout rule"><span class="tag">Result</span><p><code>LogisticRegression(C=0.0005)</code> reached 70.2% test accuracy and 0.835 ROC-AUC — but only 0.36 F1, a concrete demonstration of why accuracy alone (§4) can look fine while the model is still struggling on the minority class.</p></div>
+
+    <h3>Exercise 5 — PCA &amp; t-SNE on Single-Cell RNA-seq</h3>
+    <p>2,700 immune cells × ~32,700 genes (<code>pbmc3k_sparse.pkl</code>) — filter near-zero genes, standardize, run PCA to 50 components, then run t-SNE <em>on the PCA output</em> rather than the raw scaled matrix.</p>
+    <div class="formula-block"><span class="label">PCA before t-SNE — not either/or</span>X_pca_50 = PCA(n_components=50).fit_transform(X_scaled)
+X_tsne = TSNE(n_components=2, perplexity=30, random_state=42).fit_transform(X_pca_50)</div>
+    <p>Sweeping perplexity across [2, 10, 50, 500] and re-running with three random seeds makes both t-SNE gotchas from §3 tangible: low perplexity fragments real clusters, and different seeds give different (but locally similar) layouts.</p>
   </section>
 
   <footer class="page-footer">
