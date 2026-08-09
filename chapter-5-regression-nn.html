@@ -34,8 +34,21 @@
   </div>
   <p class="dek">The biggest chapter in the course, and the most mathematically dense. Everything here builds toward one idea: a single neuron is a logistic-regression unit, and a network is many of them chained together.</p>
 
+  <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#framing"><span class="toc-num">1</span>Framing: NNs as Generalized Regression</a></li>
+      <li><a href="#linear-regression"><span class="toc-num">2</span>Linear Regression, Properly</a></li>
+      <li><a href="#gradient-descent"><span class="toc-num">3</span>Gradient Descent</a></li>
+      <li><a href="#logistic-regression"><span class="toc-num">4</span>Logistic Regression → One Neuron</a></li>
+      <li><a href="#building-the-network"><span class="toc-num">5</span>Building the Network</a></li>
+      <li><a href="#hyperparameters"><span class="toc-num">6</span>Hyperparameters, Activations &amp; Training Difficulty</a></li>
+      <li><a href="#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a></li>
+    </ul>
+  </div>
+
   <!-- ============ 1 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="framing">
     <div class="chapter-head"><span class="chapter-num">1</span><h2>Framing: Neural Nets as Generalized Regression</h2></div>
     <p class="chapter-dek">"Neural networks are the generalization of linear regression."</p>
     <p>A single artificial neuron (perceptron) — inputs → weighted sum <code>Σwᵢxᵢ + b</code> → activation φ(·) → output — is structurally identical to logistic regression. The reveal the whole chapter builds toward: <strong>a perceptron is logistic regression; a neural network is many logistic-regression units stacked and chained.</strong></p>
@@ -43,7 +56,7 @@
   </section>
 
   <!-- ============ 2 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="linear-regression">
     <div class="chapter-head"><span class="chapter-num">2</span><h2>Linear Regression, Properly</h2></div>
     <p class="chapter-dek">Every neuron's math starts here.</p>
     <div class="formula-block"><span class="label">Model</span>ŷ = Xω + b</div>
@@ -64,7 +77,7 @@
   </section>
 
   <!-- ============ 3 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="gradient-descent">
     <div class="chapter-head"><span class="chapter-num">3</span><h2>Gradient Descent</h2></div>
     <p class="chapter-dek">The one optimization algorithm everything else in this chapter reuses.</p>
     <p>The <strong>gradient</strong> of a function gives its direction of steepest ascent and how fast it's changing there. Algorithm:</p>
@@ -101,7 +114,7 @@
   </section>
 
   <!-- ============ 4 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="logistic-regression">
     <div class="chapter-head"><span class="chapter-num">4</span><h2>Logistic Regression → One Neuron</h2></div>
     <p class="chapter-dek">Running example throughout: predicting malignant vs. benign from tumor measurements.</p>
     <div class="formula-block"><span class="label">Weighted sum + sigmoid</span>z = wᵀx + b
@@ -133,7 +146,7 @@
   </section>
 
   <!-- ============ 5 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="building-the-network">
     <div class="chapter-head"><span class="chapter-num">5</span><h2>Building the Network</h2></div>
     <p class="chapter-dek">Each hidden unit is now called a neuron — a mini logistic regression whose output feeds the next layer.</p>
 
@@ -157,7 +170,7 @@ W^[1] := W^[1] − η∇_W[1]J,   b^[1] := b^[1] − η∇_b[1]J
   </section>
 
   <!-- ============ 6 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="hyperparameters">
     <div class="chapter-head"><span class="chapter-num">6</span><h2>Hyperparameters, Activations &amp; Why Deep Training Is Hard</h2></div>
 
     <p><strong>Network size</strong> (depth × width) is a hyperparameter fixed before training. Bigger → more capacity, more overfitting risk, more compute; smaller → underfitting risk. Practical advice: start small, grow based on validation performance, add dropout as size grows, use early stopping.</p>
@@ -196,7 +209,7 @@ W^[1] := W^[1] − η∇_W[1]J,   b^[1] := b^[1] − η∇_b[1]J
   </section>
 
   <!-- ============ 7 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="gd-at-scale">
     <div class="chapter-head"><span class="chapter-num">7</span><h2>Gradient Descent at Scale</h2></div>
     <p class="chapter-dek">Full-batch gradient descent doesn't survive contact with real dataset sizes.</p>
     <p>Motivating scale problem from the deck: 30,000 features × 1M data points × 1000 training epochs with full-batch gradients ≈ 30 trillion term evaluations — infeasible.</p>

@@ -34,8 +34,19 @@
   </div>
   <p class="dek">This chapter centers almost entirely on K-Means: its mechanics, why it's sensitive to initialization, how to pick K, and where it quietly fails.</p>
 
+  <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#unsupervised"><span class="toc-num">1</span>Clustering as Unsupervised Learning</a></li>
+      <li><a href="#kmeans"><span class="toc-num">2</span>K-Means</a></li>
+      <li><a href="#choosing-k"><span class="toc-num">3</span>Choosing K</a></li>
+      <li><a href="#where-it-breaks"><span class="toc-num">4</span>Where K-Means Breaks</a></li>
+      <li><a href="#evaluating"><span class="toc-num">5</span>Evaluating &amp; Interpreting Clusters</a></li>
+    </ul>
+  </div>
+
   <!-- ============ 1 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="unsupervised">
     <div class="chapter-head"><span class="chapter-num">1</span><h2>Clustering as Unsupervised Learning</h2></div>
     <p class="chapter-dek">No ground-truth labels — the model learns similarity/difference directly from the data.</p>
     <p>Clustering groups unlabeled examples so a trained model can say "this new point belongs with that group" — contrast with classification, which learns from labels that already exist.</p>
@@ -53,7 +64,7 @@
   </section>
 
   <!-- ============ 2 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="kmeans">
     <div class="chapter-head"><span class="chapter-num">2</span><h2>K-Means</h2></div>
     <p class="chapter-dek">Fast and simple — but only as good as its starting point.</p>
 
@@ -74,7 +85,7 @@
   </section>
 
   <!-- ============ 3 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="choosing-k">
     <div class="chapter-head"><span class="chapter-num">3</span><h2>Choosing K</h2></div>
     <p class="chapter-dek">K-Means needs K handed to it — two ways to estimate a reasonable value.</p>
 
@@ -94,7 +105,7 @@
   </section>
 
   <!-- ============ 4 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="where-it-breaks">
     <div class="chapter-head"><span class="chapter-num">4</span><h2>Where K-Means Breaks</h2></div>
 
     <div class="callout watch"><span class="tag">Quiz</span><p>Tested on three datasets — roughly spherical unequal-variance blobs, anisotropically stretched blobs, and moon-shaped clusters — K-Means only produced sensible clusters on the <strong>spherical blobs</strong>. It visibly misassigns points on the stretched and non-convex shapes.</p></div>
@@ -113,7 +124,7 @@
   </section>
 
   <!-- ============ 5 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="evaluating">
     <div class="chapter-head"><span class="chapter-num">5</span><h2>Evaluating &amp; Interpreting Clusters</h2></div>
     <p class="chapter-dek">Clustering is exploratory — the payoff is in what the groups actually mean.</p>
 

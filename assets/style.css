@@ -197,11 +197,53 @@ h1.title {
 .pipeline-strip .arrow { color: var(--text-muted); padding: 0 0.3rem; font-weight: 400; }
 .pipeline-strip .loopback { color: var(--text-muted); font-weight: 400; font-style: italic; margin-left: 0.5rem; }
 
+/* ---------- Table of contents ---------- */
+.toc-card {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  background: var(--bg-raised);
+  padding: 0.85rem 1.1rem 0.95rem;
+  margin: 0 0 2rem;
+}
+.toc-card .toc-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 0.55rem;
+}
+.toc-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.1rem 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.toc-list li { margin: 0; }
+.toc-list a {
+  display: block;
+  padding: 0.22rem 0;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.87rem;
+}
+.toc-list a:hover { color: var(--accent-ink); text-decoration: underline; }
+.toc-list .toc-num {
+  color: var(--accent-ink);
+  font-weight: 700;
+  margin-right: 0.4rem;
+  font-family: Georgia, serif;
+}
+
 /* ---------- Sections ---------- */
 section.chapter {
   padding-top: 1.1rem;
   margin-top: 1.1rem;
   border-top: 1px solid var(--border);
+  scroll-margin-top: 4.5rem;
 }
 section.chapter:first-of-type { border-top: none; margin-top: 0; }
 

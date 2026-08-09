@@ -34,8 +34,18 @@
   </div>
   <p class="dek">This chapter's algorithmic core is Decision Trees, Random Forests, and AdaBoost — framed by an early look at explainability and causality that Chapter 7 goes on to develop fully.</p>
 
+  <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#decision-trees"><span class="toc-num">1</span>Decision Trees</a></li>
+      <li><a href="#random-forests"><span class="toc-num">2</span>Random Forests</a></li>
+      <li><a href="#adaboost"><span class="toc-num">3</span>Adaptive Boosting (AdaBoost)</a></li>
+      <li><a href="#xai-intro"><span class="toc-num">4</span>Explainability &amp; Causality (intro)</a></li>
+    </ul>
+  </div>
+
   <!-- ============ 1 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="decision-trees">
     <div class="chapter-head"><span class="chapter-num">1</span><h2>Decision Trees</h2></div>
     <p class="chapter-dek">Classification is supervised learning: learn the pattern linking features to a known label, then apply it to new, unlabeled instances.</p>
 
@@ -78,7 +88,7 @@ clf.tree_                  # underlying tree object</div>
   </section>
 
   <!-- ============ 2 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="random-forests">
     <div class="chapter-head"><span class="chapter-num">2</span><h2>Random Forests</h2></div>
     <p class="chapter-dek">Growing many different trees on purpose, then letting them vote.</p>
 
@@ -97,7 +107,7 @@ clf = RandomForestClassifier(n_estimators=20)  # 20 trees</div>
   </section>
 
   <!-- ============ 3 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="adaboost">
     <div class="chapter-head"><span class="chapter-num">3</span><h2>Adaptive Boosting (AdaBoost)</h2></div>
     <p class="chapter-dek">Instead of many independent trees, build weak learners <em>sequentially</em>, each one fixing the last one's mistakes.</p>
 
@@ -134,7 +144,7 @@ clf = RandomForestClassifier(n_estimators=20)  # 20 trees</div>
   </section>
 
   <!-- ============ 4 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="xai-intro">
     <div class="chapter-head"><span class="chapter-num">4</span><h2>A First Look at Explainability &amp; Causality</h2></div>
     <p class="chapter-dek">This chapter's closing detour — developed in full in Chapter 7.</p>
 

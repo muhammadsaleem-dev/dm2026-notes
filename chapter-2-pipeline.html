@@ -34,6 +34,17 @@
   </div>
   <p class="dek">Everything from the chapter's four lecture decks, reorganized into one dense pass: what each pipeline stage does, why it exists, and the formulas/gotchas worth remembering.</p>
 
+  <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#framing"><span class="toc-num">1</span>Framing the Problem</a></li>
+      <li><a href="#preprocessing"><span class="toc-num">2</span>Preprocessing</a></li>
+      <li><a href="#pca-tsne"><span class="toc-num">3</span>PCA &amp; t-SNE</a></li>
+      <li><a href="#evaluation"><span class="toc-num">4</span>Validating &amp; Evaluating Models</a></li>
+      <li><a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a></li>
+    </ul>
+  </div>
+
   <div class="pipeline-strip" aria-label="Data mining pipeline stages">
     <span class="stage">Problem understanding</span><span class="arrow">→</span>
     <span class="stage current">Explore &amp; preprocess</span><span class="arrow">→</span>
@@ -45,7 +56,7 @@
   </div>
 
   <!-- ============ 1 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="framing">
     <div class="chapter-head"><span class="chapter-num">1</span><h2>Framing the Problem</h2></div>
     <p class="chapter-dek">Before touching a model: what kind of analysis is this, and what does the data actually represent?</p>
 
@@ -80,7 +91,7 @@
   </section>
 
   <!-- ============ 2 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="preprocessing">
     <div class="chapter-head"><span class="chapter-num">2</span><h2>Preprocessing</h2></div>
     <p class="chapter-dek">Engineer features → handle missing data → handle imbalance → scale → reduce dimensions. Order matters; every step below is fit on <em>train</em> only.</p>
 
@@ -137,7 +148,7 @@
   </section>
 
   <!-- ============ 3 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="pca-tsne">
     <div class="chapter-head"><span class="chapter-num">3</span><h2>PCA &amp; t-SNE</h2></div>
     <p class="chapter-dek">Two dimensionality-reduction workhorses with opposite philosophies — one linear and global, one non-linear and local.</p>
 
@@ -180,7 +191,7 @@ Pᵢⱼ = (P(j|i) + P(i|j)) / 2N
   </section>
 
   <!-- ============ 4 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="evaluation">
     <div class="chapter-head"><span class="chapter-num">4</span><h2>Validating &amp; Evaluating Models</h2></div>
     <p class="chapter-dek">A model is only as trustworthy as the metric used to judge it — and the obvious metric is often the wrong one.</p>
 
@@ -237,7 +248,7 @@ Pᵢⱼ = (P(j|i) + P(i|j)) / 2N
   </section>
 
   <!-- ============ 5 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="modelling">
     <div class="chapter-head"><span class="chapter-num">5</span><h2>Modelling &amp; Choosing a Model</h2></div>
     <p class="chapter-dek">Fitting is iterative; the best-scoring model on paper is not automatically the right one to ship.</p>
 

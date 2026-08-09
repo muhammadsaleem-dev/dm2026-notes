@@ -34,8 +34,19 @@
   </div>
   <p class="dek">Two different questions that get conflated constantly: "what did the model use?" (explainability) and "what actually changes the outcome?" (causality).</p>
 
+  <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#why-it-matters"><span class="toc-num">1</span>Why Explainability Matters</a></li>
+      <li><a href="#two-axes"><span class="toc-num">2</span>Two Axes of Explainability</a></li>
+      <li><a href="#permutation-importance"><span class="toc-num">3</span>Permutation Feature Importance</a></li>
+      <li><a href="#shap"><span class="toc-num">4</span>Shapley Values (SHAP)</a></li>
+      <li><a href="#causality"><span class="toc-num">5</span>Causality: Beyond Correlation</a></li>
+    </ul>
+  </div>
+
   <!-- ============ 1 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="why-it-matters">
     <div class="chapter-head"><span class="chapter-num">1</span><h2>Why Explainability Matters</h2></div>
     <p class="chapter-dek">Different stakeholders need different explanations from the same model.</p>
 
@@ -56,7 +67,7 @@
   </section>
 
   <!-- ============ 2 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="two-axes">
     <div class="chapter-head"><span class="chapter-num">2</span><h2>Two Axes of Explainability</h2></div>
 
     <div class="table-wrap">
@@ -87,7 +98,7 @@
   </section>
 
   <!-- ============ 3 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="permutation-importance">
     <div class="chapter-head"><span class="chapter-num">3</span><h2>Permutation Feature Importance</h2></div>
     <p class="chapter-dek">If a feature matters, breaking it should hurt performance.</p>
     <ol>
@@ -103,7 +114,7 @@
   </section>
 
   <!-- ============ 4 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="shap">
     <div class="chapter-head"><span class="chapter-num">4</span><h2>Shapley Values (SHAP)</h2></div>
     <p class="chapter-dek">Borrowed from game theory: features are "players," the prediction is the "payout" to split fairly.</p>
 
@@ -117,7 +128,7 @@
   </section>
 
   <!-- ============ 5 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="causality">
     <div class="chapter-head"><span class="chapter-num">5</span><h2>Causality: Beyond Correlation</h2></div>
     <p class="chapter-dek">Explainability says what the model used. Causality asks what would actually change the outcome.</p>
 

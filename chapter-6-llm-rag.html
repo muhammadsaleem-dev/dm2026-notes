@@ -34,8 +34,18 @@
   </div>
   <p class="dek">From "a neuron is logistic regression" to full retrieval-augmented generation: how LLMs are trained, how they generate text token by token, and why RAG exists at all.</p>
 
+  <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#lm-foundations"><span class="toc-num">1</span>Language Models: Foundations</a></li>
+      <li><a href="#training-inference"><span class="toc-num">2</span>Training &amp; Inference</a></li>
+      <li><a href="#why-rag"><span class="toc-num">3</span>Why RAG?</a></li>
+      <li><a href="#rag-pipeline"><span class="toc-num">4</span>The RAG Pipeline</a></li>
+    </ul>
+  </div>
+
   <!-- ============ 1 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="lm-foundations">
     <div class="chapter-head"><span class="chapter-num">1</span><h2>Language Models: Foundations</h2></div>
     <p class="chapter-dek">Softmax (Ch.5) is the bridge: it's exactly what an LLM uses to pick its next word.</p>
 
@@ -71,7 +81,7 @@
   </section>
 
   <!-- ============ 2 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="training-inference">
     <div class="chapter-head"><span class="chapter-num">2</span><h2>Training &amp; Inference</h2></div>
     <p class="chapter-dek">Predict-the-next-token, billions of times over — then decode one token at a time at inference.</p>
 
@@ -98,7 +108,7 @@
   </section>
 
   <!-- ============ 3 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="why-rag">
     <div class="chapter-head"><span class="chapter-num">3</span><h2>Why RAG?</h2></div>
     <p class="chapter-dek">A plain LLM chatbot has structural blind spots RAG is built to patch.</p>
 
@@ -130,7 +140,7 @@
   </section>
 
   <!-- ============ 4 ============ -->
-  <section class="chapter">
+  <section class="chapter" id="rag-pipeline">
     <div class="chapter-head"><span class="chapter-num">4</span><h2>The RAG Pipeline</h2></div>
     <p class="chapter-dek">An offline indexing phase, and an online query phase.</p>
 
