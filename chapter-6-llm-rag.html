@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ch.6 — LLM and RAG Pipeline | DM 2026 Notes</title>
 <link rel="stylesheet" href="assets/style.css">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme');if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
 <body>
 
@@ -19,6 +20,33 @@
       <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
       <a href="chapter-6-llm-rag.html" class="active">6 · LLM/RAG</a>
       <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Chapters</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-pipeline.html">2 · The Data Mining Pipeline</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">On this page</span>
+      <a href="#lm-foundations"><span class="toc-num">1</span>Language Models: Foundations</a>
+      <a href="#training-inference"><span class="toc-num">2</span>Training &amp; Inference</a>
+      <a href="#why-rag"><span class="toc-num">3</span>Why RAG?</a>
+      <a href="#rag-pipeline"><span class="toc-num">4</span>The RAG Pipeline</a>
     </div>
   </div>
 </nav>
@@ -202,5 +230,6 @@ Using the provided context, answer the question concisely and cite your sources.
   </footer>
 
 </div>
+<script src="assets/site.js" defer></script>
 </body>
 </html>
