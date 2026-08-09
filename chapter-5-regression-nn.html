@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.5 — From Regression to Neural Networks | DM 2026 Notes</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM 2026 Notes</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-pipeline.html">2 · Pipeline</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-regression-nn.html" class="active">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Basic Data Mining Practice · Chapter 5</div>
+      <h1 class="title">From Regression to Neural Networks</h1>
+    </div>
+    <div class="masthead-meta">Condensed reference<br><strong>The chapter's throughline: a neural net is just stacked logistic regression</strong></div>
+  </div>
+  <p class="dek">The biggest chapter in the course, and the most mathematically dense. Everything here builds toward one idea: a single neuron is a logistic-regression unit, and a network is many of them chained together.</p>
+
+  <!-- ============ 1 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>Framing: Neural Nets as Generalized Regression</h2></div>
+    <p class="chapter-dek">"Neural networks are the generalization of linear regression."</p>
+    <p>A single artificial neuron (perceptron) — inputs → weighted sum <code>Σwᵢxᵢ + b</code> → activation φ(·) → output — is structurally identical to logistic regression. The reveal the whole chapter builds toward: <strong>a perceptron is logistic regression; a neural network is many logistic-regression units stacked and chained.</strong></p>
+    <p>Classical programming, ML, and DL share the same loop — <code>study problem → (write rules | train on hand-designed features | train on self-learned features) → evaluate → analyze errors → repeat</code> — differing only in <em>where the features come from</em>: hand-written rules, manually engineered features, or features the model discovers itself. A network with one hidden layer is "non-deep"; <strong>deep learning starts at 3+ hidden layers</strong> (often hundreds).</p>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>Linear Regression, Properly</h2></div>
+    <p class="chapter-dek">Every neuron's math starts here.</p>
+    <div class="formula-block"><span class="label">Model</span>ŷ = Xω + b</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Assumption</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Linearity</td><td>Relationship between X and Y is linear</td></tr>
+          <tr><td>Independence</td><td>Observations are independent</td></tr>
+          <tr><td>Homoscedasticity</td><td>Constant variance of residuals across predicted levels</td></tr>
+          <tr><td>Normality</td><td>Errors are normally distributed</td></tr>
+          <tr><td>No multicollinearity</td><td>Predictors aren't highly correlated with each other</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="formula-block"><span class="label">Cost function (MSE)</span>J(θ) = (1/2M) · Σᵢ (y⁽ⁱ⁾ − ŷ⁽ⁱ⁾)²</div>
+    <p>Fitting the model = finding the θ = (ω, b) that minimizes J(θ). Squared error is used instead of absolute error because it's quadratic — error grows faster the further you are from the optimum, which is exactly the shape gradient-based search exploits. Brute-force search (e.g. scanning every possible θ) ignores that structure entirely and is impractical once θ has more than a couple of dimensions.</p>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Gradient Descent</h2></div>
+    <p class="chapter-dek">The one optimization algorithm everything else in this chapter reuses.</p>
+    <p>The <strong>gradient</strong> of a function gives its direction of steepest ascent and how fast it's changing there. Algorithm:</p>
+    <ol>
+      <li>Pick a random initial θ and a learning rate α.</li>
+      <li>Repeat until convergence: <code>θⱼ ← θⱼ − α · ∂J(θ)/∂θⱼ</code> for every parameter j.</li>
+    </ol>
+    <div class="formula-block"><span class="label">Linear regression gradients (chain rule)</span>∂J/∂b = −(1/M) Σ (y⁽ⁱ⁾ − (ωx⁽ⁱ⁾+b))
+∂J/∂ω = −(1/M) Σ (y⁽ⁱ⁾ − (ωx⁽ⁱ⁾+b)) · xᵀ⁽ⁱ⁾</div>
+    <p>For a <strong>convex</strong> problem (linear regression + MSE has only one basin), gradient descent is guaranteed to reach the global minimum — provided the learning rate is chosen well; too large a rate can still cause divergence even on a convex surface.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Learning rate α</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td>Too low</td><td>Many tiny steps, slow convergence</td></tr>
+          <tr><td>Just right</td><td>Efficient convergence</td></tr>
+          <tr><td>Too high</td><td>Overshoots, oscillates, can diverge</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Other linear-model variants</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>Idea</th></tr></thead>
+        <tbody>
+          <tr><td>Polynomial regression</td><td>Adds x², x³ terms — non-linear in x, still linear in the parameters</td></tr>
+          <tr><td>Ridge (L2)</td><td>Penalizes Σwⱼ² — fights multicollinearity/overfitting, shrinks weights but rarely to zero</td></tr>
+          <tr><td>Lasso (L1)</td><td>Can shrink weights to exactly zero → automatic feature selection</td></tr>
+          <tr><td>Elastic Net</td><td>Combines L1 + L2, useful when predictors are highly correlated</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Logistic Regression → One Neuron</h2></div>
+    <p class="chapter-dek">Running example throughout: predicting malignant vs. benign from tumor measurements.</p>
+    <div class="formula-block"><span class="label">Weighted sum + sigmoid</span>z = wᵀx + b
+ŷ = σ(z) = 1 / (1 + e^−(wᵀx+b))</div>
+    <p>The sigmoid squashes output into (0,1), read as a class probability; an adjustable threshold converts it to a hard 0/1 label.</p>
+    <div class="formula-block"><span class="label">Binary cross-entropy cost</span>J(ω,b) = −(1/M) Σᵢ [ y⁽ⁱ⁾ log(ŷ⁽ⁱ⁾) + (1−y⁽ⁱ⁾) log(1−ŷ⁽ⁱ⁾) ]</div>
+    <p>Via the chain rule (using σ′(x) = σ(x)(1−σ(x))), the gradient collapses to a strikingly simple form:</p>
+    <div class="formula-block"><span class="label">Gradient (identical shape to linear regression's)</span>∂J/∂ω = (1/M) Σ (ŷ⁽ⁱ⁾ − y⁽ⁱ⁾) · xᵀ⁽ⁱ⁾</div>
+
+    <h3>More than two classes</h3>
+    <ul>
+      <li><strong>One-vs-Rest (OvR)</strong> — train one separate binary model per class.</li>
+      <li><strong>Softmax regression</strong> — <code>softmax(zᵢ) = e^zᵢ / Σⱼ e^zⱼ</code>, turning a score vector into a probability distribution that sums to 1. Example: z = [1.30, 5.10, 2.20, 0.70, 1.10] → softmax ≈ [0.02, 0.90, 0.05, 0.01, 0.02].</li>
+    </ul>
+
+    <h3>Why logistic regression isn't enough</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Limitation</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Linear boundaries only</td><td>Fails on non-linearly-separable data</td></tr>
+          <tr><td>Limited feature interaction</td><td>Doesn't capture interactions unless manually engineered</td></tr>
+          <tr><td>Limited capacity</td><td>Struggles with complex tasks (image/audio classification)</td></tr>
+          <tr><td>Sensitive to outliers</td><td>Outliers disproportionately affect the cost function</td></tr>
+          <tr><td>Scalability</td><td>Weak on large, high-dimensional data</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">5</span><h2>Building the Network</h2></div>
+    <p class="chapter-dek">Each hidden unit is now called a neuron — a mini logistic regression whose output feeds the next layer.</p>
+
+    <p>Chaining more layers builds a hierarchy of transformations, learning features automatically (e.g. image recognition: edges → contours → parts → whole object) instead of requiring them hand-engineered.</p>
+
+    <h3>Forward propagation</h3>
+    <div class="formula-block">z^[1] = W^[1]x + b^[1],  a^[1] = g^[1](z^[1])
+z^[2] = W^[2]a^[1] + b^[2],  a^[2] = g^[2](z^[2]) = ŷ
+
+ŷ = g^[2]( W^[2] · g^[1](W^[1]x + b^[1]) + b^[2] )</div>
+
+    <h3>Backpropagation</h3>
+    <p>Gradient descent applied to every layer's parameters, with local gradients propagated backward via the chain rule:</p>
+    <div class="formula-block">W^[2] := W^[2] − η∇_W[2]J,   b^[2] := b^[2] − η∇_b[2]J
+W^[1] := W^[1] − η∇_W[1]J,   b^[1] := b^[1] − η∇_b[1]J
+
+<span class="label" style="margin-top:.5rem">At the output layer</span>∇_z[2]J = ŷ − y
+∇_W[2]J = (ŷ − y) · a^[1]ᵀ</div>
+    <p><strong>Notation:</strong> ℓ = number of layers · n^[i] = units in layer i (n^[0] = inputs, n^[ℓ] = outputs) · a^[i] = activations of layer i (a^[ℓ] = ŷ) · g^[i] = layer i's activation function · W^[i], b^[i] = layer i's parameters · z^[i] = W^[i]a^[i−1] + b^[i].</p>
+    <p><strong>Training loop:</strong> ① forward propagation (compute ŷ, then cost J) → ② backpropagation (chain-rule gradients, update every parameter) → repeat until convergence or max iterations.</p>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">6</span><h2>Hyperparameters, Activations &amp; Why Deep Training Is Hard</h2></div>
+
+    <p><strong>Network size</strong> (depth × width) is a hyperparameter fixed before training. Bigger → more capacity, more overfitting risk, more compute; smaller → underfitting risk. Practical advice: start small, grow based on validation performance, add dropout as size grows, use early stopping.</p>
+
+    <h3>Activation functions</h3>
+    <p>Needed properties: non-linearity (to learn beyond linear relationships), differentiability (backprop requires it), bounded output (stabilizes training), and computational efficiency.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Function</th><th>Formula</th></tr></thead>
+        <tbody>
+          <tr><td>Sigmoid</td><td>σ(x) = 1/(1+e⁻ˣ), range (0,1)</td></tr>
+          <tr><td>tanh</td><td>range (−1,1)</td></tr>
+          <tr><td>ReLU</td><td>max(0, x)</td></tr>
+          <tr><td>Leaky ReLU</td><td>max(0.1x, x)</td></tr>
+          <tr><td>ELU</td><td>x if x≥0; α(eˣ−1) if x&lt;0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>What makes deep nets hard to train</h3>
+    <ul>
+      <li><strong>Optimization difficulty</strong> — vanishing gradients, and getting stuck at saddle points rather than true minima.</li>
+      <li><strong>Overfitting</strong> — high-capacity models memorize noise instead of the underlying trend.</li>
+      <li><strong>Training instability</strong> — exploding or vanishing gradients destabilize weight updates, especially in deep stacks.</li>
+    </ul>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Category</th><th>Techniques</th></tr></thead>
+        <tbody>
+          <tr><td>Optimization</td><td>Right optimizer (SGD, Adam), learning-rate decay, good weight init, gradient clipping</td></tr>
+          <tr><td>Regularization</td><td>Dropout, L1/L2, early stopping, batch/layer normalization</td></tr>
+          <tr><td>Architecture</td><td>Match the architecture to the task (CNNs for images, RNNs for sequences)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">7</span><h2>Gradient Descent at Scale</h2></div>
+    <p class="chapter-dek">Full-batch gradient descent doesn't survive contact with real dataset sizes.</p>
+    <p>Motivating scale problem from the deck: 30,000 features × 1M data points × 1000 training epochs with full-batch gradients ≈ 30 trillion term evaluations — infeasible.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Batch GD</th><th>Stochastic GD</th><th>Mini-Batch GD</th></tr></thead>
+        <tbody>
+          <tr><th>Each step uses</th><td>The full dataset</td><td>One random point</td><td>A small batch</td></tr>
+          <tr><th>Cost curve</th><td>Smooth</td><td>Highly fluctuating</td><td>Mildly fluctuating</td></tr>
+          <tr><th>Pros</th><td>Exact gradient, ideal for convex problems</td><td>Fast updates, can escape local minima, memory-efficient</td><td>Stable <em>and</em> fast — best of both</td></tr>
+          <tr><th>Cons</th><td>Slow, expensive per step</td><td>Noisy, sensitive to outliers</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Learning-rate schedules</h3>
+    <div class="formula-block">Step decay:        α = α₀ × factor^(epoch / decay_step)
+Exponential decay: α = α₀ × e^(−decay_rate × epoch)
+1/t decay:         α = α₀ / (1 + decay_rate × epoch)</div>
+    <p>Course guidance: start with <strong>Adam</strong> for most tasks (works well with little tuning); pair plain SGD with a decay schedule when training very large models for stability; always monitor the cost curve rather than assuming one optimizer fits everything.</p>
+
+    <h3>Input normalization</h3>
+    <div class="formula-block">μ = (1/M) Σ x⁽ⁱ⁾
+σ² = (1/M) Σ (x⁽ⁱ⁾ − μ)²
+x_normalized = (x − μ) / σ</div>
+    <div class="callout rule"><span class="tag">Rule</span><p>μ and σ are computed on <strong>training data only</strong> and become part of the saved model — reuse the exact same values on test/production data (see Ch.2 §2 for the same rule applied to scikit-learn scalers).</p></div>
+
+    <h3>Closing recipe</h3>
+    <ol>
+      <li>Choose a framework</li>
+      <li>Build the model (size, normalization, dropout, …)</li>
+      <li>Define the cost function</li>
+      <li>Select an optimizer and learning rate</li>
+      <li>Apply backpropagation</li>
+      <li>Tune hyperparameters</li>
+    </ol>
+    <p><em>"Neural networks are the second-best way to do everything"</em> — a specialized method often beats a generic NN for any one task, but a NN is a strong fallback when nothing more specialized fits.</p>
+  </section>
+
+  <footer class="page-footer">
+    <span>Condensed from Chapter 5 — From Regression to Neural Networks (Basic Data Mining Practice, Prof. Dr. Matteo Marouf)</span>
+    <span><a href="index.html">← All chapters</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

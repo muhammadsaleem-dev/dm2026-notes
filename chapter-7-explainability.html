@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.7 — Explainability &amp; Causality | DM 2026 Notes</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM 2026 Notes</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-pipeline.html">2 · Pipeline</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html" class="active">7 · Explainability</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Basic Data Mining Practice · Chapter 7</div>
+      <h1 class="title">Explainability &amp; Causality</h1>
+    </div>
+    <div class="masthead-meta">Condensed reference<br><strong>Local/global → permutation importance → SHAP → causality</strong></div>
+  </div>
+  <p class="dek">Two different questions that get conflated constantly: "what did the model use?" (explainability) and "what actually changes the outcome?" (causality).</p>
+
+  <!-- ============ 1 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>Why Explainability Matters</h2></div>
+    <p class="chapter-dek">Different stakeholders need different explanations from the same model.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Stakeholder (loan approval)</th><th>Their question</th></tr></thead>
+        <tbody>
+          <tr><td>Domain user (loan officer)</td><td>"Why is this client risky? Can I trust this model?"</td></tr>
+          <tr><td>Developer</td><td>"Why does the model behave this way? How do I fix an error?"</td></tr>
+          <tr><td>Auditor</td><td>"Are minority groups disproportionately denied? Is it using appropriate factors?"</td></tr>
+          <tr><td>End user</td><td>"Why was <em>my</em> loan denied?"</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Accuracy vs. explainability trade-off:</strong> a decision tree is highly interpretable but often less accurate; a neural network is far less interpretable but often more accurate. The right balance depends on ROI and compliance requirements, not just raw performance.</p>
+    <div class="callout rule"><span class="tag">Rule</span><p>Explainability matters most when decisions affect people's lives (healthcare, finance, justice), when regulation demands transparency, or when trust is the product. It matters less for low-stakes decisions where speed/accuracy dominate.</p></div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>Two Axes of Explainability</h2></div>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Local vs. global</caption>
+        <thead><tr><th></th><th>Local</th><th>Global</th></tr></thead>
+        <tbody>
+          <tr><th>Goal</th><td>Explain <em>one</em> prediction</td><td>Understand overall model behavior</td></tr>
+          <tr><th>Answers</th><td>"Why this output for this instance?"</td><td>"What features matter overall?"</td></tr>
+          <tr><th>Useful for</th><td>Case-by-case review, debugging one surprising result</td><td>Feature selection, monitoring, auditing</td></tr>
+          <tr><th>Examples</th><td>SHAP force plot, LIME, counterfactuals</td><td>Feature importance ranking, SHAP summary plot</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Inherent (glass-box) vs. post-hoc (black-box)</caption>
+        <thead><tr><th></th><th>Inherent</th><th>Post-hoc</th></tr></thead>
+        <tbody>
+          <tr><th>Nature</th><td>Transparent, self-explanatory</td><td>Opaque; needs a separate interpretation technique</td></tr>
+          <tr><th>Examples</th><td>Linear/logistic regression, shallow trees, rule-based models</td><td>Neural nets, random forests, gradient boosting, high-dim SVM</td></tr>
+          <tr><th>Trade-off</th><td>May sacrifice accuracy on complex tasks</td><td>Keeps performance; needs SHAP/LIME to gain insight</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>In a decision tree, the <em>order of splits</em> already reveals feature importance — the first split is the most discriminating feature. In logistic regression, <code>ŷ = σ(wᵀx + b)</code>, the learned weights <em>are</em> each feature's contribution. A random forest is built from inherently-explainable trees, yet the ensemble's combined decision is not — which is exactly why post-hoc methods exist.</p>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Permutation Feature Importance</h2></div>
+    <p class="chapter-dek">If a feature matters, breaking it should hurt performance.</p>
+    <ol>
+      <li>Train the model; measure baseline performance <em>s</em> (e.g. 90% accuracy).</li>
+      <li>Randomly shuffle one feature's column only, leaving everything else untouched.</li>
+      <li>Re-evaluate → new score (e.g. 78%).</li>
+      <li>Importance = baseline − new score (90% − 78% = <strong>12%</strong>).</li>
+      <li>Repeat K times per feature and average, to smooth out random variation; rank all features by their drop.</li>
+    </ol>
+    <p>Worked ranking: Age 12% &gt; Income 7% &gt; Balance 4% &gt; Region 1% &gt; Gender 0%.</p>
+    <div class="callout watch"><span class="tag">Quiz</span><p>If shuffling a feature <em>improves</em> performance, does that mean the feature is useless? No — a negative importance means the model does <em>better</em> once that feature's information is destroyed, which points to noise, overfitting, redundancy, or a harmful learned dependency.</p></div>
+    <p><strong>Pros:</strong> model-agnostic, simple to implement and explain. <strong>Cons:</strong> correlated features can mask each other's importance; expensive with many features; unstable on small datasets.</p>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Shapley Values (SHAP)</h2></div>
+    <p class="chapter-dek">Borrowed from game theory: features are "players," the prediction is the "payout" to split fairly.</p>
+
+    <p>For feature <em>i</em>, look at every possible subset <em>S</em> of the other features, and compute the <strong>marginal contribution</strong> of adding <em>i</em> to that subset: <code>f(S∪{i}) − f(S)</code>. Average this over <em>all</em> possible feature orderings, weighted so no ordering biases the result:</p>
+    <div class="formula-block">φᵢ(v) = Σ_{S⊆N\{i}} [ |S|!·(n−|S|−1)! / n! ] · ( v(S∪{i}) − v(S) )</div>
+    <p>Features that consistently add value across orderings score high; features that only sometimes help score proportionally less.</p>
+
+    <p><strong>Reading a SHAP output:</strong> <code>final prediction = base value + Σ SHAP values</code>. A <strong>summary/bar plot</strong> (global) ranks features by mean |SHAP value|. A <strong>beeswarm plot</strong> (local, per-instance) shows every data point's SHAP value (impact) and its actual feature value (color) — revealing both magnitude and direction together.</p>
+
+    <div class="callout watch"><span class="tag">Key warning</span><p><strong>SHAP values do not reflect causality.</strong> A high-importance feature (e.g. Titanic "Fare") is useful for prediction, but may just be capturing information about a different real cause — it doesn't mean changing that feature would change the outcome. Predictive importance ≠ actionability.</p></div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">5</span><h2>Causality: Beyond Correlation</h2></div>
+    <p class="chapter-dek">Explainability says what the model used. Causality asks what would actually change the outcome.</p>
+
+    <p>Causal analysis studies cause-and-effect directly — via <strong>causal inference</strong> (does X cause Y?), <strong>counterfactual analysis</strong> ("what if?"), and <strong>interventions</strong> (simulate an action, observe the effect). It matters for decisions you actually intend to act on: treatment choices, policy changes.</p>
+
+    <h3>Confounders — the trap explainability alone can't see</h3>
+    <ul>
+      <li><strong>Umbrellas &amp; accidents:</strong> a model finds umbrella ownership predicts traffic accidents. The real cause is <strong>rain</strong>, which drives both. Handing out umbrellas would not reduce accidents.</li>
+      <li><strong>Titanic — Sex:</strong> explainability ranks "sex" as the top predictor of survival. The real cause was the unrecorded <strong>"women and children first"</strong> evacuation policy — sex didn't cause survival, it correlated with who got lifeboat access.</li>
+      <li><strong>Titanic — Fare:</strong> explainability ranks fare as important, but higher fare really just correlated with <strong>passenger class</strong> — cabins closer to lifeboats, faster crew assistance.</li>
+    </ul>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Explainable AI</th><th>Causal AI</th></tr></thead>
+        <tbody>
+          <tr><td>Makes model decisions understandable</td><td>Uncovers real cause-and-effect, beyond correlation</td></tr>
+          <tr><td>Reasons from patterns already in the data</td><td>Validates real-world causal links via inference/experiments/domain knowledge</td></tr>
+          <tr><td>"What factors influenced this decision?"</td><td>"What would happen if we intervened on this factor?"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="page-footer">
+    <span>Condensed from Chapter 7 — Explainability &amp; Causality Analysis (Basic Data Mining Practice, Prof. Dr. Matteo Marouf)</span>
+    <span><a href="index.html">← All chapters</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

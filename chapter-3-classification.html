@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.3 — Classification | DM 2026 Notes</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM 2026 Notes</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-pipeline.html">2 · Pipeline</a>
+      <a href="chapter-3-classification.html" class="active">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Basic Data Mining Practice · Chapter 3</div>
+      <h1 class="title">Classification</h1>
+    </div>
+    <div class="masthead-meta">Condensed reference<br><strong>Decision trees → Random Forest → AdaBoost → XAI/Causal intro</strong></div>
+  </div>
+  <p class="dek">This chapter's algorithmic core is Decision Trees, Random Forests, and AdaBoost — framed by an early look at explainability and causality that Chapter 7 goes on to develop fully.</p>
+
+  <!-- ============ 1 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>Decision Trees</h2></div>
+    <p class="chapter-dek">Classification is supervised learning: learn the pattern linking features to a known label, then apply it to new, unlabeled instances.</p>
+
+    <p>A tree is built from nodes (attribute tests), branches (outcomes), and leaves (class predictions, possibly as a probability split). The goal is to ask as few questions as possible while still generalizing well.</p>
+
+    <h3>Choosing the best split: entropy &amp; information gain</h3>
+    <p><strong>Entropy</strong> measures how mixed/impure a set is (0 = pure, max = a 50/50 split for binary classes):</p>
+    <div class="formula-block">entropy(X) = − Σᵢ pᵢ · log₂(pᵢ)</div>
+    <p><strong>Information gain</strong> of splitting on attribute <em>a</em> = the entropy reduction that split achieves:</p>
+    <div class="formula-block">gain(X, a) = entropy(X) − Σ_{v ∈ Values(a)} (|X_v| / |X|) · entropy(X_v)</div>
+    <p>The best attribute to split on is the one with the <strong>highest information gain</strong>. Worked example (7 records, predicting Mammal/Bird from color vs. whether it flies): splitting on <code>color</code> gains only 0.020, while splitting on <code>fly</code> gains <strong>0.521</strong> — <code>fly</code> is the far better, chosen split.</p>
+
+    <h3>Overfitting, underfitting, and pruning</h3>
+    <p>A tree can keep splitting on ever more specific attributes until it perfectly memorizes training data — that doesn't generalize. Plotting error against tree complexity: <strong>train error</strong> keeps falling, but <strong>test error</strong> falls then rises — the low point of the test curve is the sweet spot.</p>
+    <div class="grid-2">
+      <div class="mini-box"><h4>Underfitting</h4><p>Too simple — fails on both train and test data.</p></div>
+      <div class="mini-box"><h4>Overfitting</h4><p>Too complex — fits training noise "parrot fashion," fails to generalize.</p></div>
+    </div>
+    <p><strong>Regularization</strong> is any technique that penalizes complexity to prevent overfitting. For trees, this is <strong>pruning</strong>: remove nodes bottom-up whenever doing so decreases validation error — this narrows the train/test gap and shifts the optimal complexity point.</p>
+
+    <h3>Limitations</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Issue</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Overfitting risk</td><td>Builds overly complex trees on noise, worse with small/high-dimensional data</td></tr>
+          <tr><td>Lower predictive power</td><td>Often less accurate than ensemble methods</td></tr>
+          <tr><td>Instability</td><td>Small data changes → completely different tree</td></tr>
+          <tr><td>Axis-aligned splits only</td><td>Decision boundaries are boxy/rectangular — can't capture diagonal patterns</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout watch"><span class="tag">Quiz</span><p>"Which plot shows a decision tree's decision boundary?" — the answer is always the one with <strong>blocky, axis-aligned rectangular regions</strong>, not smooth or diagonal ones. That boxiness is the tell.</p></div>
+
+    <div class="formula-block"><span class="label">sklearn — gotcha: numerical features only, encode categoricals first</span>from sklearn.tree import DecisionTreeClassifier
+clf = DecisionTreeClassifier(criterion="entropy", min_samples_leaf=3)
+clf.fit(X, y)
+clf.feature_importances_   # importance per feature
+clf.tree_                  # underlying tree object</div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>Random Forests</h2></div>
+    <p class="chapter-dek">Growing many different trees on purpose, then letting them vote.</p>
+
+    <div class="callout rule"><span class="tag">Quiz</span><p>If you grow multiple trees on the same data, do they learn the same splits? <strong>No</strong> — ensembles deliberately inject randomness so the trees differ from each other.</p></div>
+
+    <h3>Two randomization mechanisms</h3>
+    <ul>
+      <li><strong>Bagging (Bootstrap Aggregating)</strong> — draw M subsets of the training data by sampling <em>with replacement</em>; train one tree per subset.</li>
+      <li><strong>Random Subspace Method</strong> — each tree only sees a random subset of <em>features</em>.</li>
+    </ul>
+    <p><strong>Random Forest = Bagging + Random Subspace + Decision Trees</strong>, producing N differently-trained trees. At inference, a test sample goes through every tree; the final prediction is decided by <strong>majority vote</strong>, with the vote share doubling as a confidence score (e.g. 3-of-4 trees agreeing = 75% confidence).</p>
+    <p><em>Analogy:</em> instead of giving one student 6 books to summarize, split the class into groups, each reading a different subset of books and pages — the class's collective answer beats any single student's guess.</p>
+
+    <div class="formula-block">from sklearn.ensemble import RandomForestClassifier
+clf = RandomForestClassifier(n_estimators=20)  # 20 trees</div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Adaptive Boosting (AdaBoost)</h2></div>
+    <p class="chapter-dek">Instead of many independent trees, build weak learners <em>sequentially</em>, each one fixing the last one's mistakes.</p>
+
+    <p>Each weak learner is typically a <strong>decision stump</strong> (depth-1 tree).</p>
+    <ol>
+      <li><strong>Initialize weights</strong> — every sample starts with equal weight 1/N.</li>
+      <li><strong>Train a stump, compute its say (α)</strong>:
+        <div class="formula-block">αᵢ = ½ · ln((1 − εᵢ) / εᵢ)</div>
+        where εᵢ = the weighted error rate of stump i. Lower error → higher α → more voting power.</li>
+      <li><strong>Reweight samples</strong> — correctly classified samples shrink in weight (×e⁻ᵅ), misclassified ones grow (×e^α), then renormalize.</li>
+      <li><strong>Resample</strong> the next training set according to the updated weights, so the next stump focuses on what the current ensemble gets wrong.</li>
+      <li><strong>Repeat</strong> for T rounds.</li>
+    </ol>
+    <p><strong>Final prediction</strong> = weighted vote across all stumps, each weighted by its own α:</p>
+    <div class="formula-block">C*(x) = argmax_y Σᵢ αᵢ · [Cᵢ(x) = y]</div>
+
+    <h3>Random Forest vs. AdaBoost</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Dimension</th><th>Random Forest</th><th>AdaBoost</th></tr></thead>
+        <tbody>
+          <tr><td>Trees</td><td>Full trees (depth is a hyperparameter)</td><td>Almost always stumps (depth 1)</td></tr>
+          <tr><td>Computation</td><td>Parallel — trees are independent</td><td>Sequential — each stump depends on the last</td></tr>
+          <tr><td>Sampling</td><td>Bagging: independent random subsets</td><td>Boosting: reweighted toward past mistakes</td></tr>
+          <tr><td>Voting</td><td>Equal vote per tree</td><td>Weighted vote (better stumps get more say)</td></tr>
+          <tr><td>Overfitting</td><td>More robust — bagging reduces variance</td><td>More prone — keeps re-fitting to hard/outlier points</td></tr>
+          <tr><td>Outliers</td><td>Less sensitive (averaging)</td><td>Sensitive — repeatedly upweighted if hard to classify</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout watch"><span class="tag">Trade-off</span><p>Random Forest: robust and general, but harder to explain any single recommendation. AdaBoost: can reach high accuracy by refining simple rules, but is more easily thrown off by unusual/outlier records. Pick based on whether robustness or peak accuracy matters more.</p></div>
+
+    <p><strong>Ensemble learning, summarized:</strong> Bagging = same algorithm, different data samples. Random Subspace = same algorithm, different feature subsets. Boosting = sequential models, each correcting the last.</p>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>A First Look at Explainability &amp; Causality</h2></div>
+    <p class="chapter-dek">This chapter's closing detour — developed in full in Chapter 7.</p>
+
+    <p><strong>Explainable AI (XAI)</strong> makes a model's predictions transparent: which features drove a decision, and why. It matters most where trust, fairness, and accountability are non-negotiable — credit scoring, medical diagnosis.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption>Glass-box vs. black-box models</caption>
+        <thead><tr><th>Glass-box (interpretable)</th><th>Black-box (opaque)</th></tr></thead>
+        <tbody>
+          <tr><td>Linear / Logistic Regression, Decision Tree, k-NN, Naive Bayes, low-dim SVM</td><td>Random Forest, Neural Nets, Gradient Boosting, high-dim SVM</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Causal AI</strong> goes a step further than explainability: it asks what actually <em>causes</em> an outcome, not just what correlates with it. Worked illustration: a patient's longer survival time might just be <em>because of</em> treatment timing (a confounding artifact), not because the model's predictor is a real cause — prediction ≠ causation.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Explainable AI</th><th>Causal AI</th></tr></thead>
+        <tbody>
+          <tr><th>Focus</th><td>Making a decision understandable</td><td>Uncovering true cause-and-effect</td></tr>
+          <tr><th>Method</th><td>Feature importance, attention, decision trees</td><td>Causal inference, domain knowledge, experiments</td></tr>
+          <tr><th>Answers</th><td>"What factors influenced this decision?"</td><td>"What would happen if we intervened on X?"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="page-footer">
+    <span>Condensed from Chapter 3 — Classification (Basic Data Mining Practice, Prof. Dr. Matteo Marouf)</span>
+    <span><a href="index.html">← All chapters</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

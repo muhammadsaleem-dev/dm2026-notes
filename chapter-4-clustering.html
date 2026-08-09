@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.4 — Clustering Analysis | DM 2026 Notes</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM 2026 Notes</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-pipeline.html">2 · Pipeline</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html" class="active">4 · Clustering</a>
+      <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Basic Data Mining Practice · Chapter 4</div>
+      <h1 class="title">Clustering Analysis</h1>
+    </div>
+    <div class="masthead-meta">Condensed reference<br><strong>K-Means → choosing K → limitations → evaluation</strong></div>
+  </div>
+  <p class="dek">This chapter centers almost entirely on K-Means: its mechanics, why it's sensitive to initialization, how to pick K, and where it quietly fails.</p>
+
+  <!-- ============ 1 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>Clustering as Unsupervised Learning</h2></div>
+    <p class="chapter-dek">No ground-truth labels — the model learns similarity/difference directly from the data.</p>
+    <p>Clustering groups unlabeled examples so a trained model can say "this new point belongs with that group" — contrast with classification, which learns from labels that already exist.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Use case</th><th>Goal</th><th>Input features</th></tr></thead>
+        <tbody>
+          <tr><td>Heartbeat morphology</td><td>Group ECG heartbeat shapes for diagnosis</td><td>RR interval, QRS width, waveform PCA, deep embeddings</td></tr>
+          <tr><td>Customer segmentation</td><td>Group customers for targeted marketing</td><td>Demographics, spending score, purchase history</td></tr>
+          <tr><td>Social listening</td><td>Group posts into themes</td><td>TF-IDF/Word2Vec, timestamp, platform, engagement</td></tr>
+          <tr><td>Single-cell RNA-seq</td><td>Identify cell types from gene expression</td><td>Cell × gene count matrix</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>K-Means</h2></div>
+    <p class="chapter-dek">Fast and simple — but only as good as its starting point.</p>
+
+    <p>Distance metric (squared Euclidean): <code>‖x−c‖² = (x₁−c₁)² + (x₂−c₂)²</code></p>
+    <ol>
+      <li>Fix K (number of clusters) in advance.</li>
+      <li>Pick K random points as initial centroids.</li>
+      <li>Assign each point to its nearest centroid.</li>
+      <li>Recompute each centroid as the mean of its assigned points.</li>
+      <li>Repeat 3–4 until assignments stop changing or max iterations is hit.</li>
+    </ol>
+
+    <div class="callout watch"><span class="tag">Quiz</span><p>Is K-Means deterministic? <strong>No</strong> — random initial centroids mean different runs can converge to different results.</p></div>
+
+    <h3>Local optima &amp; inertia</h3>
+    <p>Different random seeds → different final clusterings, some clearly worse than others (three runs in the deck scored WCSS of 444.9, 349.7, and 451.4 — nearly identical starting conditions, meaningfully different outcomes). Fix: run multiple times with different seeds, keep the run with the lowest inertia.</p>
+    <div class="formula-block"><span class="label">Inertia / WCSS (within-cluster sum of squares) — lower is more compact</span>W_k = Σᵢ Σ_{x∈Cᵢ} ‖x − μᵢ‖²</div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Choosing K</h2></div>
+    <p class="chapter-dek">K-Means needs K handed to it — two ways to estimate a reasonable value.</p>
+
+    <h3>Elbow method</h3>
+    <p>Plot total WCSS against candidate K values; pick the K where the curve's descent sharply flattens (the "elbow") — beyond that point, extra clusters buy very little.</p>
+    <div class="callout watch"><span class="tag">Watch out</span><p>The elbow is a <strong>heuristic, not an optimum</strong>: the "right" elbow is subjective, it assumes roughly spherical equal-sized clusters, it's sensitive to the same initialization randomness as K-Means itself, and it's expensive to recompute across many K values on large data. ("There is no 'optimal' solution in cluster analysis — interestingness is a subjective decision of the user." — Schubert, 2022)</p></div>
+
+    <h3>Gap statistic — a more principled alternative</h3>
+    <ol>
+      <li>Compute log W(K) — the log within-cluster dispersion on the real data.</li>
+      <li>Simulate B reference datasets drawn uniformly over the same bounding box; average their log W<sub>unif</sub>(K).</li>
+      <li>Gap(K) = (1/B)Σ log W<sub>unif,b</sub>(K) − log W(K)</li>
+      <li>Compute a standard error SE(K) across the simulations.</li>
+      <li><strong>Pick the smallest K</strong> such that Gap(K) ≥ Gap(K+1) − SE(K+1).</li>
+    </ol>
+    <p>Intuition: the gap measures how much more compact the real clustering is than what pure chance would produce — a bigger gap means genuinely non-random structure, not just an artifact of adding clusters.</p>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Where K-Means Breaks</h2></div>
+
+    <div class="callout watch"><span class="tag">Quiz</span><p>Tested on three datasets — roughly spherical unequal-variance blobs, anisotropically stretched blobs, and moon-shaped clusters — K-Means only produced sensible clusters on the <strong>spherical blobs</strong>. It visibly misassigns points on the stretched and non-convex shapes.</p></div>
+
+    <ul>
+      <li>Sensitive to outliers — they distort centroids and inertia</li>
+      <li>Can converge to local optima</li>
+      <li>Requires similarly-scaled features (see Ch.2 scaling)</li>
+      <li>Not suited to categorical data — squared Euclidean distance is meaningless there</li>
+      <li>Assumes roughly spherical, similarly-sized clusters</li>
+    </ul>
+    <p><strong>Bottom line:</strong> simple, fast, and genuinely useful for quick exploratory segmentation — as long as its spherical-cluster assumption isn't badly violated.</p>
+
+    <h3>At scale</h3>
+    <p>Vanilla K-Means struggles with large data: repeated full-dataset iteration is expensive, memory grows, initialization gets harder, and high dimensionality complicates both computation and interpretation. Scalable variants exist (Mini-Batch K-Means, K-Means++); distributed tooling includes PySpark and RAPIDS.</p>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">5</span><h2>Evaluating &amp; Interpreting Clusters</h2></div>
+    <p class="chapter-dek">Clustering is exploratory — the payoff is in what the groups actually mean.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Metric</th><th>What it captures</th></tr></thead>
+        <tbody>
+          <tr><td>Silhouette Coefficient</td><td>How similar a point is to its own cluster vs. other clusters</td></tr>
+          <tr><td>Completeness Score</td><td>Whether all same-true-label samples land in one cluster</td></tr>
+          <tr><td>Normalized Mutual Information (NMI)</td><td>Alignment between clusters and true labels</td></tr>
+          <tr><td>Davies-Bouldin Index</td><td>Within-cluster similarity vs. between-cluster dissimilarity</td></tr>
+          <tr><td>Others</td><td>Calinski-Harabasz, Rand Index, Adjusted Rand Index, Homogeneity Score</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout rule"><span class="tag">Rule</span><p>The metric that technically optimizes a clustering isn't necessarily the most useful one to <em>report</em>. Real value comes from profiling each cluster — dominant characteristics, mean/median/mode per feature, which variables actually differentiate the groups — and giving clusters meaningful names ("loyal customers," "support complainers") rather than just cluster IDs.</p></div>
+  </section>
+
+  <footer class="page-footer">
+    <span>Condensed from Chapter 4 — Clustering Analysis (Basic Data Mining Practice, Prof. Dr. Matteo Marouf)</span>
+    <span><a href="index.html">← All chapters</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

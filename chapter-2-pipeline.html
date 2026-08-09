@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.2 — The Data Mining Pipeline | DM 2026 Notes</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM 2026 Notes</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-pipeline.html" class="active">2 · Pipeline</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Basic Data Mining Practice · Chapter 2</div>
+      <h1 class="title">The Data Mining Pipeline</h1>
+    </div>
+    <div class="masthead-meta">Condensed reference<br><strong>Preprocessing → PCA/t-SNE → Evaluation → Modelling</strong></div>
+  </div>
+  <p class="dek">Everything from the chapter's four lecture decks, reorganized into one dense pass: what each pipeline stage does, why it exists, and the formulas/gotchas worth remembering.</p>
+
+  <div class="pipeline-strip" aria-label="Data mining pipeline stages">
+    <span class="stage">Problem understanding</span><span class="arrow">→</span>
+    <span class="stage current">Explore &amp; preprocess</span><span class="arrow">→</span>
+    <span class="stage">Modelling &amp; analysis</span><span class="arrow">→</span>
+    <span class="stage">Communicate results</span><span class="arrow">→</span>
+    <span class="stage">Deploy &amp; operationalize</span><span class="arrow">→</span>
+    <span class="stage">Test &amp; monitor</span>
+    <span class="loopback">↺ loops back to data whenever monitoring reveals drift</span>
+  </div>
+
+  <!-- ============ 1 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>Framing the Problem</h2></div>
+    <p class="chapter-dek">Before touching a model: what kind of analysis is this, and what does the data actually represent?</p>
+
+    <h3>Matching the question to a technique</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>You have…</th><th>You want to…</th><th>Technique</th></tr></thead>
+        <tbody>
+          <tr><td>Labelled data, target is a <strong>category</strong></td><td>Predict the category for new records</td><td>Classification</td></tr>
+          <tr><td>Labelled data, target is a <strong>number</strong></td><td>Predict the number for new records</td><td>Regression</td></tr>
+          <tr><td>No labels, similar records exist</td><td>Group similar records</td><td>Clustering</td></tr>
+          <tr><td>Transaction-style data</td><td>Find "items that occur together"</td><td>Association analysis</td></tr>
+          <tr><td>No labels, rare deviations exist</td><td>Flag outliers / fraud / faults</td><td>Anomaly detection</td></tr>
+          <tr><td>Constraints + an objective</td><td>Find the best feasible option</td><td>Optimization</td></tr>
+          <tr><td>Free-text data</td><td>Understand, mine, or generate language</td><td>Text mining</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Data representation isn't fixed</h3>
+    <p>The same raw signal can be encoded numerically in several valid ways — the right one depends on the task, not the source format:</p>
+    <ul>
+      <li><strong>Text</strong> → TF-IDF (frequency-in-doc × rarity-across-corpus) or word embeddings (Word2Vec/GloVe place semantically similar words close together)</li>
+      <li><strong>Images</strong> → raw pixel values</li>
+      <li><strong>Graphs / molecules</strong> → nodes + edges, or learned node embeddings (Node2Vec)</li>
+      <li><strong>Audio</strong> → raw waveform <em>or</em> a spectrogram (frequency content over time)</li>
+    </ul>
+
+    <h3>Sample size: bigger isn't automatically better</h3>
+    <p>More data reduces random noise, increases statistical power, and helps models generalize instead of memorizing. But it does <strong>not</strong> fix bias or poor data quality — and it can make tiny, irrelevant effects look statistically significant. Data quality and representativeness matter as much as row count.</p>
+    <div class="callout rule"><span class="tag">Rule</span><p>Always split into <strong>train / validation / test</strong> before modelling. Train fits the model, validation tunes hyperparameters, test gives an honest, untouched read on generalization.</p></div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>Preprocessing</h2></div>
+    <p class="chapter-dek">Engineer features → handle missing data → handle imbalance → scale → reduce dimensions. Order matters; every step below is fit on <em>train</em> only.</p>
+
+    <h3>Feature engineering</h3>
+    <ul>
+      <li><strong>Creation</strong> — derive new signal, e.g. speed from time + distance</li>
+      <li><strong>Combining</strong> — interaction terms (x·y, x²) e.g. income ÷ hours → income-per-hour</li>
+      <li><strong>Aggregation</strong> — mean/sum/count over a group</li>
+      <li><strong>Datetime</strong> — extract hour, weekday, season from a timestamp</li>
+      <li><strong>Text</strong> — word counts, sentiment, embeddings</li>
+    </ul>
+    <p>Good feature engineering leans on domain knowledge — e.g. an ECG signal becomes useful only once P/Q/R/S/T peak intervals are extracted from the raw waveform.</p>
+
+    <h3>Encoding categorical variables</h3>
+    <p>Most algorithms need numbers. <strong>Label encoding</strong> (Red=0, Green=1, Blue=2) invents a false ordinal relationship — the model reads "Blue is 2× Green," which corrupts anything doing arithmetic on inputs (linear/logistic regression, k-NN, neural nets). <strong>One-hot encoding</strong> avoids this by giving each category its own binary column.</p>
+    <div class="callout watch"><span class="tag">Watch out</span><p>After one-hot encoding, drop one of the new columns. Keeping all of them is redundant (the last category is implied by all-zeros elsewhere) and can introduce multicollinearity.</p></div>
+    <p><strong>Binning</strong> groups a numeric range into buckets (age 0–1 = infant, 1–3 = toddler, …), effectively converting numeric → categorical. The trade-off: a model treats 1 and 1.5 as different (different bins) but 6 and 10 as identical (same bin).</p>
+
+    <h3>Missing data</h3>
+    <p>Missingness shows up as missing <em>values</em> in a table, or as missing <em>categories</em> entirely — the classic case being <strong>survivorship bias</strong>: WWII engineers who reinforced only the bullet holes visible on planes that <em>returned</em> were looking at the wrong data — the planes hit in the unmarked zones never made it back. Always ask what's absent from the sample, not just what's null in a cell.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Strategy</th><th>When</th></tr></thead>
+        <tbody>
+          <tr><td>Ignore the record</td><td>Missingness is rare and random</td></tr>
+          <tr><td>Add an "is-missing" indicator column</td><td>Missingness itself might be predictive</td></tr>
+          <tr><td>Use a model robust to missing values</td><td>Some tree-based libraries handle it natively</td></tr>
+          <tr><td><strong>Impute</strong> — constant, mean/median, class-wise mean/median, or model-based (predict the missing value from other columns)</td><td>Default fallback; remember it's an educated guess</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Imbalanced classes</h3>
+    <p>When one class dominates: (1) use a model/objective suited to imbalance, (2) resample — downsample the majority or upsample/augment the minority, (3) evaluate with metrics that don't reward "always predict the majority" (see §4).</p>
+
+    <h3>Feature scaling &amp; normalization</h3>
+    <p>Distance-based methods (k-NN, SVM, clustering) and gradient-based training (neural nets) implicitly let the largest-magnitude feature dominate. A 100 m² gap in house size will swamp a 1-room gap in room count unless both are rescaled to comparable ranges.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>What it does</th><th>Typical use</th></tr></thead>
+        <tbody>
+          <tr><td>Min-Max</td><td>Rescales to [0, 1]</td><td>Neural nets, image data</td></tr>
+          <tr><td>Z-score (standardization)</td><td>Centers to mean 0, std 1</td><td>Most general-purpose ML</td></tr>
+          <tr><td>Robust scaling</td><td>Uses median &amp; IQR</td><td>Heavy-tailed / outlier-prone features</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="formula-block"><span class="label">Z-score</span>x_normalized = (x − μ) / σ</div>
+    <div class="callout rule"><span class="tag">Rule</span><p><strong>Fit the scaler on training data only.</strong> The resulting μ/σ (or min/max) are part of the model — save them and re-apply the identical transform to test and production data. Never re-fit on test data.</p></div>
+
+    <h3>Dimensionality reduction vs. feature selection</h3>
+    <p><strong>Feature selection</strong> drops columns unchanged. <strong>Dimensionality reduction</strong> transforms many features into fewer derived ones (1000 → 10), via linear methods (PCA, LDA, ICA) or non-linear methods (t-SNE, UMAP, autoencoders) — detailed next.</p>
+    <p>Motivation is twofold: the <strong>curse of dimensionality</strong> (classifier performance peaks, then degrades as features keep growing without more samples — the space gets too sparse to learn from), and <strong>visualization</strong> of otherwise unplottable data (e.g. scRNA-seq: ~100,000 cells × ~30,000 genes, reduced to 2–10 dimensions).</p>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>PCA &amp; t-SNE</h2></div>
+    <p class="chapter-dek">Two dimensionality-reduction workhorses with opposite philosophies — one linear and global, one non-linear and local.</p>
+
+    <h3>PCA — Principal Component Analysis</h3>
+    <p>Finds new orthogonal axes ("principal components") ranked by how much variance they capture, then rotates the data onto them. Deterministic and linear.</p>
+    <ol>
+      <li><strong>Standardize/center</strong> the data (mean → 0) so PCA captures shape, not location</li>
+      <li><strong>Compute the covariance matrix</strong>, then its <strong>eigenvectors</strong> (directions) and <strong>eigenvalues</strong> (variance captured per direction)</li>
+      <li><strong>Sort by eigenvalue</strong>, descending — PC1 always captures the most variance possible, PC2 the most of what's left, etc.</li>
+      <li><strong>Project</strong> the data onto the top-k components and discard the rest</li>
+    </ol>
+    <div class="formula-block"><span class="label">Covariance</span>Cov(x, y) = 1/(n−1) · Σ (xᵢ − x̄)(yᵢ − ȳ)
+<span class="label" style="margin-top:.5rem">Projection (loadings)</span>PCᵢ = X · vᵢ  =  a₁x₁ + a₂x₂ + … + a_d x_d</div>
+    <p>The loading weights (a₁, a₂, …) reveal which original features drive a component — useful for explaining <em>what</em> a PC actually means. PCA is excellent at linear correlation and preserves <strong>global</strong> structure, but if the data lies on a curved manifold, PCA flattens it onto a plane and destroys the real geometry.</p>
+
+    <h3>t-SNE — t-Distributed Stochastic Neighbor Embedding</h3>
+    <p>Built specifically to <strong>visualize</strong> high-dimensional data by preserving local neighborhoods, not global distances. Non-linear and stochastic.</p>
+    <div class="formula-block"><span class="label">Similarity in high-D (Gaussian, then symmetrized)</span>P(i|j) = exp(−‖xᵢ−xⱼ‖² / 2σᵢ²) / Σ_{k≠i} exp(−‖xᵢ−xₖ‖² / 2σᵢ²)
+Pᵢⱼ = (P(j|i) + P(i|j)) / 2N
+<span class="label" style="margin-top:.5rem">Minimize via gradient descent</span>KL(P ‖ Q) = Σ pᵢⱼ log(pᵢⱼ / qᵢⱼ)</div>
+    <p>Points are scattered randomly in low-D, then iteratively attract or repel each other until the low-D similarity distribution (t-distributed, Q) matches the high-D one (Gaussian, P) as closely as possible.</p>
+    <p><strong>Perplexity</strong> (a hyperparameter) sets the effective neighborhood size and controls the local/global trade-off — too low fragments real clusters, too high merges distinct ones into a blob. It has to be tuned per dataset.</p>
+    <p><strong>UMAP</strong> targets the same visualization goal as t-SNE — generally faster and better at preserving some global structure alongside the local — worth reaching for once PCA and t-SNE feel comfortable.</p>
+
+    <div class="table-wrap">
+      <table>
+        <caption>PCA vs. t-SNE</caption>
+        <thead><tr><th>Aspect</th><th>PCA</th><th>t-SNE</th></tr></thead>
+        <tbody>
+          <tr><td>Purpose</td><td>Reduction &amp; feature transform</td><td>Visualization (2D/3D)</td></tr>
+          <tr><td>Algorithm type</td><td>Deterministic</td><td>Stochastic</td></tr>
+          <tr><td>Approach</td><td>Linear transform</td><td>Probabilistic, local similarity</td></tr>
+          <tr><td>Speed</td><td>Fast</td><td>Slow</td></tr>
+          <tr><td>Noisy data</td><td>Robust</td><td>Struggles</td></tr>
+          <tr><td>Structure preserved</td><td>Global</td><td>Local only</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout rule"><span class="tag">Tip</span><p>They're complementary, not competing: running PCA first (to denoise / speed up), then t-SNE or UMAP on the PCA output, is a common combo.</p></div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Validating &amp; Evaluating Models</h2></div>
+    <p class="chapter-dek">A model is only as trustworthy as the metric used to judge it — and the obvious metric is often the wrong one.</p>
+
+    <h3>The confusion matrix</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Predicted positive</th><th>Predicted negative</th></tr></thead>
+        <tbody>
+          <tr><th>Actually positive</th><td>True Positive (TP)</td><td>False Negative (FN)</td></tr>
+          <tr><th>Actually negative</th><td>False Positive (FP)</td><td>True Negative (TN)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2">
+      <div class="mini-box">
+        <h4>Precision</h4>
+        <p>Of everything flagged positive, how much was right?</p>
+        <div class="formula-block" style="margin:0.4rem 0 0">TP / (TP + FP)</div>
+      </div>
+      <div class="mini-box">
+        <h4>Recall (Sensitivity)</h4>
+        <p>Of everything actually positive, how much did we catch?</p>
+        <div class="formula-block" style="margin:0.4rem 0 0">TP / (TP + FN)</div>
+      </div>
+      <div class="mini-box">
+        <h4>Specificity</h4>
+        <p>Of everything actually negative, how much did we catch?</p>
+        <div class="formula-block" style="margin:0.4rem 0 0">TN / (TN + FP)</div>
+      </div>
+      <div class="mini-box">
+        <h4>Accuracy</h4>
+        <p>Of everything, how much was classified correctly?</p>
+        <div class="formula-block" style="margin:0.4rem 0 0">(TP+TN) / (TP+TN+FP+FN)</div>
+      </div>
+    </div>
+
+    <div class="callout watch"><span class="tag">Watch out</span><p>A classifier that predicts "positive" for <em>everyone</em> scores 100% recall. One that predicts "negative" for everyone scores 100% specificity — and, if 98% of the data really is negative, 98% accuracy too. None of that means the model is useful.</p></div>
+
+    <h3>The base-rate trap</h3>
+    <p>Rare disease, prevalence 0.1%. Test: 99% true-positive rate, 2% false-positive rate. Someone tests positive — what's P(disease)? Bayes' rule, not intuition:</p>
+    <div class="formula-block">P(D|P) = P(P|D)·P(D) / [P(P|D)·P(D) + P(P|H)·P(H)]
+     = (.99 × .001) / (.99 × .001 + .02 × .999)  ≈  <strong>4.7%</strong></div>
+    <p>Even with a "99% accurate" test, most positives are false positives — because healthy people vastly outnumber sick ones. Base rates dominate when the condition is rare.</p>
+
+    <h3>F1 score</h3>
+    <p>The harmonic mean of precision and recall — preferred when the positive class is rare and both false positives and false negatives carry real cost.</p>
+    <div class="formula-block">F1 = 2 · Precision · Recall / (Precision + Recall)</div>
+
+    <h3>ROC / AUC</h3>
+    <p>Plots True-Positive Rate against False-Positive Rate across <em>every</em> possible decision threshold, instead of committing to one. The diagonal is a random classifier; the closer the curve hugs the top-left corner, the better. Lets you pick the threshold that matches how much your application tolerates false alarms vs. missed detections.</p>
+
+    <div class="callout rule"><span class="tag">Rule</span><p>The training cost function is only a proxy for the real-world objective. Choose evaluation metrics deliberately — they should reflect which errors actually cost you, and account for class imbalance.</p></div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">5</span><h2>Modelling &amp; Choosing a Model</h2></div>
+    <p class="chapter-dek">Fitting is iterative; the best-scoring model on paper is not automatically the right one to ship.</p>
+
+    <h3>Training = minimizing a cost function</h3>
+    <p>The learning algorithm repeatedly compares model output against ground truth, computes an error (the cost/objective function), and uses that error to nudge the model's parameters — forward pass, compute loss, backward pass, repeat.</p>
+
+    <div class="grid-2">
+      <div class="mini-box">
+        <h4>Overfitting</h4>
+        <p>Low bias, high variance. The model memorizes training noise — a jagged decision boundary that fits training points perfectly but generalizes poorly.</p>
+      </div>
+      <div class="mini-box">
+        <h4>Underfitting</h4>
+        <p>High bias, low variance. The model is too simple to capture real structure — both train and validation error stay high.</p>
+      </div>
+    </div>
+
+    <h3>Hyperparameters vs. model parameters</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Model parameters</th><th>Hyperparameters</th></tr></thead>
+        <tbody>
+          <tr><th>Set by</th><td>Learned during training</td><td>Chosen before training</td></tr>
+          <tr><th>Purpose</th><td>Define the model's learned behavior</td><td>Control the learning process itself</td></tr>
+          <tr><th>Examples</th><td>Weights, biases</td><td>Learning rate, epochs, tree depth, perplexity</td></tr>
+          <tr><th>Tuned via</th><td>Optimization (gradient descent, …)</td><td>Search / validation (grid, random, …)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>"Best score" ≠ "most suitable"</h3>
+    <p>Alongside raw performance, weigh:</p>
+    <ul>
+      <li><strong>Generalizability</strong> — avoids overfitting, holds up on unseen data</li>
+      <li><strong>Simplicity &amp; maintainability</strong> — easier to debug, update, deploy</li>
+      <li><strong>Speed &amp; efficiency</strong> — meets latency/resource constraints</li>
+      <li><strong>Interpretability</strong> — often non-negotiable in healthcare, finance, law</li>
+      <li><strong>Stability &amp; reproducibility</strong> — consistent across data variations</li>
+    </ul>
+    <p>Choosing a model is a match between <strong>data properties</strong> (feature count, sample size, input/output format) and <strong>model properties</strong> (accuracy, simplicity, interpretability, speed) — closer to adjusting a recipe while cooking than picking one in advance.</p>
+
+    <h3>Quick decision path</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Question</th><th>Then look at</th></tr></thead>
+        <tbody>
+          <tr><td>&lt; 50 samples?</td><td>Get more data before modelling</td></tr>
+          <tr><td>No labels — just exploring structure?</td><td>Dimensionality reduction (PCA / UMAP)</td></tr>
+          <tr><td>No labels — grouping needed, category count known?</td><td>K-Means; unknown count → Mean-Shift / GMM</td></tr>
+          <tr><td>Labelled, predicting a <strong>category</strong>?</td><td>Naive Bayes / linear SVC (small data) → k-NN / ensembles / SGD (larger data)</td></tr>
+          <tr><td>Labelled, predicting a <strong>quantity</strong>?</td><td>Ridge/Lasso/ElasticNet (small data) → SVR / ensemble regressors (larger, or few important features)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="page-footer">
+    <span>Condensed from Chapter 2 — Pipeline (Basic Data Mining Practice, Prof. Dr. Matteo Marouf)</span>
+    <span><a href="index.html">← All chapters</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

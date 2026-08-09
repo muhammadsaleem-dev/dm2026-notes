@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.1 — Introduction to Data Mining | DM 2026 Notes</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM 2026 Notes</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html" class="active">1 · Intro</a>
+      <a href="chapter-2-pipeline.html">2 · Pipeline</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Basic Data Mining Practice · Chapter 1</div>
+      <h1 class="title">Introduction to Data Mining</h1>
+    </div>
+    <div class="masthead-meta">Condensed reference<br><strong>Definitions → Lifecycle → Representation → Data types</strong></div>
+  </div>
+  <p class="dek">What data mining actually is, the loop it follows on every project, and the vocabulary (data types, task types, representations) the rest of the course builds on.</p>
+
+  <!-- ============ 1 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>What Is Data Mining?</h2></div>
+    <p class="chapter-dek">An interdisciplinary field, not a single technique.</p>
+
+    <p><strong>Data mining</strong> uses scientific methods, processes, algorithms, and systems to extract knowledge and insight from structured and unstructured data across a broad range of application domains.</p>
+
+    <p><strong>Data science</strong> sits at the intersection of three fields:</p>
+    <ul>
+      <li>Computer Science ∩ Math &amp; Statistics → <strong>Machine Learning</strong></li>
+      <li>Math &amp; Statistics ∩ Domain Knowledge → <strong>Empirical Research</strong></li>
+      <li>Computer Science ∩ Domain Knowledge → <strong>Software Development</strong></li>
+      <li>All three overlapping → <strong>Data Science</strong></li>
+    </ul>
+    <blockquote>"Data Scientist (n.): Person who is better at statistics than any software engineer and better at software engineering than any statistician." — Josh Wills</blockquote>
+
+    <h3>Where it's applied</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Domain</th><th>Example applications</th></tr></thead>
+        <tbody>
+          <tr><td>Manufacturing &amp; Industry</td><td>Predictive maintenance, quality control, supply chain optimization</td></tr>
+          <tr><td>E-commerce &amp; Retail</td><td>Recommendation systems, dynamic pricing, inventory management</td></tr>
+          <tr><td>Social Media &amp; Internet</td><td>Spam filtering, fake news detection, influencer identification</td></tr>
+          <tr><td>Cybersecurity</td><td>Intrusion detection, malware detection, identity theft prevention</td></tr>
+          <tr><td>Science &amp; Research</td><td>Genomics &amp; bioinformatics, climate change analysis, astronomy</td></tr>
+          <tr><td>Business &amp; Marketing</td><td>Customer segmentation, churn prediction, sentiment analysis</td></tr>
+          <tr><td>Finance &amp; Banking</td><td>Fraud detection, risk management, algorithmic trading</td></tr>
+          <tr><td>Healthcare &amp; Medicine</td><td>Disease prediction &amp; diagnosis, drug discovery, patient monitoring</td></tr>
+          <tr><td>Smart Cities &amp; Transportation</td><td>Traffic prediction, route optimization, accident analysis</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>The Project Lifecycle</h2></div>
+    <p class="chapter-dek">Cyclical, not a strict waterfall — every stage routes through a shared data store.</p>
+
+    <div class="pipeline-strip" aria-label="Data mining pipeline stages">
+      <span class="stage">Problem understanding</span><span class="arrow">→</span>
+      <span class="stage">Explore &amp; process</span><span class="arrow">→</span>
+      <span class="stage">Modelling &amp; analysis</span><span class="arrow">→</span>
+      <span class="stage">Communicate results</span><span class="arrow">→</span>
+      <span class="stage">Deploy &amp; operationalize</span><span class="arrow">→</span>
+      <span class="stage">Test &amp; monitor</span>
+      <span class="loopback">↺ back to the data store</span>
+    </div>
+
+    <p>The deck presents this cycle three separate times, always identical — the recurring point being that a project may involve <em>all or only some</em> of these stages, revisited as needed rather than executed once in order.</p>
+
+    <div class="callout rule"><span class="tag">Rule</span><p><strong>Domain knowledge runs through the whole cycle</strong>: it guides preprocessing, shapes modelling decisions, and provides the context needed to explain results. "Always dive into the domain behind the data — it's the key to engineering meaningful features, focusing your analysis, and telling a story your audience understands."</p></div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Data Representation</h2></div>
+    <p class="chapter-dek">To train a model, data must become an informative, numerical representation — and the same signal often has more than one valid encoding.</p>
+
+    <ul>
+      <li><strong>Text → TF-IDF</strong>: Term Frequency (how often a word appears <em>within</em> a document) × Inverse Document Frequency (how rare that word is <em>across</em> the corpus) — weights words by local importance, discounted by how common they are everywhere.</li>
+      <li><strong>Text → Word embeddings</strong> (Word2Vec, GloVe): map words into a continuous vector space where semantically similar words sit close together; can be pre-trained on large corpora.</li>
+      <li><strong>Images</strong> → raw pixel values.</li>
+      <li><strong>Molecules / graphs</strong> → graph representation (atoms = nodes, bonds = edges), or learned <strong>node embeddings</strong> (Node2Vec) that capture structural/network information as continuous vectors.</li>
+      <li><strong>Audio → Spectrogram</strong>: converts a waveform into a visual frequency-over-time representation, useful for speech/music analysis — though the same signal can also be modeled directly as a 1-D time series.</li>
+    </ul>
+    <p>There is rarely one "correct" representation — the right one depends on the downstream task and what structure you need to preserve.</p>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Types of Data &amp; Core Tasks</h2></div>
+    <p class="chapter-dek">The vocabulary used to describe every dataset and every problem type in the rest of the course.</p>
+
+    <h3>By measurement scale</h3>
+    <ul>
+      <li><strong>Qualitative / Categorical</strong> — <em>Nominal</em> (no order: gender, hair color) or <em>Ordinal</em> (ordered: reviews, grades, status)</li>
+      <li><strong>Quantitative / Numerical</strong> — <em>Discrete</em> (countable: number of students) or <em>Continuous</em> (measurable: height, speed, weight)</li>
+    </ul>
+
+    <h3>By structure</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Definition</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td>Structured</td><td>Organized data adhering to a predefined schema</td><td>Customer tables, transaction records</td></tr>
+          <tr><td>Unstructured</td><td>No predefined format; harder to process</td><td>Emails, videos, social posts</td></tr>
+          <tr><td>Semi-structured</td><td>No relational schema, but has organizational tags/markers</td><td>JSON, XML, graph data</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Core task types</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Task</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Classification</td><td>Sorting data into predefined categories (e.g. spam detection)</td></tr>
+          <tr><td>Association analysis</td><td>Identifying relationships between items in large datasets</td></tr>
+          <tr><td>Regression</td><td>Predicting continuous values (e.g. stock prices, recovery time)</td></tr>
+          <tr><td>Clustering</td><td>Grouping data by similarity without predefined labels</td></tr>
+          <tr><td>Optimization</td><td>Finding the best solution within constraints</td></tr>
+          <tr><td>Recommendation</td><td>Suggesting items/content based on preferences</td></tr>
+          <tr><td>Anomaly detection</td><td>Identifying unusual patterns or outliers</td></tr>
+          <tr><td>Personalization</td><td>Tailoring user experiences or interactions</td></tr>
+          <tr><td>Decision support</td><td>Informing decisions via analysis of large datasets</td></tr>
+          <tr><td>Simulation</td><td>Modelling complex systems to predict behavior</td></tr>
+          <tr><td>Text mining</td><td>Understanding, mining, or generating human language</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 5 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">5</span><h2>Communicating Results &amp; Tooling</h2></div>
+    <p class="chapter-dek">A model is only useful once its results are understood — and built with the right tools.</p>
+
+    <p>Storytelling with data rests on three components: <strong>Data</strong> (the evidence), <strong>Visualization</strong> (charts/dashboards), and <strong>Narrative</strong> (what happened, why, what now). Common chart types: text/big-number, table, scatterplot, line, heatmap/slopegraph, bar (vertical/horizontal/stacked), waterfall, square-area chart.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Category</th><th>Python tools</th></tr></thead>
+        <tbody>
+          <tr><td>Core / general</td><td>NumPy, Pandas, Matplotlib, Seaborn</td></tr>
+          <tr><td>Machine learning</td><td>Scikit-learn, XGBoost, RAPIDS</td></tr>
+          <tr><td>Big data</td><td>Apache Spark (PySpark)</td></tr>
+          <tr><td>Large language models</td><td>Hugging Face Transformers, OpenAI GPT</td></tr>
+          <tr><td>Deep learning</td><td>TensorFlow, PyTorch</td></tr>
+          <tr><td>Hyperparameter optimization</td><td>Optuna, Hyperopt, GridSearchCV</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Pre-reads worth refreshing</h3>
+    <p>Vectors &amp; matrices (multiplication, norms, eigenvalues), derivatives/gradients, exponential &amp; log functions, basic statistics (Bayes' theorem, mean, variance, distributions), covariance matrices, and PCA — all resurface starting in Chapter 2.</p>
+  </section>
+
+  <footer class="page-footer">
+    <span>Condensed from Chapter 1 — Introduction to Data Mining (Basic Data Mining Practice, Prof. Dr. Matteo Marouf)</span>
+    <span><a href="index.html">← All chapters</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch.6 — LLM and RAG Pipeline | DM 2026 Notes</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM 2026 Notes</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-pipeline.html">2 · Pipeline</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html" class="active">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Basic Data Mining Practice · Chapter 6</div>
+      <h1 class="title">LLM &amp; RAG Pipeline</h1>
+    </div>
+    <div class="masthead-meta">Condensed reference<br><strong>Language models → decoding → retrieval-augmented generation</strong></div>
+  </div>
+  <p class="dek">From "a neuron is logistic regression" to full retrieval-augmented generation: how LLMs are trained, how they generate text token by token, and why RAG exists at all.</p>
+
+  <!-- ============ 1 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>Language Models: Foundations</h2></div>
+    <p class="chapter-dek">Softmax (Ch.5) is the bridge: it's exactly what an LLM uses to pick its next word.</p>
+
+    <p>A <strong>language model</strong> predicts the next token given everything before it: <code>P(xₜ | x₁, …, xₜ₋₁)</code>. Training is <strong>self-supervised</strong> — no manual labels needed, since the next word in raw text <em>is</em> the label. This scales to massive corpora and teaches syntax and semantics implicitly.</p>
+
+    <p>Context entirely determines the prediction. Same fill-in-the-blank prompt — <em>"Honey, can you pass me the ___"</em> — gets a wildly different probability distribution depending on the scene:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Context</th><th>P(Salt)</th><th>P(Pepper)</th><th>P(Gun)</th></tr></thead>
+        <tbody>
+          <tr><td>Family dinner scene</td><td class="num">0.54</td><td class="num">0.33</td><td class="num">0.13</td></tr>
+          <tr><td>Tense confrontation scene</td><td class="num">0.16</td><td class="num">0.18</td><td class="num">0.66</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Because next-token prediction is so general, almost any NLP task can be reframed as "find the right prompt":</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Task</th><th>Goal</th></tr></thead>
+        <tbody>
+          <tr><td>Sentiment analysis</td><td>Determine emotional tone/opinion</td></tr>
+          <tr><td>Summarization</td><td>Condense long text, keep key info</td></tr>
+          <tr><td>Question answering</td><td>Answer based on context/knowledge base</td></tr>
+          <tr><td>Named entity recognition</td><td>Identify/classify proper nouns (person, org, …)</td></tr>
+          <tr><td>Text classification</td><td>Assign categories/labels (spam, topic)</td></tr>
+          <tr><td>Machine translation</td><td>Translate between languages</td></tr>
+          <tr><td>Text generation</td><td>Produce new coherent text from a prompt</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Text is harder to represent than audio or DNA because it's <strong>unstructured</strong> (no fixed numeric format), <strong>ambiguous</strong> ("bank" = financial institution or riverbank), and <strong>context-dependent</strong> ("cold" = temperature or illness).</p>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>Training &amp; Inference</h2></div>
+    <p class="chapter-dek">Predict-the-next-token, billions of times over — then decode one token at a time at inference.</p>
+
+    <h3>Training pipeline</h3>
+    <ol>
+      <li><strong>Collect a large text corpus</strong> — Common Crawl, Wikipedia, Books, WebText.</li>
+      <li><strong>Tokenize</strong> — split text into words, subwords, or characters, each mapped to an integer ID in a vocabulary table. A larger vocabulary means more unique tokens available.</li>
+      <li><strong>Causal masking</strong> — at each position the model may only see <em>prior</em> tokens, forcing it to learn to predict what comes next; an attention mechanism relates tokens to each other.</li>
+      <li><strong>Repeat</strong> across the whole corpus, billions of times (self-supervised learning). This is extremely compute-intensive — why foundation models are pretrained by a handful of large labs, then fine-tuned by everyone else.</li>
+    </ol>
+    <div class="callout watch"><span class="tag">Gotcha</span><p>The LLM's output layer is a <strong>softmax over the vocabulary</strong> — its size equals the vocabulary size, <em>not</em> the embedding dimension or context length.</p></div>
+
+    <h3>Inference: autoregression &amp; decoding</h3>
+    <p>Flow: text → tokenizer → embedding lookup → decoder-only transformer → linear layer → softmax → a probability per vocabulary token.</p>
+    <ul>
+      <li><strong>Greedy decoding</strong> — always pick the highest-probability token. Deterministic: identical input always produces identical output.</li>
+      <li><strong>Autoregression</strong> — each generated token is appended back to the context to predict the next one ("Once upon" → +"a" → "Once upon a" → +"time" → …).</li>
+    </ul>
+    <p>Pure greedy decoding is safe but repetitive and unimaginative. <strong>Temperature</strong> fixes this by reshaping the distribution before sampling:</p>
+    <div class="formula-block">p(zᵢ) = e^(zᵢ/T) / Σⱼ e^(zⱼ/T)</div>
+    <p>T = 1.0 is the unscaled default; T &lt; 1.0 sharpens the distribution (more deterministic, less creative); T &gt; 1.0 flattens it (more random, more creative). Top-k/top-p sampling can be layered on top of temperature.</p>
+
+    <div class="callout rule"><span class="tag">Note</span><p>ChatGPT is not a raw LLM — it's an LLM wrapped with prompt engineering, RLHF fine-tuning/alignment, conversation-memory handling, tool integration (search, code, images), and safety/moderation layers.</p></div>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Why RAG?</h2></div>
+    <p class="chapter-dek">A plain LLM chatbot has structural blind spots RAG is built to patch.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pitfall of a plain LLM</th><th>Why it happens</th></tr></thead>
+        <tbody>
+          <tr><td>Static knowledge</td><td>Trained on fixed data; blind to anything after the training cutoff</td></tr>
+          <tr><td>Hallucination</td><td>Confidently fabricates answers, especially on niche topics</td></tr>
+          <tr><td>Context window limits</td><td>Hard cap on how much text can be passed in at once</td></tr>
+          <tr><td>Domain knowledge gaps</td><td>Generic pretraining lacks company-specific/technical depth</td></tr>
+          <tr><td>No source attribution</td><td>Doesn't show where an answer came from</td></tr>
+          <tr><td>Low explainability</td><td>Hard to verify how an answer was produced</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <caption>RAG vs. fine-tuning</caption>
+        <thead><tr><th></th><th>RAG</th><th>Fine-tuning</th></tr></thead>
+        <tbody>
+          <tr><th>Mechanism</th><td>Retrieves relevant external documents at query time</td><td>Modifies the model's internal weights via further training</td></tr>
+          <tr><th>Model changes</th><td>None — cheap, easy to update</td><td>Produces a new tuned model; no external DB needed at inference</td></tr>
+          <tr><th>Best for</th><td>Evolving data, agility</td><td>Stable domains needing precision/consistency</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 4 ============ -->
+  <section class="chapter">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>The RAG Pipeline</h2></div>
+    <p class="chapter-dek">An offline indexing phase, and an online query phase.</p>
+
+    <p><strong>Indexing (offline):</strong> documents → chunk &amp; preprocess → generate embeddings → store in a vector database.<br>
+    <strong>Query (online):</strong> user question → embed the question → semantic search against the vector DB → ranked chunks → pass query + chunks to the LLM → generated answer.</p>
+
+    <h3>Chunking</h3>
+    <p>Split large documents into retrievable pieces without cutting mid-sentence or across semantic units. Each chunk carries metadata (title, source, page, section, tags) so retrieved results stay traceable.</p>
+    <div class="formula-block">text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=50,
+    chunk_overlap=20,   # overlap avoids losing context at chunk boundaries
+)</div>
+
+    <h3>Embeddings</h3>
+    <p>A learned embedding space places semantically similar chunks close together — unlike one-hot encodings, which carry no notion of similarity at all. RAG typically uses <strong>sentence embeddings</strong>, extending word embeddings to whole passages.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Model</th><th>Size</th><th>Dim.</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td>all-MiniLM-L6-v2</td><td>22 MB</td><td class="num">384</td><td>Lightweight, efficient general use</td></tr>
+          <tr><td>all-mpnet-base-v2</td><td>110 MB</td><td class="num">768</td><td>Higher accuracy, still fast</td></tr>
+          <tr><td>all-roberta-large-v1</td><td>350 MB</td><td class="num">1024</td><td>Larger multilingual datasets, slower</td></tr>
+          <tr><td>xlm-roberta-base</td><td>550 MB</td><td class="num">768</td><td>Multilingual text, less precise in English</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Retrieval: distance metrics</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Metric</th><th>Formula</th><th>Intuition</th></tr></thead>
+        <tbody>
+          <tr><td>Cosine distance</td><td>1 − (A·B)/(‖A‖‖B‖)</td><td>Angle between vectors</td></tr>
+          <tr><td>Dot product</td><td>Σ Aᵢ·Bᵢ</td><td>Alignment of two vectors</td></tr>
+          <tr><td>Squared Euclidean</td><td>Σ (xᵢ−yᵢ)²</td><td>Straight-line distance</td></tr>
+          <tr><td>Manhattan (L1)</td><td>Σ |xᵢ−yᵢ|</td><td>Sum of absolute differences</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout watch"><span class="tag">Gotcha</span><p>Cosine <em>distance</em> (1 − cos θ) is a dissimilarity score — don't confuse it with cosine <em>similarity</em> itself.</p></div>
+
+    <h3>Generation</h3>
+    <p>The final prompt combines the query, the retrieved chunks, and a domain-specific instruction:</p>
+    <div class="formula-block">[User Question]
+How does the Marketing team make strategic decisions?
+
+[Context]
+- The Marketing team recently shifted focus to data-driven decision-making.
+- They rely on weekly reports and campaign retrospectives.
+- A/B testing, customer segmentation, and performance metrics.
+
+[Instruction]
+Using the provided context, answer the question concisely and cite your sources.</div>
+  </section>
+
+  <footer class="page-footer">
+    <span>Condensed from Chapter 6 — LLM and RAG Pipeline (Basic Data Mining Practice, Prof. Dr. Matteo Marouf)</span>
+    <span><a href="index.html">← All chapters</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
