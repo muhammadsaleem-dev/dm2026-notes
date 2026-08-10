@@ -707,6 +707,81 @@ code {
 .outcomes-box ul { margin: 0; padding-left: 1.2rem; max-width: none; }
 .outcomes-box li { margin: 0.3rem 0; }
 
+/* ---------- Test Yourself (retrieval-practice quiz) ---------- */
+.quiz-intro {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  max-width: 68ch;
+  margin: 0.15rem 0 1.3rem;
+}
+.quiz-intro strong { color: var(--text); }
+.quiz-list { margin: 0 0 0.5rem; padding: 0; list-style: none; }
+.quiz-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-sm);
+  margin: 0.6rem 0;
+  overflow: hidden;
+}
+.quiz-item summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.8rem 5.7rem 0.8rem 2.6rem;
+  font-weight: 600;
+  font-size: 0.94rem;
+  position: relative;
+  transition: background-color 0.15s ease;
+}
+.quiz-item summary:hover { background: var(--code-bg); }
+.quiz-item summary::-webkit-details-marker { display: none; }
+.quiz-item summary::before {
+  content: "Q";
+  position: absolute;
+  left: 0.8rem;
+  top: 0.7rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.quiz-item summary::after {
+  content: "Reveal answer";
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent-ink);
+  white-space: nowrap;
+}
+.quiz-item[open] summary::after { content: "Hide answer"; color: var(--text-muted); }
+.quiz-item[open] summary { border-bottom: 1px solid var(--border); }
+.quiz-item .quiz-a {
+  padding: 0.95rem 1.2rem 1.05rem 2.6rem;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 6%, var(--accent-soft)), var(--accent-soft));
+  font-size: 0.92rem;
+}
+.quiz-item .quiz-a p { margin: 0.4rem 0; max-width: none; }
+.quiz-item .quiz-a p:first-child { margin-top: 0; }
+.quiz-item .quiz-a p:last-child { margin-bottom: 0; }
+.quiz-item .quiz-a strong { color: var(--accent-ink); }
+@media (max-width: 520px) {
+  .quiz-item summary { padding-right: 1rem; }
+  .quiz-item summary::after { content: "\25BE"; font-size: 0.9rem; }
+  .quiz-item[open] summary::after { content: "\25B4"; }
+}
+
 /* ---------- Tables ---------- */
 .table-wrap {
   overflow-x: auto;

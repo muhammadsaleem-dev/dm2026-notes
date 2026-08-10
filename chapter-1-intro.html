@@ -53,6 +53,7 @@
       <a href="#data-types-and-tasks"><span class="toc-num">4</span>Types of Data &amp; Core Tasks</a>
       <a href="#communicating-results"><span class="toc-num">5</span>Communicating Results &amp; Tooling</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
+      <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
     </div>
   </div>
 </nav>
@@ -77,6 +78,7 @@
       <a href="#data-types-and-tasks"><span class="toc-num">4</span>Types of Data &amp; Core Tasks</a>
       <a href="#communicating-results"><span class="toc-num">5</span>Communicating Results &amp; Tooling</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
+      <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
     </div>
   </aside>
 
@@ -110,6 +112,7 @@
       <li><a href="#data-types-and-tasks"><span class="toc-num">4</span>Types of Data &amp; Core Tasks</a></li>
       <li><a href="#communicating-results"><span class="toc-num">5</span>Communicating Results &amp; Tooling</a></li>
       <li><a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a></li>
+      <li><a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a></li>
     </ul>
   </div>
 
@@ -326,6 +329,56 @@ def L2(yhat, y):
     <div class="formula-block"><span class="label">Mini project: survival rate by age group</span>df["age_group"] = df["age"].apply(lambda x: "child" if x < 16 else "adult")
 df.groupby("age_group")["survived"].mean()</div>
     <div class="callout rule"><span class="tag">Result</span><p>Children (&lt;16) survived at <strong>59%</strong> vs. <strong>36%</strong> for adults — the first hands-on look at a pattern ("women and children first") that resurfaces as the running SHAP example in Modules 3 and 7.</p></div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="chapter" id="test-yourself">
+    <div class="chapter-head"><span class="chapter-num">7</span><h2>Test Yourself</h2></div>
+    <p class="chapter-dek">Retrieval practice — the single best-evidenced study technique there is.</p>
+    <p class="quiz-intro">Cover the answer, try to recall it from memory, <em>then</em> click to check. Getting it wrong and then reading the answer still strengthens the memory — skipping straight to the answer doesn't. <strong>Do this before your exam, not while reading for the first time.</strong></p>
+    <div class="quiz-list">
+
+      <details class="quiz-item">
+        <summary>According to the Josh Wills quote in this module, how is a "Data Scientist" defined?</summary>
+        <div class="quiz-a"><p>"Person who is better at statistics than any software engineer and better at software engineering than any statistician."</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the data-science Venn diagram, which two fields overlap to produce "Machine Learning," and what key ingredient is missing from that overlap?</summary>
+        <div class="quiz-a"><p>Computer Science ∩ Math &amp; Statistics. Domain knowledge is missing, so you can build a model that fits the numbers but may not know whether the pattern it found is meaningful or spurious.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>List the six stages of the data mining project lifecycle in order. What do all six stages read from and write to?</summary>
+        <div class="quiz-a"><p>Problem understanding → Explore &amp; process → Modelling &amp; analysis → Communicate results → Deploy &amp; operationalize → Test &amp; monitor. All six route through a shared, central data store, and the cycle loops back to it rather than terminating.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>Per the "Rule" callout in the Project Lifecycle section, why isn't domain knowledge listed as its own separate stage in the pipeline?</summary>
+        <div class="quiz-a"><p>Because it's a cross-cutting concern that runs through the entire cycle (like logging or security touching every layer of an application), guiding preprocessing decisions, modelling choices, and how results get explained — rather than living in one place.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In TF-IDF, what two signals are multiplied together to score a word, and what happens to a word like "the" as a result?</summary>
+        <div class="quiz-a"><p>Term Frequency (how often the word appears within the document) multiplied by Inverse Document Frequency (how rare it is across the whole corpus). A word like "the" appears in nearly every document, so IDF pushes its weight toward zero.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>What is the difference between Nominal and Ordinal categorical data, per the examples given (gender/hair color vs. reviews/grades)?</summary>
+        <div class="quiz-a"><p>Nominal categories have no inherent order (e.g. gender, hair color — no hair color is "more" than another). Ordinal categories do have a natural order, but the gaps between them aren't necessarily equal or numerically meaningful (e.g. reviews, grades, status).</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>What are the three components of effective storytelling with data, and what happens if narrative is left out?</summary>
+        <div class="quiz-a"><p>Data, Visualization, and Narrative. Without narrative, visualization is just "a pretty chart nobody knows how to act on" — data and a chart alone don't tell you what to <em>do</em>.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the Titanic sprint exercise, what age cutoff defined the "child" group, and what were the resulting survival rates for children vs. adults?</summary>
+        <div class="quiz-a"><p>Age &lt; 16 defined "child." Children survived at 59% versus 36% for adults, illustrating the "women and children first" pattern that resurfaces later as the running SHAP example in Modules 3 and 7.</p></div>
+      </details>
+
+    </div>
   </section>
 
   <footer class="page-footer">

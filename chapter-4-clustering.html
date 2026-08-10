@@ -53,6 +53,7 @@
       <a href="#where-it-breaks"><span class="toc-num">4</span>Where K-Means Breaks</a>
       <a href="#evaluating"><span class="toc-num">5</span>Evaluating &amp; Interpreting Clusters</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a>
+      <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
     </div>
   </div>
 </nav>
@@ -77,6 +78,7 @@
       <a href="#where-it-breaks"><span class="toc-num">4</span>Where K-Means Breaks</a>
       <a href="#evaluating"><span class="toc-num">5</span>Evaluating &amp; Interpreting Clusters</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a>
+      <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
     </div>
   </aside>
 
@@ -111,6 +113,7 @@
       <li><a href="#where-it-breaks"><span class="toc-num">4</span>Where K-Means Breaks</a></li>
       <li><a href="#evaluating"><span class="toc-num">5</span>Evaluating &amp; Interpreting Clusters</a></li>
       <li><a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a></li>
+      <li><a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a></li>
     </ul>
   </div>
 
@@ -339,6 +342,56 @@
 kmeans.fit(rfm_scaled)</div>
     <div class="callout rule"><span class="tag">Result</span><p>Four clusters emerged with clearly different profiles: <strong>loyal</strong> (Recency 38d, Monetary £2,340), <strong>medium-value</strong> (£1,101), <strong>new/infrequent</strong> (£411), and <strong>churned</strong> (Recency 244d — far higher than the rest). Comparing raw means across clusters is misleading until each metric is normalized by its max — days, counts, and currency don't share a scale.</p></div>
     <div class="callout watch"><span class="tag">Gotcha</span><p>~25% of rows have no <code>CustomerID</code> and can't be imputed (there's nothing to infer it from) — they're dropped outright rather than patched.</p></div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="chapter" id="test-yourself">
+    <div class="chapter-head"><span class="chapter-num">7</span><h2>Test Yourself</h2></div>
+    <p class="chapter-dek">Retrieval practice — the single best-evidenced study technique there is.</p>
+    <p class="quiz-intro">Cover the answer, try to recall it from memory, <em>then</em> click to check. Getting it wrong and then reading the answer still strengthens the memory — skipping straight to the answer doesn't. <strong>Do this before your exam, not while reading for the first time.</strong></p>
+    <div class="quiz-list">
+
+      <details class="quiz-item">
+        <summary>In the module's analogy contrasting classification with clustering, what do <code>isFraud(transaction) -&gt; boolean</code> and the missing <code>equals()/hashCode()</code> contract represent?</summary>
+        <div class="quiz-a"><p><code>isFraud()</code> represents classification — a method with a documented contract where someone already supplied correct answers for training examples. Clustering is like bucketing objects with no <code>equals()/hashCode()</code> contract at all, grouping purely by how alike their field values look, with no oracle checking your work.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the six-point K-Means worked example (K=2, initial centroids C1=(1,1), C2=(8,8)), what were the two centroids after the single recompute step, and what was the total WCSS?</summary>
+        <div class="quiz-a"><p>C1_new = (1.33, 1.67) and C2_new = (8.33, 8.33); total WCSS = 8/3 ≈ 2.67.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>The module cites three K-Means runs on the same data and K but different random seeds. What WCSS values did they produce, and what does this demonstrate?</summary>
+        <div class="quiz-a"><p>444.9, 349.7, and 451.4 — demonstrating that K-Means can converge to different local optima depending on initialization, which is why you should run multiple seeds and keep the lowest-inertia result.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the elbow-method worked example, what were the WCSS values at K=1, K=2, and K=3, and why was K=2 identified as the elbow?</summary>
+        <div class="quiz-a"><p>WCSS(1)≈142.83, WCSS(2)≈2.67, WCSS(3)≈1.83. K=2 is the elbow because the drop from K=1 to K=2 is over 140, while the drop from K=2 to K=3 is less than 1 — extra clusters beyond 2 just chip away at weak internal substructure.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the "elongated cluster" worked example, why did K-Means assign the point (16,0) — the far end of elongated Group A — to Group B instead?</summary>
+        <div class="quiz-a"><p>Group A's centroid was (8,0) and Group B's was (16,1.33); the squared distance from (16,0) to A's centroid was 64 versus only about 1.78 to B's centroid, so K-Means assigned it to the numerically nearer but wrong group, showing a single centroid poorly summarizes an elongated cluster.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>For point P3=(2,2) in the silhouette worked example, what were a(P3), b(P3), and the resulting silhouette score s(P3)?</summary>
+        <div class="quiz-a"><p>a(P3) ≈ 1.207 (average distance to P1 and P2), b(P3) ≈ 8.975 (average distance to P4, P5, P6), giving s(P3) = (8.975−1.207)/8.975 ≈ 0.87.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the Sprint Exercise's RFM customer-segmentation solution, how many clusters were fit, and what distinguished the "churned" segment from the others?</summary>
+        <div class="quiz-a"><p>KMeans was fit with n_clusters=4. The churned segment stood out with a Recency of 244 days, far higher than the other three clusters.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>What data-quality gotcha did the Sprint Exercise flag about CustomerID, and how was it handled?</summary>
+        <div class="quiz-a"><p>About 25% of rows had no CustomerID and couldn't be imputed since there was nothing to infer it from, so those rows were dropped outright rather than patched.</p></div>
+      </details>
+
+    </div>
   </section>
 
   <footer class="page-footer">

@@ -52,6 +52,7 @@
       <a href="#why-rag"><span class="toc-num">3</span>Why RAG?</a>
       <a href="#rag-pipeline"><span class="toc-num">4</span>The RAG Pipeline</a>
       <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
+      <a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a>
     </div>
   </div>
 </nav>
@@ -75,6 +76,7 @@
       <a href="#why-rag"><span class="toc-num">3</span>Why RAG?</a>
       <a href="#rag-pipeline"><span class="toc-num">4</span>The RAG Pipeline</a>
       <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
+      <a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a>
     </div>
   </aside>
 
@@ -108,6 +110,7 @@
       <li><a href="#why-rag"><span class="toc-num">3</span>Why RAG?</a></li>
       <li><a href="#rag-pipeline"><span class="toc-num">4</span>The RAG Pipeline</a></li>
       <li><a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a></li>
+      <li><a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a></li>
     </ul>
   </div>
 
@@ -339,6 +342,56 @@ results  = index.query(vector=question_vector, top_k=10, include_metadata=True)
 response = OllamaLLM(model="llama3.2").invoke(prompt)      # runs locally via Ollama</div>
     <p>Chunking uses <code>RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)</code> — on the course's full document set this produced roughly 13,700 chunks, each upserted into a cosine-metric Pinecone index in batches of 50 to stay under the payload limit.</p>
     <div class="callout watch"><span class="tag">Gotcha</span><p>Generation runs entirely on-device (Ollama + <code>llama3.2</code> must be installed locally) rather than through a cloud API, and the Pinecone key is read from a local file — never hardcoded. The example run also shows a real retrieval failure: the model hedges because several near-duplicate "lecturer" chunks from different course modules get retrieved together — a live example of why chunk boundaries and retrieval precision (§4) matter in practice.</p></div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="chapter" id="test-yourself">
+    <div class="chapter-head"><span class="chapter-num">6</span><h2>Test Yourself</h2></div>
+    <p class="chapter-dek">Retrieval practice — the single best-evidenced study technique there is.</p>
+    <p class="quiz-intro">Cover the answer, try to recall it from memory, <em>then</em> click to check. Getting it wrong and then reading the answer still strengthens the memory — skipping straight to the answer doesn't. <strong>Do this before your exam, not while reading for the first time.</strong></p>
+    <div class="quiz-list">
+
+      <details class="quiz-item">
+        <summary>What makes next-token prediction "self-supervised," and why does that matter for how much data can be used to train on?</summary>
+        <div class="quiz-a"><p>No human ever labels examples — the "label" for any position is just the next word already present in the text, so sliding a window across any document yields a free training example, turning an unlimited supply of unlabeled text into an unlimited supply of labeled training pairs.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the worked context example for "…pass me the ___," what are P(Salt), P(Pepper), and P(Gun) in the tense confrontation scene, and what does comparing it to the family dinner scene illustrate?</summary>
+        <div class="quiz-a"><p>Tense confrontation scene: P(Salt)=0.16, P(Pepper)=0.18, P(Gun)=0.66. Since the literal sentence never changed, only the surrounding context did — showing the model conditions on the entire preceding context rather than memorizing fixed word associations.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>Per the module's gotcha callout, what determines the size of an LLM's output layer, and what two things does it explicitly NOT equal?</summary>
+        <div class="quiz-a"><p>The output layer is a softmax over the entire vocabulary, so its size equals the vocabulary size — not the embedding dimension and not the context length.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the seven-logit worked example, what probability does token E (logit 3.0) get at T=1.0, and what does it rise to at T=0.5?</summary>
+        <div class="quiz-a"><p>At T=1.0, token E gets ≈0.449 (44.9%) of the probability mass; lowering the temperature to T=0.5 sharpens the distribution and raises E's share to 74.2%.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In that same worked example, what happens to token E's and token D's probabilities when temperature is raised to T=2.0 instead?</summary>
+        <div class="quiz-a"><p>Token E drops from 44.9% (at T=1) to 28.1%, while the weakest token D climbs from 2.3% to 6.3% — higher temperature flattens the distribution so every token becomes more competitive.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>Using the module's "runtime lookup vs. baked into the binary" analogy, how do RAG and fine-tuning differ in how they update a model's knowledge?</summary>
+        <div class="quiz-a"><p>RAG retrieves relevant external documents at query time without changing model weights, like a service querying a live database on every request — update the data and the next query reflects it, no redeploy needed. Fine-tuning modifies the model's internal weights via further training, closer to compiling business rules directly into the binary — fast and consistent at inference, but requires retraining and redeploying to update.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>For the toy embeddings A=[1,2,3] and B=[2,1,3], what is the dot product, the magnitude of each vector, and the resulting cosine similarity?</summary>
+        <div class="quiz-a"><p>A·B = (1×2)+(2×1)+(3×3) = 13, and ‖A‖=‖B‖=√14≈3.742 (equal since they're permutations of the same numbers), giving cosine similarity = 13/14 ≈ 0.929 — very close to 1, meaning the vectors point in almost the same direction.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>What is the local, open-source stack used in the Sprint Exercise's RAG tutorial for embedding, retrieval, and generation, and what real retrieval failure does its gotcha callout describe?</summary>
+        <div class="quiz-a"><p>Embeddings come from <code>SentenceTransformer("all-MiniLM-L6-v2")</code> (384-dim), retrieval from a cosine-metric Pinecone index (chunk_size=500, chunk_overlap=50, producing roughly 13,700 chunks), and generation from <code>OllamaLLM</code> running llama3.2 locally with no cloud API call. The gotcha describes a real run where several near-duplicate "lecturer" chunks from different course modules were retrieved together, causing the model to hedge its answer.</p></div>
+      </details>
+
+    </div>
   </section>
 
   <footer class="page-footer">

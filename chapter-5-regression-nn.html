@@ -55,6 +55,7 @@
       <a href="#hyperparameters"><span class="toc-num">6</span>Hyperparameters, Activations &amp; Training Difficulty</a>
       <a href="#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a>
       <a href="#exercises"><span class="toc-num">8</span>Sprint Exercises</a>
+      <a href="#test-yourself"><span class="toc-num">9</span>Test Yourself</a>
     </div>
   </div>
 </nav>
@@ -81,6 +82,7 @@
       <a href="#hyperparameters"><span class="toc-num">6</span>Hyperparameters, Activations &amp; Training Difficulty</a>
       <a href="#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a>
       <a href="#exercises"><span class="toc-num">8</span>Sprint Exercises</a>
+      <a href="#test-yourself"><span class="toc-num">9</span>Test Yourself</a>
     </div>
   </aside>
 
@@ -117,6 +119,7 @@
       <li><a href="#hyperparameters"><span class="toc-num">6</span>Hyperparameters, Activations &amp; Training Difficulty</a></li>
       <li><a href="#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a></li>
       <li><a href="#exercises"><span class="toc-num">8</span>Sprint Exercises</a></li>
+      <li><a href="#test-yourself"><span class="toc-num">9</span>Test Yourself</a></li>
     </ul>
   </div>
 
@@ -452,6 +455,66 @@ lasso_cv.fit(X_train_scaled, y_train)   # best alpha ≈ 0.00139</div>
     <p>Same 10-class image classification task (32×32×3 pixels, flattened), two models: <code>LogisticRegression(solver='saga')</code> and a small Keras net (<code>Flatten → Dense(128, relu) → Dense(10, softmax)</code>).</p>
     <div class="callout rule"><span class="tag">Result</span><p>Logistic regression: <strong>34%</strong> test accuracy. The neural network: <strong>45%</strong> after 50 epochs — both well above the 10% random baseline, but the gap between them is the whole point of this module's title.</p></div>
     <div class="callout watch"><span class="tag">Gotcha</span><p>Sweeping the learning rate (0.001 / 0.01 / 0.1, §7) requires rebuilding and recompiling the model each time — reusing one already-trained model across learning rates silently invalidates the comparison. The observed pattern matches the theory exactly: 0.001 is stable but slow, 0.01 balances convergence and generalization best, 0.1 overshoots and destabilizes training.</p></div>
+  </section>
+
+  <!-- ============ 9 ============ -->
+  <section class="chapter" id="test-yourself">
+    <div class="chapter-head"><span class="chapter-num">9</span><h2>Test Yourself</h2></div>
+    <p class="chapter-dek">Retrieval practice — the single best-evidenced study technique there is.</p>
+    <p class="quiz-intro">Cover the answer, try to recall it from memory, <em>then</em> click to check. Getting it wrong and then reading the answer still strengthens the memory — skipping straight to the answer doesn't. <strong>Do this before your exam, not while reading for the first time.</strong></p>
+    <div class="quiz-list">
+
+      <details class="quiz-item">
+        <summary>In §1's framing, what is a perceptron structurally identical to, and at how many hidden layers does "deep learning" conventionally start?</summary>
+        <div class="quiz-a"><p>A perceptron performs exactly the same computation as logistic regression (weighted sum, then a squashing function), and a network is many such units stacked in layers. Deep learning conventionally starts at three or more hidden layers.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In §2's worked MSE example, for the toy dataset (1,3),(2,5),(3,7) with candidate weights ω=1.5, b=1, what are the three predicted ŷ values and the resulting cost J(θ)?</summary>
+        <div class="quiz-a"><p>Predictions are ŷ=2.5, 4.0, 5.5 for x=1,2,3, giving residuals 0.5, 1.0, 1.5 and squared residuals summing to 3.5. With M=3 (2M=6), J(θ) = 3.5/6 ≈ 0.583.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>Continuing that same toy dataset (ω=1.5, b=1, α=0.1) in §3's gradient-descent worked example, what are the computed bias and weight gradients, and the updated ω and b after one step?</summary>
+        <div class="quiz-a"><p>∂J/∂b = −1.0 and ∂J/∂ω ≈ −2.333. The updated values are b_new = 1.1 and ω_new ≈ 1.733.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>For the §4 toy patient example (w=[0.5, −0.3], b=0.1, x=[2,1], true label y=1), what are z, ŷ, and the binary cross-entropy cost J?</summary>
+        <div class="quiz-a"><p>z = 0.5×2 + (−0.3)×1 + 0.1 = 0.8, giving ŷ = σ(0.8) ≈ 0.690. Since y=1, J = −log(0.690) ≈ 0.371.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In §5's worked forward-propagation example (2 inputs, 1 hidden neuron, 1 output neuron, both sigmoid; x=[1.0,0.5], W<sup>[1]</sup>=[0.4,−0.2], b<sup>[1]</sup>=0.1, W<sup>[2]</sup>=0.7, b<sup>[2]</sup>=−0.2), what are z<sup>[1]</sup>, a<sup>[1]</sup>, z<sup>[2]</sup>, and the final ŷ?</summary>
+        <div class="quiz-a"><p>z<sup>[1]</sup> = 0.4, a<sup>[1]</sup> = σ(0.4) ≈ 0.599; z<sup>[2]</sup> = 0.7×0.599 − 0.2 ≈ 0.219, and ŷ = a<sup>[2]</sup> = σ(0.219) ≈ 0.555.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>Continuing that forward pass in §5's backpropagation worked example (true label y=1, η=0.1), what are ∇<sub>z[2]</sub>J and ∇<sub>W[2]</sub>J, and what are the updated W<sup>[2]</sup> and b<sup>[2]</sup>?</summary>
+        <div class="quiz-a"><p>∇<sub>z[2]</sub>J = ŷ−y = 0.555−1 = −0.445, and ∇<sub>W[2]</sub>J = −0.445×0.599 ≈ −0.267 (with ∇<sub>b[2]</sub>J = −0.445). The updated values are W<sup>[2]</sup> ≈ 0.727 and b<sup>[2]</sup> ≈ −0.156.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>Per §6, why are sigmoid and tanh activations especially prone to causing vanishing gradients in deep networks?</summary>
+        <div class="quiz-a"><p>Backpropagation multiplies each layer's gradient by additional chain-rule factors, and sigmoid/tanh derivatives are always ≤0.25, so those factors are consistently less than 1. Multiplying many such factors together shrinks the product toward zero across layers, leaving the earliest layers with almost no update signal.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>What is the motivating calculation in §7 for why full-batch gradient descent doesn't scale, and what total does it produce?</summary>
+        <div class="quiz-a"><p>With 30,000 features, 1,000,000 data points, and 1,000 training epochs, full-batch gradient descent requires 30,000 × 1,000,000 × 1,000 = 3×10¹³ (thirty trillion) individual term evaluations. The module calls this simply infeasible on realistic hardware and time budgets.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>According to the "Rule" callout in §7, on what data must the normalization statistics μ and σ be computed, and what goes wrong if you don't follow that rule?</summary>
+        <div class="quiz-a"><p>μ and σ must be computed on training data only and then reused (as part of the saved model) on test/production data. Recomputing them separately on the test set would let the test set's own statistics leak into its preprocessing — a form of data leakage.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In Exercise 9 (Logistic Regression vs. Neural Network on CIFAR-10), what test accuracy did each model achieve, and what gotcha does the callout warn about when sweeping learning rates?</summary>
+        <div class="quiz-a"><p>Logistic regression reached 34% test accuracy versus 45% for the small Keras neural network after 50 epochs (both above the 10% random baseline). The gotcha: sweeping learning rates requires rebuilding and recompiling the model for each one — reusing an already-trained model across learning rates silently invalidates the comparison.</p></div>
+      </details>
+
+    </div>
   </section>
 
   <footer class="page-footer">

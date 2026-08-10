@@ -52,6 +52,7 @@
       <a href="#adaboost"><span class="toc-num">3</span>Adaptive Boosting (AdaBoost)</a>
       <a href="#xai-intro"><span class="toc-num">4</span>Explainability &amp; Causality (intro)</a>
       <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
+      <a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a>
     </div>
   </div>
 </nav>
@@ -75,6 +76,7 @@
       <a href="#adaboost"><span class="toc-num">3</span>Adaptive Boosting (AdaBoost)</a>
       <a href="#xai-intro"><span class="toc-num">4</span>Explainability &amp; Causality (intro)</a>
       <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
+      <a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a>
     </div>
   </aside>
 
@@ -108,6 +110,7 @@
       <li><a href="#adaboost"><span class="toc-num">3</span>Adaptive Boosting (AdaBoost)</a></li>
       <li><a href="#xai-intro"><span class="toc-num">4</span>Explainability &amp; Causality (intro)</a></li>
       <li><a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a></li>
+      <li><a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a></li>
     </ul>
   </div>
 
@@ -351,6 +354,56 @@ outlier_mask = (X_train < Q1 - 1.5*IQR) | (X_train > Q3 + 1.5*IQR)
 X_train = X_train.where(~outlier_mask, np.nan)</div>
     <div class="callout rule"><span class="tag">Result</span><p><code>RandomForestClassifier(n_estimators=1000, max_depth=6, class_weight='balanced')</code> reached <strong>90% test accuracy</strong>. The exercise then asks students to drop <code>n_estimators</code> to 10 and watch performance degrade — a direct feel for how much ensemble size (§2) actually matters.</p></div>
     <div class="callout watch"><span class="tag">Gotcha</span><p>The final "production" model is refit on train+test combined — at which point you explicitly lose the ability to measure its accuracy. The earlier test-set score is your only honest estimate of how it'll perform.</p></div>
+  </section>
+
+  <!-- ============ 6 ============ -->
+  <section class="chapter" id="test-yourself">
+    <div class="chapter-head"><span class="chapter-num">6</span><h2>Test Yourself</h2></div>
+    <p class="chapter-dek">Retrieval practice — the single best-evidenced study technique there is.</p>
+    <p class="quiz-intro">Cover the answer, try to recall it from memory, <em>then</em> click to check. Getting it wrong and then reading the answer still strengthens the memory — skipping straight to the answer doesn't. <strong>Do this before your exam, not while reading for the first time.</strong></p>
+    <div class="quiz-list">
+
+      <details class="quiz-item">
+        <summary>In the 7-animal worked example (4 birds, 3 mammals), what is entropy(X) for the whole dataset before any split?</summary>
+        <div class="quiz-a"><p>entropy(X) ≈ 0.9852 bits, computed from p(Bird)=4/7≈0.5714 and p(Mammal)=3/7≈0.4286.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In that same worked example, what are the information gains from splitting on <code>fly</code> versus <code>color</code>, and why is the gap so large?</summary>
+        <div class="quiz-a"><p>gain(X, fly) ≈ 0.521 bits versus gain(X, color) ≈ 0.020 bits. The gap is large because <code>fly</code> carves out a perfectly pure subgroup (all 3 flyers are birds), while <code>color</code> never produces a pure branch — one branch is still a coin flip (entropy 1.0).</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the Random Forest worked example with N=100 trees, if 82 trees vote "Bird" and 18 vote "Mammal" for a new test animal, what does the forest predict, and with what confidence?</summary>
+        <div class="quiz-a"><p>The forest predicts Bird with 82% confidence — the proportion of trees agreeing doubles directly as the confidence score, with no extra calculation needed.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the AdaBoost worked example, the first stump misclassifies 1 of 5 samples (ε = 0.2). What is α, and what do the correctly-classified and misclassified sample weights become after reweighting and renormalizing?</summary>
+        <div class="quiz-a"><p>α = ½·ln(4) = 0.6931. After reweighting and renormalizing, each correctly-classified sample's weight becomes 0.125 and the misclassified sample's weight becomes 0.5.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>For the toy credit-scoring formula (score = 2.5 + 0.00004×income − 0.9×missed_payments), what are the individual contributions and final score for an applicant with $40,000 income and 3 missed payments, and is the loan approved?</summary>
+        <div class="quiz-a"><p>Income contributes +1.6, missed_payments contributes −2.7, and the intercept contributes +2.5, giving a total score of 1.4. Since 1.4 &gt; 0, the applicant is approved.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the causal-confounder worked example, early-treated patients survive an average of 34 months versus 19 for late-treated patients. What variable is identified as the likely confounder, and why does it undermine the naive "early treatment causes longer survival" conclusion?</summary>
+        <div class="quiz-a"><p>Disease severity is the confounder — early-treated patients averaged severity 3.2 versus 7.8 for late-treated patients. Severity independently affects both when treatment happens and how long the patient survives, so the 15-month gap may largely reflect "healthier patients get treated earlier and survive longer regardless of timing" rather than a causal effect of timing.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>What test accuracy did the Sprint Exercise's <code>RandomForestClassifier(n_estimators=1000, max_depth=6, class_weight="balanced")</code> reach on the cancer_type dataset, and what follow-up manipulation does the exercise ask students to try?</summary>
+        <div class="quiz-a"><p>It reached 90% test accuracy. The exercise then has students drop <code>n_estimators</code> to 10 and observe how much performance degrades, to feel how much ensemble size matters.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>The Sprint Exercise's "Gotcha" callout warns about refitting the final "production" model on train+test combined. What do you lose by doing this, and what remains your only honest accuracy estimate?</summary>
+        <div class="quiz-a"><p>You lose the ability to measure the refit model's accuracy, since no held-out data remains. The earlier test-set score, measured before that final refit, is your only honest estimate of real-world performance.</p></div>
+      </details>
+
+    </div>
   </section>
 
   <footer class="page-footer">

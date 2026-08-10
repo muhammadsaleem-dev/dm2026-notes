@@ -53,6 +53,7 @@
       <a href="#evaluation"><span class="toc-num">4</span>Validating &amp; Evaluating Models</a>
       <a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
+      <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
     </div>
   </div>
 </nav>
@@ -77,6 +78,7 @@
       <a href="#evaluation"><span class="toc-num">4</span>Validating &amp; Evaluating Models</a>
       <a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
+      <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
     </div>
   </aside>
 
@@ -111,6 +113,7 @@
       <li><a href="#evaluation"><span class="toc-num">4</span>Validating &amp; Evaluating Models</a></li>
       <li><a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a></li>
       <li><a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a></li>
+      <li><a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a></li>
     </ul>
   </div>
 
@@ -568,6 +571,66 @@ X_test['age']  = X_test['age'].fillna(median_val)   # reuse the TRAIN median</di
     <div class="formula-block"><span class="label">PCA before t-SNE — not either/or</span>X_pca_50 = PCA(n_components=50).fit_transform(X_scaled)
 X_tsne = TSNE(n_components=2, perplexity=30, random_state=42).fit_transform(X_pca_50)</div>
     <p>Sweeping perplexity across [2, 10, 50, 500] and re-running with three random seeds makes both t-SNE gotchas from §3 tangible: low perplexity fragments real clusters, and different seeds give different (but locally similar) layouts.</p>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="chapter" id="test-yourself">
+    <div class="chapter-head"><span class="chapter-num">7</span><h2>Test Yourself</h2></div>
+    <p class="chapter-dek">Retrieval practice — the single best-evidenced study technique there is.</p>
+    <p class="quiz-intro">Cover the answer, try to recall it from memory, <em>then</em> click to check. Getting it wrong and then reading the answer still strengthens the memory — skipping straight to the answer doesn't. <strong>Do this before your exam, not while reading for the first time.</strong></p>
+    <div class="quiz-list">
+
+      <details class="quiz-item">
+        <summary>In the two-document TF-IDF worked example ("cats love naps" vs. "dogs love walks"), what were the IDF value and final TF-IDF score for the word "love" in Doc 1, and why?</summary>
+        <div class="quiz-a"><p>IDF(love) = ln(2/2) = ln(1) = 0, and TF-IDF(love, Doc 1) = 1/3 × 0 = 0, because "love" appears in every document so it contributes nothing to distinguishing them.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the z-score worked example (house sizes 50, 70, 90 m²), what were the computed mean, variance, and standard deviation, and what were the resulting z-scores for each house?</summary>
+        <div class="quiz-a"><p>Mean = 70, variance = 400 (sample convention, n−1), so σ = 20. The z-scores were −1, 0, and +1 for 50, 70, and 90 m² respectively.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the missing-age worked example (ages 25, missing, 30, missing, 35), what value was used to impute the missing entries, and why was the median chosen over the mean as the default?</summary>
+        <div class="quiz-a"><p>The median of the observed values {25, 30, 35} is 30, so both missing entries were filled with 30. Median is preferred because it's far less sensitive to a handful of extreme outliers dragging the fill value away from what's typical.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>What does the "Watch out" callout on one-hot encoding say you must do after creating the dummy columns, and why?</summary>
+        <div class="quiz-a"><p>Drop one of the new columns (e.g. Color_Red), because keeping all of them is redundant — the last category is implied by all-zeros elsewhere — and can introduce multicollinearity.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the PCA-by-hand worked example (hours studied vs. quiz score for 4 students), what were the two eigenvalues of the covariance matrix, and what percentage of total variance did PC1 capture?</summary>
+        <div class="quiz-a"><p>λ₁ ≈ 3.89 and λ₂ ≈ 0.11 (summing to the trace of 4.00). PC1 captured λ₁/(λ₁+λ₂) ≈ 97.1% of the total variance.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the t-SNE toy example with points x₁=0, x₂=1, x₃=5 and σ₁=1, what were the normalized neighbor probabilities P(2|1) and P(3|1)?</summary>
+        <div class="quiz-a"><p>P(2|1) ≈ 0.99999 and P(3|1) ≈ 0.000006 — point 1 assigns almost all its "who's my neighbor" probability to the nearby point 2 and almost none to the distant point 3.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the 100-email spam filter confusion-matrix example (TP=8, FP=4, FN=2, TN=86), what were the precision, recall, and F1 scores?</summary>
+        <div class="quiz-a"><p>Precision = 8/12 ≈ 0.667, recall = 8/10 = 0.80, and F1 ≈ 0.727 (pulled toward the smaller of precision and recall, as the harmonic mean does).</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the rare-disease Bayes example (0.1% prevalence, 99% true-positive rate, 2% false-positive rate), what was P(disease | positive test), and why is it so low despite the "99% accurate" test?</summary>
+        <div class="quiz-a"><p>P(disease|positive) ≈ 4.7%. It's low because healthy people vastly outnumber sick ones, so even a 2% false-positive rate among the large healthy population produces far more false positives (about 1,998) than true positives (99).</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the model-complexity worked example fitting house price from square footage, what were the train/validation error pairs for the straight-line, degree-2, and degree-9 models, and which one demonstrates overfitting?</summary>
+        <div class="quiz-a"><p>Straight line: 12.4/12.9 (underfitting, both errors high and close); degree-2: 3.1/3.4 (good fit, both low and close); degree-9: 0.3/15.7 (overfitting, huge gap between train and validation error).</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the Titanic Sprint Exercise, what test accuracy, ROC-AUC, and F1 score did the regularized logistic regression (C=0.0005) achieve, and what does that combination of numbers demonstrate?</summary>
+        <div class="quiz-a"><p>It reached 70.2% test accuracy, 0.835 ROC-AUC, but only 0.36 F1 — a concrete demonstration of why accuracy alone can look fine while the model is still struggling on the minority class.</p></div>
+      </details>
+
+    </div>
   </section>
 
   <footer class="page-footer">

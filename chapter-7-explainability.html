@@ -53,6 +53,7 @@
       <a href="#shap"><span class="toc-num">4</span>Shapley Values (SHAP)</a>
       <a href="#causality"><span class="toc-num">5</span>Causality: Beyond Correlation</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a>
+      <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
     </div>
   </div>
 </nav>
@@ -77,6 +78,7 @@
       <a href="#shap"><span class="toc-num">4</span>Shapley Values (SHAP)</a>
       <a href="#causality"><span class="toc-num">5</span>Causality: Beyond Correlation</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a>
+      <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
     </div>
   </aside>
 
@@ -111,6 +113,7 @@
       <li><a href="#shap"><span class="toc-num">4</span>Shapley Values (SHAP)</a></li>
       <li><a href="#causality"><span class="toc-num">5</span>Causality: Beyond Correlation</a></li>
       <li><a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a></li>
+      <li><a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a></li>
     </ul>
   </div>
 
@@ -321,6 +324,56 @@ shap_values = explainer.shap_values(X_test)
 shap.summary_plot(shap_values[:,:,1], X_test)   # beeswarm</div>
     <div class="callout rule"><span class="tag">Result</span><p>All three methods agree: <code>sex</code> dominates, with the beeswarm plot showing female (low-encoded) pushing predictions toward survival and male pushing away from it — the same "women and children first" pattern first spotted in Module 1's Titanic exercise, now visible feature-by-feature.</p></div>
     <div class="callout watch"><span class="tag">Gotcha</span><p>The notebook flags the beeswarm-plot interpretation (dot position = SHAP value, color = feature value, ranking = mean |SHAP|) as required knowledge for the exam — worth re-reading §4 alongside this exercise.</p></div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="chapter" id="test-yourself">
+    <div class="chapter-head"><span class="chapter-num">7</span><h2>Test Yourself</h2></div>
+    <p class="chapter-dek">Retrieval practice — the single best-evidenced study technique there is.</p>
+    <p class="quiz-intro">Cover the answer, try to recall it from memory, <em>then</em> click to check. Getting it wrong and then reading the answer still strengthens the memory — skipping straight to the answer doesn't. <strong>Do this before your exam, not while reading for the first time.</strong></p>
+    <div class="quiz-list">
+
+      <details class="quiz-item">
+        <summary>In the loan-approval example, what specific question does the auditor ask, and how does that differ in scope from the end user's question?</summary>
+        <div class="quiz-a"><p>The auditor asks "Are minority groups disproportionately denied? Is it using appropriate factors?" — a global question about patterns across many applications. The end user asks "Why was my loan denied?" — a local question about one specific instance.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>Why is a random forest described as sitting in a "middle ground" between glass-box and black-box models?</summary>
+        <div class="quiz-a"><p>It's built out of individual decision trees that are each inherently explainable, but once hundreds of trees are combined and their votes averaged, the ensemble's combined decision can no longer be traced by hand — which is why post-hoc methods like permutation importance and SHAP are needed for it.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the permutation importance worked example, the baseline accuracy is 90%. What was the accuracy after shuffling the Age column, and what importance value does that produce?</summary>
+        <div class="quiz-a"><p>Accuracy dropped to 78% after shuffling Age, giving an importance of 90% − 78% = 12%.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the same worked example, what accuracy resulted from shuffling Income instead of Age, and what does the comparison to Age's importance suggest?</summary>
+        <div class="quiz-a"><p>Shuffling Income dropped accuracy to 83%, an importance of 7% — smaller than Age's 12%, meaning the model relies on Income but less heavily than on Age.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the 2-feature Shapley value worked example (Income and Credit Score), what are the four values of v(S) for the four possible subsets?</summary>
+        <div class="quiz-a"><p>v(∅) = 50, v({Income}) = 70, v({CreditScore}) = 60, and v({Income, CreditScore}) = 90.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>What are the computed Shapley values φ_Income and φ_CreditScore in the worked example, and how does the efficiency property check out against v(∅) and v({Income, CreditScore})?</summary>
+        <div class="quiz-a"><p>φ_Income = 25 and φ_CreditScore = 15. Efficiency checks: they sum to 40, matching v({Income,CreditScore}) − v(∅) = 90 − 50 = 40; and adding them to the base value gives 50 + 25 + 15 = 90, matching v({Income,CreditScore}) exactly.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>According to the "Key warning" callout in the SHAP section, what does a large SHAP value actually tell you, and what does it NOT tell you?</summary>
+        <div class="quiz-a"><p>A large SHAP value tells you the model used that feature heavily and that it's statistically associated with the outcome. It does not tell you that manipulating the real-world value of that feature would change the real-world outcome — SHAP values do not reflect causality.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In the Sprint Exercise, which single feature dominated across all three explainability methods (impurity-based feature_importances_, permutation importance, and SHAP), and what pattern did the beeswarm plot reveal about it?</summary>
+        <div class="quiz-a"><p>The feature "sex" dominated all three methods. The beeswarm plot showed female (low-encoded) values pushing predictions toward survival and male values pushing away from it, reflecting the "women and children first" pattern.</p></div>
+      </details>
+
+    </div>
   </section>
 
   <footer class="page-footer">
