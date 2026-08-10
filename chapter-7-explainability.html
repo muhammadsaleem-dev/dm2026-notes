@@ -219,6 +219,9 @@
 
     <div class="python-note"><div><span class="pn-label">Python note</span><p><code>sklearn.inspection.permutation_importance(model, X, y, scoring=..., n_repeats=...)</code> does exactly the procedure above: shuffle one column at a time, re-score using whatever metric you pass to <code>scoring</code>, repeat <code>n_repeats</code> times per feature and average, and return every feature's importance in one call.</p></div></div>
 
+    <p>The <code>scoring</code> argument matters more than it looks. The whole procedure is built on "importance = baseline score − shuffled score," which only makes sense if a <em>higher</em> score means <em>better</em> — that's true for accuracy or F1 on a classifier, so those plug in directly. A regression target flips this: the natural metrics (RMSE, MAE) are <em>error</em> — lower is better — so a worse (shuffled) model would produce a <em>higher</em> RMSE, and subtracting would give a negative "importance" for every genuinely useful feature, backwards from what you want.</p>
+    <div class="python-note"><div><span class="pn-label">Python note</span><p>For a regression target, pass one of scikit-learn's <em>negated</em> error scorers instead — <code>scoring='neg_root_mean_squared_error'</code> or <code>'neg_mean_absolute_error'</code> — so "higher is better" holds again (a worse model's negated error is a more negative, i.e. lower, number). <code>permutation_importance</code> then subtracts exactly the same way it does for classification, and the arithmetic keeps working.</p></div></div>
+
     <div class="callout watch"><span class="tag">Quiz</span><p>If shuffling a feature <em>improves</em> performance, does that mean the feature is useless? No — a negative importance means the model does <em>better</em> once that feature's information is destroyed, which points to noise, overfitting, redundancy, or a harmful learned dependency. That's a more serious finding than "useless": it suggests the model latched onto some spurious pattern involving that feature during training.</p></div>
 
     <p><strong>Pros:</strong> model-agnostic, simple enough to explain in one sentence: "we broke this column and performance got worse by X." <strong>Cons:</strong> correlated features can mask each other's importance — if Income and Balance are strongly correlated, shuffling Income alone doesn't remove much information, since the model can still infer roughly the same thing from Balance, so both can look artificially unimportant even though the <em>pair</em> matters a great deal. It's also expensive with many features, and can be unstable on small datasets.</p>
@@ -378,6 +381,16 @@ shap.summary_plot(shap_values[:,:,1], X_test)   # beeswarm</div>
       <details class="quiz-item">
         <summary>In the Sprint Exercise, which single feature dominated across all three explainability methods (impurity-based feature_importances_, permutation importance, and SHAP), and what pattern did the beeswarm plot reveal about it?</summary>
         <div class="quiz-a"><p>The feature "sex" dominated all three methods. The beeswarm plot showed female (low-encoded) values pushing predictions toward survival and male values pushing away from it, reflecting the "women and children first" pattern.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>You're computing permutation importance for a regression model that predicts house prices, and you pass <code>scoring='neg_mean_absolute_error'</code> instead of a plain MAE. Why the minus sign?</summary>
+        <div class="quiz-a"><p>Permutation importance is defined as baseline score minus shuffled score, which only gives a sensible positive number for a genuinely useful feature if "higher score = better." MAE is an error — lower is better — so a worse (shuffled) model would produce a <em>higher</em> raw MAE, making the subtraction come out backwards. Negating the metric restores "higher is better" so the same arithmetic works for regression as it does for classification accuracy or F1.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In a churn-prediction SHAP beeswarm plot, high values (red) of "monthly_charges" cluster on the positive side of zero, while high values of "tenure_months" cluster on the negative side. What does each feature's pattern tell you about churn risk?</summary>
+        <div class="quiz-a"><p>High monthly charges push the prediction toward churn (positive SHAP = higher predicted churn probability), while long tenure pushes the prediction away from churn (negative SHAP = lower predicted churn probability) — customers who've stuck around longer are predicted less likely to churn, while a bigger bill increases predicted churn risk.</p></div>
       </details>
 
     </div>

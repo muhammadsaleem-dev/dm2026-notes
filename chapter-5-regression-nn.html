@@ -535,6 +535,11 @@ lasso_cv.fit(X_train_scaled, y_train)   # best alpha ≈ 0.00139</div>
         <div class="quiz-a"><p>Logistic regression reached 34% test accuracy versus 45% for the small Keras neural network after 50 epochs (both above the 10% random baseline). The gotcha: sweeping learning rates requires rebuilding and recompiling the model for each one — reusing an already-trained model across learning rates silently invalidates the comparison.</p></div>
       </details>
 
+      <details class="quiz-item">
+        <summary>You're building a Keras <code>Sequential</code> network for a 4-class image classification problem. What units and activation does the final <code>Dense</code> output layer need, and why?</summary>
+        <div class="quiz-a"><p><code>Dense(4, activation='softmax')</code>. The unit count matches the number of classes — one raw score per class — and softmax (§4) turns that vector of raw scores into a probability distribution over all 4 classes that sums to 1, generalizing the single-sigmoid-unit output used for binary classification.</p></div>
+      </details>
+
     </div>
   </section>
 

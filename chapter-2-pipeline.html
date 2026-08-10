@@ -671,6 +671,16 @@ X_tsne = TSNE(n_components=2, perplexity=30, random_state=42).fit_transform(X_pc
         <div class="quiz-a"><p>It reached 70.2% test accuracy, 0.835 ROC-AUC, but only 0.36 F1 — a concrete demonstration of why accuracy alone can look fine while the model is still struggling on the minority class.</p></div>
       </details>
 
+      <details class="quiz-item">
+        <summary>Of these five models — Support Vector Machine, Gradient-Boosted Trees, k-Nearest Neighbors, Ridge Regression, and Random Forest — which ones actually need one-hot encoding rather than raw category labels?</summary>
+        <div class="quiz-a"><p>SVM, k-Nearest Neighbors, and Ridge Regression need one-hot encoding — all three are arithmetic/distance-based, so a raw label-encoded category would introduce a false ordinal relationship. Gradient-Boosted Trees and Random Forest don't strictly need it: like any decision-tree-based model, they split on raw category values directly and never do arithmetic across them.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>Which of these are stochastic — producing a different result on repeated runs over the same data — and which are deterministic: Linear Regression (closed-form/OLS), t-SNE, K-Means, and PCA (full SVD)?</summary>
+        <div class="quiz-a"><p>t-SNE and K-Means are stochastic — t-SNE's optimization starts from a random low-dimensional layout, and K-Means starts from randomly chosen initial centroids, so different runs can land in different (locally optimal) places. Linear regression solved in closed form and PCA via full SVD are both deterministic — they're exact, non-random computations that return the identical answer every time on the same input.</p></div>
+      </details>
+
     </div>
   </section>
 
