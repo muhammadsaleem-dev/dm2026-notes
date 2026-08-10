@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DM Bootcamp — Basic Data Mining Practice</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 <script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
@@ -32,7 +36,7 @@
   </div>
   <div class="nav-panel" id="navPanel">
     <div class="nav-panel-section">
-      <span class="nav-panel-label">Chapters</span>
+      <span class="nav-panel-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
       <a href="chapter-2-pipeline.html">2 · The Data Mining Pipeline</a>
       <a href="chapter-3-classification.html">3 · Classification</a>
@@ -47,7 +51,7 @@
 <div class="page-shell">
   <aside class="sidebar-toc">
     <div class="sidebar-block">
-      <span class="sidebar-label">Chapters</span>
+      <span class="sidebar-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
       <a href="chapter-2-pipeline.html">2 · The Data Mining Pipeline</a>
       <a href="chapter-3-classification.html">3 · Classification</a>
@@ -62,56 +66,56 @@
 
   <div class="hero">
     <div class="eyebrow">Basic Data Mining Practice · Prof. Dr. Matteo Marouf</div>
-    <h1>DM 2026 — Condensed Chapter Notes</h1>
-    <p>Seven lecture decks (~450 slides total), distilled into one dense reference page per chapter: definitions, formulas, worked examples, comparison tables, and the gotchas that actually show up in questions — plus a summary of the professor's own sprint exercises and solutions at the end of each chapter.</p>
+    <h1>DM Bootcamp — Zero to Hero in Data Mining</h1>
+    <p>Seven modules built from ~450 slides of lecture material, rewritten as a real tutorial: motivation before mechanism, plain-English intuition, one fully-worked numeric example per major concept — plus a summary of the professor's own sprint exercises and solutions at the end of each module.</p>
   </div>
 
   <div class="chapter-grid">
 
-    <a class="chapter-card" href="chapter-1-intro.html">
-      <span class="card-num">Chapter 1</span>
+    <a class="chapter-card" href="chapter-1-intro.html" data-num="1">
+      <span class="card-num">Module 1</span>
       <h3>Introduction to Data Mining</h3>
-      <p>What data mining is, the project lifecycle, data representation, and the vocabulary (data types, task types) the rest of the course assumes.</p>
+      <p>What data mining is, the project lifecycle, data representation, and the vocabulary (data types, task types) the rest of the bootcamp assumes.</p>
       <span class="card-tags">Definitions · Lifecycle · Data types</span>
     </a>
 
-    <a class="chapter-card" href="chapter-2-pipeline.html">
-      <span class="card-num">Chapter 2</span>
+    <a class="chapter-card" href="chapter-2-pipeline.html" data-num="2">
+      <span class="card-num">Module 2</span>
       <h3>The Data Mining Pipeline</h3>
       <p>Preprocessing end to end — encoding, missing data, imbalance, scaling — plus PCA, t-SNE, evaluation metrics, and model selection.</p>
       <span class="card-tags">Preprocessing · PCA/t-SNE · Metrics</span>
     </a>
 
-    <a class="chapter-card" href="chapter-3-classification.html">
-      <span class="card-num">Chapter 3</span>
+    <a class="chapter-card" href="chapter-3-classification.html" data-num="3">
+      <span class="card-num">Module 3</span>
       <h3>Classification</h3>
       <p>Decision trees (entropy, information gain, pruning), Random Forests, AdaBoost, and a first pass at explainability.</p>
       <span class="card-tags">Trees · Random Forest · AdaBoost</span>
     </a>
 
-    <a class="chapter-card" href="chapter-4-clustering.html">
-      <span class="card-num">Chapter 4</span>
+    <a class="chapter-card" href="chapter-4-clustering.html" data-num="4">
+      <span class="card-num">Module 4</span>
       <h3>Clustering Analysis</h3>
       <p>K-Means mechanics, why it's initialization-sensitive, choosing K (elbow method, gap statistic), and where it breaks.</p>
       <span class="card-tags">K-Means · Elbow method · Gap statistic</span>
     </a>
 
-    <a class="chapter-card" href="chapter-5-regression-nn.html">
-      <span class="card-num">Chapter 5</span>
+    <a class="chapter-card" href="chapter-5-regression-nn.html" data-num="5">
+      <span class="card-num">Module 5</span>
       <h3>From Regression to Neural Networks</h3>
-      <p>The course's biggest chapter: linear &amp; logistic regression, gradient descent, backpropagation, activation functions, and training at scale.</p>
+      <p>The bootcamp's biggest module: linear &amp; logistic regression, gradient descent, backpropagation, activation functions, and training at scale.</p>
       <span class="card-tags">Gradient descent · Backprop · Optimizers</span>
     </a>
 
-    <a class="chapter-card" href="chapter-6-llm-rag.html">
-      <span class="card-num">Chapter 6</span>
+    <a class="chapter-card" href="chapter-6-llm-rag.html" data-num="6">
+      <span class="card-num">Module 6</span>
       <h3>LLM &amp; RAG Pipeline</h3>
       <p>How language models are trained and decode text, why RAG exists, and the full retrieval pipeline from chunking to generation.</p>
       <span class="card-tags">Tokenization · Decoding · RAG</span>
     </a>
 
-    <a class="chapter-card" href="chapter-7-explainability.html">
-      <span class="card-num">Chapter 7</span>
+    <a class="chapter-card" href="chapter-7-explainability.html" data-num="7">
+      <span class="card-num">Module 7</span>
       <h3>Explainability &amp; Causality</h3>
       <p>Local vs. global explanations, permutation importance, Shapley values / SHAP, and why explainability isn't causality.</p>
       <span class="card-tags">SHAP · Permutation importance · Confounders</span>
@@ -121,7 +125,7 @@
 
   <footer class="page-footer">
     <span>Basic Data Mining Practice — Prof. Dr. Matteo Marouf</span>
-    <span>Study reference, not a substitute for the full lecture decks</span>
+    <span>Zero to hero, one worked example at a time</span>
   </footer>
 
 </div>
