@@ -16,6 +16,9 @@
   --example: #4552C4;
   --example-ink: #2E3A99;
   --example-soft: #E7E9FA;
+  --py: #2F6F9E;
+  --py-ink: #1F5075;
+  --py-soft: #E7F0F7;
   --code-bg: #E9EEF0;
   --shadow: 0 1px 2px rgba(20, 30, 35, 0.06);
 }
@@ -35,6 +38,9 @@
     --example: #9AA6FF;
     --example-ink: #C7CDFF;
     --example-soft: #24274A;
+    --py: #74B4E0;
+    --py-ink: #BFE1F7;
+    --py-soft: #172A38;
     --code-bg: #1B242C;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   }
@@ -54,6 +60,9 @@
   --example: #9AA6FF;
   --example-ink: #C7CDFF;
   --example-soft: #24274A;
+  --py: #74B4E0;
+  --py-ink: #BFE1F7;
+  --py-soft: #172A38;
   --code-bg: #1B242C;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
@@ -72,6 +81,9 @@
   --example: #4552C4;
   --example-ink: #2E3A99;
   --example-soft: #E7E9FA;
+  --py: #2F6F9E;
+  --py-ink: #1F5075;
+  --py-soft: #E7F0F7;
   --code-bg: #E9EEF0;
   --shadow: 0 1px 2px rgba(20, 30, 35, 0.06);
 }
@@ -519,24 +531,13 @@ code {
 .worked-example .formula-block { margin: 0.7rem 0; }
 
 .python-note {
-  display: flex;
-  gap: 0.7rem;
-  align-items: flex-start;
-  border: 1px dashed var(--border-strong);
-  background: var(--code-bg);
-  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--py);
+  background: var(--py-soft);
+  padding: 0.85rem 1.1rem 0.95rem;
   margin: 1.1rem 0;
   border-radius: 4px;
   font-size: 0.94rem;
-}
-.python-note::before {
-  content: "";
-  flex-shrink: 0;
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 50%;
-  background: var(--text-muted);
-  margin-top: 0.55rem;
 }
 .python-note .pn-label {
   display: block;
@@ -545,11 +546,28 @@ code {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-weight: 700;
-  color: var(--text-muted);
-  margin-bottom: 0.35rem;
+  color: var(--py-ink);
+  margin-bottom: 0.4rem;
 }
+.python-note .pn-label::before { content: "\203A\203A "; opacity: 0.65; letter-spacing: 0; }
 .python-note p { margin: 0; max-width: none; }
-.python-note > div { flex: 1; min-width: 0; }
+.python-note p + p { margin-top: 0.6rem; }
+.python-note > div { min-width: 0; }
+
+/* compact glossary list inside a python-note, for grouping several terms
+   without three walls of prose stacked back to back */
+.python-note .pn-terms {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+.python-note .pn-terms li { margin: 0; }
+.python-note .pn-terms strong {
+  display: inline;
+  color: var(--py-ink);
+}
 
 /* ---------- Learning outcomes (bootcamp module intro) ---------- */
 .outcomes-box {
