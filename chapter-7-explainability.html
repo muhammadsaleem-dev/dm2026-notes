@@ -166,7 +166,12 @@
         </tbody>
       </table>
     </div>
-    <p>Back to the loan example: the end user ("why was <em>my</em> loan denied?") needs a <strong>local</strong> explanation — a story about their specific application. The auditor ("are minority groups disproportionately denied?") needs a <strong>global</strong> explanation — a pattern across thousands of applications. Some techniques, like SHAP, can actually be used at both scopes.</p>
+    <p>Back to the loan example: the end user ("why was <em>my</em> loan denied?") needs a <strong>local</strong> explanation — a story about their specific application. The auditor ("are minority groups disproportionately denied?") needs a <strong>global</strong> explanation — a pattern across thousands of applications.</p>
+    <details class="micro-check">
+      <summary>A developer asks "why does the model behave this way, and how do I fix an error?" — local or global?</summary>
+      <div class="mc-a"><p>Usually <strong>global</strong> — debugging systematic behavior means understanding patterns across many predictions, not just one. (Though tracking down one specific surprising prediction would be a local question — scope depends on exactly what's being asked.)</p></div>
+    </details>
+    <p>Some techniques, like SHAP, can actually be used at both scopes.</p>
 
     <h3>Inherent (glass-box) vs. post-hoc (black-box)</h3>
     <p>The second axis is about <em>when</em> the explanation is available. Some models are transparent by construction — the model's structure <em>is</em> the explanation. Others are opaque, needing an outside technique after the fact.</p>
@@ -181,7 +186,8 @@
       </table>
     </div>
     <p>To make "inherent" concrete: in a decision tree, the <em>order of splits</em> already reveals feature importance — the first split is, by construction, the single most discriminating feature, because that's the criterion the tree-building algorithm optimizes at each node. In logistic regression, <code>ŷ = σ(wᵀx + b)</code>, there's no separate interpretation step needed — the learned weight vector <code>w</code> <em>is</em> each feature's contribution, directly, as a number you can read off after training.</p>
-    <p>A random forest sits in an interesting middle ground: built out of individually inherently-explainable trees, but once you combine hundreds and average their votes, the <em>ensemble's</em> combined decision is no longer something a human can trace by hand — which is exactly why post-hoc methods like permutation importance and SHAP exist.</p>
+    <p>A random forest sits in an interesting middle ground: built out of individually inherently-explainable trees, but once you combine hundreds and average their votes, the <em>ensemble's</em> combined decision is no longer something a human can trace by hand.</p>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span>Inherent-vs-post-hoc is about individual model families, but nothing stops "inherently explainable" building blocks from combining into something that isn't — which is exactly why post-hoc methods like permutation importance and SHAP exist at all.</span></p>
   </section>
 
   <!-- ============ 3 ============ -->
@@ -191,7 +197,12 @@
 
     <p>Suppose you've trained a random forest that gets 90% accuracy. You want to know which input features are actually doing the work — not because you can read the forest's 200 trees by hand, but because you need to answer "is this model relying on something inappropriate?" or "which features are worth the cost of collecting?"</p>
     <p>The insight is refreshingly low-tech: if a feature genuinely matters, destroying the information in that feature should hurt performance. If a feature is irrelevant, scrambling it shouldn't change anything, since the model wasn't really using it. This is the ML equivalent of unplugging one wire in a circuit at a time to see which one makes the lights go out — you don't need the circuit diagram to learn something real from that experiment.</p>
-    <p>"Destroying the information" has a specific meaning: take one column — say, everyone's Age — and shuffle the values randomly among rows, leaving every other column exactly as it was. Each row now has a random person's age attached. The statistical distribution of Age is unchanged, but the <em>relationship</em> between a person's Age and their other features and true outcome has been completely scrambled. Because this technique never looks inside the model — only shuffles inputs and reads outputs — it works identically for a decision tree, a random forest, a neural network, or anything else. That's what "model-agnostic" means in practice.</p>
+    <p>"Destroying the information" has a specific meaning: take one column — say, everyone's Age — and shuffle the values randomly among rows, leaving every other column exactly as it was. Each row now has a random person's age attached.</p>
+    <details class="micro-check">
+      <summary>After shuffling the Age column, has the statistical distribution of ages in the dataset changed?</summary>
+      <div class="mc-a"><p><strong>No</strong> — the same set of age values is still there, just reattached to the wrong rows. What's destroyed is the <em>relationship</em> between a person's real age and their other features and true outcome, not the raw numbers themselves.</p></div>
+    </details>
+    <p>Because this technique never looks inside the model — only shuffles inputs and reads outputs — it works identically for a decision tree, a random forest, a neural network, or anything else. That's what "model-agnostic" means in practice.</p>
 
     <ol>
       <li>Train the model; measure baseline performance <em>s</em> (e.g. 90% accuracy).</li>
