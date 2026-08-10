@@ -128,6 +128,10 @@
     <p>Most of the machine learning you've read about — including everything in Module 3 — assumes someone has already told you the right answer for every training example. That labeling is expensive. Most data you'll actually encounter doesn't come with that luxury: you have half a million e-commerce transactions and no idea, up front, which customers are "loyal," "at risk," or "one-time bargain hunters" — those categories don't exist yet. They're something you want the data to reveal, not something you already know.</p>
     <p>That's the problem clustering solves. Instead of learning a mapping from features to a known label, it looks at unlabeled examples and asks a much more primitive question: which of these points are more similar to each other than to the rest? Group the similar ones together, and you've invented categories without anyone having pre-defined them.</p>
     <p>A useful analogy: classification is like calling a method that already has a documented contract — <code>isFraud(transaction) -&gt; boolean</code> — where someone wrote the correct return value for a training set of examples. Clustering is more like handing you a pile of objects with no <code>equals()</code>/<code>hashCode()</code> contract at all, and asking you to bucket them by "how alike they seem" using only their own field values. There's no oracle checking your work — success isn't "did I match the right answer" but "are these groupings actually useful and coherent."</p>
+    <details class="micro-check">
+      <summary>If there's no "correct answer" to check clustering against, how do you know a clustering result is any good?</summary>
+      <div class="mc-a"><p>You judge it by <strong>internal coherence</strong> instead — are points within a group actually close together, and are the groups themselves far apart from each other? §5 covers the metrics (like the silhouette score) that quantify exactly this, in place of the accuracy-against-labels check classification gets for free.</p></div>
+    </details>
     <p>Once a clustering model is trained, you can hand it a brand-new point and it will tell you which existing group that point most resembles — even though no one ever labeled a single training example as "loyal" or "arrhythmic."</p>
     <div class="table-wrap">
       <table>
@@ -163,7 +167,8 @@
       <li>Recompute each centroid as the mean of its assigned points.</li>
       <li>Repeat 3–4 until assignments stop changing or max iterations is hit.</li>
     </ol>
-    <p>The intuition for why this converges: every reassignment to a genuinely closer centroid can only shrink total squared distance (never grow it), and every centroid recompute as a mean can only shrink or hold steady that total (the mean is, by definition, the point minimizing total squared distance to a fixed set of points). Two moves that each can only help, alternating forever, has to bottom out somewhere.</p>
+    <p>Why does this loop ever settle down instead of running forever? Each of the two moves can only help, never hurt: reassigning a point to a genuinely closer centroid can only shrink the total squared distance, and recomputing a centroid as the mean of its points can only shrink or hold that total steady (a mean is, by definition, the point minimizing total squared distance to a fixed set of points).</p>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span>Two moves that each can only ever help, alternating forever, has to bottom out somewhere — that's why K-Means is guaranteed to converge.</span></p>
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
