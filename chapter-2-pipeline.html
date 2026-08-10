@@ -267,7 +267,8 @@
     <div class="chapter-head"><span class="chapter-num">2</span><h2>Preprocessing</h2></div>
     <p class="chapter-dek">Engineer features → handle missing data → handle imbalance → scale → reduce dimensions. Order matters; every step below is fit on <em>train</em> only.</p>
 
-    <p>Raw data is almost never model-ready. Between "I have a CSV" and "I can call <code>.fit()</code>" sits a sequence of transformations, and the order isn't arbitrary: each step needs to be <em>fit</em> on the training data only, then applied unchanged to validation/test data — otherwise you leak information from data the model is supposed to have never seen.</p>
+    <p>Raw data is almost never model-ready. Between "I have a CSV" and "I can call <code>.fit()</code>" sits a sequence of transformations, and the order isn't arbitrary: each step needs to be <em>fit</em> on the training data only, then applied unchanged to validation/test data.</p>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span><strong>Data leakage</strong> — letting any information from validation/test data influence training, even indirectly. It's easy to introduce by accident (fitting a scaler on the <em>whole</em> dataset before splitting is a classic example), and every "fit on train only" rule in this module — for imputation, encoding, scaling, and PCA alike — exists to prevent this one failure mode.</span></p>
 
     <h3>Feature engineering</h3>
     <p>A model can only find patterns in the columns you give it. If the <em>real</em> signal is a derived quantity — speed, rather than the raw time and distance columns it comes from — an algorithm that can't do that arithmetic internally will simply never find it. Feature engineering is doing that derivation yourself, ahead of time, so the signal is sitting right there in a column.</p>
@@ -459,10 +460,17 @@
 
     <h3>t-SNE — t-Distributed Stochastic Neighbor Embedding</h3>
     <p>PCA is a poor tool specifically for visualization when the interesting structure is local and non-linear — several genuinely distinct clusters that PCA might partially overlap because it's only allowed straight-line projections. t-SNE was built specifically to <strong>visualize</strong> high-dimensional data by preserving local neighborhoods, not global distances. It's non-linear and stochastic — rerun it and you'll get a differently-oriented (but similarly-clustered) picture each time.</p>
-    <div class="formula-block"><span class="label">Similarity in high-D (Gaussian, then symmetrized)</span>P(i|j) = exp(−‖xᵢ−xⱼ‖² / 2σᵢ²) / Σ_{k≠i} exp(−‖xᵢ−xₖ‖² / 2σᵢ²)
-Pᵢⱼ = (P(j|i) + P(i|j)) / 2N
-<span class="label" style="margin-top:.5rem">Minimize via gradient descent</span>KL(P ‖ Q) = Σ pᵢⱼ log(pᵢⱼ / qᵢⱼ)</div>
-    <p>Before the formulas: for every point, t-SNE builds a "who's my neighbor" probability distribution — nearby points get high probability, distant points get probability close to zero — once in the original high-dimensional space (P) and once in the low-dimensional space you're constructing (Q). Then it nudges the low-dimensional points around, attracting or repelling them, until Q looks as much like P as possible, measured by KL divergence.</p>
+
+    <p>Here's the plan before any formula: for every point, t-SNE builds a "who's my neighbor" probability distribution — nearby points get high probability, distant points get probability close to zero. It builds this distribution <em>twice</em>: once in the original high-dimensional space (call it P), and once in the low-dimensional space it's constructing (call it Q). Then it nudges the low-dimensional points around — attracting or repelling them — until Q's neighbor-distribution looks as much like P's as possible.</p>
+
+    <p>First, how P itself is built — the "who's my neighbor" probability of point <em>j</em> given point <em>i</em>:</p>
+    <div class="formula-block"><span class="label">Similarity in high-D (Gaussian)</span>P(i|j) = exp(−‖xᵢ−xⱼ‖² / 2σᵢ²) / Σ_{k≠i} exp(−‖xᵢ−xₖ‖² / 2σᵢ²)</div>
+    <p>Reading the symbols: <code>‖xᵢ−xⱼ‖²</code> is just squared distance between the two points — closer points make the exponent less negative, so <code>exp(...)</code> comes out larger. The denominator sums that same quantity over every other point <em>k</em>, which normalizes the whole thing into a proper probability that sums to 1 across all of point <em>i</em>'s potential neighbors. σᵢ is a per-point bandwidth, chosen automatically to hit the target perplexity below.</p>
+    <p>That gives an asymmetric P(i|j); averaging it with its mirror image P(j|i) and normalizing produces the symmetric version actually used, Pᵢⱼ:</p>
+    <div class="formula-block">Pᵢⱼ = (P(j|i) + P(i|j)) / 2N</div>
+    <p>Finally, once P (high-D) and Q (low-D) both exist, t-SNE needs one number saying "how different are these two neighbor-distributions right now" — that's <strong>KL divergence</strong>, and gradient descent (Module 5) pushes the low-dimensional points to shrink it:</p>
+    <div class="formula-block"><span class="label">Minimize via gradient descent</span>KL(P ‖ Q) = Σ pᵢⱼ log(pᵢⱼ / qᵢⱼ)</div>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span>Three formulas, one idea: build a neighbor-probability distribution twice (once in high-D, once in low-D), then use gradient descent to make the low-D one match the high-D one as closely as possible.</span></p>
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>

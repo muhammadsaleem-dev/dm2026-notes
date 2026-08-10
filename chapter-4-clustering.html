@@ -352,9 +352,18 @@
     <p>Once K-Means has produced an assignment: is this clustering actually <em>good</em>? Unlike classification, there's no held-out label to check against — "good" has to be defined purely from the geometry of the points themselves.</p>
 
     <h3>Silhouette Coefficient, up close</h3>
-    <p>For a single point <em>i</em>, define <strong>a(i)</strong> — average distance from <em>i</em> to every other point in its own cluster — and <strong>b(i)</strong> — average distance from <em>i</em> to every point in the nearest other cluster:</p>
+    <p>A good cluster assignment for a point should mean two things at once: the point sits close to its <em>own</em> cluster, and far from every <em>other</em> cluster. The silhouette score turns exactly that idea into one number per point.</p>
+    <p>For a single point <em>i</em>, define two distances:</p>
+    <ul>
+      <li><strong>a(i)</strong> — the average distance from <em>i</em> to every other point in its own cluster ("how tight is my own group?")</li>
+      <li><strong>b(i)</strong> — the average distance from <em>i</em> to every point in the nearest <em>other</em> cluster ("how close is the nearest rival group?")</li>
+    </ul>
+    <p>A well-placed point should have a small a(i) and a large b(i). The silhouette score combines both into a single −1-to-+1 number:</p>
     <div class="formula-block">s(i) = (b(i) − a(i)) / max(a(i), b(i))</div>
-    <p>If a point sits much closer to its own cluster than any other, s(i)→+1 — a great fit. If a(i)≈b(i), s(i)→0 — sitting on a boundary. If a(i) exceeds b(i), s(i) goes negative — closer, on average, to a <em>different</em> cluster than the one it was assigned to.</p>
+    <details class="micro-check">
+      <summary>If a(i) is much smaller than b(i) — tight in your own cluster, far from the nearest rival — what does s(i) come out close to?</summary>
+      <div class="mc-a"><p><strong>+1.</strong> b(i)−a(i) is large and positive relative to the denominator, so the ratio approaches 1 — a great fit. If a(i)≈b(i) instead, s(i)→0 (sitting on a boundary between clusters); if a(i) exceeds b(i), s(i) goes negative — the point is actually closer, on average, to a <em>different</em> cluster than the one it was assigned to.</p></div>
+    </details>
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>

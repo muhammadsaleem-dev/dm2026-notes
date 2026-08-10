@@ -338,12 +338,14 @@
     <div class="python-note"><div><span class="pn-label">Python note</span><p>This layer-by-layer structure is literally how you build a network in Keras: <code>keras.Sequential([...])</code> lists layers in order, and <code>Dense(n, activation=...)</code> is a "fully-connected" layer of n neurons, each taking every output of the previous layer as input. A two-layer network would be <code>Sequential([Dense(hidden_units, activation='sigmoid'), Dense(output_units, activation='sigmoid')])</code> — the code mirrors the layer-by-layer math almost line for line.</p></div></div>
 
     <h3>Forward propagation</h3>
-    <p><strong>Forward propagation</strong> is just the name for "running the network": push an input through layer 1's weighted-sum-then-activation, push that result through layer 2's, and so on to the output. It's the nested-function evaluation the "neuron feeds into neuron" picture already implies:</p>
-    <div class="formula-block">z^[1] = W^[1]x + b^[1],  a^[1] = g^[1](z^[1])
-z^[2] = W^[2]a^[1] + b^[2],  a^[2] = g^[2](z^[2]) = ŷ
-
-ŷ = g^[2]( W^[2] · g^[1](W^[1]x + b^[1]) + b^[2] )</div>
-    <p>Layer 1 takes raw input x, computes z^[1], applies g^[1] to get a^[1]. Layer 2 treats a^[1] exactly the way layer 1 treated x — its own z^[2], its own g^[2] — and its output <em>is</em> ŷ. The bracketed superscript is purely a layer index, unrelated to exponents.</p>
+    <p><strong>Forward propagation</strong> is just the name for "running the network": push an input through layer 1's weighted-sum-then-activation, push that result through layer 2's, and so on to the output.</p>
+    <p>Layer 1 does exactly what a single neuron always does (§4): a weighted sum, then a squashing function.</p>
+    <div class="formula-block">z<sup>[1]</sup> = W<sup>[1]</sup>x + b<sup>[1]</sup>,   a<sup>[1]</sup> = g<sup>[1]</sup>(z<sup>[1]</sup>)</div>
+    <p>Layer 2 then does the <em>exact same thing</em> — except its input isn't the raw data x, it's a⁽¹⁾, layer 1's output:</p>
+    <div class="formula-block">z<sup>[2]</sup> = W<sup>[2]</sup>a<sup>[1]</sup> + b<sup>[2]</sup>,   a<sup>[2]</sup> = g<sup>[2]</sup>(z<sup>[2]</sup>) = ŷ</div>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span>Every layer runs the identical two-step recipe (weighted sum, then squash) — only <em>what it treats as input</em> changes: layer 1 reads the raw data, layer 2 reads layer 1's output, and so on. The bracketed superscript is purely a layer index, unrelated to exponents.</span></p>
+    <p>Chaining both layers into one nested expression makes the whole network a single function of x:</p>
+    <div class="formula-block">ŷ = g<sup>[2]</sup>( W<sup>[2]</sup> · g<sup>[1]</sup>(W<sup>[1]</sup>x + b<sup>[1]</sup>) + b<sup>[2]</sup> )</div>
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
@@ -389,7 +391,18 @@ W^[1] := W^[1] − η∇_W[1]J,   b^[1] := b^[1] − η∇_b[1]J</div>
     <div class="chapter-head"><span class="chapter-num">6</span><h2>Hyperparameters, Activations &amp; Why Deep Training Is Hard</h2></div>
 
     <p>Everything so far assumed a network's shape and activation functions were already decided. In practice, those choices — collectively <strong>hyperparameters</strong>, to distinguish them from the weights/biases the network learns on its own — are set by you before training starts, and matter enormously.</p>
-    <p><strong>Network size</strong> — depth × width — is the most consequential hyperparameter, fixed going into training; gradient descent never changes it. A bigger network has more capacity to fit complex patterns, but also more capacity to fit <em>noise</em> (overfitting), and costs more to train and run. A smaller network trains faster and generalizes more predictably, but risks underfitting. Practical advice: start small, grow based on validation performance (not training performance — that's how overfitting sneaks in undetected), and add mitigations like <strong>dropout</strong> (randomly disabling a fraction of neurons each training step, forcing the network not to over-rely on any one) and <strong>early stopping</strong> (halting once validation performance stops improving, even if training performance is still climbing).</p>
+    <p><strong>Network size</strong> — depth × width — is the most consequential hyperparameter. It's fixed going into training; gradient descent never touches it, unlike the weights and biases it does adjust.</p>
+    <details class="micro-check">
+      <summary>A bigger network has more capacity to fit complex patterns. What's the downside of "more capacity," beyond just cost?</summary>
+      <div class="mc-a"><p>More capacity to fit <em>noise</em> too — overfitting. A smaller network trains faster and generalizes more predictably, but risks the opposite failure, underfitting. Same size-vs-generalization tension as tree depth in Module 3.</p></div>
+    </details>
+    <p>Practical advice: start small, and grow the network based on <em>validation</em> performance — not training performance, since watching training performance alone is exactly how overfitting sneaks in undetected.</p>
+    <p>Two standard mitigations, worth telling apart:</p>
+    <ul>
+      <li><strong>Dropout</strong> — randomly disable a fraction of neurons on each training step, forcing the network not to over-rely on any single one.</li>
+      <li><strong>Early stopping</strong> — halt training once validation performance stops improving, even if training performance is still climbing.</li>
+    </ul>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span>Dropout changes <em>how the network trains</em> (forcing redundancy); early stopping changes <em>when training ends</em> (before overfitting sets in). Different mechanisms, same goal — a model that generalizes.</span></p>
 
     <h3>Activation functions</h3>
     <p>Why does the activation function g(·) matter at all — why not just skip it and stack raw weighted sums? A linear function of a linear function is <em>still linear</em>. If every layer were just z=Wa+b with no non-linear step, an entire ten-layer network would collapse mathematically into a single linear-regression model, no matter how many layers. The activation function is what lets depth actually buy you something.</p>
