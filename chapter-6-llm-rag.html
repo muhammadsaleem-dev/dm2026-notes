@@ -214,6 +214,41 @@
       <p>Token E now grabs <strong>74.2%</strong> of the probability mass — up from 44.9% at T=1. Lower temperature concentrates probability on the front-runner.</p>
       <p>Raise instead to <strong>T=2.0</strong> (flattening): logits halve: [1.0,0.5,0.25,0.005,1.5,1.0,0.75], sum ≈15.973. Token E drops to <strong>28.1%</strong>, and the weakest token D climbs from 2.3% to <strong>6.3%</strong>. At higher temperature every token becomes more competitive.</p>
     </div>
+
+    <div class="viz-block" data-viz="softmax">
+      <div class="viz-header">
+        <span class="viz-label">Interactive — drag the temperature</span>
+      </div>
+      <svg class="viz-svg" viewBox="0 0 220 130" role="img" aria-label="Bar chart of softmax probabilities for the seven toy logits, reshaped live by temperature">
+        <rect class="viz-bar" data-bar="0" x="10" width="18" y="120" height="1"></rect>
+        <rect class="viz-bar" data-bar="1" x="38" width="18" y="120" height="1"></rect>
+        <rect class="viz-bar" data-bar="2" x="66" width="18" y="120" height="1"></rect>
+        <rect class="viz-bar" data-bar="3" x="94" width="18" y="120" height="1"></rect>
+        <rect class="viz-bar" data-bar="4" x="122" width="18" y="120" height="1"></rect>
+        <rect class="viz-bar" data-bar="5" x="150" width="18" y="120" height="1"></rect>
+        <rect class="viz-bar" data-bar="6" x="178" width="18" y="120" height="1"></rect>
+        <text class="viz-bar-label" x="19" y="128" text-anchor="middle">A</text>
+        <text class="viz-bar-label" x="47" y="128" text-anchor="middle">B</text>
+        <text class="viz-bar-label" x="75" y="128" text-anchor="middle">C</text>
+        <text class="viz-bar-label" x="103" y="128" text-anchor="middle">D</text>
+        <text class="viz-bar-label" x="131" y="128" text-anchor="middle">E</text>
+        <text class="viz-bar-label" x="159" y="128" text-anchor="middle">F</text>
+        <text class="viz-bar-label" x="187" y="128" text-anchor="middle">G</text>
+        <text class="viz-bar-value" data-bar-value="0" x="19" y="115" text-anchor="middle"></text>
+        <text class="viz-bar-value" data-bar-value="1" x="47" y="115" text-anchor="middle"></text>
+        <text class="viz-bar-value" data-bar-value="2" x="75" y="115" text-anchor="middle"></text>
+        <text class="viz-bar-value" data-bar-value="3" x="103" y="115" text-anchor="middle"></text>
+        <text class="viz-bar-value" data-bar-value="4" x="131" y="115" text-anchor="middle"></text>
+        <text class="viz-bar-value" data-bar-value="5" x="159" y="115" text-anchor="middle"></text>
+        <text class="viz-bar-value" data-bar-value="6" x="187" y="115" text-anchor="middle"></text>
+      </svg>
+      <div class="viz-slider-row">
+        <label for="vizTempSlider">T = <strong data-viz-temp-value>1.00</strong></label>
+        <input type="range" id="vizTempSlider" min="0.3" max="3" step="0.05" value="1">
+      </div>
+      <p class="viz-status" data-viz-status>At T=1.00, token <strong>E</strong> (the highest logit, 3.0) holds 44.9% of the probability mass.</p>
+    </div>
+
     <p>So: T&lt;1.0 sharpens toward the top candidate (more deterministic, less creative); T&gt;1.0 flattens it (more random, more creative); T=1.0 leaves the raw distribution untouched. Temperature is often combined with <strong>top-k</strong> sampling (restrict to the k highest-probability tokens, like a <code>LIMIT k</code> on a ranked query) or <strong>top-p/nucleus</strong> sampling (keep the smallest set of top tokens whose cumulative probability crosses p) to avoid ever sampling a wildly implausible token even at high temperature.</p>
 
     <div class="callout rule"><span class="tag">Note</span><p>ChatGPT is not a raw LLM — it's an LLM wrapped with prompt engineering, RLHF fine-tuning/alignment (Reinforcement Learning from Human Feedback: an additional training phase nudging the model toward outputs human raters actually prefer), conversation-memory handling, tool integration, and safety layers on top. Next-token prediction is the engine; a lot of additional engineering surrounds it before you see a chat window.</p></div>
@@ -413,5 +448,6 @@ response = OllamaLLM(model="llama3.2").invoke(prompt)      # runs locally via Ol
 </div>
 </div>
 <script src="assets/site.js" defer></script>
+<script src="assets/viz.js" defer></script>
 </body>
 </html>

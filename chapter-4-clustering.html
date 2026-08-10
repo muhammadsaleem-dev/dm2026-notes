@@ -188,6 +188,33 @@
       <p>WCSS is the total squared "wobble" of every point around its assigned centroid — lower means tighter, more internally-consistent clusters.</p>
     </div>
 
+    <div class="viz-block" data-viz="kmeans">
+      <div class="viz-header">
+        <span class="viz-label">Interactive — watch it converge</span>
+        <div class="viz-controls">
+          <button type="button" class="viz-btn" data-viz-action="play">▶ Play</button>
+          <button type="button" class="viz-btn" data-viz-action="reset">↺ Reset</button>
+        </div>
+      </div>
+      <svg class="viz-svg" viewBox="0 0 220 200" role="img" aria-label="Animated K-Means clustering on the six-point toy dataset from the worked example">
+        <circle class="viz-point" data-point="0" cx="46" cy="164" r="4"></circle>
+        <circle class="viz-point" data-point="1" cx="46" cy="148" r="4"></circle>
+        <circle class="viz-point" data-point="2" cx="62" cy="148" r="4"></circle>
+        <circle class="viz-point" data-point="3" cx="158" cy="52" r="4"></circle>
+        <circle class="viz-point" data-point="4" cx="158" cy="36" r="4"></circle>
+        <circle class="viz-point" data-point="5" cx="174" cy="52" r="4"></circle>
+        <g class="viz-centroid-group" data-centroid="0" style="transform: translate(46px, 164px);">
+          <line class="viz-centroid cluster-a" x1="-6" y1="-6" x2="6" y2="6"></line>
+          <line class="viz-centroid cluster-a" x1="-6" y1="6" x2="6" y2="-6"></line>
+        </g>
+        <g class="viz-centroid-group" data-centroid="1" style="transform: translate(158px, 52px);">
+          <line class="viz-centroid cluster-b" x1="-6" y1="-6" x2="6" y2="6"></line>
+          <line class="viz-centroid cluster-b" x1="-6" y1="6" x2="6" y2="-6"></line>
+        </g>
+      </svg>
+      <p class="viz-status" data-viz-status>Initial centroids: <strong>C1=(1,1)</strong>, <strong>C2=(8,8)</strong>. Press Play.</p>
+    </div>
+
     <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.cluster import KMeans; KMeans(n_clusters=2).fit(X)</code> runs the assign/recompute loop above until convergence. <code>.inertia_</code> gives you exactly the WCSS value computed by hand (2.67 above) — you never sum squared distances yourself in practice.</p></div></div>
 
     <h3>Local optima &amp; inertia</h3>
@@ -429,5 +456,6 @@ kmeans.fit(rfm_scaled)</div>
 </div>
 </div>
 <script src="assets/site.js" defer></script>
+<script src="assets/viz.js" defer></script>
 </body>
 </html>
