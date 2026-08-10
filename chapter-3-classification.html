@@ -131,6 +131,10 @@
     <p>Entropy measures how "mixed up" or unpredictable a set of labels is. If a set is pure (every record is the same class), entropy is 0. If a set is a 50/50 mix of two classes, entropy is at its highest value (1, in "bits," using log base 2):</p>
     <div class="formula-block">entropy(X) = − Σᵢ pᵢ · log₂(pᵢ)</div>
     <p>Why base 2? Because entropy is measured in <strong>bits</strong> — literally, the expected number of yes/no questions you'd need to identify a record's class if you asked optimally. A 50/50 split needs exactly 1 well-chosen question on average, hence entropy 1. If your calculator only has natural log, use log₂(p) = ln(p) / ln(2).</p>
+    <details class="micro-check">
+      <summary>A set is 100% one class — every record identical. What's its entropy, and why?</summary>
+      <div class="mc-a"><p><strong>0.</strong> There's nothing left to guess — you already know the class with certainty, so it takes zero yes/no questions to identify it.</p></div>
+    </details>
     <p><strong>Information gain</strong> answers the question we actually care about: if I split X on attribute <em>a</em>, how much less mixed-up are the resulting subsets, on average, compared to before?</p>
     <div class="formula-block">gain(X, a) = entropy(X) − Σ_{v ∈ Values(a)} (|X_v| / |X|) · entropy(X_v)</div>
     <p>The attribute chosen is whichever maximizes this quantity — the split that reduces uncertainty the most.</p>
@@ -285,7 +289,12 @@ clf = RandomForestClassifier(n_estimators=20)  # 20 trees</code></pre>
     <p>Everything covered so far has been about getting a model to predict the right label. But in a lot of real deployments, "predicts correctly" is necessary but not sufficient — you also need to answer <em>why</em> the model predicted what it did. A bank that denies a loan, a hospital that flags a patient as high-risk, or a court using a risk score in sentencing all face the same requirement: a human is entitled to know what drove that specific decision. <strong>Explainable AI (XAI)</strong> is the umbrella term for techniques that make a model's individual predictions transparent.</p>
 
     <h3>Explainable AI</h3>
-    <p>Some model families are transparent by construction — you can read the decision logic straight off the trained model. A linear/logistic regression model's coefficients directly tell you how much each feature pushes the prediction. A single decision tree's path from root to leaf <em>is</em> a plain-English explanation. These are <strong>glass-box</strong> models. Other families — Random Forests with hundreds of trees, neural networks, gradient boosting, high-dimensional SVMs — achieve strong accuracy precisely by combining huge numbers of small signals in ways too tangled to read off directly; these are <strong>black-box</strong> models, and getting an explanation out of them requires dedicated post-hoc techniques (Module 7).</p>
+    <p>Some model families are transparent by construction — you can read the decision logic straight off the trained model. A linear/logistic regression model's coefficients directly tell you how much each feature pushes the prediction. A single decision tree's path from root to leaf <em>is</em> a plain-English explanation. These are <strong>glass-box</strong> models.</p>
+    <p>Other families — Random Forests with hundreds of trees, neural networks, gradient boosting, high-dimensional SVMs — achieve strong accuracy precisely by combining huge numbers of small signals in ways too tangled to read off directly. These are <strong>black-box</strong> models.</p>
+    <details class="micro-check">
+      <summary>Getting an explanation out of a black-box model requires what, that a glass-box model doesn't need?</summary>
+      <div class="mc-a"><p>A separate, dedicated <strong>post-hoc</strong> explainability technique layered on top — the model itself won't hand you the reasoning, unlike a decision tree's root-to-leaf path or a regression's coefficients. Module 7 covers exactly these techniques.</p></div>
+    </details>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Glass-box (interpretable)</th><th>Black-box (opaque)</th></tr></thead>
