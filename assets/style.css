@@ -954,6 +954,156 @@ code {
   .quiz-item[open] summary::after { content: "\25B4"; }
 }
 
+/* ---------- Progressive-disclosure learning components ---------- */
+
+/* Micro-check: a tiny, inline retrieval question (5-10s answer),
+   lighter weight than Test Yourself/Exam Drill so it can sit directly
+   in the flow of an explanation without breaking pace. */
+.micro-check {
+  display: block;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  background: var(--bg-raised);
+  padding: 0.55rem 0.85rem;
+  margin: 0.9rem 0;
+  font-size: 0.88rem;
+  box-shadow: var(--shadow-sm);
+}
+.micro-check summary {
+  cursor: pointer;
+  list-style: none;
+  font-weight: 600;
+  color: var(--text);
+}
+.micro-check summary::-webkit-details-marker { display: none; }
+.micro-check summary::before {
+  content: "Quick check";
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border-radius: 4px;
+  padding: 0.14rem 0.42rem;
+  margin-right: 0.55rem;
+  vertical-align: middle;
+}
+.micro-check .mc-a {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--border);
+  color: var(--text-muted);
+}
+.micro-check .mc-a strong { color: var(--accent-ink); }
+.micro-check .mc-a p { margin: 0.3rem 0; max-width: none; }
+
+/* Concept takeaway: crystallizes the one idea just taught, right after
+   the term is introduced. One or two lines, not a wall of text. */
+.concept-takeaway {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  padding: 0.55rem 0.85rem;
+  margin: 0.7rem 0;
+  font-size: 0.9rem;
+}
+.concept-takeaway .ct-icon { flex-shrink: 0; font-size: 1rem; line-height: 1.5; }
+.concept-takeaway strong { color: var(--accent-ink); }
+.concept-takeaway p { margin: 0; max-width: none; }
+
+/* Exam takeaway: compact "why this shows up on the exam" note, distinct
+   blue identity so it doesn't compete visually with concept-takeaway. */
+.exam-takeaway {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  border-radius: 6px;
+  background: var(--py-soft);
+  padding: 0.6rem 0.9rem;
+  margin: 0.9rem 0;
+  font-size: 0.9rem;
+}
+.exam-takeaway .et-icon { flex-shrink: 0; font-size: 1rem; line-height: 1.5; }
+.exam-takeaway .et-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--py-ink);
+  margin-bottom: 0.25rem;
+}
+.exam-takeaway p { margin: 0; max-width: none; }
+.exam-takeaway strong { color: var(--py-ink); }
+
+/* Flow diagrams: small labeled boxes + arrows, for genuinely visual
+   relationships (input -> model -> output; A vs B vs C at a glance). */
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 0.9rem 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.flow-diagram .flow-box {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  color: var(--text);
+}
+.flow-diagram .flow-box.flow-emphasis { background: var(--accent); color: var(--bg-raised); border-color: var(--accent); }
+.flow-diagram .flow-arrow { color: var(--text-muted); padding: 0 0.5rem; font-weight: 400; }
+
+.flow-vertical {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0.9rem 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  justify-items: start;
+}
+.flow-vertical .flow-box {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 0.35rem 0.8rem;
+  color: var(--text);
+}
+.flow-vertical .flow-down { color: var(--text-muted); font-weight: 400; padding-left: 0.95rem; line-height: 1.1; }
+
+/* small side-by-side task cards, e.g. Classification / Regression / Clustering */
+.concept-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.7rem;
+  margin: 0.9rem 0;
+}
+.concept-cards .concept-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-raised);
+  padding: 0.7rem 0.85rem;
+  box-shadow: var(--shadow-sm);
+}
+.concept-cards .concept-card h4 {
+  margin: 0 0 0.3rem;
+  font-size: 0.88rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--accent-ink);
+}
+.concept-cards .concept-card p { margin: 0; font-size: 0.83rem; color: var(--text-muted); max-width: none; }
+
 /* ---------- Exam Drill (format-matched practice, distinct from Test Yourself) ---------- */
 .drill-list { margin: 0 0 0.5rem; padding: 0; list-style: none; }
 .drill-item {

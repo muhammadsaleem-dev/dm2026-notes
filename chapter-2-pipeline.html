@@ -138,7 +138,76 @@
     <p>Before you touch a model — before you even touch data-cleaning code — you need to answer two questions: <em>what kind of problem is this?</em> and <em>what does each row/column of my data actually represent?</em> Skipping this step is how experienced engineers waste a week building a regression model for a problem that was secretly a classification problem, or clustering data that already had perfectly good labels sitting in a column they didn't look at. Think of it as the equivalent of picking the right data structure before you start writing an algorithm: get it wrong and everything downstream — the preprocessing, the metrics, the model choice — is solving the wrong problem well.</p>
 
     <h3>Matching the question to a technique</h3>
-    <p>The first fork in the road is: do you have labels (a known "right answer" column) or not? If you have labels, is the target a category or a number? If you don't, what are you actually trying to discover — groups, associations, outliers? Each combination of "what you have" and "what you want" maps to a different family of technique.</p>
+    <p>Start with one small table of home sales — square footage, neighborhood, sale price:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Square footage</th><th>Neighborhood</th><th>Sale price</th></tr></thead>
+        <tbody>
+          <tr><td>1,450</td><td>Riverside</td><td>$420,000</td></tr>
+          <tr><td>2,100</td><td>Oakwood</td><td>$610,000</td></tr>
+          <tr><td>1,800</td><td>Riverside</td><td>$510,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>We have the same data. But we can ask different questions about it — and the question we ask, not the data itself, decides which technique applies.</p>
+
+    <h4 style="margin:1.1rem 0 0.3rem; font-size:0.95rem; font-family:var(--font-body); font-weight:700;">Question 1: "Will this house sell for more than $500k?"</h4>
+    <div class="flow-diagram">
+      <span class="flow-box">Sale price &gt; $500k</span><span class="flow-arrow">→</span><span class="flow-box flow-emphasis">YES</span>
+    </div>
+    <div class="flow-diagram">
+      <span class="flow-box">Sale price ≤ $500k</span><span class="flow-arrow">→</span><span class="flow-box">NO</span>
+    </div>
+    <p>The answer is no longer a dollar figure — it's now a <strong>category</strong>: YES or NO. This is called <strong>classification</strong>.</p>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span><strong>Classification</strong> — predict a category.</span></p>
+    <details class="micro-check">
+      <summary>Is "YES / NO" a category, or a continuous number?</summary>
+      <div class="mc-a"><p>A <strong>category</strong> — a finite set of labels, not a measurement. That's what makes this classification rather than regression.</p></div>
+    </details>
+
+    <h4 style="margin:1.3rem 0 0.3rem; font-size:0.95rem; font-family:var(--font-body); font-weight:700;">Question 2: "What price will this house sell for?"</h4>
+    <p>Let's change <em>only</em> the question — same three houses, same columns.</p>
+    <div class="flow-diagram">
+      <span class="flow-box">House 1</span><span class="flow-arrow">→</span><span class="flow-box flow-emphasis">$420,000</span>
+    </div>
+    <div class="flow-diagram">
+      <span class="flow-box">House 2</span><span class="flow-arrow">→</span><span class="flow-box flow-emphasis">$610,000</span>
+    </div>
+    <p>This time the answer is a <strong>numerical value</strong> — it could be $420,000, or $421,384, or any number in between. This is called <strong>regression</strong>.</p>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span><strong>Regression</strong> — predict a numerical value.</span></p>
+    <details class="micro-check">
+      <summary>Predicting a house's exact price in dollars — classification or regression?</summary>
+      <div class="mc-a"><p><strong>Regression.</strong> The target is a continuous number with no fixed set of categories to choose from.</p></div>
+    </details>
+
+    <h4 style="margin:1.3rem 0 0.3rem; font-size:0.95rem; font-family:var(--font-body); font-weight:700;">Question 3: "Which houses are similar to each other?"</h4>
+    <p>Now let's remove the price column entirely.</p>
+    <p>There is no "right answer" column here at all — no category to predict, no number to predict. We're just asking the data to reveal its own groupings. This is called <strong>clustering</strong>.</p>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span><strong>Clustering</strong> — find groups, with no predefined target to predict.</span></p>
+    <details class="micro-check">
+      <summary>Does clustering require a predefined target column?</summary>
+      <div class="mc-a"><p><strong>No.</strong> That absence is exactly what defines clustering — you're discovering structure, not predicting a known kind of answer.</p></div>
+    </details>
+
+    <h4 style="margin:1.3rem 0 0.5rem; font-size:0.95rem; font-family:var(--font-body); font-weight:700;">Connecting the three</h4>
+    <div class="flow-vertical">
+      <span class="flow-box">Same dataset</span>
+      <span class="flow-down">↓</span>
+      <span class="flow-box">Different question</span>
+      <span class="flow-down">↓</span>
+      <span class="flow-box">Different task</span>
+    </div>
+    <div class="concept-cards">
+      <div class="concept-card"><h4>Classification</h4><p>Category (YES/NO, spam/not-spam)</p></div>
+      <div class="concept-card"><h4>Regression</h4><p>Number ($420,000, 98.6°F)</p></div>
+      <div class="concept-card"><h4>Clustering</h4><p>Groups — no target at all</p></div>
+    </div>
+    <div class="exam-takeaway">
+      <span class="et-icon">🎯</span>
+      <div><span class="et-label">Exam takeaway</span><p>The <strong>question</strong> determines the technique — not the dataset. The same table of houses supports all three tasks; what changes is what you're asking of it.</p></div>
+    </div>
+
+    <p>That three-way split is the first fork in the road. The full picture has a few more branches — do you have labels at all, and if you don't, what exactly are you trying to discover (groups? outliers? co-occurring items?). Each combination below maps to a different family of technique — worth having as a reference once the core three above feel solid:</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>You have…</th><th>You want to…</th><th>Technique</th></tr></thead>
@@ -152,11 +221,6 @@
           <tr><td>Free-text data</td><td>Understand, mine, or generate language</td><td>Text mining</td></tr>
         </tbody>
       </table>
-    </div>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Say you have a table of home sales: square footage, neighborhood, sale price. If your question is "will this house sell for over $500k?" you've turned the price column into a category (over/under threshold) — that's classification. If your question is "what will this house sell for?" you keep price as a continuous number — that's regression. If instead you had <em>no</em> price column at all and just wanted to know "which houses are similar to each other?", there's no target to predict — that's clustering. Same raw data, three completely different pipelines, because the <em>question</em> changed, not the dataset.</p>
     </div>
 
     <h3>Data representation isn't fixed</h3>
@@ -219,7 +283,14 @@
     <div class="python-note"><div><span class="pn-label">Python note</span><p>"Aggregation" in pandas is usually a <code>groupby</code> followed by a reduction: <code>df.groupby('customer_id')['purchase_amount'].sum()</code> collapses all rows for each customer into one total-spend number — the pandas equivalent of a SQL <code>GROUP BY</code> + <code>SUM</code>. For datetime extraction, <code>pd.to_datetime(df['timestamp'])</code> parses a text column into a real datetime type, after which <code>df['timestamp'].dt.hour</code> or <code>.dt.dayofweek</code> pulls out the component you want.</p></div></div>
 
     <h3>Encoding categorical variables</h3>
-    <p>Most ML algorithms are fundamentally arithmetic — they add, multiply, and compute distances between numbers. A column of strings like <code>"Red"</code>, <code>"Green"</code>, <code>"Blue"</code> isn't something a linear model or a distance calculation can operate on directly. The naive approach — <strong>label encoding</strong> (Red=0, Green=1, Blue=2) — silently invents a false ordinal relationship: the model reads "Blue is 2× Green," which corrupts anything doing arithmetic on inputs (linear/logistic regression, k-NN, neural nets). <strong>One-hot encoding</strong> avoids this by giving each category its own binary column.</p>
+    <p>Most ML algorithms are fundamentally arithmetic — they add, multiply, and compute distances between numbers. A column of strings like <code>"Red"</code>, <code>"Green"</code>, <code>"Blue"</code> isn't something a linear model or a distance calculation can operate on directly.</p>
+    <p>The naive fix: just assign each category a number — Red=0, Green=1, Blue=2. This is called <strong>label encoding</strong>.</p>
+    <details class="micro-check">
+      <summary>If Blue=2 and Green=1, what does the model now silently believe about Blue, relative to Green?</summary>
+      <div class="mc-a"><p>That Blue is exactly <strong>twice</strong> Green — a false numeric relationship invented purely by the encoding, not something true about colors. This corrupts any model that does arithmetic on its inputs (linear/logistic regression, k-NN, neural nets).</p></div>
+    </details>
+    <p>The fix: give each category its <em>own</em> binary column instead, so no fake ordering gets invented. This is called <strong>one-hot encoding</strong>.</p>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span><strong>One-hot encoding</strong> — turn each category into its own 0/1 column, so no false numeric order is invented.</span></p>
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
@@ -259,7 +330,13 @@
 
     <h3>Missing data</h3>
     <p>Missingness comes in two flavors that need different thinking: missing <em>values</em> in a table you can see, and missing <em>categories</em> entirely — cases you never even collected. The second is more dangerous, and easy to miss because there's no null cell pointing at it.</p>
-    <p>The classic illustration is <strong>survivorship bias</strong>: WWII engineers who reinforced only the bullet holes visible on planes that <em>returned</em> were looking at the wrong data — the planes hit in the unmarked zones never made it back to be studied. Whatever data you have access to already survived some filter, and that filter itself is information you're not seeing. Always ask what's absent from the sample, not just what's null in a cell.</p>
+    <p>The classic illustration: WWII engineers studied the bullet holes on planes that <em>returned</em> from combat, planning to reinforce the spots that were hit most.</p>
+    <details class="micro-check">
+      <summary>The returning planes were most damaged in the wings and tail. Should engineers reinforce those exact spots?</summary>
+      <div class="mc-a"><p><strong>No.</strong> Reinforce the spots with <em>no</em> damage — the engine and cockpit — because planes hit there never made it back to be studied at all. The data you can see already survived some filter; what's missing is the real signal.</p></div>
+    </details>
+    <p>This is called <strong>survivorship bias</strong>: whatever data you have access to already survived some filter, and that filter itself is information you're not seeing. Always ask what's absent from the sample, not just what's null in a cell.</p>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span><strong>Survivorship bias</strong> — drawing conclusions only from the data that "survived" some filter, while the filtered-out cases carry the signal you actually needed.</span></p>
     <p>For the more mundane case — missing values inside a table you do have — there are a handful of standard strategies:</p>
     <div class="table-wrap">
       <table>
@@ -285,7 +362,12 @@
     </div>
 
     <h3>Imbalanced classes</h3>
-    <p>When one class dominates — 98% of transactions are legitimate, 2% are fraud — naive accuracy becomes a meaningless metric (predicting "legitimate" every time scores 98%), and many algorithms' internal objective functions implicitly optimize for the majority class because that's where most of the loss reduction comes from. The standard responses:</p>
+    <p>Suppose 98% of transactions are legitimate and only 2% are fraud.</p>
+    <details class="micro-check">
+      <summary>A lazy model predicts "legitimate" for every single transaction. What accuracy does it score?</summary>
+      <div class="mc-a"><p><strong>98%</strong> — despite never once catching fraud. That's why plain accuracy is a meaningless metric here: it rewards ignoring the minority class entirely (see §4 for metrics that don't).</p></div>
+    </details>
+    <p>Worse, it's not just the metric that's fooled — many algorithms' internal objective functions implicitly optimize for the majority class too, simply because that's where most of the loss reduction comes from during training. The standard responses:</p>
     <ul>
       <li>Use a model/objective suited to imbalance.</li>
       <li>Resample — downsample the majority or upsample/augment the minority.</li>
@@ -347,6 +429,10 @@
     <div class="formula-block"><span class="label">Covariance</span>Cov(x, y) = 1/(n−1) · Σ (xᵢ − x̄)(yᵢ − ȳ)
 <span class="label" style="margin-top:.5rem">Projection (loadings)</span>PCᵢ = X · vᵢ  =  a₁x₁ + a₂x₂ + … + a_d x_d</div>
     <p>Before working through the arithmetic: an eigenvector of the covariance matrix is a direction in feature-space that the data's spread naturally aligns with, and its eigenvalue is <em>how much</em> variance lies along that direction. PCA doesn't invent new information — it finds the rotation of your existing axes that lines them up with how the data actually stretches out in space.</p>
+    <details class="micro-check">
+      <summary>If PC1's eigenvalue is 9 and PC2's is 1, roughly what fraction of the data's total variance does PC1 alone capture?</summary>
+      <div class="mc-a"><p><strong>9/(9+1) = 90%.</strong> An eigenvalue is literally "how much variance lies along this direction," so a component's share of the total variance is just its eigenvalue divided by the sum of all eigenvalues — the exact ratio worked out numerically below.</p></div>
+    </details>
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
@@ -429,6 +515,10 @@ Pᵢⱼ = (P(j|i) + P(i|j)) / 2N
         </tbody>
       </table>
     </div>
+    <details class="micro-check">
+      <summary>A spam filter flags a real spam email correctly. Which cell of the matrix does that land in?</summary>
+      <div class="mc-a"><p><strong>True Positive (TP)</strong> — "positive" means "flagged as spam," and it was actually spam, so predicted and actual agree on the positive class. Every metric in this section is built from just these four counts.</p></div>
+    </details>
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
@@ -479,7 +569,12 @@ Pᵢⱼ = (P(j|i) + P(i|j)) / 2N
 
     <h3>The base-rate trap</h3>
     <p>Intuition about probabilities is notoriously unreliable when a condition is rare, even for people comfortable with math. This is the single most common way "the test is 99% accurate" gets misinterpreted in the real world (medical testing, fraud detection, spam filtering all hit this same trap).</p>
-    <p>Setup: a rare disease has prevalence 0.1%. A test has a 99% true-positive rate and a 2% false-positive rate. Someone tests positive — what's P(disease)? Bayes' rule, not intuition:</p>
+    <p>Setup: a rare disease has prevalence 0.1%. A test has a 99% true-positive rate and a 2% false-positive rate. Someone tests positive.</p>
+    <details class="micro-check">
+      <summary>Guess before calculating: roughly what's the chance this person actually has the disease?</summary>
+      <div class="mc-a"><p>Most people guess close to 99%, matching the test's accuracy. The real answer is <strong>≈4.7%</strong> — worked out step by step below. The test's accuracy describes the test; it does not describe this one person's odds, because almost everyone being tested is healthy to begin with.</p></div>
+    </details>
+    <p>Bayes' rule, not intuition:</p>
     <div class="formula-block">P(D|P) = P(P|D)·P(D) / [P(P|D)·P(D) + P(P|H)·P(H)]
      = (.99 × .001) / (.99 × .001 + .02 × .999)  ≈  <strong>4.7%</strong></div>
 
