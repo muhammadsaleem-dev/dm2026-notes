@@ -132,7 +132,12 @@
     <p class="chapter-dek">"Neural networks are the generalization of linear regression."</p>
 
     <p>If you've never trained a model before, the natural question is: how does a program "learn" a function instead of being told one? The answer this whole module builds toward is reassuringly mechanical — a model is a small number of adjustable numbers (its <strong>parameters</strong>), a cost function that scores how wrong the model currently is, and a search procedure that nudges the parameters to make that score smaller. Everything else — logistic regression, neural networks, backpropagation — is a variation on that one idea, applied to bigger and more expressive families of functions.</p>
-    <p>Start with the smallest possible learning unit: a single artificial neuron, also called a perceptron. Structurally it does three things in sequence — take a set of inputs, combine them into one number via a weighted sum <code>Σwᵢxᵢ + b</code>, then pass that number through a non-linear "squashing" function φ(·) to produce an output. If that sounds familiar, it should: it's <em>exactly</em> the computation logistic regression performs (§4). That's the reveal the whole module is built around: <strong>a perceptron is logistic regression; a neural network is many logistic-regression units stacked in layers and chained together.</strong> Once that clicks, a lot of what looks like "deep learning magic" becomes just "logistic regression, repeated with feeling."</p>
+    <p>Start with the smallest possible learning unit: a single artificial neuron, also called a perceptron. Structurally it does three things in sequence — take a set of inputs, combine them into one number via a weighted sum <code>Σwᵢxᵢ + b</code>, then pass that number through a non-linear "squashing" function φ(·) to produce an output. If that sounds familiar, it should: it's <em>exactly</em> the computation logistic regression performs (§4).</p>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span>The reveal the whole module is built around: <strong>a perceptron is logistic regression; a neural network is many logistic-regression units stacked in layers and chained together.</strong> Once that clicks, a lot of what looks like "deep learning magic" becomes just "logistic regression, repeated with feeling."</span></p>
+    <details class="micro-check">
+      <summary>If a single neuron is just logistic regression, what does stacking a hundred of them into layers actually buy you?</summary>
+      <div class="mc-a"><p>One logistic-regression unit can only draw a straight decision boundary. Chaining many of them lets the network build a <em>hierarchy</em> of learned combinations — each layer's output becomes the next layer's input — which is what lets the combined function bend into curved, complex boundaries a single unit never could (§5).</p></div>
+    </details>
     <p>It's worth placing this next to the other ways of getting a computer to do a task, since they differ only in <em>where the rules/features come from</em>:</p>
     <ul>
       <li><strong>Classical programming</strong> — a human studies the problem and writes explicit rules by hand.</li>
@@ -204,7 +209,12 @@
     <p class="chapter-dek">The one optimization algorithm everything else in this module reuses.</p>
 
     <p>You now have a way to score any candidate θ (§2's MSE). What you don't have is a way to <em>search</em> for a good one without brute-forcing every possibility. Gradient descent does this, and it is the single optimization procedure that logistic regression, neural-network training, and backpropagation all reuse without modification to the core idea.</p>
-    <p>Picture the cost function J(θ) as hilly terrain, where your current θ is a location and altitude is how bad that θ is. You're standing in fog, and you want to walk downhill. At any location you can feel which direction is steepest and how steep it is — that's the <strong>gradient</strong>: the direction of steepest ascent, and how fast the function is changing in that direction. To go <em>down</em>, step in the exact opposite direction, taking a bigger step when the ground is steep and a smaller one as it flattens near the minimum. That's the entire algorithm.</p>
+    <p>Picture the cost function J(θ) as hilly terrain, where your current θ is a location and altitude is how bad that θ is. You're standing in fog, and you want to walk downhill. At any location you can feel which direction is steepest and how steep it is — that's the <strong>gradient</strong>: the direction of steepest ascent, and how fast the function is changing in that direction.</p>
+    <details class="micro-check">
+      <summary>The gradient points in the direction of steepest <em>ascent</em>. Which way should a step actually move θ?</summary>
+      <div class="mc-a"><p>The <strong>opposite</strong> direction — subtract the gradient, don't add it. That's the minus sign in gradient <em>descent</em>: step downhill by moving against the direction that increases cost fastest, taking a bigger step where the ground is steep and a smaller one as it flattens near the minimum.</p></div>
+    </details>
+    <p>That's the entire algorithm.</p>
     <ol>
       <li>Pick a random initial θ and a learning rate α.</li>
       <li>Repeat until convergence: <code>θⱼ ← θⱼ − α · ∂J(θ)/∂θⱼ</code> for every parameter j.</li>
@@ -248,6 +258,10 @@
     <p>The raw weighted sum <code>z = wᵀx + b</code> can be any real number. The <strong>sigmoid</strong> function squashes it into (0,1): very negative inputs map close to 0, very positive close to 1, and 0 maps to exactly 0.5.</p>
     <div class="formula-block">z = wᵀx + b
 ŷ = σ(z) = 1 / (1 + e^−(wᵀx+b))</div>
+    <details class="micro-check">
+      <summary>The raw weighted sum for a patient comes out to z = 0 exactly. What probability does the model report?</summary>
+      <div class="mc-a"><p><strong>0.5</strong> — z = 0 is sigmoid's exact midpoint, "maximally undecided." Positive z pushes the probability above 0.5 toward 1; negative z pushes it below 0.5 toward 0.</p></div>
+    </details>
     <p>Converting the probability ŷ to a hard decision is just picking a threshold — 0.5 by default, but movable if false negatives and false positives cost differently.</p>
 
     <div class="worked-example">
