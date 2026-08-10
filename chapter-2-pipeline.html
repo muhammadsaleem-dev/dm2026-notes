@@ -282,7 +282,12 @@
     </div>
 
     <h3>Imbalanced classes</h3>
-    <p>When one class dominates — 98% of transactions are legitimate, 2% are fraud — naive accuracy becomes a meaningless metric (predicting "legitimate" every time scores 98%), and many algorithms' internal objective functions implicitly optimize for the majority class because that's where most of the loss reduction comes from. The standard responses: (1) use a model/objective suited to imbalance, (2) resample — downsample the majority or upsample/augment the minority, (3) evaluate with metrics that don't reward "always predict the majority" (see §4).</p>
+    <p>When one class dominates — 98% of transactions are legitimate, 2% are fraud — naive accuracy becomes a meaningless metric (predicting "legitimate" every time scores 98%), and many algorithms' internal objective functions implicitly optimize for the majority class because that's where most of the loss reduction comes from. The standard responses:</p>
+    <ul>
+      <li>Use a model/objective suited to imbalance.</li>
+      <li>Resample — downsample the majority or upsample/augment the minority.</li>
+      <li>Evaluate with metrics that don't reward "always predict the majority" (see §4).</li>
+    </ul>
 
     <h3>Feature scaling &amp; normalization</h3>
     <p>Many algorithms compare features using literal arithmetic distance or gradient magnitude, with no built-in concept of "this number is in square meters and that one is a room count" — they just see numbers. Distance-based methods (k-NN, SVM, clustering) and gradient-based training (neural nets) implicitly let the largest-magnitude feature dominate. A 100 m² gap in house size will swamp a 1-room gap in room count unless both are rescaled to comparable ranges.</p>

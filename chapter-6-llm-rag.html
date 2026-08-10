@@ -158,7 +158,13 @@
     <p>If you know the value of a good abstraction — one interface, many implementations — this is the NLP equivalent: one pretraining objective turns out to be a sufficiently general primitive that translation, classification, and summarization all reduce to it.</p>
 
     <h3>Why text is a hard input to work with</h3>
-    <p>Text is a uniquely inconvenient input format compared to structured data, for three compounding reasons: <strong>unstructured</strong> — no fixed schema, a sentence is just a variable-length string; <strong>ambiguous</strong> — the same token can mean entirely different things ("bank" = financial institution or riverbank), similar to overloaded method names that only resolve correctly at the call site; <strong>context-dependent</strong> — the same word shifts meaning depending on what surrounds it ("cold" = temperature or illness). Text doesn't come with the fairly regular underlying alphabet audio or DNA has — which is exactly why "convert everything into numbers and let statistics/learning handle ambiguity" became the dominant strategy over hand-written rules.</p>
+    <p>Text is a uniquely inconvenient input format compared to structured data, for three compounding reasons:</p>
+    <ul>
+      <li><strong>Unstructured</strong> — no fixed schema, a sentence is just a variable-length string.</li>
+      <li><strong>Ambiguous</strong> — the same token can mean entirely different things ("bank" = financial institution or riverbank), similar to overloaded method names that only resolve correctly at the call site.</li>
+      <li><strong>Context-dependent</strong> — the same word shifts meaning depending on what surrounds it ("cold" = temperature or illness).</li>
+    </ul>
+    <p>Text doesn't come with the fairly regular underlying alphabet audio or DNA has — which is exactly why "convert everything into numbers and let statistics/learning handle ambiguity" became the dominant strategy over hand-written rules.</p>
   </section>
 
   <!-- ============ 2 ============ -->
