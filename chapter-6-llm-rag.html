@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ch.6 — LLM and RAG Pipeline | DM 2026 Notes</title>
+<title>Module 6 — LLM and RAG Pipeline | DM Bootcamp</title>
 <link rel="stylesheet" href="assets/style.css">
 <script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
@@ -11,7 +11,7 @@
 
 <nav class="sitenav">
   <div class="sitenav-inner">
-    <a class="sitenav-home" href="index.html">DM 2026 Notes</a>
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
     <div class="sitenav-links">
       <a href="chapter-1-intro.html">1 · Intro</a>
       <a href="chapter-2-pipeline.html">2 · Pipeline</a>
@@ -32,7 +32,7 @@
   </div>
   <div class="nav-panel" id="navPanel">
     <div class="nav-panel-section">
-      <span class="nav-panel-label">Chapters</span>
+      <span class="nav-panel-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
       <a href="chapter-2-pipeline.html">2 · The Data Mining Pipeline</a>
       <a href="chapter-3-classification.html">3 · Classification</a>
@@ -55,7 +55,7 @@
 <div class="page-shell">
   <aside class="sidebar-toc">
     <div class="sidebar-block">
-      <span class="sidebar-label">Chapters</span>
+      <span class="sidebar-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
       <a href="chapter-2-pipeline.html">2 · The Data Mining Pipeline</a>
       <a href="chapter-3-classification.html">3 · Classification</a>
@@ -78,12 +78,23 @@
 
   <div class="masthead">
     <div>
-      <div class="eyebrow">Basic Data Mining Practice · Chapter 6</div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 6</div>
       <h1 class="title">LLM &amp; RAG Pipeline</h1>
     </div>
-    <div class="masthead-meta">Condensed reference<br><strong>Language models → decoding → retrieval-augmented generation</strong></div>
+    <div class="masthead-meta">Zero to hero, from here<br><strong>Language models → decoding → retrieval-augmented generation</strong></div>
   </div>
-  <p class="dek">From "a neuron is logistic regression" to full retrieval-augmented generation: how LLMs are trained, how they generate text token by token, and why RAG exists at all.</p>
+  <p class="dek">Softmax and temperature computed by hand on real logits, cosine similarity worked through by hand, and the full RAG pipeline mapped onto search-engine concepts you probably already know.</p>
+
+  <div class="outcomes-box">
+    <span class="outcomes-label">By the end of this module, you'll be able to</span>
+    <ul>
+      <li>Explain why next-token prediction is self-supervised, and why one pretraining objective generalizes to translation, summarization, and classification alike</li>
+      <li>Compute softmax probabilities from logits by hand, and explain what temperature does to that distribution at T&lt;1 and T&gt;1</li>
+      <li>Explain why RAG and fine-tuning solve the same problem differently, using the "runtime lookup vs. baked into the binary" analogy</li>
+      <li>Compute cosine similarity by hand between two embedding vectors, and know when to use it over Euclidean or dot-product distance</li>
+      <li>Describe the full RAG pipeline end to end — chunk, embed, store, retrieve, generate — and where each step can go wrong</li>
+    </ul>
+  </div>
 
   <div class="toc-card">
     <span class="toc-label">On this page</span>
@@ -99,22 +110,30 @@
   <!-- ============ 1 ============ -->
   <section class="chapter" id="lm-foundations">
     <div class="chapter-head"><span class="chapter-num">1</span><h2>Language Models: Foundations</h2></div>
-    <p class="chapter-dek">Softmax (Ch.5) is the bridge: it's exactly what an LLM uses to pick its next word.</p>
+    <p class="chapter-dek">Softmax (Module 5) is the bridge: it's exactly what an LLM uses to pick its next word.</p>
 
-    <p>A <strong>language model</strong> predicts the next token given everything before it: <code>P(xₜ | x₁, …, xₜ₋₁)</code>. Training is <strong>self-supervised</strong> — no manual labels needed, since the next word in raw text <em>is</em> the label. This scales to massive corpora and teaches syntax and semantics implicitly.</p>
+    <p>You already know how to write a program that produces text — a template engine, a report generator. Those work because <em>you</em> specified the rules. Language models solve a different problem: how do you get a machine to produce fluent, contextually-appropriate text when the "rules" of a natural language are too vast, irregular, and context-sensitive to hand-code? The approach that has actually worked at scale is to stop trying to encode the rules and instead let a model <em>infer</em> them from an enormous amount of example text, by training it on one very narrow, very learnable task: <strong>given everything written so far, guess the next word.</strong> Do that well enough, over enough text, and something that looks like "understanding" falls out as a side effect.</p>
 
-    <p>Context entirely determines the prediction. Same fill-in-the-blank prompt — <em>"Honey, can you pass me the ___"</em> — gets a wildly different probability distribution depending on the scene:</p>
+    <p>Formally, a <strong>language model</strong> predicts the next token given everything before it:</p>
+    <div class="formula-block">P(xₜ | x₁, …, xₜ₋₁)</div>
+    <p>Picture this as a function signature: it takes a sequence of tokens (text so far) and returns not a single answer but a full probability distribution over every possible "next token" in the vocabulary — closer to a method returning <code>Map&lt;Token, Double&gt;</code> than one returning a single <code>Token</code>.</p>
+    <p>The crucial property making this trainable at all: it's <strong>self-supervised</strong> — no human ever labels examples. Take any sentence from the internet — "the cat sat on the ___" — and the "label" (mat) is just the next word that was already there. Slide a window across a document and every position gives a free training example. This turns an unlimited supply of unlabeled text into an unlimited supply of labeled training pairs, which is why these models can be trained on a meaningful fraction of the internet.</p>
+
+    <h3>Context determines everything</h3>
+    <p>Because the prediction is conditioned on <em>everything</em> before it, the same literal prompt produces wildly different distributions depending on what surrounds it:</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Context</th><th>P(Salt)</th><th>P(Pepper)</th><th>P(Gun)</th></tr></thead>
+        <thead><tr><th>Context for "…pass me the ___"</th><th>P(Salt)</th><th>P(Pepper)</th><th>P(Gun)</th></tr></thead>
         <tbody>
-          <tr><td>Family dinner scene</td><td class="num">0.54</td><td class="num">0.33</td><td class="num">0.13</td></tr>
-          <tr><td>Tense confrontation scene</td><td class="num">0.16</td><td class="num">0.18</td><td class="num">0.66</td></tr>
+          <tr><td>Family dinner scene</td><td>0.54</td><td>0.33</td><td>0.13</td></tr>
+          <tr><td>Tense confrontation scene</td><td>0.16</td><td>0.18</td><td>0.66</td></tr>
         </tbody>
       </table>
     </div>
+    <p>Nothing about the sentence itself changed — only the context feeding into P(xₜ|x₁,…,xₜ₋₁) changed, and that flipped the most likely answer entirely. A language model isn't memorizing "salt follows honey"; it's learning a function of the <em>entire</em> preceding context.</p>
 
-    <p>Because next-token prediction is so general, almost any NLP task can be reframed as "find the right prompt":</p>
+    <h3>One trick, many tasks</h3>
+    <p>Because next-token prediction is so general, an enormous range of NLP tasks reduce to "phrase it as a continuation problem":</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Task</th><th>Goal</th></tr></thead>
@@ -129,7 +148,10 @@
         </tbody>
       </table>
     </div>
-    <p>Text is harder to represent than audio or DNA because it's <strong>unstructured</strong> (no fixed numeric format), <strong>ambiguous</strong> ("bank" = financial institution or riverbank), and <strong>context-dependent</strong> ("cold" = temperature or illness).</p>
+    <p>If you know the value of a good abstraction — one interface, many implementations — this is the NLP equivalent: one pretraining objective turns out to be a sufficiently general primitive that translation, classification, and summarization all reduce to it.</p>
+
+    <h3>Why text is a hard input to work with</h3>
+    <p>Text is a uniquely inconvenient input format compared to structured data, for three compounding reasons: <strong>unstructured</strong> — no fixed schema, a sentence is just a variable-length string; <strong>ambiguous</strong> — the same token can mean entirely different things ("bank" = financial institution or riverbank), similar to overloaded method names that only resolve correctly at the call site; <strong>context-dependent</strong> — the same word shifts meaning depending on what surrounds it ("cold" = temperature or illness). Text doesn't come with the fairly regular underlying alphabet audio or DNA has — which is exactly why "convert everything into numbers and let statistics/learning handle ambiguity" became the dominant strategy over hand-written rules.</p>
   </section>
 
   <!-- ============ 2 ============ -->
@@ -137,26 +159,51 @@
     <div class="chapter-head"><span class="chapter-num">2</span><h2>Training &amp; Inference</h2></div>
     <p class="chapter-dek">Predict-the-next-token, billions of times over — then decode one token at a time at inference.</p>
 
-    <h3>Training pipeline</h3>
-    <ol>
-      <li><strong>Collect a large text corpus</strong> — Common Crawl, Wikipedia, Books, WebText.</li>
-      <li><strong>Tokenize</strong> — split text into words, subwords, or characters, each mapped to an integer ID in a vocabulary table. A larger vocabulary means more unique tokens available.</li>
-      <li><strong>Causal masking</strong> — at each position the model may only see <em>prior</em> tokens, forcing it to learn to predict what comes next; an attention mechanism relates tokens to each other.</li>
-      <li><strong>Repeat</strong> across the whole corpus, billions of times (self-supervised learning). This is extremely compute-intensive — why foundation models are pretrained by a handful of large labs, then fine-tuned by everyone else.</li>
-    </ol>
-    <div class="callout watch"><span class="tag">Gotcha</span><p>The LLM's output layer is a <strong>softmax over the vocabulary</strong> — its size equals the vocabulary size, <em>not</em> the embedding dimension or context length.</p></div>
+    <h3>The training pipeline, step by step</h3>
+    <p><strong>1. Collect a large text corpus.</strong> Common Crawl, Wikipedia, digitized books, WebText. The guiding principle is scale: hundreds of billions to trillions of tokens.</p>
+    <p><strong>2. Tokenize.</strong> Raw text has to become integers before a neural network can touch it — it has no native notion of a "letter" or "word," only numbers. A <strong>tokenizer</strong> splits text into words, subwords, or characters and maps each to an integer ID from a fixed vocabulary table — think of it as an enum, and tokenization as the mapping from raw string to enum value. If you've written or used a compiler's lexer — turning source code into a stream of tokens like <code>IDENTIFIER</code>, <code>PLUS</code>, <code>NUMBER</code> before parsing — this is the same idea, except the "grammar" is far messier, so most tokenizers split on <strong>subwords</strong>: common words get their own token, rare words get broken into reusable pieces. A larger vocabulary means more tokens are available as single units, at the cost of a bigger lookup table and output layer.</p>
+    <p><strong>3. Causal masking.</strong> At each position, the model may only see tokens that came <em>before</em> it — never after. This forces it to actually learn to predict the future from the past, rather than peeking at the answer in the rest of the sentence. Layered on top is an <strong>attention mechanism</strong>, letting each token look back across all previous tokens and decide, dynamically, how much to weight each one — each token issuing a search query against every earlier token's "profile" and pulling in a weighted blend of the most relevant hits.</p>
+    <p><strong>4. Repeat, at massive scale.</strong> Applied across the entire corpus, billions of times, entirely self-supervised. This is why training a frontier model from scratch is enormously compute-intensive — why only a handful of well-funded labs pretrain foundation models, while everyone else fine-tunes an existing one, much like most engineers build on a database engine rather than writing their own.</p>
 
-    <h3>Inference: autoregression &amp; decoding</h3>
-    <p>Flow: text → tokenizer → embedding lookup → decoder-only transformer → linear layer → softmax → a probability per vocabulary token.</p>
+    <div class="callout watch"><span class="tag">Gotcha</span><p>The LLM's output layer is a <strong>softmax over the entire vocabulary</strong> — its size equals the vocabulary size, <em>not</em> the embedding dimension and <em>not</em> the context length. Every forward pass produces a full probability distribution over every token the model knows, most getting near-zero probability for any given context.</p></div>
+
+    <h3>Inference: autoregression and decoding</h3>
+    <p>Once trained, generating text is a pipeline: <strong>text → tokenizer → embedding lookup → decoder-only transformer → linear layer → softmax → a probability per vocabulary token.</strong> The <strong>embedding lookup</strong> turns each integer token ID into a dense vector — an array/dictionary lookup mapping <code>token_id → float[d]</code>, where nearby vectors represent related tokens (more on this in §4). The <strong>linear layer</strong> at the end projects back up to vocabulary size, producing a raw score — a <strong>logit</strong> — for every possible next token; logits are unbounded, not yet probabilities. <strong>Softmax</strong> turns that vector of logits into an actual probability distribution.</p>
     <ul>
-      <li><strong>Greedy decoding</strong> — always pick the highest-probability token. Deterministic: identical input always produces identical output.</li>
-      <li><strong>Autoregression</strong> — each generated token is appended back to the context to predict the next one ("Once upon" → +"a" → "Once upon a" → +"time" → …).</li>
+      <li><strong>Greedy decoding</strong> — always pick the single highest-probability token. Deterministic: same input, same output every time, like a pure function.</li>
+      <li><strong>Autoregression</strong> — whatever gets generated is appended back onto the context, and the process runs again: <code>"Once upon"</code> → <code>+"a"</code> → <code>"Once upon a"</code> → <code>+"time"</code> — a feedback loop, similar to a REPL where each output becomes part of the input to the next call.</li>
     </ul>
-    <p>Pure greedy decoding is safe but repetitive and unimaginative. <strong>Temperature</strong> fixes this by reshaping the distribution before sampling:</p>
-    <div class="formula-block">p(zᵢ) = e^(zᵢ/T) / Σⱼ e^(zⱼ/T)</div>
-    <p>T = 1.0 is the unscaled default; T &lt; 1.0 sharpens the distribution (more deterministic, less creative); T &gt; 1.0 flattens it (more random, more creative). Top-k/top-p sampling can be layered on top of temperature.</p>
+    <p>Pure greedy decoding is safe and reproducible, but tends to be repetitive — a purely deterministic function always returns its cached result, which is exactly what you don't want from something meant to write varied text.</p>
 
-    <div class="callout rule"><span class="tag">Note</span><p>ChatGPT is not a raw LLM — it's an LLM wrapped with prompt engineering, RLHF fine-tuning/alignment, conversation-memory handling, tool integration (search, code, images), and safety/moderation layers.</p></div>
+    <h3>Temperature: reshaping the distribution before sampling</h3>
+    <p><strong>Temperature</strong> reshapes the probability distribution before sampling, instead of always taking the single most likely token:</p>
+    <div class="formula-block">p(zᵢ) = e^(zᵢ/T) / Σⱼ e^(zⱼ/T)</div>
+    <p><code>zᵢ</code> is the raw logit for token i, <code>T</code> is the temperature you choose at generation time. Dividing every logit by T before exponentiating compresses or stretches the <em>gaps</em> between logits: small T makes the biggest logit dominate more, large T squashes the differences toward zero. Softmax is monotonic — dividing by T never changes <em>which</em> token has the highest score, only how much more likely it is relative to the rest.</p>
+
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>Take the seven logits [2.0, 1.0, 0.5, 0.01, 3, 2, 1.5] — label them A through G. At <strong>T=1.0</strong>:</p>
+      <div class="table-wrap"><table><thead><tr><th>Token</th><th>logit z</th><th>e^z</th><th>probability</th></tr></thead><tbody>
+        <tr><td>A</td><td>2.0</td><td>7.389</td><td>0.165</td></tr>
+        <tr><td>B</td><td>1.0</td><td>2.718</td><td>0.061</td></tr>
+        <tr><td>C</td><td>0.5</td><td>1.649</td><td>0.037</td></tr>
+        <tr><td>D</td><td>0.01</td><td>1.010</td><td>0.023</td></tr>
+        <tr><td>E</td><td>3.0</td><td>20.086</td><td>0.449</td></tr>
+        <tr><td>F</td><td>2.0</td><td>7.389</td><td>0.165</td></tr>
+        <tr><td>G</td><td>1.5</td><td>4.482</td><td>0.100</td></tr>
+      </tbody></table></div>
+      <p>Sum of e^z ≈ 44.722; each probability = e^z / 44.722 (e.g. E: 20.086/44.722 ≈ 0.449). Probabilities sum to 1.0.</p>
+      <p>Lower to <strong>T=0.5</strong> (sharpening): every logit doubles before exponentiating: [4.0,2.0,1.0,0.02,6.0,4.0,3.0]. Sum of exponentials ≈ 543.838:</p>
+      <div class="table-wrap"><table><thead><tr><th>Token</th><th>z/T</th><th>e^(z/T)</th><th>probability</th></tr></thead><tbody>
+        <tr><td>A</td><td>4.0</td><td>54.598</td><td>0.100</td></tr>
+        <tr><td>E</td><td>6.0</td><td>403.429</td><td>0.742</td></tr>
+      </tbody></table></div>
+      <p>Token E now grabs <strong>74.2%</strong> of the probability mass — up from 44.9% at T=1. Lower temperature concentrates probability on the front-runner.</p>
+      <p>Raise instead to <strong>T=2.0</strong> (flattening): logits halve: [1.0,0.5,0.25,0.005,1.5,1.0,0.75], sum ≈15.973. Token E drops to <strong>28.1%</strong>, and the weakest token D climbs from 2.3% to <strong>6.3%</strong>. At higher temperature every token becomes more competitive.</p>
+    </div>
+    <p>So: T&lt;1.0 sharpens toward the top candidate (more deterministic, less creative); T&gt;1.0 flattens it (more random, more creative); T=1.0 leaves the raw distribution untouched. Temperature is often combined with <strong>top-k</strong> sampling (restrict to the k highest-probability tokens, like a <code>LIMIT k</code> on a ranked query) or <strong>top-p/nucleus</strong> sampling (keep the smallest set of top tokens whose cumulative probability crosses p) to avoid ever sampling a wildly implausible token even at high temperature.</p>
+
+    <div class="callout rule"><span class="tag">Note</span><p>ChatGPT is not a raw LLM — it's an LLM wrapped with prompt engineering, RLHF fine-tuning/alignment (Reinforcement Learning from Human Feedback: an additional training phase nudging the model toward outputs human raters actually prefer), conversation-memory handling, tool integration, and safety layers on top. Next-token prediction is the engine; a lot of additional engineering surrounds it before you see a chat window.</p></div>
   </section>
 
   <!-- ============ 3 ============ -->
@@ -164,6 +211,7 @@
     <div class="chapter-head"><span class="chapter-num">3</span><h2>Why RAG?</h2></div>
     <p class="chapter-dek">A plain LLM chatbot has structural blind spots RAG is built to patch.</p>
 
+    <p>A trained LLM is, in an important sense, a <em>snapshot</em>. All its "knowledge" is baked into billions of fixed numeric weights at the end of training — the same way compiling a program bakes a particular version of your business logic into a binary. Once that snapshot is taken, the model can't learn about anything that happened afterward, can't consult a document it never saw, and — since its answers come from statistical pattern completion rather than lookup — can't point to a specific source for a claim, even when it happens to be right.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Pitfall of a plain LLM</th><th>Why it happens</th></tr></thead>
@@ -177,10 +225,12 @@
         </tbody>
       </table>
     </div>
+    <p>A few of these map onto things you already reason about. <strong>Context window limits</strong> are just a fixed-capacity buffer — like an array with a hard-coded max size — that the whole conversation has to fit inside. <strong>No source attribution</strong> and <strong>low explainability</strong> are the same complaint you'd have about a black-box function with no logging: it returns an answer, but you can't trace <em>why</em>. <strong>Hallucination</strong> happens because the model was never trained to say "I don't know" — it always produces <em>some</em> plausible-sounding continuation, so on unfamiliar territory it confidently generates something that merely looks right.</p>
 
+    <h3>Two different fixes: RAG vs. fine-tuning</h3>
+    <p>There are two structurally different ways to patch these gaps, mapping onto a trade-off you've likely made before: <strong>read fresh data at runtime from an external source, or bake the data into the deployed artifact itself.</strong></p>
     <div class="table-wrap">
       <table>
-        <caption>RAG vs. fine-tuning</caption>
         <thead><tr><th></th><th>RAG</th><th>Fine-tuning</th></tr></thead>
         <tbody>
           <tr><th>Mechanism</th><td>Retrieves relevant external documents at query time</td><td>Modifies the model's internal weights via further training</td></tr>
@@ -189,6 +239,7 @@
         </tbody>
       </table>
     </div>
+    <p><strong>RAG</strong> is like a service querying a live database on every request — update the underlying data and the next query reflects it, no redeploy, at the cost of retrieval infrastructure and extra latency. <strong>Fine-tuning</strong> is closer to compiling business rules directly into the binary — fast and consistent at inference, but updating means retraining and redeploying the whole model. Neither is strictly better: RAG wins when knowledge changes often or needs to be traceable to a source; fine-tuning wins when the domain is stable and you want behavior baked in without a runtime dependency. In practice the two are often combined.</p>
   </section>
 
   <!-- ============ 4 ============ -->
@@ -196,31 +247,41 @@
     <div class="chapter-head"><span class="chapter-num">4</span><h2>The RAG Pipeline</h2></div>
     <p class="chapter-dek">An offline indexing phase, and an online query phase.</p>
 
-    <p><strong>Indexing (offline):</strong> documents → chunk &amp; preprocess → generate embeddings → store in a vector database.<br>
-    <strong>Query (online):</strong> user question → embed the question → semantic search against the vector DB → ranked chunks → pass query + chunks to the LLM → generated answer.</p>
+    <p>If you've worked anywhere near a search engine, the two-phase structure of RAG will feel immediately familiar:</p>
+    <ul>
+      <li><strong>Indexing (offline):</strong> documents → chunk &amp; preprocess → generate embeddings → store in a vector database. The RAG equivalent of a web crawler building an inverted index ahead of time, before any user types a query.</li>
+      <li><strong>Query (online):</strong> user question → embed the question → semantic search against the vector DB → ranked chunks → pass query + chunks to the LLM → generated answer. Like a search box hitting that prebuilt index — except the final step doesn't just return a ranked list, it hands results to an LLM to synthesize a written answer.</li>
+    </ul>
 
     <h3>Chunking</h3>
-    <p>Split large documents into retrievable pieces without cutting mid-sentence or across semantic units. Each chunk carries metadata (title, source, page, section, tags) so retrieved results stay traceable.</p>
-    <div class="formula-block">text_splitter = RecursiveCharacterTextSplitter(
+    <p>An embedding model can only usefully represent a limited amount of text at once, and a long document usually mixes many topics — burying the one relevant paragraph in ten pages of unrelated material hurts retrieval precision the same way an overly long function doing five unrelated things hurts testability. So the first indexing step splits documents into smaller, retrievable pieces, taking care not to cut mid-sentence or across a semantic unit. Each chunk carries metadata (title, source, page, section) so whatever gets retrieved stays traceable — directly addressing the "no source attribution" pitfall from §3.</p>
+
+    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>RecursiveCharacterTextSplitter</code> (LangChain) tries a sequence of natural split points — first paragraph breaks, then sentence breaks, then word breaks — recursively falling back to a harder cut only if a piece still doesn't fit. That's what "recursive" refers to: a fallback chain that respects the text's natural structure before resorting to a blunt character cut.</p></div></div>
+
+    <div class="formula-block"><span class="label">chunk_size caps piece length; chunk_overlap shares text across boundaries</span>text_splitter = RecursiveCharacterTextSplitter(
     chunk_size=50,
     chunk_overlap=20,   # overlap avoids losing context at chunk boundaries
 )</div>
+    <p>Without overlap, a sentence or idea falling right at a cut point could end up split so that neither resulting chunk contains the full thought — similar to an overlapping sliding window in a streaming system.</p>
 
     <h3>Embeddings</h3>
-    <p>A learned embedding space places semantically similar chunks close together — unlike one-hot encodings, which carry no notion of similarity at all. RAG typically uses <strong>sentence embeddings</strong>, extending word embeddings to whole passages.</p>
+    <p>Once you have chunks, you need to compare their <em>meaning</em> numerically — a question and its answer often share almost no words in common, so string matching alone won't do. A naive encoding like one-hot vectors carries zero notion of similarity: "dog" and "puppy" end up exactly as "different" as "dog" and "spreadsheet." An <strong>embedding</strong> fixes this by learning a dense vector space — typically hundreds of dimensions — where semantically similar text ends up close together.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Model</th><th>Size</th><th>Dim.</th><th>Best for</th></tr></thead>
         <tbody>
-          <tr><td>all-MiniLM-L6-v2</td><td>22 MB</td><td class="num">384</td><td>Lightweight, efficient general use</td></tr>
-          <tr><td>all-mpnet-base-v2</td><td>110 MB</td><td class="num">768</td><td>Higher accuracy, still fast</td></tr>
-          <tr><td>all-roberta-large-v1</td><td>350 MB</td><td class="num">1024</td><td>Larger multilingual datasets, slower</td></tr>
-          <tr><td>xlm-roberta-base</td><td>550 MB</td><td class="num">768</td><td>Multilingual text, less precise in English</td></tr>
+          <tr><td>all-MiniLM-L6-v2</td><td>22 MB</td><td>384</td><td>Lightweight, efficient general use</td></tr>
+          <tr><td>all-mpnet-base-v2</td><td>110 MB</td><td>768</td><td>Higher accuracy, still fast</td></tr>
+          <tr><td>all-roberta-large-v1</td><td>350 MB</td><td>1024</td><td>Larger multilingual datasets, slower</td></tr>
+          <tr><td>xlm-roberta-base</td><td>550 MB</td><td>768</td><td>Multilingual text, less precise in English</td></tr>
         </tbody>
       </table>
     </div>
+    <p>The pattern here is the same accuracy/footprint trade-off you navigate elsewhere: a bigger model with more output dimensions captures more semantic nuance, at the cost of memory and slower embedding generation.</p>
+    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>SentenceTransformer</code> (from the <code>sentence-transformers</code> library) loads one of these pretrained models and exposes a simple call to turn text into its embedding vector — later, in this module's Sprint Exercise, loading <code>all-MiniLM-L6-v2</code> and calling it on a chunk of text is literally how each 384-dimensional vector gets produced.</p></div></div>
 
     <h3>Retrieval: distance metrics</h3>
+    <p>Once every chunk (and every incoming question) is a point in a high-dimensional vector space, "search" reduces to a geometry problem: find the points nearest to the query point.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Metric</th><th>Formula</th><th>Intuition</th></tr></thead>
@@ -232,10 +293,23 @@
         </tbody>
       </table>
     </div>
-    <div class="callout watch"><span class="tag">Gotcha</span><p>Cosine <em>distance</em> (1 − cos θ) is a dissimilarity score — don't confuse it with cosine <em>similarity</em> itself.</p></div>
+    <p><strong>Cosine similarity</strong> measures the <em>angle</em> between two vectors while ignoring their length — this matters for text embeddings because a vector's magnitude often reflects incidental things like passage length rather than meaning, so measuring direction alone tends to be a more robust proxy for "these chunks are about the same thing." <strong>Squared Euclidean</strong> is the straight-line formula extended to many dimensions — it <em>does</em> care about magnitude. <strong>Manhattan</strong> sums absolute per-coordinate differences instead of squaring — the distance you'd travel moving only along a city grid. <strong>Dot product</strong> rewards both direction and magnitude at once.</p>
+
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>A chunk's embedding (toy-sized to 3 dimensions for hand computation) A=[1,2,3], a query's embedding B=[2,1,3]. Cosine similarity = (A·B)/(‖A‖·‖B‖).</p>
+      <p>Dot product: A·B = (1×2)+(2×1)+(3×3) = 2+2+9 = <strong>13</strong>. Magnitudes: ‖A‖=√(1²+2²+3²)=√14≈<strong>3.742</strong>, ‖B‖=√(2²+1²+3²)=√14≈<strong>3.742</strong> (equal here since they're permutations of the same numbers).</p>
+      <p>Cosine similarity = 13/(3.742×3.742) = 13/14 ≈ <strong>0.929</strong> — very close to 1, meaning the two vectors point in almost the same direction: the chunk and query are highly related. Cosine <em>distance</em> = 1−0.929 = <strong>0.071</strong>, correctly signaling "these are nearly the same" in a metric where smaller means closer. If B had instead been [−1,−2,−3] — pointing the opposite direction — the dot product would be negative and cosine similarity would approach −1, correctly flagging dissimilarity even though the raw magnitudes are identical.</p>
+    </div>
+
+    <div class="callout watch"><span class="tag">Gotcha</span><p>Cosine <em>distance</em> (1 − cos θ) is a dissimilarity score — smaller is more similar. Don't confuse it with cosine <em>similarity</em> itself (cos θ), where larger is more similar; a query engine that mixes these up ranks results in the exact opposite order it means to.</p></div>
+
+    <p>Storing potentially millions of embeddings and searching them fast enough for an interactive query is itself a systems problem — the job of a <strong>vector database</strong>. It plays the same role a specialized index (a B-tree, an inverted index) plays in a relational database: rather than brute-force comparing a query vector against every stored vector, it uses index structures purpose-built for high-dimensional approximate nearest-neighbor search, trading a small amount of exactness for a large speedup at scale.</p>
+
+    <div class="python-note"><div><span class="pn-label">Python note</span><p>Pinecone is one such hosted vector database. After chunks' embeddings are upserted into a Pinecone index, <code>index.query(vector=question_vector, top_k=k, include_metadata=True)</code> returns the k stored vectors closest to the query, along with similarity scores and metadata — conceptually similar to <code>SELECT ... ORDER BY distance LIMIT k</code>, except the underlying search is approximate nearest-neighbor rather than a full scan.</p></div></div>
 
     <h3>Generation</h3>
-    <p>The final prompt combines the query, the retrieved chunks, and a domain-specific instruction:</p>
+    <p>Retrieval alone gets you a ranked handful of relevant raw text chunks — not yet a written answer. The final step hands the original question and the retrieved chunks to an LLM and asks it to synthesize a coherent, cited response — the same task you'd give a human assistant handed a few relevant excerpts and asked to write up an answer. The assembled prompt typically combines three parts explicitly:</p>
     <div class="formula-block">[User Question]
 How does the Marketing team make strategic decisions?
 
@@ -246,6 +320,7 @@ How does the Marketing team make strategic decisions?
 
 [Instruction]
 Using the provided context, answer the question concisely and cite your sources.</div>
+    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>OllamaLLM</code> (used in this module's Sprint Exercise) is a thin wrapper around Ollama, a tool for running open-weight LLMs like Llama 3.2 directly on your own machine. Calling <code>.invoke(prompt)</code> sends the assembled prompt to that local model process and returns its generated text — no network call to a cloud LLM provider involved, making the exercise's pipeline entirely open-source and self-hosted end to end.</p></div></div>
   </section>
 
   <!-- ============ 5 ============ -->
@@ -264,7 +339,7 @@ response = OllamaLLM(model="llama3.2").invoke(prompt)      # runs locally via Ol
 
   <footer class="page-footer">
     <span>Condensed from Chapter 6 — LLM and RAG Pipeline (Basic Data Mining Practice, Prof. Dr. Matteo Marouf)</span>
-    <span><a href="index.html">← All chapters</a></span>
+    <span><a href="index.html">← All modules</a></span>
   </footer>
 
 </div>

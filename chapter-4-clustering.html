@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ch.4 — Clustering Analysis | DM 2026 Notes</title>
+<title>Module 4 — Clustering Analysis | DM Bootcamp</title>
 <link rel="stylesheet" href="assets/style.css">
 <script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
@@ -11,7 +11,7 @@
 
 <nav class="sitenav">
   <div class="sitenav-inner">
-    <a class="sitenav-home" href="index.html">DM 2026 Notes</a>
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
     <div class="sitenav-links">
       <a href="chapter-1-intro.html">1 · Intro</a>
       <a href="chapter-2-pipeline.html">2 · Pipeline</a>
@@ -32,7 +32,7 @@
   </div>
   <div class="nav-panel" id="navPanel">
     <div class="nav-panel-section">
-      <span class="nav-panel-label">Chapters</span>
+      <span class="nav-panel-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
       <a href="chapter-2-pipeline.html">2 · The Data Mining Pipeline</a>
       <a href="chapter-3-classification.html">3 · Classification</a>
@@ -56,7 +56,7 @@
 <div class="page-shell">
   <aside class="sidebar-toc">
     <div class="sidebar-block">
-      <span class="sidebar-label">Chapters</span>
+      <span class="sidebar-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
       <a href="chapter-2-pipeline.html">2 · The Data Mining Pipeline</a>
       <a href="chapter-3-classification.html">3 · Classification</a>
@@ -80,12 +80,23 @@
 
   <div class="masthead">
     <div>
-      <div class="eyebrow">Basic Data Mining Practice · Chapter 4</div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 4</div>
       <h1 class="title">Clustering Analysis</h1>
     </div>
-    <div class="masthead-meta">Condensed reference<br><strong>K-Means → choosing K → limitations → evaluation</strong></div>
+    <div class="masthead-meta">Zero to hero, from here<br><strong>K-Means → choosing K → limitations → evaluation</strong></div>
   </div>
-  <p class="dek">This chapter centers almost entirely on K-Means: its mechanics, why it's sensitive to initialization, how to pick K, and where it quietly fails.</p>
+  <p class="dek">K-Means worked entirely by hand on a six-point toy dataset: assignment, centroid recompute, WCSS, the elbow method, the gap statistic, and silhouette score — every formula, every arithmetic step.</p>
+
+  <div class="outcomes-box">
+    <span class="outcomes-label">By the end of this module, you'll be able to</span>
+    <ul>
+      <li>Explain why clustering has no ground truth to check against, and how that changes what "success" means</li>
+      <li>Run K-Means by hand for one full assign/recompute cycle, and compute WCSS from the result</li>
+      <li>Use the elbow method and the gap statistic to pick K, and know why the elbow is a heuristic, not a proof</li>
+      <li>Recognize the three ways K-Means silently breaks — elongated clusters, unscaled features, outliers — before trusting a result</li>
+      <li>Compute a silhouette score by hand for a single point, and know when a metric needs true labels vs. when it doesn't</li>
+    </ul>
+  </div>
 
   <div class="toc-card">
     <span class="toc-label">On this page</span>
@@ -103,7 +114,11 @@
   <section class="chapter" id="unsupervised">
     <div class="chapter-head"><span class="chapter-num">1</span><h2>Clustering as Unsupervised Learning</h2></div>
     <p class="chapter-dek">No ground-truth labels — the model learns similarity/difference directly from the data.</p>
-    <p>Clustering groups unlabeled examples so a trained model can say "this new point belongs with that group" — contrast with classification, which learns from labels that already exist.</p>
+
+    <p>Most of the machine learning you've read about — including everything in Module 3 — assumes someone has already told you the right answer for every training example. That labeling is expensive. Most data you'll actually encounter doesn't come with that luxury: you have half a million e-commerce transactions and no idea, up front, which customers are "loyal," "at risk," or "one-time bargain hunters" — those categories don't exist yet. They're something you want the data to reveal, not something you already know.</p>
+    <p>That's the problem clustering solves. Instead of learning a mapping from features to a known label, it looks at unlabeled examples and asks a much more primitive question: which of these points are more similar to each other than to the rest? Group the similar ones together, and you've invented categories without anyone having pre-defined them.</p>
+    <p>A useful analogy: classification is like calling a method that already has a documented contract — <code>isFraud(transaction) -&gt; boolean</code> — where someone wrote the correct return value for a training set of examples. Clustering is more like handing you a pile of objects with no <code>equals()</code>/<code>hashCode()</code> contract at all, and asking you to bucket them by "how alike they seem" using only their own field values. There's no oracle checking your work — success isn't "did I match the right answer" but "are these groupings actually useful and coherent."</p>
+    <p>Once a clustering model is trained, you can hand it a brand-new point and it will tell you which existing group that point most resembles — even though no one ever labeled a single training example as "loyal" or "arrhythmic."</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Use case</th><th>Goal</th><th>Input features</th></tr></thead>
@@ -115,6 +130,7 @@
         </tbody>
       </table>
     </div>
+    <p>"Similarity" means something different in each row — waveform shape, spending behavior, topic overlap, gene expression profile — clustering doesn't care what the features <em>mean</em>, only how close together points land once turned into numbers. That's both its power (domain-agnostic) and its main hazard (it will happily group things that are numerically close but conceptually meaningless together, if features are chosen or scaled badly — see §4). Everything in the rest of this module elaborates one idea: define "close," then find groups that are internally close and mutually far apart.</p>
   </section>
 
   <!-- ============ 2 ============ -->
@@ -122,7 +138,14 @@
     <div class="chapter-head"><span class="chapter-num">2</span><h2>K-Means</h2></div>
     <p class="chapter-dek">Fast and simple — but only as good as its starting point.</p>
 
-    <p>Distance metric (squared Euclidean): <code>‖x−c‖² = (x₁−c₁)² + (x₂−c₂)²</code></p>
+    <p>Once you've accepted the goal — find groups of mutually similar points — you need an actual procedure. K-Means is the default answer: pick a number of groups you want, guess where their centers are, and let points and centers pull each other into a stable arrangement.</p>
+
+    <h3>The distance metric</h3>
+    <p>Before you can say two points are "close," you need to measure closeness numerically. K-Means uses <strong>squared Euclidean distance</strong> — the straight-line distance formula from geometry, just without the final square root, since skipping it doesn't change which point is nearest and saves compute:</p>
+    <div class="formula-block">‖x−c‖² = (x₁−c₁)² + (x₂−c₂)²</div>
+    <p>Take the difference in each coordinate, square each difference, add them up. That squaring matters a lot in practice — one dimension with a much larger numeric range than another can completely dominate the distance calculation, exactly the scaling problem in §4.</p>
+
+    <h3>The algorithm, step by step</h3>
     <ol>
       <li>Fix K (number of clusters) in advance.</li>
       <li>Pick K random points as initial centroids.</li>
@@ -130,12 +153,41 @@
       <li>Recompute each centroid as the mean of its assigned points.</li>
       <li>Repeat 3–4 until assignments stop changing or max iterations is hit.</li>
     </ol>
+    <p>The intuition for why this converges: every reassignment to a genuinely closer centroid can only shrink total squared distance (never grow it), and every centroid recompute as a mean can only shrink or hold steady that total (the mean is, by definition, the point minimizing total squared distance to a fixed set of points). Two moves that each can only help, alternating forever, has to bottom out somewhere.</p>
 
-    <div class="callout watch"><span class="tag">Quiz</span><p>Is K-Means deterministic? <strong>No</strong> — random initial centroids mean different runs can converge to different results.</p></div>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>Six 2D points, K=2 — purely illustrative, unrelated to the Online Retail exercise data later in this module.</p>
+      <div class="table-wrap"><table><thead><tr><th>Point</th><th>x</th><th>y</th></tr></thead><tbody>
+        <tr><td>P1</td><td>1</td><td>1</td></tr><tr><td>P2</td><td>1</td><td>2</td></tr><tr><td>P3</td><td>2</td><td>2</td></tr>
+        <tr><td>P4</td><td>8</td><td>8</td></tr><tr><td>P5</td><td>8</td><td>9</td></tr><tr><td>P6</td><td>9</td><td>8</td></tr>
+      </tbody></table></div>
+      <p>Random init happens to pick two data points as starting centroids: <strong>C1=(1,1)</strong>, <strong>C2=(8,8)</strong>.</p>
+      <p><strong>Step 3 — assign.</strong></p>
+      <div class="table-wrap"><table><thead><tr><th>Point</th><th>dist² to C1</th><th>dist² to C2</th><th>Assigned</th></tr></thead><tbody>
+        <tr><td>P1 (1,1)</td><td>0</td><td>98</td><td>C1</td></tr>
+        <tr><td>P2 (1,2)</td><td>1</td><td>85</td><td>C1</td></tr>
+        <tr><td>P3 (2,2)</td><td>2</td><td>72</td><td>C1</td></tr>
+        <tr><td>P4 (8,8)</td><td>98</td><td>0</td><td>C2</td></tr>
+        <tr><td>P5 (8,9)</td><td>113</td><td>1</td><td>C2</td></tr>
+        <tr><td>P6 (9,8)</td><td>113</td><td>1</td><td>C2</td></tr>
+      </tbody></table></div>
+      <p>Cluster 1 = {P1,P2,P3}, Cluster 2 = {P4,P5,P6} — every point unambiguously closer to one centroid.</p>
+      <p><strong>Step 4 — recompute.</strong> C1_new = mean of (1,1),(1,2),(2,2) = <strong>(1.33, 1.67)</strong>. C2_new = mean of (8,8),(8,9),(9,8) = <strong>(8.33, 8.33)</strong>.</p>
+      <p><strong>Step 5 — converged.</strong> Re-checking assignments against the new centroids, nothing changes — the algorithm has converged after one recomputation (messier real data typically needs several more rounds).</p>
+      <p><strong>WCSS.</strong> Cluster 1: P1 contributes 5/9, P2 contributes 2/9, P3 contributes 5/9 → 12/9 ≈ 1.333. Cluster 2: symmetric, also ≈ 1.333. <strong>Total WCSS = 8/3 ≈ 2.67</strong> — the total squared "wobble" of every point around its assigned centroid. Lower means tighter, more internally-consistent clusters.</p>
+    </div>
+
+    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.cluster import KMeans; KMeans(n_clusters=2).fit(X)</code> runs the assign/recompute loop above until convergence. <code>.inertia_</code> gives you exactly the WCSS value computed by hand (2.67 above) — you never sum squared distances yourself in practice.</p></div></div>
 
     <h3>Local optima &amp; inertia</h3>
-    <p>Different random seeds → different final clusterings, some clearly worse than others (three runs in the deck scored WCSS of 444.9, 349.7, and 451.4 — nearly identical starting conditions, meaningfully different outcomes). Fix: run multiple times with different seeds, keep the run with the lowest inertia.</p>
+    <p>Step 2 says "pick K random points as initial centroids" — and <em>random</em> does a lot of work in that sentence. Because the algorithm only ever moves points and centroids to decrease WCSS, it's guaranteed to stop <em>somewhere</em> — but "somewhere" depends heavily on where it started. A bad initial guess can lock the algorithm into a <strong>local optimum</strong>: better than every neighboring arrangement, but not the best overall. Nothing in the assign/recompute loop can ever escape a bad basin once it's fallen in, because every step is only ever allowed to reduce WCSS from where it currently stands.</p>
+    <p>This isn't hypothetical: three runs on the same data, same K, different random seeds, scored WCSS of 444.9, 349.7, and 451.4. The practical fix: <strong>run K-Means multiple times with different random seeds, and keep the run with the lowest final inertia.</strong></p>
+
+    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>random_state</code> fixes the seed so a run is reproducible. <code>n_init</code> controls how many independent random-seed attempts scikit-learn runs internally before returning the <em>best</em> one automatically — in practice you rarely implement "try several seeds, keep the best" yourself; you raise <code>n_init</code> and let the object do it.</p></div></div>
+
     <div class="formula-block"><span class="label">Inertia / WCSS (within-cluster sum of squares) — lower is more compact</span>W_k = Σᵢ Σ_{x∈Cᵢ} ‖x − μᵢ‖²</div>
+    <p>Reading left to right: for every cluster <em>i</em>, for every point <em>x</em> assigned to it, take the squared distance from <em>x</em> to that cluster's centroid <em>μᵢ</em>, and sum across all clusters — exactly the 8/3 computed by hand above, generalized to K clusters.</p>
   </section>
 
   <!-- ============ 3 ============ -->
@@ -143,38 +195,87 @@
     <div class="chapter-head"><span class="chapter-num">3</span><h2>Choosing K</h2></div>
     <p class="chapter-dek">K-Means needs K handed to it — two ways to estimate a reasonable value.</p>
 
+    <p>K-Means has one glaring gap: step 1 says "fix K in advance," but where does that number come from? Unlike counting distinct labels in a labeled dataset, there's no ground truth telling you how many customer segments actually exist — that's precisely what you're trying to discover.</p>
+
     <h3>Elbow method</h3>
-    <p>Plot total WCSS against candidate K values; pick the K where the curve's descent sharply flattens (the "elbow") — beyond that point, extra clusters buy very little.</p>
-    <div class="callout watch"><span class="tag">Watch out</span><p>The elbow is a <strong>heuristic, not an optimum</strong>: the "right" elbow is subjective, it assumes roughly spherical equal-sized clusters, it's sensitive to the same initialization randomness as K-Means itself, and it's expensive to recompute across many K values on large data. ("There is no 'optimal' solution in cluster analysis — interestingness is a subjective decision of the user." — Schubert, 2022)</p></div>
+    <p>Run K-Means for K=1,2,3,4,… and record the WCSS for each. As K grows, WCSS is mathematically guaranteed to shrink (more centroids can only carve the data up more finely; at K = number of points, WCSS is exactly 0). What you're looking for isn't the smallest WCSS — it's where the curve's descent sharply flattens.</p>
+
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>Extend the six-point dataset from §2 to a few candidate K values.</p>
+      <p><strong>K=1</strong>: one centroid, the overall mean (4.83, 5). Summing squared distances from all six points gives <strong>WCSS(1) ≈ 142.83</strong> — large, since two genuinely far-apart groups are both measured against one center sitting uselessly between them.</p>
+      <p><strong>K=2</strong>: from §2, <strong>WCSS(2) = 8/3 ≈ 2.67</strong>.</p>
+      <p><strong>K=3</strong>: split {P2,P3} off from P1 — clusters {P1}, {P2,P3}, {P4,P5,P6}. {P1} contributes 0. {P2,P3} (centroid (1.5,2)) contributes 0.5. {P4,P5,P6} unchanged at 1.333. <strong>WCSS(3) ≈ 1.83</strong>.</p>
+      <div class="table-wrap"><table><thead><tr><th>K</th><th>WCSS</th></tr></thead><tbody>
+        <tr><td>1</td><td>142.83</td></tr><tr><td>2</td><td>2.67</td></tr><tr><td>3</td><td>1.83</td></tr>
+      </tbody></table></div>
+      <p>K=1→2: WCSS falls off a cliff (drop of over 140). K=2→3: drops by less than 1. That's the elbow — a sharp bend after which extra clusters just chip away at weak internal substructure inside two clusters that are obviously two clusters. K=2 is exactly what you'd eyeball from the raw coordinates.</p>
+    </div>
+
+    <div class="callout watch"><span class="tag">Watch out</span><p>The elbow is a <strong>heuristic, not an optimum</strong>: the "right" elbow is subjective, it assumes roughly spherical equal-sized clusters, it's sensitive to the same initialization randomness as K-Means itself, and it's expensive to recompute across many K values on large data. ("There is no 'optimal' solution in cluster analysis — interestingness is a subjective decision of the user." — Schubert, 2022). On real, messier data the bend is rarely this dramatic.</p></div>
 
     <h3>Gap statistic — a more principled alternative</h3>
+    <p>The elbow method only ever looks at <em>your</em> data's WCSS curve in isolation and asks a human to eyeball the bend. The gap statistic asks a more rigorous question: <em>compared to data with no real structure at all, how much better is my clustering actually doing?</em></p>
     <ol>
       <li>Compute log W(K) — the log within-cluster dispersion on the real data.</li>
-      <li>Simulate B reference datasets drawn uniformly over the same bounding box; average their log W<sub>unif</sub>(K).</li>
-      <li>Gap(K) = (1/B)Σ log W<sub>unif,b</sub>(K) − log W(K)</li>
+      <li>Simulate B reference datasets drawn uniformly over the same bounding box; average their log W_unif(K).</li>
+      <li>Gap(K) = (1/B)Σ log W_unif,b(K) − log W(K)</li>
       <li>Compute a standard error SE(K) across the simulations.</li>
       <li><strong>Pick the smallest K</strong> such that Gap(K) ≥ Gap(K+1) − SE(K+1).</li>
     </ol>
-    <p>Intuition: the gap measures how much more compact the real clustering is than what pure chance would produce — a bigger gap means genuinely non-random structure, not just an artifact of adding clusters.</p>
+    <p>A uniform reference dataset is fake data scattered randomly inside the same bounding box — no structure, just noise. K-Means on pure noise still sees WCSS drop as K grows (more centroids always help a little), but smoothly, with no elbow. The gap statistic subtracts that "smooth decline from noise alone" away from your real data's decline — what's left is decline attributable to actual structure.</p>
+
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>True Monte Carlo simulation isn't something to do by hand, so treat the reference numbers here as illustrative stand-ins for the arithmetic. Log-scale the toy WCSS values: log W(1) ≈ 4.962, log W(2) ≈ 0.981, log W(3) ≈ 0.606. Suppose averaging log W_unif(K) over many random reference datasets gave: 5.85 at K=1, 5.20 at K=2, 4.70 at K=3 — a much more gradual decline than the real data's.</p>
+      <div class="table-wrap"><table><thead><tr><th>K</th><th>log W(K) [real]</th><th>avg log W_unif(K) [reference]</th><th>Gap(K)</th></tr></thead><tbody>
+        <tr><td>1</td><td>4.962</td><td>5.85</td><td>0.888</td></tr>
+        <tr><td>2</td><td>0.981</td><td>5.20</td><td>4.219</td></tr>
+        <tr><td>3</td><td>0.606</td><td>4.70</td><td>4.094</td></tr>
+      </tbody></table></div>
+      <p>With illustrative SE(2)=0.15, SE(3)=0.18: is Gap(1)=0.888 ≥ Gap(2)−SE(2)=4.069? No. Is Gap(2)=4.219 ≥ Gap(3)−SE(3)=3.914? Yes. So the gap statistic selects <strong>K=2</strong> — matching both the elbow method and simple visual inspection.</p>
+    </div>
   </section>
 
   <!-- ============ 4 ============ -->
   <section class="chapter" id="where-it-breaks">
     <div class="chapter-head"><span class="chapter-num">4</span><h2>Where K-Means Breaks</h2></div>
 
+    <p>Everything so far has been K-Means working as intended. The catch: this only works cleanly under fairly specific assumptions about your data's shape — and real data violates those assumptions constantly.</p>
+
     <div class="callout watch"><span class="tag">Quiz</span><p>Tested on three datasets — roughly spherical unequal-variance blobs, anisotropically stretched blobs, and moon-shaped clusters — K-Means only produced sensible clusters on the <strong>spherical blobs</strong>. It visibly misassigns points on the stretched and non-convex shapes.</p></div>
 
-    <ul>
-      <li>Sensitive to outliers — they distort centroids and inertia</li>
-      <li>Can converge to local optima</li>
-      <li>Requires similarly-scaled features (see Ch.2 scaling)</li>
-      <li>Not suited to categorical data — squared Euclidean distance is meaningless there</li>
-      <li>Assumes roughly spherical, similarly-sized clusters</li>
-    </ul>
+    <h3>Why spherical, equal-sized clusters are the hidden assumption</h3>
+    <p>K-Means never explicitly assumes clusters are round — but minimizing squared distance to a single centroid per cluster implicitly favors round, compact, similarly-sized blobs, because one point (the centroid) is a poor stand-in for a cluster's shape when that cluster is elongated or of very different density than its neighbors.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>Group A is a long, thin process: points (0,0) and (16,0), genuinely elongated. Group B is tight and compact: (15,1), (17,1), (16,2). Centroid of A = <strong>(8, 0)</strong>. Centroid of B = <strong>(16, 1.33)</strong>. Where would K-Means place (16,0) — the far end of elongated group A? Squared distance to A's centroid: (16−8)²+(0−0)²=<strong>64</strong>. Squared distance to B's centroid: (16−16)²+(0−1.33)²≈<strong>1.78</strong>. 1.78 is dramatically smaller — K-Means assigns (16,0) to cluster B, even though it's a genuine member of A. A single average point is a bad geometric summary of a shape that isn't round.</p>
+    </div>
+
+    <h3>Why unscaled features distort distance</h3>
+    <p>Squared Euclidean distance treats every feature's numeric units as directly comparable — which they almost never are.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>Clustering on age (20–60) and income ($20,000–$200,000). Two customers differ by 5 years and $100. Squared contribution from age: 5²=25. Squared contribution from income: 100²=10,000. Income outweighs age by a factor of 400, even though $100 is nearly meaningless while 5 years might be quite meaningful. K-Means will cluster almost entirely on income.</p>
+    </div>
+    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.preprocessing import StandardScaler; X_scaled = StandardScaler().fit_transform(X)</code> rescales every feature to mean 0, std 1, so no feature's raw numeric range can dominate purely from its units.</p></div></div>
+
+    <h3>Why outliers distort centroids</h3>
+    <p>A centroid is a mean, and means are notoriously sensitive to extreme values.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>Three tight points: (1,1),(2,2),(3,1). Mean = <strong>(2, 1.33)</strong>, sitting comfortably in the middle. Add an outlier (50,50): new mean over all four = <strong>(14, 13.5)</strong> — dragged far outside the region where three of the four "members" actually live. Every ordinary point is now measured against a centroid that no longer represents where they are.</p>
+    </div>
+
+    <h3>Why categorical data doesn't fit</h3>
+    <p>Squared Euclidean distance requires numbers whose <em>magnitude of difference</em> is meaningful. Encode color as red=1, blue=2, green=3, and K-Means treats green as "twice as different" from red as blue is (|1−3|²=4 vs |1−2|²=1) — an artifact of arbitrary numbering with no basis in categories that have no inherent order at all.</p>
+
+    <p>Taken together: sensitive to outliers, can converge to local optima (§2), requires similarly-scaled features, not suited to categorical data, and assumes roughly spherical, similarly-sized clusters.</p>
     <p><strong>Bottom line:</strong> simple, fast, and genuinely useful for quick exploratory segmentation — as long as its spherical-cluster assumption isn't badly violated.</p>
 
     <h3>At scale</h3>
-    <p>Vanilla K-Means struggles with large data: repeated full-dataset iteration is expensive, memory grows, initialization gets harder, and high dimensionality complicates both computation and interpretation. Scalable variants exist (Mini-Batch K-Means, K-Means++); distributed tooling includes PySpark and RAPIDS.</p>
+    <p>Every iteration of the assign/recompute loop requires a full pass over every point to compute distance to every centroid; on millions of rows, repeated until convergence, that adds up fast — and has to happen again from scratch for every candidate K in the elbow method. Vanilla K-Means struggles with large data: repeated full-dataset iteration is expensive, memory grows, initialization gets harder, and high dimensionality complicates both computation and interpretation. Scalable variants exist (Mini-Batch K-Means, K-Means++); distributed tooling includes PySpark and RAPIDS.</p>
+    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.cluster import MiniBatchKMeans</code> is a drop-in alternative with the same <code>n_clusters</code>/<code>.fit()</code>/<code>.inertia_</code> interface, just faster on large data at the cost of slightly noisier convergence.</p></div></div>
   </section>
 
   <!-- ============ 5 ============ -->
@@ -182,6 +283,24 @@
     <div class="chapter-head"><span class="chapter-num">5</span><h2>Evaluating &amp; Interpreting Clusters</h2></div>
     <p class="chapter-dek">Clustering is exploratory — the payoff is in what the groups actually mean.</p>
 
+    <p>Once K-Means has produced an assignment: is this clustering actually <em>good</em>? Unlike classification, there's no held-out label to check against — "good" has to be defined purely from the geometry of the points themselves.</p>
+
+    <h3>Silhouette Coefficient, up close</h3>
+    <p>For a single point <em>i</em>, define <strong>a(i)</strong> — average distance from <em>i</em> to every other point in its own cluster — and <strong>b(i)</strong> — average distance from <em>i</em> to every point in the nearest other cluster:</p>
+    <div class="formula-block">s(i) = (b(i) − a(i)) / max(a(i), b(i))</div>
+    <p>If a point sits much closer to its own cluster than any other, s(i)→+1 — a great fit. If a(i)≈b(i), s(i)→0 — sitting on a boundary. If a(i) exceeds b(i), s(i) goes negative — closer, on average, to a <em>different</em> cluster than the one it was assigned to.</p>
+
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>Reuse the six-point clustering from §2: Cluster 1={P1(1,1),P2(1,2),P3(2,2)}, Cluster 2={P4(8,8),P5(8,9),P6(9,8)}. Compute the silhouette for P3=(2,2).</p>
+      <p><strong>a(P3)</strong>: distance to P1 = √((2−1)²+(2−1)²) = √2 ≈ 1.414; distance to P2 = √((2−1)²+(2−2)²) = 1. a(P3) = (1.414+1)/2 ≈ <strong>1.207</strong>.</p>
+      <p><strong>b(P3)</strong>: distance to P4 ≈ 8.485, to P5 ≈ 9.220, to P6 ≈ 9.220. b(P3) = (8.485+9.220+9.220)/3 ≈ <strong>8.975</strong>.</p>
+      <p>s(P3) = (8.975 − 1.207) / max(1.207, 8.975) = 7.768 / 8.975 ≈ <strong>0.87</strong> — near +1, as expected: this toy dataset's two clusters are extremely well separated. On messier real data, silhouette values typically sit much closer to 0, and negative values flag likely misassignment.</p>
+    </div>
+
+    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.metrics import silhouette_score; silhouette_score(X, labels)</code> computes the average silhouette over an entire dataset in one call, rather than looping over every point by hand.</p></div></div>
+
+    <h3>The rest of the metric zoo</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Metric</th><th>What it captures</th></tr></thead>
@@ -194,7 +313,9 @@
         </tbody>
       </table>
     </div>
-    <div class="callout rule"><span class="tag">Rule</span><p>The metric that technically optimizes a clustering isn't necessarily the most useful one to <em>report</em>. Real value comes from profiling each cluster — dominant characteristics, mean/median/mode per feature, which variables actually differentiate the groups — and giving clusters meaningful names ("loyal customers," "support complainers") rather than just cluster IDs.</p></div>
+    <p>Completeness Score and NMI both require <em>true labels</em> to compare against — for validating a clustering method against known categories, not everyday unsupervised use. Silhouette and Davies-Bouldin only need the points and the cluster assignments themselves, which is why they're the ones you'll reach for most often on real exploratory work.</p>
+
+    <div class="callout rule"><span class="tag">Rule</span><p>The metric that technically optimizes a clustering isn't necessarily the most useful one to <em>report</em>. Real value comes from profiling each cluster — dominant characteristics, mean/median/mode per feature, which variables actually differentiate the groups — and giving clusters meaningful names ("loyal customers," "support complainers") rather than just cluster IDs. A clustering with an excellent silhouette score but clusters you can't explain to a stakeholder in a sentence hasn't actually delivered the thing clustering exists to deliver.</p></div>
   </section>
 
   <!-- ============ 6 ============ -->
@@ -218,7 +339,7 @@ kmeans.fit(rfm_scaled)</div>
 
   <footer class="page-footer">
     <span>Condensed from Chapter 4 — Clustering Analysis (Basic Data Mining Practice, Prof. Dr. Matteo Marouf)</span>
-    <span><a href="index.html">← All chapters</a></span>
+    <span><a href="index.html">← All modules</a></span>
   </footer>
 
 </div>

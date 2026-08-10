@@ -13,6 +13,9 @@
   --accent-soft: #DDEEEC;
   --warn: #A85A16;
   --warn-soft: #F7E7D6;
+  --example: #4552C4;
+  --example-ink: #2E3A99;
+  --example-soft: #E7E9FA;
   --code-bg: #E9EEF0;
   --shadow: 0 1px 2px rgba(20, 30, 35, 0.06);
 }
@@ -29,6 +32,9 @@
     --accent-soft: #17302E;
     --warn: #E8A45C;
     --warn-soft: #362717;
+    --example: #9AA6FF;
+    --example-ink: #C7CDFF;
+    --example-soft: #24274A;
     --code-bg: #1B242C;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   }
@@ -45,6 +51,9 @@
   --accent-soft: #17302E;
   --warn: #E8A45C;
   --warn-soft: #362717;
+  --example: #9AA6FF;
+  --example-ink: #C7CDFF;
+  --example-soft: #24274A;
   --code-bg: #1B242C;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
@@ -60,6 +69,9 @@
   --accent-soft: #DDEEEC;
   --warn: #A85A16;
   --warn-soft: #F7E7D6;
+  --example: #4552C4;
+  --example-ink: #2E3A99;
+  --example-soft: #E7E9FA;
   --code-bg: #E9EEF0;
   --shadow: 0 1px 2px rgba(20, 30, 35, 0.06);
 }
@@ -73,8 +85,8 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 15.5px;
-  line-height: 1.55;
+  font-size: 16.5px;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -418,7 +430,8 @@ h3 {
 }
 h3:first-of-type { margin-top: 0.6rem; }
 
-p { margin: 0.55rem 0; }
+p { margin: 0.7rem 0; }
+section.chapter > p, section.chapter > ul, section.chapter > ol { max-width: 70ch; }
 ul, ol { margin: 0.5rem 0; padding-left: 1.25rem; }
 li { margin: 0.22rem 0; }
 li::marker { color: var(--text-muted); }
@@ -480,6 +493,83 @@ code {
 .callout.rule .tag { color: var(--accent-ink); }
 .callout.watch { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 35%, var(--border)); }
 .callout.watch .tag { color: var(--warn); }
+
+/* ---------- Worked example & Python note (tutorial mode) ---------- */
+.worked-example {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--example);
+  background: var(--example-soft);
+  padding: 1rem 1.2rem 1.1rem;
+  margin: 1.2rem 0;
+  border-radius: 4px;
+}
+.worked-example .we-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 700;
+  color: var(--example-ink);
+  margin-bottom: 0.6rem;
+}
+.worked-example p, .worked-example ul, .worked-example ol { max-width: none; }
+.worked-example p:first-of-type { margin-top: 0; }
+.worked-example p:last-child { margin-bottom: 0; }
+.worked-example .table-wrap { margin: 0.8rem 0; }
+.worked-example .formula-block { margin: 0.7rem 0; }
+
+.python-note {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  border: 1px dashed var(--border-strong);
+  background: var(--code-bg);
+  padding: 0.85rem 1.1rem;
+  margin: 1.1rem 0;
+  border-radius: 4px;
+  font-size: 0.94rem;
+}
+.python-note::before {
+  content: "";
+  flex-shrink: 0;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--text-muted);
+  margin-top: 0.55rem;
+}
+.python-note .pn-label {
+  display: block;
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+.python-note p { margin: 0; max-width: none; }
+.python-note > div { flex: 1; min-width: 0; }
+
+/* ---------- Learning outcomes (bootcamp module intro) ---------- */
+.outcomes-box {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  background: var(--bg-raised);
+  padding: 1rem 1.2rem 1.1rem;
+  margin: 0 0 2rem;
+}
+.outcomes-box .outcomes-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 700;
+  color: var(--accent-ink);
+  margin-bottom: 0.6rem;
+}
+.outcomes-box ul { margin: 0; padding-left: 1.2rem; max-width: none; }
+.outcomes-box li { margin: 0.3rem 0; }
 
 /* ---------- Tables ---------- */
 .table-wrap { overflow-x: auto; margin: 0.7rem 0 1.1rem; }

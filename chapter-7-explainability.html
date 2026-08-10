@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ch.7 — Explainability &amp; Causality | DM 2026 Notes</title>
+<title>Module 7 — Explainability &amp; Causality | DM Bootcamp</title>
 <link rel="stylesheet" href="assets/style.css">
 <script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
@@ -11,7 +11,7 @@
 
 <nav class="sitenav">
   <div class="sitenav-inner">
-    <a class="sitenav-home" href="index.html">DM 2026 Notes</a>
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
     <div class="sitenav-links">
       <a href="chapter-1-intro.html">1 · Intro</a>
       <a href="chapter-2-pipeline.html">2 · Pipeline</a>
@@ -32,7 +32,7 @@
   </div>
   <div class="nav-panel" id="navPanel">
     <div class="nav-panel-section">
-      <span class="nav-panel-label">Chapters</span>
+      <span class="nav-panel-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
       <a href="chapter-2-pipeline.html">2 · The Data Mining Pipeline</a>
       <a href="chapter-3-classification.html">3 · Classification</a>
@@ -56,7 +56,7 @@
 <div class="page-shell">
   <aside class="sidebar-toc">
     <div class="sidebar-block">
-      <span class="sidebar-label">Chapters</span>
+      <span class="sidebar-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
       <a href="chapter-2-pipeline.html">2 · The Data Mining Pipeline</a>
       <a href="chapter-3-classification.html">3 · Classification</a>
@@ -80,12 +80,23 @@
 
   <div class="masthead">
     <div>
-      <div class="eyebrow">Basic Data Mining Practice · Chapter 7</div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 7</div>
       <h1 class="title">Explainability &amp; Causality</h1>
     </div>
-    <div class="masthead-meta">Condensed reference<br><strong>Local/global → permutation importance → SHAP → causality</strong></div>
+    <div class="masthead-meta">Zero to hero, from here<br><strong>Local/global → permutation importance → SHAP → causality</strong></div>
   </div>
-  <p class="dek">Two different questions that get conflated constantly: "what did the model use?" (explainability) and "what actually changes the outcome?" (causality).</p>
+  <p class="dek">Permutation importance and Shapley values computed by hand, end to end — including the hardest formula on this whole site, unpacked with a genuinely minimal 2-feature example.</p>
+
+  <div class="outcomes-box">
+    <span class="outcomes-label">By the end of this module, you'll be able to</span>
+    <ul>
+      <li>Explain why different stakeholders need different explanations from the same model, and tell local from global explanations</li>
+      <li>Distinguish glass-box from black-box models, and explain why an ensemble of explainable trees is itself a black box</li>
+      <li>Compute permutation feature importance by hand from a baseline and shuffled score</li>
+      <li>Compute a Shapley value by hand for a 2-feature toy model, and verify it against the efficiency property</li>
+      <li>Explain why a feature mattering to a model (SHAP) is not the same as that feature causing the outcome (causal inference), using a confounder example</li>
+    </ul>
+  </div>
 
   <div class="toc-card">
     <span class="toc-label">On this page</span>
@@ -102,8 +113,11 @@
   <!-- ============ 1 ============ -->
   <section class="chapter" id="why-it-matters">
     <div class="chapter-head"><span class="chapter-num">1</span><h2>Why Explainability Matters</h2></div>
-    <p class="chapter-dek">Different stakeholders need different explanations from the same model.</p>
 
+    <p>For most of software engineering history, "correct" and "understandable" were the same property — you could read the code, or step through it in a debugger, and see exactly why it did what it did. Machine learning breaks that assumption. A random forest or a neural network arrives at a prediction through millions of numeric operations across hundreds of learned parameters, and there is no line of "business logic" you can point to and say "this is why." That gap — a model that works but can't explain itself — is the whole reason explainability exists as a field.</p>
+
+    <h3>Who needs an explanation, and why</h3>
+    <p>Take a loan-approval model as the running example. Four different people interact with it, and none of them are asking the same question:</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Stakeholder (loan approval)</th><th>Their question</th></tr></thead>
@@ -115,8 +129,11 @@
         </tbody>
       </table>
     </div>
+    <p>A single number — "predicted probability of default: 0.82" — answers none of these on its own. Explainability techniques exist precisely to translate "the model computed 0.82" into an answer shaped for whichever audience is asking.</p>
 
-    <p><strong>Accuracy vs. explainability trade-off:</strong> a decision tree is highly interpretable but often less accurate; a neural network is far less interpretable but often more accurate. The right balance depends on ROI and compliance requirements, not just raw performance.</p>
+    <h3>The trade-off: accuracy vs. explainability</h3>
+    <p>The models easiest to explain tend to be the least accurate on hard problems, and the most accurate tend to be hardest to explain. A decision tree with five splits is fully interpretable — print it out and read it like a flowchart — but often can't capture the subtle, high-dimensional patterns a deep neural network can. The network might get you 15% better accuracy, but its internal representation is a black box of matrix multiplications no human can read directly.</p>
+    <p>This isn't a trade-off you resolve once and forget. A model recommending which ad to show has little at stake if it's a bit unexplainable. A model that denies a mortgage or flags fraud is different entirely. The right balance depends on ROI and compliance requirements, not just raw performance.</p>
     <div class="callout rule"><span class="tag">Rule</span><p>Explainability matters most when decisions affect people's lives (healthcare, finance, justice), when regulation demands transparency, or when trust is the product. It matters less for low-stakes decisions where speed/accuracy dominate.</p></div>
   </section>
 
@@ -124,9 +141,12 @@
   <section class="chapter" id="two-axes">
     <div class="chapter-head"><span class="chapter-num">2</span><h2>Two Axes of Explainability</h2></div>
 
+    <p>Before looking at specific techniques, it helps to have vocabulary for classifying them — otherwise "explainability" becomes a vague catch-all. There are two independent questions you can ask about any explanation technique: <em>what scope does it explain</em> (one prediction, or the whole model), and <em>where does the explanation come from</em> (built into the model, or bolted on afterward)?</p>
+
+    <h3>Local vs. global</h3>
+    <p>Think of the difference the way you'd think about debugging a single failing test versus reading a code-coverage report for the whole suite.</p>
     <div class="table-wrap">
       <table>
-        <caption>Local vs. global</caption>
         <thead><tr><th></th><th>Local</th><th>Global</th></tr></thead>
         <tbody>
           <tr><th>Goal</th><td>Explain <em>one</em> prediction</td><td>Understand overall model behavior</td></tr>
@@ -136,10 +156,12 @@
         </tbody>
       </table>
     </div>
+    <p>Back to the loan example: the end user ("why was <em>my</em> loan denied?") needs a <strong>local</strong> explanation — a story about their specific application. The auditor ("are minority groups disproportionately denied?") needs a <strong>global</strong> explanation — a pattern across thousands of applications. Some techniques, like SHAP, can actually be used at both scopes.</p>
 
+    <h3>Inherent (glass-box) vs. post-hoc (black-box)</h3>
+    <p>The second axis is about <em>when</em> the explanation is available. Some models are transparent by construction — the model's structure <em>is</em> the explanation. Others are opaque, needing an outside technique after the fact.</p>
     <div class="table-wrap">
       <table>
-        <caption>Inherent (glass-box) vs. post-hoc (black-box)</caption>
         <thead><tr><th></th><th>Inherent</th><th>Post-hoc</th></tr></thead>
         <tbody>
           <tr><th>Nature</th><td>Transparent, self-explanatory</td><td>Opaque; needs a separate interpretation technique</td></tr>
@@ -148,13 +170,19 @@
         </tbody>
       </table>
     </div>
-    <p>In a decision tree, the <em>order of splits</em> already reveals feature importance — the first split is the most discriminating feature. In logistic regression, <code>ŷ = σ(wᵀx + b)</code>, the learned weights <em>are</em> each feature's contribution. A random forest is built from inherently-explainable trees, yet the ensemble's combined decision is not — which is exactly why post-hoc methods exist.</p>
+    <p>To make "inherent" concrete: in a decision tree, the <em>order of splits</em> already reveals feature importance — the first split is, by construction, the single most discriminating feature, because that's the criterion the tree-building algorithm optimizes at each node. In logistic regression, <code>ŷ = σ(wᵀx + b)</code>, there's no separate interpretation step needed — the learned weight vector <code>w</code> <em>is</em> each feature's contribution, directly, as a number you can read off after training.</p>
+    <p>A random forest sits in an interesting middle ground: built out of individually inherently-explainable trees, but once you combine hundreds and average their votes, the <em>ensemble's</em> combined decision is no longer something a human can trace by hand — which is exactly why post-hoc methods like permutation importance and SHAP exist.</p>
   </section>
 
   <!-- ============ 3 ============ -->
   <section class="chapter" id="permutation-importance">
     <div class="chapter-head"><span class="chapter-num">3</span><h2>Permutation Feature Importance</h2></div>
     <p class="chapter-dek">If a feature matters, breaking it should hurt performance.</p>
+
+    <p>Suppose you've trained a random forest that gets 90% accuracy. You want to know which input features are actually doing the work — not because you can read the forest's 200 trees by hand, but because you need to answer "is this model relying on something inappropriate?" or "which features are worth the cost of collecting?"</p>
+    <p>The insight is refreshingly low-tech: if a feature genuinely matters, destroying the information in that feature should hurt performance. If a feature is irrelevant, scrambling it shouldn't change anything, since the model wasn't really using it. This is the ML equivalent of unplugging one wire in a circuit at a time to see which one makes the lights go out — you don't need the circuit diagram to learn something real from that experiment.</p>
+    <p>"Destroying the information" has a specific meaning: take one column — say, everyone's Age — and shuffle the values randomly among rows, leaving every other column exactly as it was. Each row now has a random person's age attached. The statistical distribution of Age is unchanged, but the <em>relationship</em> between a person's Age and their other features and true outcome has been completely scrambled. Because this technique never looks inside the model — only shuffles inputs and reads outputs — it works identically for a decision tree, a random forest, a neural network, or anything else. That's what "model-agnostic" means in practice.</p>
+
     <ol>
       <li>Train the model; measure baseline performance <em>s</em> (e.g. 90% accuracy).</li>
       <li>Randomly shuffle one feature's column only, leaving everything else untouched.</li>
@@ -162,9 +190,31 @@
       <li>Importance = baseline − new score (90% − 78% = <strong>12%</strong>).</li>
       <li>Repeat K times per feature and average, to smooth out random variation; rank all features by their drop.</li>
     </ol>
-    <p>Worked ranking: Age 12% &gt; Income 7% &gt; Balance 4% &gt; Region 1% &gt; Gender 0%.</p>
-    <div class="callout watch"><span class="tag">Quiz</span><p>If shuffling a feature <em>improves</em> performance, does that mean the feature is useless? No — a negative importance means the model does <em>better</em> once that feature's information is destroyed, which points to noise, overfitting, redundancy, or a harmful learned dependency.</p></div>
-    <p><strong>Pros:</strong> model-agnostic, simple to implement and explain. <strong>Cons:</strong> correlated features can mask each other's importance; expensive with many features; unstable on small datasets.</p>
+    <p>Step 5 exists because a single random shuffle is, well, random — you might get an unusually damaging (or harmless) shuffle by chance. Averaging several gives a more reliable estimate of the <em>typical</em> damage that feature's scrambling does.</p>
+
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>Using the loan-officer scenario: baseline accuracy is 90%.</p>
+      <p><strong>Feature: Age.</strong> Shuffle the Age column, leave Income/Balance/Region/Gender untouched, re-run: accuracy drops to 78%.</p>
+      <div class="formula-block">importance(Age) = baseline − shuffled = 90% − 78% = 12%</div>
+      <p>A big drop — the model leans heavily on a person's real age lining up correctly with their real other features and outcome.</p>
+      <p><strong>Feature: Income.</strong> Put Age back to normal, shuffle Income instead. Accuracy comes out to 83%:</p>
+      <div class="formula-block">importance(Income) = baseline − shuffled = 90% − 83% = 7%</div>
+      <p>Smaller drop than Age — the model relies on Income, but less heavily. Repeating for every feature:</p>
+      <div class="table-wrap"><table><thead><tr><th>Feature</th><th>Score after shuffling</th><th>Importance (drop from 90%)</th></tr></thead><tbody>
+        <tr><td>Age</td><td>78%</td><td>12%</td></tr>
+        <tr><td>Income</td><td>83%</td><td>7%</td></tr>
+        <tr><td>Balance</td><td>86%</td><td>4%</td></tr>
+        <tr><td>Region</td><td>89%</td><td>1%</td></tr>
+        <tr><td>Gender</td><td>90%</td><td>0%</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>sklearn.inspection.permutation_importance(model, X, y, scoring=..., n_repeats=...)</code> does exactly the procedure above: shuffle one column at a time, re-score using whatever metric you pass to <code>scoring</code>, repeat <code>n_repeats</code> times per feature and average, and return every feature's importance in one call.</p></div></div>
+
+    <div class="callout watch"><span class="tag">Quiz</span><p>If shuffling a feature <em>improves</em> performance, does that mean the feature is useless? No — a negative importance means the model does <em>better</em> once that feature's information is destroyed, which points to noise, overfitting, redundancy, or a harmful learned dependency. That's a more serious finding than "useless": it suggests the model latched onto some spurious pattern involving that feature during training.</p></div>
+
+    <p><strong>Pros:</strong> model-agnostic, simple enough to explain in one sentence: "we broke this column and performance got worse by X." <strong>Cons:</strong> correlated features can mask each other's importance — if Income and Balance are strongly correlated, shuffling Income alone doesn't remove much information, since the model can still infer roughly the same thing from Balance, so both can look artificially unimportant even though the <em>pair</em> matters a great deal. It's also expensive with many features, and can be unstable on small datasets.</p>
   </section>
 
   <!-- ============ 4 ============ -->
@@ -172,13 +222,48 @@
     <div class="chapter-head"><span class="chapter-num">4</span><h2>Shapley Values (SHAP)</h2></div>
     <p class="chapter-dek">Borrowed from game theory: features are "players," the prediction is the "payout" to split fairly.</p>
 
-    <p>For feature <em>i</em>, look at every possible subset <em>S</em> of the other features, and compute the <strong>marginal contribution</strong> of adding <em>i</em> to that subset: <code>f(S∪{i}) − f(S)</code>. Average this over <em>all</em> possible feature orderings, weighted so no ordering biases the result:</p>
+    <p>Permutation importance has a real weakness worth naming before introducing the fix: because it shuffles one feature at a time, it doesn't fairly account for features that only matter <em>in combination</em>, and it can be thrown off by correlation, as with Income and Balance above. What we actually want is a way to divide credit for a prediction among all contributing features — fairly, even when features interact and overlap — the way you'd divide profits among business partners who each contributed different, overlapping amounts of effort to a shared outcome.</p>
+    <p>That "divide credit fairly" problem was solved mathematically in 1953, in game theory, by Lloyd Shapley, for how to split a payout among collaborating players when different subsets ("coalitions") could have achieved different value on their own. SHAP (SHapley Additive exPlanations) borrows that solution wholesale: the "players" become your model's <em>features</em>, the "payout" becomes the model's <em>prediction</em> for one specific instance.</p>
+
+    <h3>Marginal contribution: the core idea</h3>
+    <p>The building block is the <strong>marginal contribution</strong> of a feature — "how much does adding this feature to a group of already-known features change the prediction?" If you already know an applicant's Income, and I additionally tell you their Credit Score, the prediction moves by some amount — that movement, given Income was already known, is Credit Score's marginal contribution.</p>
+    <p>The catch: a feature's marginal contribution generally <em>depends on what other features were already present</em>. So there's no single "the" marginal contribution — there's a whole family of them, one per possible subset of other features. Shapley's insight: the fair way to give one feature one clean number is to compute its marginal contribution for <em>every</em> possible subset and <em>every</em> possible order those features could have been revealed in, then average all of those, weighted so no ordering unfairly dominates.</p>
+
+    <h3>The formula, unpacked</h3>
     <div class="formula-block">φᵢ(v) = Σ_{S⊆N\{i}} [ |S|!·(n−|S|−1)! / n! ] · ( v(S∪{i}) − v(S) )</div>
-    <p>Features that consistently add value across orderings score high; features that only sometimes help score proportionally less.</p>
+    <p>This looks intimidating mostly because of the factorial weighting term. <code>N\{i}</code> means "all features except feature <em>i</em>" — the set subsets <em>S</em> are drawn from. <code>v(S)</code> is the model's prediction using only the features in <em>S</em> (the rest held at a neutral/average baseline). <code>v(S∪{i}) − v(S)</code> is the marginal contribution described above. The fraction <code>|S|!·(n−|S|−1)!/n!</code> is a weight — precisely the probability that, if you lined up all n features in a uniformly random order, the features in S would appear before feature i and everything else after. The whole formula is a weighted average of "how much does feature i add, across every point in every possible ordering."</p>
 
-    <p><strong>Reading a SHAP output:</strong> <code>final prediction = base value + Σ SHAP values</code>. A <strong>summary/bar plot</strong> (global) ranks features by mean |SHAP value|. A <strong>beeswarm plot</strong> (local, per-instance) shows every data point's SHAP value (impact) and its actual feature value (color) — revealing both magnitude and direction together.</p>
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>Formulas are easiest to trust once you push real numbers through by hand, so here's the smallest non-trivial case: a toy loan-approval model with only <strong>two</strong> features, Income and Credit Score, for one applicant. Define <code>v(S)</code> as "the model's predicted approval probability (%) when only the features in S are known, with any unknown feature replaced by its dataset-average value." There are exactly four subsets of a two-feature set:</p>
+      <ul>
+        <li>v(∅) = 50 — knowing nothing beyond the population average, prediction is 50%.</li>
+        <li>v({Income}) = 70 — knowing just their (high) Income, prediction rises to 70%.</li>
+        <li>v({CreditScore}) = 60 — knowing just their (decent) Credit Score, prediction rises to 60%.</li>
+        <li>v({Income, CreditScore}) = 90 — knowing both, the full model's actual prediction is 90%.</li>
+      </ul>
+      <p>With two features, there are exactly two orderings: (Income, then Credit Score) or (Credit Score, then Income). Income's marginal contribution in both:</p>
+      <p><em>Income revealed first</em> (added to the empty set): v({Income}) − v(∅) = 70−50 = <strong>20</strong>.<br>
+      <em>Income revealed second</em> (after Credit Score is known): v({Income,CreditScore}) − v({CreditScore}) = 90−60 = <strong>30</strong>.</p>
+      <p>Averaging: <strong>φ_Income = (20+30)/2 = 25</strong>.</p>
+      <p>Same two steps for Credit Score: <em>revealed first</em>: v({CreditScore})−v(∅) = 60−50 = <strong>10</strong>. <em>Revealed second</em> (after Income): v({Income,CreditScore})−v({Income}) = 90−70 = <strong>20</strong>. Averaging: <strong>φ_CreditScore = (10+20)/2 = 15</strong>.</p>
+      <p>Checking this against the formula's factorial weights directly (not just the "average over orderings" shortcut): for n=2, subsets of N\{Income} are ∅ (size 0) and {CreditScore} (size 1). Weight for size 0: 0!·(2−0−1)!/2! = 1/2. Weight for size 1: 1!·(2−1−1)!/2! = 1/2. Both come out ½ — unsurprising, since with only two features, "average over orderings" and "average over subsets" coincide. Plugging in:</p>
+      <div class="formula-block">φ_Income = (1/2)·(v({Income})−v(∅)) + (1/2)·(v({Income,CreditScore})−v({CreditScore}))
+         = (1/2)·20 + (1/2)·30 = 10 + 15 = 25</div>
+      <p>— exactly matching the hand-averaged answer.</p>
+      <p>Two sanity checks that hold as a matter of mathematical guarantee (the <em>efficiency</em> property), not coincidence: first, the Shapley values should sum to the total swing from knowing both features vs. neither: φ_Income+φ_CreditScore = 25+15 = <strong>40</strong>, and indeed v({Income,CreditScore})−v(∅) = 90−50 = 40 ✓. Second, adding the Shapley values back onto the baseline should reproduce the actual prediction: 50+25+15 = <strong>90</strong> — exactly v({Income,CreditScore}) ✓.</p>
+    </div>
 
-    <div class="callout watch"><span class="tag">Key warning</span><p><strong>SHAP values do not reflect causality.</strong> A high-importance feature (e.g. Titanic "Fare") is useful for prediction, but may just be capturing information about a different real cause — it doesn't mean changing that feature would change the outcome. Predictive importance ≠ actionability.</p></div>
+    <h3>Reading a SHAP output</h3>
+    <p>The identity from the worked example generalizes exactly: <code>final prediction = base value + Σ SHAP values</code>, where the base value is the model's average prediction across the whole dataset (our v(∅)=50) and each feature's SHAP value is its φᵢ. This is what makes SHAP genuinely <em>additive</em> — the contributions literally add up to the prediction, unlike a bare feature-importance ranking with no such guarantee.</p>
+    <ul>
+      <li>A <strong>summary/bar plot</strong> (global) ranks features by mean |SHAP value| across every instance — collapsing per-instance numbers into one global ranking, similar in spirit to the permutation-importance ranking from §3, but via this fairer, interaction-aware allocation.</li>
+      <li>A <strong>beeswarm plot</strong> (local, per-instance) shows every data point's SHAP value (impact) and its actual feature value (color) — revealing both magnitude and direction together, so instead of just "Credit Score matters" you can see <em>high</em> credit scores push predictions up and <em>low</em> ones push them down, across every individual applicant.</li>
+    </ul>
+
+    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>shap.TreeExplainer(model)</code> builds an explainer specialized for tree-based models (random forests, gradient boosting) that computes exact Shapley values efficiently by exploiting the tree structure, rather than brute-forcing every subset. <code>explainer.shap_values(X)</code> runs that computation across a whole dataset and returns the per-feature, per-instance SHAP values used to draw the plots above.</p></div></div>
+
+    <div class="callout watch"><span class="tag">Key warning</span><p><strong>SHAP values do not reflect causality.</strong> A high-importance feature (e.g. Titanic "Fare") is useful for prediction, but may just be capturing information about a different real cause — it doesn't mean changing that feature would change the outcome. Predictive importance ≠ actionability. A large SHAP value tells you the model <em>used</em> that feature heavily and that it's <em>statistically associated</em> with the outcome — it does not tell you that manipulating the real-world value would change the real-world outcome. That's §5's entire subject.</p></div>
   </section>
 
   <!-- ============ 5 ============ -->
@@ -186,14 +271,24 @@
     <div class="chapter-head"><span class="chapter-num">5</span><h2>Causality: Beyond Correlation</h2></div>
     <p class="chapter-dek">Explainability says what the model used. Causality asks what would actually change the outcome.</p>
 
-    <p>Causal analysis studies cause-and-effect directly — via <strong>causal inference</strong> (does X cause Y?), <strong>counterfactual analysis</strong> ("what if?"), and <strong>interventions</strong> (simulate an action, observe the effect). It matters for decisions you actually intend to act on: treatment choices, policy changes.</p>
+    <p>Every technique so far — inherent interpretability, permutation importance, SHAP — answers some version of "what did the model use to make this prediction?" That's a question about the model. It's a genuinely different question from "what, in the real world, would actually change the outcome if I changed it?" — and conflating the two is one of the easiest and most consequential mistakes to make with any of these tools. A feature can dominate a SHAP summary plot and still be something you could set to any value you like without changing a single real outcome.</p>
+
+    <h3>Causal inference, counterfactuals, and interventions</h3>
+    <ul>
+      <li><strong>Causal inference</strong> asks, directly, does X cause Y? — using statistical techniques (randomized experiments, natural experiments, causal graphs) designed to isolate causation from mere association.</li>
+      <li><strong>Counterfactual analysis</strong> asks "what if?" — for this specific case, what would have happened had one input been different, holding everything else fixed?</li>
+      <li><strong>Interventions</strong> simulate an action and observe the effect — rather than passively watching existing data, you reach in and change one variable, then measure downstream effects.</li>
+    </ul>
+    <p>This matters most for decisions you actually intend to <em>act</em> on: treatment choices in medicine, policy changes in government, pricing in business — anywhere the whole point is to decide what to <em>do</em>, not just predict what happens if nothing changes.</p>
 
     <h3>Confounders — the trap explainability alone can't see</h3>
+    <p>The mechanism by which explainability gets this wrong has a name: a <strong>confounder</strong> is a hidden variable that influences both the feature your model latched onto and the outcome you're predicting, creating a strong statistical association between the two even though neither causes the other.</p>
     <ul>
-      <li><strong>Umbrellas &amp; accidents:</strong> a model finds umbrella ownership predicts traffic accidents. The real cause is <strong>rain</strong>, which drives both. Handing out umbrellas would not reduce accidents.</li>
-      <li><strong>Titanic — Sex:</strong> explainability ranks "sex" as the top predictor of survival. The real cause was the unrecorded <strong>"women and children first"</strong> evacuation policy — sex didn't cause survival, it correlated with who got lifeboat access.</li>
-      <li><strong>Titanic — Fare:</strong> explainability ranks fare as important, but higher fare really just correlated with <strong>passenger class</strong> — cabins closer to lifeboats, faster crew assistance.</li>
+      <li><strong>Umbrellas &amp; accidents:</strong> a model finds umbrella ownership predicts traffic accidents. The real cause is <strong>rain</strong>, which drives both. Handing out umbrellas would not reduce accidents. Deliberately silly, so the pattern is unmistakable.</li>
+      <li><strong>Titanic — Sex:</strong> explainability ranks "sex" as the top predictor of survival. The real cause was the unrecorded <strong>"women and children first"</strong> evacuation policy — sex didn't cause survival, it correlated with who got lifeboat access. The confounder isn't even a column in the dataset — it's an unrecorded real-world process that left a strong statistical fingerprint on a column that <em>was</em> recorded.</li>
+      <li><strong>Titanic — Fare:</strong> explainability ranks fare as important, but higher fare really just correlated with <strong>passenger class</strong> — cabins closer to lifeboats, faster crew assistance. The model reaches for the nearest available proxy (price paid), and SHAP faithfully reports it as important, because it <em>is</em> useful for prediction — even though paying more money didn't, by itself, save anyone's life.</li>
     </ul>
+    <p>The pattern across all three: an explainability technique will correctly and honestly tell you which feature the model is using, because that is exactly what it's designed to measure. It cannot tell you whether that feature is a real cause or merely a bystander correlated with the real cause.</p>
 
     <div class="table-wrap">
       <table>
@@ -205,6 +300,7 @@
         </tbody>
       </table>
     </div>
+    <p>Use SHAP and permutation importance to understand and debug your model, to audit it for inappropriate reliance on sensitive features, and to build trust with stakeholders. But the moment the question changes from "how does the model decide" to "what should we actually change in the real world," you've left explainability's territory and need causal tools instead — no amount of re-running SHAP on the same dataset will answer that second question for you.</p>
   </section>
 
   <!-- ============ 6 ============ -->
@@ -219,13 +315,13 @@
 explainer = shap.TreeExplainer(model)
 shap_values = explainer.shap_values(X_test)
 shap.summary_plot(shap_values[:,:,1], X_test)   # beeswarm</div>
-    <div class="callout rule"><span class="tag">Result</span><p>All three methods agree: <code>sex</code> dominates, with the beeswarm plot showing female (low-encoded) pushing predictions toward survival and male pushing away from it — the same "women and children first" pattern first spotted in Chapter 1's Titanic exercise, now visible feature-by-feature.</p></div>
+    <div class="callout rule"><span class="tag">Result</span><p>All three methods agree: <code>sex</code> dominates, with the beeswarm plot showing female (low-encoded) pushing predictions toward survival and male pushing away from it — the same "women and children first" pattern first spotted in Module 1's Titanic exercise, now visible feature-by-feature.</p></div>
     <div class="callout watch"><span class="tag">Gotcha</span><p>The notebook flags the beeswarm-plot interpretation (dot position = SHAP value, color = feature value, ranking = mean |SHAP|) as required knowledge for the exam — worth re-reading §4 alongside this exercise.</p></div>
   </section>
 
   <footer class="page-footer">
     <span>Condensed from Chapter 7 — Explainability &amp; Causality Analysis (Basic Data Mining Practice, Prof. Dr. Matteo Marouf)</span>
-    <span><a href="index.html">← All chapters</a></span>
+    <span><a href="index.html">← All modules</a></span>
   </footer>
 
 </div>

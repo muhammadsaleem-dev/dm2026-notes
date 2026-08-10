@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ch.1 — Introduction to Data Mining | DM 2026 Notes</title>
+<title>Module 1 — Introduction to Data Mining | DM Bootcamp</title>
 <link rel="stylesheet" href="assets/style.css">
 <script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </head>
@@ -11,7 +11,7 @@
 
 <nav class="sitenav">
   <div class="sitenav-inner">
-    <a class="sitenav-home" href="index.html">DM 2026 Notes</a>
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
     <div class="sitenav-links">
       <a href="chapter-1-intro.html" class="active">1 · Intro</a>
       <a href="chapter-2-pipeline.html">2 · Pipeline</a>
@@ -32,7 +32,7 @@
   </div>
   <div class="nav-panel" id="navPanel">
     <div class="nav-panel-section">
-      <span class="nav-panel-label">Chapters</span>
+      <span class="nav-panel-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
       <a href="chapter-2-pipeline.html">2 · The Data Mining Pipeline</a>
       <a href="chapter-3-classification.html">3 · Classification</a>
@@ -56,7 +56,7 @@
 <div class="page-shell">
   <aside class="sidebar-toc">
     <div class="sidebar-block">
-      <span class="sidebar-label">Chapters</span>
+      <span class="sidebar-label">Modules</span>
       <a href="chapter-1-intro.html" class="active">1 · Introduction to Data Mining</a>
       <a href="chapter-2-pipeline.html">2 · The Data Mining Pipeline</a>
       <a href="chapter-3-classification.html">3 · Classification</a>
@@ -80,12 +80,22 @@
 
   <div class="masthead">
     <div>
-      <div class="eyebrow">Basic Data Mining Practice · Chapter 1</div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 1</div>
       <h1 class="title">Introduction to Data Mining</h1>
     </div>
-    <div class="masthead-meta">Condensed reference<br><strong>Definitions → Lifecycle → Representation → Data types</strong></div>
+    <div class="masthead-meta">Zero to hero, from here<br><strong>Definitions → Lifecycle → Representation → Data types</strong></div>
   </div>
-  <p class="dek">What data mining actually is, the loop it follows on every project, and the vocabulary (data types, task types, representations) the rest of the course builds on.</p>
+  <p class="dek">What data mining actually is, the loop it follows on every project, and the vocabulary (data types, task types, representations) the rest of this bootcamp builds on. Written for engineers who already know how to code, not how to think in data.</p>
+
+  <div class="outcomes-box">
+    <span class="outcomes-label">By the end of this module, you'll be able to</span>
+    <ul>
+      <li>Explain what data mining is, and place it correctly relative to machine learning, data science, and plain software engineering</li>
+      <li>Walk through the data mining project lifecycle and explain why it loops instead of running once, top to bottom</li>
+      <li>Pick an appropriate numeric representation for text, image, graph, and audio data — and explain why there's rarely one "correct" choice</li>
+      <li>Classify any dataset by measurement scale and structure, and match a business problem to the right task type (classification, regression, clustering, …)</li>
+    </ul>
+  </div>
 
   <div class="toc-card">
     <span class="toc-label">On this page</span>
@@ -104,18 +114,23 @@
     <div class="chapter-head"><span class="chapter-num">1</span><h2>What Is Data Mining?</h2></div>
     <p class="chapter-dek">An interdisciplinary field, not a single technique.</p>
 
-    <p><strong>Data mining</strong> uses scientific methods, processes, algorithms, and systems to extract knowledge and insight from structured and unstructured data across a broad range of application domains.</p>
+    <p>Imagine you're handed a database with ten years of transaction logs, customer records, and support tickets, and someone asks: "so, what's in here?" There's no query you can write, no single <code>SELECT</code> statement, that answers that question — because you don't yet know what pattern you're looking for. That's the problem data mining exists to solve: turning a large pile of raw, often messy data into knowledge that a human — or another system — can act on. The name is a deliberate metaphor: just as mining extracts a small amount of valuable ore from a large amount of rock, data mining extracts a small number of useful patterns, rules, or predictions from a large volume of otherwise undifferentiated data.</p>
 
-    <p><strong>Data science</strong> sits at the intersection of three fields:</p>
+    <p>With that motivation in mind, here's the working definition: <strong>data mining</strong> uses scientific methods, processes, algorithms, and systems to extract knowledge and insight from structured and unstructured data across a broad range of application domains. Notice what that definition is <em>not</em> saying — it isn't one algorithm, one library, or one job title. It's an umbrella term for a whole toolkit of techniques (statistical, algorithmic, computational) applied to the general problem of "find the signal in this data."</p>
+
+    <h3>Data science is where three fields overlap</h3>
+    <p>If data mining is the activity, <strong>data science</strong> is the broader discipline that houses it, and it's easiest to understand as three overlapping circles in a Venn diagram — three skill sets that, individually, each get you only partway there:</p>
     <ul>
-      <li>Computer Science ∩ Math &amp; Statistics → <strong>Machine Learning</strong></li>
-      <li>Math &amp; Statistics ∩ Domain Knowledge → <strong>Empirical Research</strong></li>
-      <li>Computer Science ∩ Domain Knowledge → <strong>Software Development</strong></li>
-      <li>All three overlapping → <strong>Data Science</strong></li>
+      <li><strong>Computer Science ∩ Math &amp; Statistics → Machine Learning.</strong> If you can write efficient code and understand the math well enough to implement a learning algorithm, but lack deep context about what the data <em>means</em> in the real world, you land in Machine Learning: you can build a model that fits the numbers, but may not know whether the pattern it found is meaningful or spurious.</li>
+      <li><strong>Math &amp; Statistics ∩ Domain Knowledge → Empirical Research.</strong> If you understand the subject matter and the statistical theory, but you're not primarily a software engineer, you land in classic empirical/scientific research — hypothesis-driven analysis that predates modern computing.</li>
+      <li><strong>Computer Science ∩ Domain Knowledge → Software Development.</strong> If you understand the business domain and can build working systems, but aren't leaning on statistical modeling, you land in ordinary software development — the corner of this diagram a career software engineer already occupies.</li>
+      <li><strong>All three overlapping → Data Science.</strong> The person (or team) who can code, who trusts (or distrusts) a result because they understand the statistics, <em>and</em> who understands the domain well enough to know which questions are worth asking — that's the full skill set. It's rare for one individual to be strong in all three, which is part of why data science is usually practiced by teams.</li>
     </ul>
     <blockquote>"Data Scientist (n.): Person who is better at statistics than any software engineer and better at software engineering than any statistician." — Josh Wills</blockquote>
+    <p>It's funny because it's a backhanded way of saying: nobody is the best at either half — the value is in being competent enough at both to bridge them, plus knowing enough about the domain to point the work in a useful direction.</p>
 
     <h3>Where it's applied</h3>
+    <p>Data mining isn't tied to one industry — the same underlying techniques (classification, clustering, anomaly detection, and so on, defined precisely later in this module) get reapplied across wildly different domains. The table below is organized by industry precisely to make that breadth concrete: notice that "detect the unusual case" shows up as fraud detection in finance, intrusion detection in cybersecurity, and disease prediction in healthcare — same underlying task, different label attached to the data.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Domain</th><th>Example applications</th></tr></thead>
@@ -132,12 +147,15 @@
         </tbody>
       </table>
     </div>
+    <p>The practical takeaway for the rest of this bootcamp: the <em>techniques</em> you're about to learn (classification, regression, clustering, and so on) are domain-agnostic tools. What changes from project to project is the data you feed them and the domain expertise you bring to interpret the output — not the underlying math.</p>
   </section>
 
   <!-- ============ 2 ============ -->
   <section class="chapter" id="project-lifecycle">
     <div class="chapter-head"><span class="chapter-num">2</span><h2>The Project Lifecycle</h2></div>
     <p class="chapter-dek">Cyclical, not a strict waterfall — every stage routes through a shared data store.</p>
+
+    <p>If you've worked on software before, you already have a mental model of a "waterfall" process — requirements, then design, then build, then test, then ship, each phase gated on the last — and you've probably also seen how badly that model fits reality once requirements turn out to be wrong or incomplete. Data mining projects have the same problem, but worse: you often <em>cannot know in advance</em> whether your data even supports the analysis you're planning, because you can't fully understand the data without first exploring it, and you can't finish exploring it without some sense of what problem you're solving. So instead of a straight line, the discipline models its process as a loop — much closer to an agile sprint cycle than to a waterfall SDLC, where you're expected to revisit earlier stages as you learn things downstream.</p>
 
     <div class="pipeline-strip" aria-label="Data mining pipeline stages">
       <span class="stage">Problem understanding</span><span class="arrow">→</span>
@@ -149,9 +167,18 @@
       <span class="loopback">↺ back to the data store</span>
     </div>
 
-    <p>The deck presents this cycle three separate times, always identical — the recurring point being that a project may involve <em>all or only some</em> of these stages, revisited as needed rather than executed once in order.</p>
+    <p>Walking through what each stage actually means:</p>
+    <ul>
+      <li><strong>Problem understanding</strong> is the requirements-gathering phase — pinning down what question you're actually trying to answer and what a useful answer would look like, before touching any data.</li>
+      <li><strong>Explore &amp; process</strong> is the unglamorous majority of real project time: looking at what data you actually have, cleaning it up, handling missing values, and reshaping it into something usable (this becomes its own module next).</li>
+      <li><strong>Modelling &amp; analysis</strong> is where you apply the actual algorithms — classification, clustering, regression, etc. — to the processed data.</li>
+      <li><strong>Communicate results</strong> means turning model output into something a non-technical stakeholder can understand and act on (the subject of §5).</li>
+      <li><strong>Deploy &amp; operationalize</strong> is the equivalent of shipping to production — taking a model that worked in a notebook and wiring it into a live system.</li>
+      <li><strong>Test &amp; monitor</strong> doesn't stop once you deploy: models degrade as real-world data drifts away from what they were trained on, so this stage watches for that decay over time.</li>
+    </ul>
+    <p>Crucially, the cycle then loops <strong>back to the data store</strong> — a shared, central place all six stages read from and write to — rather than terminating. New data arrives, the deployed model's performance changes, and that feeds back into problem understanding for the next iteration. The source material presents this exact same cycle diagram three separate times, unchanged each time — which is itself the point: this loop isn't a one-time onboarding diagram, it's the recurring structure of the <em>entire</em> discipline, worth internalizing early. It's also not mandatory to hit every stage on every project — a small exploratory analysis might stop after "modelling &amp; analysis" and never reach deployment; a mature production system might spend most of its life in "test &amp; monitor," only occasionally looping back further.</p>
 
-    <div class="callout rule"><span class="tag">Rule</span><p><strong>Domain knowledge runs through the whole cycle</strong>: it guides preprocessing, shapes modelling decisions, and provides the context needed to explain results. "Always dive into the domain behind the data — it's the key to engineering meaningful features, focusing your analysis, and telling a story your audience understands."</p></div>
+    <div class="callout rule"><span class="tag">Rule</span><p><strong>Domain knowledge runs through the whole cycle</strong> — it isn't a separate stage, more like a cross-cutting concern (similar to how logging or security touches every layer of an application rather than living in one place). It guides preprocessing decisions (what counts as an outlier vs. a legitimate rare event depends on the field), shapes which modelling choices even make sense, and supplies the context needed to explain a result convincingly at the end. "Always dive into the domain behind the data — it's the key to engineering meaningful features, focusing your analysis, and telling a story your audience understands."</p></div>
   </section>
 
   <!-- ============ 3 ============ -->
@@ -159,28 +186,36 @@
     <div class="chapter-head"><span class="chapter-num">3</span><h2>Data Representation</h2></div>
     <p class="chapter-dek">To train a model, data must become an informative, numerical representation — and the same signal often has more than one valid encoding.</p>
 
+    <p>Here's a fact worth sitting with before going further: every algorithm you'll meet in this bootcamp — every classifier, every clustering method, every neural network — ultimately only understands one kind of input: numbers, arranged as vectors and matrices. It doesn't matter whether your raw data is an email, a photograph, an audio clip, or a molecule; before any algorithm can touch it, someone has to decide <em>how to turn it into numbers</em> without throwing away the information that makes it useful. If you've ever serialized a rich domain object into JSON or a byte stream before sending it over a wire, you've already done a version of this: you picked an encoding that preserves what matters and discards what doesn't. Data representation is that same problem, but the "encoding" now has to preserve <em>statistical</em> or <em>semantic</em> structure, not just object state — and unlike JSON, there is rarely one obvious canonical encoding for a given type of data.</p>
+
+    <p>With that framing, here's how the standard data types get represented numerically:</p>
     <ul>
-      <li><strong>Text → TF-IDF</strong>: Term Frequency (how often a word appears <em>within</em> a document) × Inverse Document Frequency (how rare that word is <em>across</em> the corpus) — weights words by local importance, discounted by how common they are everywhere.</li>
-      <li><strong>Text → Word embeddings</strong> (Word2Vec, GloVe): map words into a continuous vector space where semantically similar words sit close together; can be pre-trained on large corpora.</li>
-      <li><strong>Images</strong> → raw pixel values.</li>
-      <li><strong>Molecules / graphs</strong> → graph representation (atoms = nodes, bonds = edges), or learned <strong>node embeddings</strong> (Node2Vec) that capture structural/network information as continuous vectors.</li>
-      <li><strong>Audio → Spectrogram</strong>: converts a waveform into a visual frequency-over-time representation, useful for speech/music analysis — though the same signal can also be modeled directly as a 1-D time series.</li>
+      <li><strong>Text → TF-IDF.</strong> Term Frequency–Inverse Document Frequency scores each word in a document by multiplying two signals: how often that word appears <em>within</em> this particular document (Term Frequency), and how rare that word is <em>across the whole corpus</em> of documents (Inverse Document Frequency). The intuition: a word like "the" appears constantly in every document and tells you nothing distinctive, so IDF pushes its weight toward zero; a word like "mitochondria" appears rarely across the corpus but, when it does appear, appears meaningfully — so IDF boosts it. The result is a numeric vector per document where locally-frequent-but-globally-rare words dominate — exactly the words a human would consider "topically important."</li>
+      <li><strong>Text → Word embeddings</strong> (Word2Vec, GloVe). Rather than scoring words relative to a specific corpus, embeddings place every word as a point (a vector of, typically, a few hundred numbers) in a continuous space, positioned so that semantically similar words end up near each other geometrically — "king" and "queen" sit closer together than "king" and "banana." Because this geometric structure is a general property of language rather than of one specific document collection, these embeddings can be <strong>pre-trained</strong> once on a huge generic corpus and reused across many unrelated projects — much like pulling in a shared library dependency instead of writing the functionality yourself.</li>
+      <li><strong>Images → raw pixel values.</strong> Unlike text, an image already <em>is</em> numeric — a grid of pixel intensity values (one per color channel) — so relatively little transformation is needed; the representation decision here is mostly about how that grid gets fed to a model, not whether to convert it to numbers at all.</li>
+      <li><strong>Molecules / graphs → graph representation</strong>, or learned <strong>node embeddings</strong> (Node2Vec). Some data is naturally relational rather than flat — a molecule is a set of atoms connected by bonds, which maps directly onto the graph data structure you already know from computer science: atoms become nodes, bonds become edges. Node2Vec then applies the same idea as word embeddings, but to nodes in a graph instead of words in a sentence — learning a continuous vector per node that captures its structural position and connectivity.</li>
+      <li><strong>Audio → Spectrogram.</strong> Raw audio is a waveform — amplitude over time, a one-dimensional signal. A spectrogram transforms that into a visual, two-dimensional representation of frequency intensity over time, often more useful for speech or music analysis because it exposes pitch and timbre information the raw waveform obscures. That said, it isn't the <em>only</em> valid representation — the same signal can also be modeled directly as a 1-D time series, without ever converting it to an image-like form.</li>
     </ul>
-    <p>There is rarely one "correct" representation — the right one depends on the downstream task and what structure you need to preserve.</p>
+    <p>The pattern across every one of these examples: there is no single "correct" representation for a given data type. TF-IDF and word embeddings both represent text numerically, but they encode different information and suit different tasks; a spectrogram and a raw waveform both represent audio, but one exposes structure a model might need and the other doesn't. Choosing a representation is an engineering decision, driven by the downstream task and by which structure in the original data you can't afford to lose.</p>
   </section>
 
   <!-- ============ 4 ============ -->
   <section class="chapter" id="data-types-and-tasks">
     <div class="chapter-head"><span class="chapter-num">4</span><h2>Types of Data &amp; Core Tasks</h2></div>
-    <p class="chapter-dek">The vocabulary used to describe every dataset and every problem type in the rest of the course.</p>
+    <p class="chapter-dek">The vocabulary used to describe every dataset and every problem type in the rest of this bootcamp.</p>
+
+    <p>Before you can pick an algorithm, you need a shared vocabulary for describing what you're working with — the same way a software engineer needs to know whether a value is an <code>int</code> or a <code>String</code> before deciding what operations are even legal on it. Data mining's version of that type system operates on two independent axes: what kind of <em>values</em> a column holds (its measurement scale), and how the <em>dataset as a whole</em> is organized (its structure). Get either one wrong and you risk applying an operation that's technically computable but statistically meaningless — like averaging a column of postal codes.</p>
 
     <h3>By measurement scale</h3>
+    <p>This axis asks: what can you legitimately <em>do</em> with the values in this column — order them, subtract them, average them? The answer splits first into categorical vs. numerical, and then each of those splits again:</p>
     <ul>
-      <li><strong>Qualitative / Categorical</strong> — <em>Nominal</em> (no order: gender, hair color) or <em>Ordinal</em> (ordered: reviews, grades, status)</li>
-      <li><strong>Quantitative / Numerical</strong> — <em>Discrete</em> (countable: number of students) or <em>Continuous</em> (measurable: height, speed, weight)</li>
+      <li><strong>Qualitative / Categorical</strong> — values that name a category rather than measure a quantity. This splits into <em>Nominal</em>, where categories have no inherent order (gender, hair color — no hair color is "more" than another), and <em>Ordinal</em>, where categories <em>do</em> have a natural order but the gaps between them aren't necessarily equal or numerically meaningful (reviews, grades, status — "good" is more than "poor," but you can't say by exactly how much).</li>
+      <li><strong>Quantitative / Numerical</strong> — values that measure an actual quantity, and therefore support arithmetic. This splits into <em>Discrete</em>, values you get by counting (number of students — you can't have 2.5 students), and <em>Continuous</em>, values you get by measuring, which can in principle take any value within a range (height, speed, weight).</li>
     </ul>
+    <p>Why bother with this taxonomy at all? Because it directly constrains which statistics and which algorithms are valid. You can compute a meaningful average or standard deviation for continuous data; doing the same to a column of nominal categories is nonsensical (there's no "average" hair color), while ordinal data sits in between — you can rank it, but arithmetic on it is shaky. This distinction resurfaces constantly once you start choosing preprocessing steps and models later in this bootcamp.</p>
 
     <h3>By structure</h3>
+    <p>The second axis describes the dataset as a whole, not an individual column — essentially, how much of a fixed schema you can rely on. A useful mapping onto things you already know: structured data behaves like a well-defined SQL table, unstructured data behaves like an arbitrary log file or text blob with no guaranteed layout, and semi-structured data behaves like a JSON or XML document — it has keys and nesting you can navigate, but no single schema every record is guaranteed to follow.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Type</th><th>Definition</th><th>Examples</th></tr></thead>
@@ -193,6 +228,7 @@
     </div>
 
     <h3>Core task types</h3>
+    <p>Finally, once you know what your data looks like, you need vocabulary for what <em>question</em> you're asking of it — this table is effectively the menu of question types the rest of this bootcamp will teach you to answer, one module at a time. Broadly, some tasks require historical examples with known outcomes to learn from (classification, regression), while others look for structure with no labeled "right answer" at all (clustering, association analysis) — a distinction (supervised vs. unsupervised learning) later modules make precise.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Task</th><th>Description</th></tr></thead>
@@ -211,6 +247,7 @@
         </tbody>
       </table>
     </div>
+    <p>Notice that "classification" and "regression" both predict something from labeled examples but differ in what they predict — a category vs. a number — while "clustering" and "association analysis" both look for structure without any labels to guide them. Keeping this vocabulary straight now will save you from misreading later modules, since Module 3 ("Classification") and Module 4 ("Clustering") assume you can already tell these task types apart on sight.</p>
   </section>
 
   <!-- ============ 5 ============ -->
@@ -218,8 +255,19 @@
     <div class="chapter-head"><span class="chapter-num">5</span><h2>Communicating Results &amp; Tooling</h2></div>
     <p class="chapter-dek">A model is only useful once its results are understood — and built with the right tools.</p>
 
-    <p>Storytelling with data rests on three components: <strong>Data</strong> (the evidence), <strong>Visualization</strong> (charts/dashboards), and <strong>Narrative</strong> (what happened, why, what now). Common chart types: text/big-number, table, scatterplot, line, heatmap/slopegraph, bar (vertical/horizontal/stacked), waterfall, square-area chart.</p>
+    <p>It's tempting, especially coming from a software background, to think the job is done once the model works — the tests pass, the numbers look right, ship it. But a data mining project doesn't actually deliver value at the moment a model produces a correct prediction; it delivers value at the moment a human stakeholder <em>understands and trusts</em> that prediction enough to act on it. A perfectly accurate model that nobody can interpret is, from a business standpoint, roughly as useless as correct code with no way to run it. This is why "communicate results" is its own dedicated stage in the project lifecycle from §2, not an afterthought tacked on at the end.</p>
 
+    <h3>The three components of storytelling with data</h3>
+    <p>Effective storytelling with data rests on three components working together, and it's worth being explicit about what each one contributes on its own:</p>
+    <ul>
+      <li><strong>Data</strong> — the underlying evidence itself: the numbers that make the claim true or false.</li>
+      <li><strong>Visualization</strong> — charts and dashboards that let a human perceive a pattern faster than they could by reading a table of raw numbers.</li>
+      <li><strong>Narrative</strong> — the connective explanation: what happened, why it happened, and what should be done about it now. Data and a chart alone don't tell you what to <em>do</em>; the narrative is what turns an observation into a decision.</li>
+    </ul>
+    <p>Leave any one of the three out and the story breaks down: data without visualization is a wall of numbers nobody will read; visualization without narrative is a pretty chart nobody knows how to act on; narrative without data is just an unsubstantiated opinion. Common chart types worth having in your toolkit: text/big-number, table, scatterplot, line, heatmap/slopegraph, bar (vertical/horizontal/stacked), waterfall, and square-area chart — each suited to a different shape of comparison.</p>
+
+    <h3>The Python tooling landscape</h3>
+    <p>The last piece of this module is a map of the software ecosystem the rest of the bootcamp will actually use. If you're coming from a career in another language, the closest mental model is a set of well-established, widely-adopted libraries — except in the Python data ecosystem, a small handful of these are so dominant they function as a de facto standard rather than one option among many.</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Category</th><th>Python tools</th></tr></thead>
@@ -234,8 +282,14 @@
       </table>
     </div>
 
+    <div class="python-note"><div><span class="pn-label">Python note</span><p>The "Core / general" row is the one you'll touch in almost every exercise from Module 2 onward. <strong>NumPy</strong> provides a fast, fixed-type array (<code>ndarray</code>) and vectorized math over it — think of it as the layer that lets you write <code>array_a + array_b</code> and have the whole elementwise addition happen in optimized compiled code, instead of writing an explicit loop the way you might iterate over an array in Java. <strong>Pandas</strong> builds on top of NumPy to give you a labeled, tabular data structure (the <code>DataFrame</code>) — conceptually close to an in-memory, mutable <code>ResultSet</code> with a rich, chainable query API (filtering, grouping, joining) instead of SQL strings. <strong>Matplotlib</strong> and <strong>Seaborn</strong> are charting libraries — Matplotlib is the low-level, highly configurable base, and Seaborn is a higher-level layer on top that produces statistically-aware chart types with far less code.</p></div></div>
+
+    <div class="python-note"><div><span class="pn-label">Python note</span><p>In the "Machine learning" row, <strong>Scikit-learn</strong> is a library of ready-made implementations of the classic algorithms this bootcamp covers, all exposed through one consistent interface — call <code>.fit()</code> on training data, then <code>.predict()</code> on new data, regardless of which specific algorithm you swapped in. If you know the Strategy design pattern, that consistent interface across interchangeable algorithms is the same idea. <strong>XGBoost</strong> is a single, highly-optimized implementation of one popular algorithm family (gradient-boosted decision trees) that's popular enough to warrant its own library. <strong>RAPIDS</strong> mirrors the pandas/scikit-learn APIs but executes on a GPU instead of the CPU, for speed at large data volumes.</p></div></div>
+
+    <div class="python-note"><div><span class="pn-label">Python note</span><p>Further down the table, <strong>PySpark</strong> is the Python API onto Apache Spark, the distributed big-data processing engine. <strong>Hugging Face Transformers</strong> provides pre-trained large language and transformer models ready to load and use, while <strong>OpenAI GPT</strong> refers to accessing a comparable model as a hosted API rather than one you run yourself. <strong>TensorFlow</strong> and <strong>PyTorch</strong> are the two dominant frameworks for building and training neural networks — both give you automatic differentiation (computing gradients for you) so you don't hand-derive calculus for backpropagation, a topic that becomes concrete in Module 5. Finally, <strong>Optuna</strong>, <strong>Hyperopt</strong>, and <strong>GridSearchCV</strong> automate the search for a model's best hyperparameter settings rather than hand-tuning them by trial and error.</p></div></div>
+
     <h3>Pre-reads worth refreshing</h3>
-    <p>Vectors &amp; matrices (multiplication, norms, eigenvalues), derivatives/gradients, exponential &amp; log functions, basic statistics (Bayes' theorem, mean, variance, distributions), covariance matrices, and PCA — all resurface starting in Chapter 2.</p>
+    <p>The remaining modules lean on a handful of mathematical building blocks, worth flagging now so you can identify gaps before they slow you down starting in Module 2: <strong>vectors and matrices</strong> (multiplication, norms, eigenvalues) are the language data representation (§3) and virtually every model's internals are written in; <strong>derivatives and gradients</strong> are how models like the ones in Module 5 learn; <strong>exponential and log functions</strong> show up constantly in probability and in transformations like the sigmoid function; <strong>basic statistics</strong> (Bayes' theorem, mean, variance, distributions) underlie how models quantify uncertainty; and <strong>covariance matrices</strong> together with <strong>PCA</strong> are the standard toolkit for understanding how variables relate and for compressing many correlated variables into a few informative ones. None of these need to be fresh right now — just be ready to lean on them once they reappear.</p>
   </section>
 
   <!-- ============ 6 ============ -->
@@ -253,18 +307,18 @@ def L1(yhat, y):
 
 def L2(yhat, y):
     return np.sum((y - yhat) ** 2)</div>
-    <p>Also implemented from scratch: <code>cumulative_sum</code>, <code>is_palindrome</code>, <code>fibonacci</code>, <code>is_prime</code> — small building blocks that reappear once loss functions and gradients show up for real in Chapter 5.</p>
+    <p>Also implemented from scratch: <code>cumulative_sum</code>, <code>is_palindrome</code>, <code>fibonacci</code>, <code>is_prime</code> — small building blocks that reappear once loss functions and gradients show up for real in Module 5.</p>
 
     <h3>Exercise 2 — Pandas on the Titanic Dataset</h3>
     <p>First real dataset: load Titanic via <code>seaborn.load_dataset('titanic')</code>, then practice <code>.info()</code>/<code>.describe()</code>/<code>.isnull().sum()</code>, <code>.loc</code>/<code>.iloc</code> indexing, boolean filtering, and <code>groupby</code>.</p>
     <div class="formula-block"><span class="label">Mini project: survival rate by age group</span>df["age_group"] = df["age"].apply(lambda x: "child" if x < 16 else "adult")
 df.groupby("age_group")["survived"].mean()</div>
-    <div class="callout rule"><span class="tag">Result</span><p>Children (&lt;16) survived at <strong>59%</strong> vs. <strong>36%</strong> for adults — the first hands-on look at a pattern ("women and children first") that resurfaces as the running SHAP example in Chapters 3 and 7.</p></div>
+    <div class="callout rule"><span class="tag">Result</span><p>Children (&lt;16) survived at <strong>59%</strong> vs. <strong>36%</strong> for adults — the first hands-on look at a pattern ("women and children first") that resurfaces as the running SHAP example in Modules 3 and 7.</p></div>
   </section>
 
   <footer class="page-footer">
     <span>Condensed from Chapter 1 — Introduction to Data Mining (Basic Data Mining Practice, Prof. Dr. Matteo Marouf)</span>
-    <span><a href="index.html">← All chapters</a></span>
+    <span><a href="index.html">← All modules</a></span>
   </footer>
 
 </div>
