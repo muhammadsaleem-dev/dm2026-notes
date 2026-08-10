@@ -54,6 +54,7 @@
       <a href="#communicating-results"><span class="toc-num">5</span>Communicating Results &amp; Tooling</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
       <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a>
     </div>
   </div>
 </nav>
@@ -79,6 +80,7 @@
       <a href="#communicating-results"><span class="toc-num">5</span>Communicating Results &amp; Tooling</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
       <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a>
     </div>
   </aside>
 
@@ -113,6 +115,7 @@
       <li><a href="#communicating-results"><span class="toc-num">5</span>Communicating Results &amp; Tooling</a></li>
       <li><a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a></li>
       <li><a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a></li>
+      <li><a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a></li>
     </ul>
   </div>
 
@@ -376,6 +379,77 @@ df.groupby("age_group")["survived"].mean()</div>
       <details class="quiz-item">
         <summary>In the Titanic sprint exercise, what age cutoff defined the "child" group, and what were the resulting survival rates for children vs. adults?</summary>
         <div class="quiz-a"><p>Age &lt; 16 defined "child." Children survived at 59% versus 36% for adults, illustrating the "women and children first" pattern that resurfaces later as the running SHAP example in Modules 3 and 7.</p></div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ============ 8 ============ -->
+  <section class="chapter" id="exam-drill">
+    <div class="chapter-head"><span class="chapter-num">8</span><h2>Exam Drill</h2></div>
+    <p class="chapter-dek">Same skills as Test Yourself, but in the exam's actual answer format.</p>
+    <p class="quiz-intro">Real exams rarely ask you to write a paragraph — they ask you to name a technique in a couple of words, reorder scrambled steps, pick every correct item from a list, or fill in one line of code. These drills train that exact shape of answer, not just the underlying concept.</p>
+    <div class="drill-list">
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Name it</span>
+          <span class="drill-q">A telecom company wants to group its customers into segments based on usage patterns, with no predefined labels for what the segments should be. In ≤2 words, what task is this?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>Clustering.</strong> There's no target column to predict — the goal is to discover groups directly from the data's structure, which is exactly what separates clustering from classification/regression (§4).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Reorder</span>
+          <span class="drill-q">Put these six data-mining lifecycle stages in their correct order:</span>
+          <ol class="drill-scramble">
+            <li>A. Communicate results</li>
+            <li>B. Explore &amp; process data</li>
+            <li>C. Deploy &amp; operationalize</li>
+            <li>D. Problem understanding</li>
+            <li>E. Modelling &amp; analysis</li>
+            <li>F. Test &amp; monitor</li>
+          </ol>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>D, B, E, A, C, F</strong> — Problem understanding → Explore &amp; process → Modelling &amp; analysis → Communicate results → Deploy &amp; operationalize → Test &amp; monitor (§2).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Select all</span>
+          <span class="drill-q">Which of the following are examples of unstructured data?</span>
+          <ul class="drill-options">
+            <li>(a) a column of customer ages</li>
+            <li>(b) a raw audio waveform</li>
+            <li>(c) a table of transaction amounts</li>
+            <li>(d) a free-text product review</li>
+            <li>(e) a JPEG image's pixel grid</li>
+          </ul>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>(b), (d), (e).</strong> Ages and transaction amounts already live in clean rows/columns — that's structured data. Audio, free text, and images have no fixed schema until you deliberately choose a numeric representation for them (§3).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Code</span>
+          <span class="drill-q">Complete this line to compute the mean fare for each passenger class in a Titanic dataframe <code>df</code>:</span>
+          <span class="drill-code-inline">df.<span class="drill-blank">____</span>('pclass')['fare'].mean()</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><code>df.groupby('pclass')['fare'].mean()</code> — <code>groupby</code> collapses all rows sharing a <code>pclass</code> value into one group before <code>.mean()</code> reduces each group to a single number, the pandas equivalent of SQL's <code>GROUP BY</code> + <code>AVG</code>.</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Compute</span>
+          <span class="drill-q">A tiny 2-document corpus: Doc 1 = "red red blue" (3 words), Doc 2 = "blue green green" (3 words). Compute TF-IDF for the word "blue" in Doc 1.</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p>TF("blue", Doc 1) = 1/3. "blue" appears in both documents, so df=2, N=2 → IDF = ln(2/2) = ln(1) = 0. TF-IDF = 1/3 × 0 = <strong>0</strong> — "blue" shows up everywhere, so it does no work distinguishing the two documents (§3).</p></div>
       </details>
 
     </div>

@@ -54,6 +54,7 @@
       <a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
       <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a>
     </div>
   </div>
 </nav>
@@ -79,6 +80,7 @@
       <a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
       <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a>
     </div>
   </aside>
 
@@ -114,6 +116,7 @@
       <li><a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a></li>
       <li><a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a></li>
       <li><a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a></li>
+      <li><a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a></li>
     </ul>
   </div>
 
@@ -684,6 +687,77 @@ X_tsne = TSNE(n_components=2, perplexity=30, random_state=42).fit_transform(X_pc
       <details class="quiz-item">
         <summary>Which of these are stochastic — producing a different result on repeated runs over the same data — and which are deterministic: Linear Regression (closed-form/OLS), t-SNE, K-Means, and PCA (full SVD)?</summary>
         <div class="quiz-a"><p>t-SNE and K-Means are stochastic — t-SNE's optimization starts from a random low-dimensional layout, and K-Means starts from randomly chosen initial centroids, so different runs can land in different (locally optimal) places. Linear regression solved in closed form and PCA via full SVD are both deterministic — they're exact, non-random computations that return the identical answer every time on the same input.</p></div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ============ 8 ============ -->
+  <section class="chapter" id="exam-drill">
+    <div class="chapter-head"><span class="chapter-num">8</span><h2>Exam Drill</h2></div>
+    <p class="chapter-dek">Same skills as Test Yourself, but in the exam's actual answer format.</p>
+    <p class="quiz-intro">Real exams rarely ask you to write a paragraph — they ask you to name a technique in a couple of words, reorder scrambled steps, pick every correct item from a list, or fill in one line of code. These drills train that exact shape of answer, not just the underlying concept.</p>
+    <div class="drill-list">
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Name it</span>
+          <span class="drill-q">You have a dataset with 60 features and want a 2D plot that preserves which points are close neighbors, even if that distorts the overall distances between far-apart groups. In ≤2 words, what technique fits?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>t-SNE.</strong> It's built specifically to preserve local neighborhoods for visualization, at the cost of global distances — the opposite trade-off PCA makes (§3).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Reorder</span>
+          <span class="drill-q">Put these five preprocessing steps in the order this module recommends:</span>
+          <ol class="drill-scramble">
+            <li>A. Scale features</li>
+            <li>B. Handle missing data</li>
+            <li>C. Engineer features</li>
+            <li>D. Reduce dimensions</li>
+            <li>E. Handle class imbalance</li>
+          </ol>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>C, B, E, A, D</strong> — Engineer features → handle missing data → handle imbalance → scale → reduce dimensions (§2's chapter-dek).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Select all</span>
+          <span class="drill-q">Which of these models need feature scaling before training?</span>
+          <ul class="drill-options">
+            <li>(a) k-Nearest Neighbors</li>
+            <li>(b) Decision Tree</li>
+            <li>(c) Support Vector Machine</li>
+            <li>(d) Random Forest</li>
+            <li>(e) K-Means</li>
+            <li>(f) Logistic Regression</li>
+          </ul>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>(a), (c), (e), (f).</strong> These all compare features using literal distance or gradient magnitude, so an unscaled feature can dominate purely from its units. Decision Trees and Random Forests split on raw thresholds per feature independently, so scaling doesn't affect them (§2).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Code</span>
+          <span class="drill-q">Complete this call to reserve 25% of the data for testing, reproducibly:</span>
+          <span class="drill-code-inline">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="drill-blank">____</span>, random_state=<span class="drill-blank">____</span>)</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><code>test_size=0.25</code>, <code>random_state=</code> any fixed integer (e.g. <code>42</code>) so the "random" split is reproducible across runs (§1).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Compute</span>
+          <span class="drill-q">A fraud-detection model is evaluated on 50 transactions, 5 of which are truly fraud. The model flags 6 as fraud, of which 4 are truly fraud. Compute precision and recall.</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p>TP=4, FP=2 (6 flagged − 4 correct), FN=1 (5 real − 4 caught). Precision = 4/6 ≈ <strong>0.667</strong>. Recall = 4/5 = <strong>0.80</strong> (§4).</p></div>
       </details>
 
     </div>

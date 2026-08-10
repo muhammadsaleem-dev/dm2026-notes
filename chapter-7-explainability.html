@@ -54,6 +54,7 @@
       <a href="#causality"><span class="toc-num">5</span>Causality: Beyond Correlation</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a>
       <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a>
     </div>
   </div>
 </nav>
@@ -79,6 +80,7 @@
       <a href="#causality"><span class="toc-num">5</span>Causality: Beyond Correlation</a>
       <a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a>
       <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a>
     </div>
   </aside>
 
@@ -114,6 +116,7 @@
       <li><a href="#causality"><span class="toc-num">5</span>Causality: Beyond Correlation</a></li>
       <li><a href="#exercises"><span class="toc-num">6</span>Sprint Exercise</a></li>
       <li><a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a></li>
+      <li><a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a></li>
     </ul>
   </div>
 
@@ -391,6 +394,75 @@ shap.summary_plot(shap_values[:,:,1], X_test)   # beeswarm</div>
       <details class="quiz-item">
         <summary>In a churn-prediction SHAP beeswarm plot, high values (red) of "monthly_charges" cluster on the positive side of zero, while high values of "tenure_months" cluster on the negative side. What does each feature's pattern tell you about churn risk?</summary>
         <div class="quiz-a"><p>High monthly charges push the prediction toward churn (positive SHAP = higher predicted churn probability), while long tenure pushes the prediction away from churn (negative SHAP = lower predicted churn probability) — customers who've stuck around longer are predicted less likely to churn, while a bigger bill increases predicted churn risk.</p></div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ============ 8 ============ -->
+  <section class="chapter" id="exam-drill">
+    <div class="chapter-head"><span class="chapter-num">8</span><h2>Exam Drill</h2></div>
+    <p class="chapter-dek">Same skills as Test Yourself, but in the exam's actual answer format.</p>
+    <p class="quiz-intro">Real exams rarely ask you to write a paragraph — they ask you to name a technique in a couple of words, reorder scrambled steps, pick every correct item from a list, or fill in one line of code. These drills train that exact shape of answer, not just the underlying concept.</p>
+    <div class="drill-list">
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Name it</span>
+          <span class="drill-q">A model's own coefficients or split structure fully explain its predictions, with no extra tool needed. In ≤2 words, what kind of model is this?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>Glass-box</strong> (model). Linear/logistic regression and a single decision tree are the canonical examples — you can read the explanation straight off the trained model (§2).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Reorder</span>
+          <span class="drill-q">Put these permutation-importance steps in order:</span>
+          <ol class="drill-scramble">
+            <li>A. Shuffle one feature's column, leaving all others untouched</li>
+            <li>B. Re-evaluate the model's score on the shuffled data</li>
+            <li>C. Train the model and record its baseline score</li>
+            <li>D. Importance = baseline score − shuffled score</li>
+            <li>E. Repeat for K shuffles per feature and average</li>
+          </ol>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>C, A, B, D, E</strong> — baseline first, then shuffle → re-score → subtract → repeat and average per feature (§3).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Select all</span>
+          <span class="drill-q">Which of these are LOCAL explanations (about one specific prediction), not global ones?</span>
+          <ul class="drill-options">
+            <li>(a) a SHAP force plot for one applicant's loan decision</li>
+            <li>(b) a permutation-importance ranking across the whole test set</li>
+            <li>(c) "why was my loan denied?"</li>
+            <li>(d) a SHAP summary/bar plot ranking features overall</li>
+          </ul>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>(a), (c).</strong> Both are about a single instance. (b) and (d) summarize behavior across many predictions — that's the global scope (§2).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Code</span>
+          <span class="drill-q">Complete this call to compute permutation importance for a regression model, using a metric where higher is better:</span>
+          <span class="drill-code-inline">permutation_importance(model, X_test, y_test, scoring=<span class="drill-blank">____</span>, n_repeats=10)</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><code>scoring='neg_mean_squared_error'</code> (or <code>'neg_root_mean_squared_error'</code>) — negating the error metric restores "higher is better" so the baseline-minus-shuffled subtraction works correctly (§3).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Compute</span>
+          <span class="drill-q">Toy 2-feature model: v(∅)=40, v({A})=55, v({B})=50, v({A,B})=70. Compute the Shapley value φ_A.</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p>A revealed first: v({A})−v(∅) = 55−40 = 15. A revealed second: v({A,B})−v({B}) = 70−50 = 20. Average: <strong>φ_A = (15+20)/2 = 17.5</strong> (§4).</p></div>
       </details>
 
     </div>

@@ -53,6 +53,7 @@
       <a href="#rag-pipeline"><span class="toc-num">4</span>The RAG Pipeline</a>
       <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
       <a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">7</span>Exam Drill</a>
     </div>
   </div>
 </nav>
@@ -77,6 +78,7 @@
       <a href="#rag-pipeline"><span class="toc-num">4</span>The RAG Pipeline</a>
       <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
       <a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">7</span>Exam Drill</a>
     </div>
   </aside>
 
@@ -111,6 +113,7 @@
       <li><a href="#rag-pipeline"><span class="toc-num">4</span>The RAG Pipeline</a></li>
       <li><a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a></li>
       <li><a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a></li>
+      <li><a href="#exam-drill"><span class="toc-num">7</span>Exam Drill</a></li>
     </ul>
   </div>
 
@@ -435,6 +438,75 @@ response = OllamaLLM(model="llama3.2").invoke(prompt)      # runs locally via Ol
       <details class="quiz-item">
         <summary>What is the local, open-source stack used in the Sprint Exercise's RAG tutorial for embedding, retrieval, and generation, and what real retrieval failure does its gotcha callout describe?</summary>
         <div class="quiz-a"><p>Embeddings come from <code>SentenceTransformer("all-MiniLM-L6-v2")</code> (384-dim), retrieval from a cosine-metric Pinecone index (chunk_size=500, chunk_overlap=50, producing roughly 13,700 chunks), and generation from <code>OllamaLLM</code> running llama3.2 locally with no cloud API call. The gotcha describes a real run where several near-duplicate "lecturer" chunks from different course modules were retrieved together, causing the model to hedge its answer.</p></div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="chapter" id="exam-drill">
+    <div class="chapter-head"><span class="chapter-num">7</span><h2>Exam Drill</h2></div>
+    <p class="chapter-dek">Same skills as Test Yourself, but in the exam's actual answer format.</p>
+    <p class="quiz-intro">Real exams rarely ask you to write a paragraph — they ask you to name a technique in a couple of words, reorder scrambled steps, pick every correct item from a list, or fill in one line of code. These drills train that exact shape of answer, not just the underlying concept.</p>
+    <div class="drill-list">
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Name it</span>
+          <span class="drill-q">A system answers questions by first retrieving relevant document chunks from an external store, then feeding them to a language model as context — without retraining the model. In ≤2 words, name it.</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>RAG</strong> (Retrieval-Augmented Generation). It looks up fresh information at query time rather than baking it into the model's weights (§3).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Reorder</span>
+          <span class="drill-q">Put these RAG pipeline steps in order:</span>
+          <ol class="drill-scramble">
+            <li>A. Embed the user's query into the same vector space</li>
+            <li>B. Chunk and embed the source documents, storing them in a vector database</li>
+            <li>C. Generate an answer using the retrieved chunks as context</li>
+            <li>D. Receive the user's query</li>
+            <li>E. Run semantic search to find the most relevant chunks</li>
+          </ol>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>B, D, A, E, C</strong> — offline: chunk &amp; embed documents into a vector DB. Online: receive query → embed query → semantic search → generate (§4).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Select all</span>
+          <span class="drill-q">What determines the size of an LLM's output layer? Select all that are TRUE.</span>
+          <ul class="drill-options">
+            <li>(a) the vocabulary size</li>
+            <li>(b) the embedding dimension</li>
+            <li>(c) the context window length</li>
+            <li>(d) it must equal the number of unique tokens the model can produce</li>
+          </ul>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>(a), (d).</strong> The output layer is a softmax over the entire vocabulary — its size equals vocabulary size, full stop. It is <em>not</em> the embedding dimension and <em>not</em> the context length (§1's gotcha callout).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Code</span>
+          <span class="drill-q">Complete this to compute cosine similarity between vectors <code>a</code> and <code>b</code> using NumPy:</span>
+          <span class="drill-code-inline">similarity = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.<span class="drill-blank">____</span>(b))</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><code>np.linalg.norm(b)</code> — the dot product divided by the product of both vectors' magnitudes (§4).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Compute</span>
+          <span class="drill-q">Logits for 4 tokens: [1.0, 1.0, 2.0, 4.0]. At T=1.0, compute the softmax probability for the token with logit 4.0.</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p>e¹≈2.718, e¹≈2.718, e²≈7.389, e⁴≈54.598. Sum ≈ 67.42. Probability = 54.598/67.42 ≈ <strong>81.0%</strong> (§2).</p></div>
       </details>
 
     </div>

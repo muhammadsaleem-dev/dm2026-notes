@@ -954,6 +954,95 @@ code {
   .quiz-item[open] summary::after { content: "\25B4"; }
 }
 
+/* ---------- Exam Drill (format-matched practice, distinct from Test Yourself) ---------- */
+.drill-list { margin: 0 0 0.5rem; padding: 0; list-style: none; }
+.drill-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-sm);
+  margin: 0.6rem 0;
+  overflow: hidden;
+}
+.drill-item summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  transition: background-color 0.15s ease;
+}
+.drill-item summary:hover { background: var(--code-bg); }
+.drill-item[open] summary { border-bottom: 1px solid var(--border); background: var(--code-bg); }
+.drill-item summary::-webkit-details-marker { display: none; }
+.drill-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--py-ink);
+  background: var(--py-soft);
+  border-radius: 4px;
+  padding: 0.18rem 0.5rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+.drill-q { display: block; margin: 0.4rem 0 0; color: var(--text); font-weight: 600; }
+.drill-reveal-hint {
+  display: inline-block;
+  margin-top: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--py-ink);
+}
+.drill-reveal-hint::before { content: "\25BE Reveal answer"; }
+.drill-item[open] .drill-reveal-hint { color: var(--text-muted); }
+.drill-item[open] .drill-reveal-hint::before { content: "\25B4 Hide answer"; }
+
+.drill-scramble, .drill-options {
+  list-style: none;
+  margin: 0.5rem 0 0.3rem;
+  padding: 0;
+  display: grid;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+.drill-scramble li, .drill-options li {
+  padding: 0.35rem 0.6rem;
+  background: var(--code-bg);
+  border-radius: 4px;
+}
+.drill-code-inline {
+  display: block;
+  font-family: var(--font-mono);
+  background: var(--code-bg);
+  border-radius: 4px;
+  padding: 0.5rem 0.7rem;
+  margin: 0.4rem 0;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  font-weight: 400;
+}
+.drill-blank { color: var(--py-ink); font-weight: 700; }
+
+.drill-item .drill-a {
+  padding: 0.95rem 1.1rem 1.05rem;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--py) 6%, var(--py-soft)), var(--py-soft));
+  font-size: 0.9rem;
+}
+.drill-item .drill-a p { margin: 0.4rem 0; max-width: none; }
+.drill-item .drill-a p:first-child { margin-top: 0; }
+.drill-item .drill-a p:last-child { margin-bottom: 0; }
+.drill-item .drill-a strong { color: var(--py-ink); }
+.drill-item .drill-a ol, .drill-item .drill-a ul { margin: 0.4rem 0; padding-left: 1.2rem; max-width: none; }
+
 /* ---------- Tables ---------- */
 .table-wrap {
   overflow-x: auto;

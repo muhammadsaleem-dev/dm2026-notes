@@ -53,6 +53,7 @@
       <a href="#xai-intro"><span class="toc-num">4</span>Explainability &amp; Causality (intro)</a>
       <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
       <a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">7</span>Exam Drill</a>
     </div>
   </div>
 </nav>
@@ -77,6 +78,7 @@
       <a href="#xai-intro"><span class="toc-num">4</span>Explainability &amp; Causality (intro)</a>
       <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
       <a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">7</span>Exam Drill</a>
     </div>
   </aside>
 
@@ -111,6 +113,7 @@
       <li><a href="#xai-intro"><span class="toc-num">4</span>Explainability &amp; Causality (intro)</a></li>
       <li><a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a></li>
       <li><a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a></li>
+      <li><a href="#exam-drill"><span class="toc-num">7</span>Exam Drill</a></li>
     </ul>
   </div>
 
@@ -399,6 +402,76 @@ X_train = X_train.where(~outlier_mask, np.nan)</div>
       <details class="quiz-item">
         <summary>The Sprint Exercise's "Gotcha" callout warns about refitting the final "production" model on train+test combined. What do you lose by doing this, and what remains your only honest accuracy estimate?</summary>
         <div class="quiz-a"><p>You lose the ability to measure the refit model's accuracy, since no held-out data remains. The earlier test-set score, measured before that final refit, is your only honest estimate of real-world performance.</p></div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ============ 7 ============ -->
+  <section class="chapter" id="exam-drill">
+    <div class="chapter-head"><span class="chapter-num">7</span><h2>Exam Drill</h2></div>
+    <p class="chapter-dek">Same skills as Test Yourself, but in the exam's actual answer format.</p>
+    <p class="quiz-intro">Real exams rarely ask you to write a paragraph — they ask you to name a technique in a couple of words, reorder scrambled steps, pick every correct item from a list, or fill in one line of code. These drills train that exact shape of answer, not just the underlying concept.</p>
+    <div class="drill-list">
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Name it</span>
+          <span class="drill-q">An ensemble method builds simple decision stumps one at a time, and each new stump is trained to focus on the examples the previous stumps got wrong. In ≤2 words, name it.</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>AdaBoost</strong> (or "boosting"). This sequential, mistake-correcting strategy is exactly what distinguishes it from Random Forest's parallel, independent trees (§2–3).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Reorder</span>
+          <span class="drill-q">Put these AdaBoost steps in order:</span>
+          <ol class="drill-scramble">
+            <li>A. Compute the stump's error rate ε and its say α</li>
+            <li>B. Initialize all sample weights equally</li>
+            <li>C. Reweight samples: shrink correct ones, grow misclassified ones</li>
+            <li>D. Train a decision stump on the current weights</li>
+            <li>E. Renormalize weights to sum to 1</li>
+          </ol>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>B, D, A, C, E</strong> — initialize weights → train a stump → compute ε and α → reweight → renormalize, then repeat for the next round (§3).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Select all</span>
+          <span class="drill-q">Which of these are true about a single decision tree?</span>
+          <ul class="drill-options">
+            <li>(a) its decision boundary is always axis-aligned/blocky</li>
+            <li>(b) it can express diagonal decision boundaries</li>
+            <li>(c) small changes in training data can produce a very different tree</li>
+            <li>(d) it's typically more accurate than a Random Forest</li>
+            <li>(e) pruning removes nodes to reduce overfitting</li>
+          </ul>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>(a), (c), (e).</strong> Every split tests one feature against one threshold, so boundaries are always blocky, never diagonal (b is false). A single tree is unstable to data changes (§1's Limitations table), and a single tree is generally <em>less</em> accurate than an ensemble like Random Forest (d is false).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Code</span>
+          <span class="drill-q">Complete this to build a tree using entropy as the split criterion, with at least 5 samples required per leaf:</span>
+          <span class="drill-code-inline">DecisionTreeClassifier(criterion=<span class="drill-blank">____</span>, min_samples_leaf=<span class="drill-blank">____</span>)</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><code>criterion="entropy"</code>, <code>min_samples_leaf=5</code> — the default criterion is <code>"gini"</code>, a related but different impurity measure (§1).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Compute</span>
+          <span class="drill-q">A 4-record dataset has 3 records of class "Cat" and 1 of class "Dog." Compute entropy(X) in bits.</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p>p(Cat)=3/4=0.75, p(Dog)=1/4=0.25. entropy = −(0.75·log₂0.75 + 0.25·log₂0.25) = −(0.75×−0.415 + 0.25×−2.0) = 0.311+0.5 ≈ <strong>0.811 bits</strong> (§1).</p></div>
       </details>
 
     </div>

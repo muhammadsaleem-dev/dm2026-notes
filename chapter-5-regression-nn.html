@@ -56,6 +56,7 @@
       <a href="#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a>
       <a href="#exercises"><span class="toc-num">8</span>Sprint Exercises</a>
       <a href="#test-yourself"><span class="toc-num">9</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">10</span>Exam Drill</a>
     </div>
   </div>
 </nav>
@@ -83,6 +84,7 @@
       <a href="#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a>
       <a href="#exercises"><span class="toc-num">8</span>Sprint Exercises</a>
       <a href="#test-yourself"><span class="toc-num">9</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">10</span>Exam Drill</a>
     </div>
   </aside>
 
@@ -120,6 +122,7 @@
       <li><a href="#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a></li>
       <li><a href="#exercises"><span class="toc-num">8</span>Sprint Exercises</a></li>
       <li><a href="#test-yourself"><span class="toc-num">9</span>Test Yourself</a></li>
+      <li><a href="#exam-drill"><span class="toc-num">10</span>Exam Drill</a></li>
     </ul>
   </div>
 
@@ -538,6 +541,77 @@ lasso_cv.fit(X_train_scaled, y_train)   # best alpha ≈ 0.00139</div>
       <details class="quiz-item">
         <summary>You're building a Keras <code>Sequential</code> network for a 4-class image classification problem. What units and activation does the final <code>Dense</code> output layer need, and why?</summary>
         <div class="quiz-a"><p><code>Dense(4, activation='softmax')</code>. The unit count matches the number of classes — one raw score per class — and softmax (§4) turns that vector of raw scores into a probability distribution over all 4 classes that sums to 1, generalizing the single-sigmoid-unit output used for binary classification.</p></div>
+      </details>
+
+    </div>
+  </section>
+
+  <!-- ============ 10 ============ -->
+  <section class="chapter" id="exam-drill">
+    <div class="chapter-head"><span class="chapter-num">10</span><h2>Exam Drill</h2></div>
+    <p class="chapter-dek">Same skills as Test Yourself, but in the exam's actual answer format.</p>
+    <p class="quiz-intro">Real exams rarely ask you to write a paragraph — they ask you to name a technique in a couple of words, reorder scrambled steps, pick every correct item from a list, or fill in one line of code. These drills train that exact shape of answer, not just the underlying concept.</p>
+    <div class="drill-list">
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Name it</span>
+          <span class="drill-q">A function squashes any real number into the range (0,1), used to turn a neuron's weighted sum into a probability. In ≤2 words, name it.</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>Sigmoid function.</strong> ŷ = σ(z) = 1/(1+e⁻ᶻ), the step that turns logistic regression's raw weighted sum into a (0,1) probability (§4).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Reorder</span>
+          <span class="drill-q">Put these neural-network training-loop steps in order:</span>
+          <ol class="drill-scramble">
+            <li>A. Compute the gradient of the cost with respect to each parameter</li>
+            <li>B. Compute the cost from predictions vs. true labels</li>
+            <li>C. Update every parameter using gradient descent</li>
+            <li>D. Run a forward pass to get predictions</li>
+            <li>E. Initialize the network's weights and biases</li>
+          </ol>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>E, D, B, A, C</strong> — initialize → forward pass → compute cost → compute gradients (backprop) → update parameters, then repeat (§5's Training Loop).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Select all</span>
+          <span class="drill-q">Which of these are valid activation functions?</span>
+          <ul class="drill-options">
+            <li>(a) sigmoid</li>
+            <li>(b) mean squared error</li>
+            <li>(c) ReLU</li>
+            <li>(d) gradient descent</li>
+            <li>(e) softmax</li>
+            <li>(f) tanh</li>
+          </ul>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>(a), (c), (e), (f).</strong> Sigmoid, ReLU, softmax, and tanh all squash a neuron's weighted sum into a bounded/shaped output (§6). MSE is a cost function and gradient descent is the optimization algorithm — neither is an activation function.</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Code</span>
+          <span class="drill-q">Complete this output layer for a 3-class classification network:</span>
+          <span class="drill-code-inline">Dense(<span class="drill-blank">____</span>, activation=<span class="drill-blank">____</span>)</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><code>Dense(3, activation='softmax')</code> — one unit per class, softmax to turn the raw scores into a probability distribution summing to 1 (§4).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Compute</span>
+          <span class="drill-q">A neuron has weights w=[1.0, −1.0], bias b=0, input x=[3,1]. Compute z and the sigmoid output ŷ.</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p>z = 1.0×3 + (−1.0)×1 + 0 = <strong>2.0</strong>. e⁻² ≈ 0.135, so ŷ = σ(2.0) = 1/(1+0.135) ≈ <strong>0.881</strong> (§4).</p></div>
       </details>
 
     </div>
