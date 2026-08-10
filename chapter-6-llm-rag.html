@@ -305,8 +305,13 @@
     <div class="worked-example">
       <span class="we-label">Worked example</span>
       <p>A chunk's embedding (toy-sized to 3 dimensions for hand computation) A=[1,2,3], a query's embedding B=[2,1,3]. Cosine similarity = (A·B)/(‖A‖·‖B‖).</p>
-      <p>Dot product: A·B = (1×2)+(2×1)+(3×3) = 2+2+9 = <strong>13</strong>. Magnitudes: ‖A‖=√(1²+2²+3²)=√14≈<strong>3.742</strong>, ‖B‖=√(2²+1²+3²)=√14≈<strong>3.742</strong> (equal here since they're permutations of the same numbers).</p>
-      <p>Cosine similarity = 13/(3.742×3.742) = 13/14 ≈ <strong>0.929</strong> — very close to 1, meaning the two vectors point in almost the same direction: the chunk and query are highly related. Cosine <em>distance</em> = 1−0.929 = <strong>0.071</strong>, correctly signaling "these are nearly the same" in a metric where smaller means closer. If B had instead been [−1,−2,−3] — pointing the opposite direction — the dot product would be negative and cosine similarity would approach −1, correctly flagging dissimilarity even though the raw magnitudes are identical.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Dot product</span><span class="we-calc">A·B = (1×2)+(2×1)+(3×3) = 2+2+9 = <strong>13</strong></span></div></li>
+        <li><div><span class="we-step-label">Magnitudes</span><span class="we-calc">‖A‖ = √(1²+2²+3²) = √14 ≈ <strong>3.742</strong>&nbsp;&nbsp; ‖B‖ = √(2²+1²+3²) = √14 ≈ <strong>3.742</strong> (equal here since they're permutations of the same numbers)</span></div></li>
+        <li><div><span class="we-step-label">Cosine similarity</span><span class="we-calc">13/(3.742×3.742) = 13/14 ≈ <strong>0.929</strong> — very close to 1, meaning the two vectors point in almost the same direction</span></div></li>
+        <li><div><span class="we-step-label">Cosine distance</span><span class="we-calc">1 − 0.929 = <strong>0.071</strong> — correctly signaling "these are nearly the same" in a metric where smaller means closer</span></div></li>
+      </ol>
+      <p>The chunk and query are highly related. If B had instead been [−1,−2,−3] — pointing the opposite direction — the dot product would be negative and cosine similarity would approach −1, correctly flagging dissimilarity even though the raw magnitudes are identical.</p>
     </div>
 
     <div class="callout watch"><span class="tag">Gotcha</span><p>Cosine <em>distance</em> (1 − cos θ) is a dissimilarity score — smaller is more similar. Don't confuse it with cosine <em>similarity</em> itself (cos θ), where larger is more similar; a query engine that mixes these up ranks results in the exact opposite order it means to.</p></div>

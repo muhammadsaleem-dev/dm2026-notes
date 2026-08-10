@@ -643,6 +643,69 @@ code {
 .worked-example .table-wrap { margin: 0.8rem 0; }
 .worked-example .formula-block { margin: 0.7rem 0; }
 
+/* numbered calculation steps inside a worked example — keeps the
+   arithmetic scannable instead of buried in a running paragraph */
+.worked-example .we-steps {
+  list-style: none;
+  counter-reset: we-step;
+  margin: 0.95rem 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.worked-example .we-steps li {
+  counter-increment: we-step;
+  display: grid;
+  grid-template-columns: 1.5rem 1fr;
+  gap: 0 0.75rem;
+  margin: 0;
+}
+.worked-example .we-steps li::before {
+  content: counter(we-step);
+  grid-row: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--example);
+  color: var(--bg-raised);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.we-step-label {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--example-ink);
+  margin-bottom: 0.25rem;
+}
+.we-calc {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+  background: color-mix(in srgb, var(--bg-raised) 65%, transparent);
+  border: 1px solid color-mix(in srgb, var(--example) 22%, var(--border));
+  border-radius: 6px;
+  padding: 0.45rem 0.7rem;
+  overflow-x: auto;
+}
+.we-calc strong { color: var(--example-ink); }
+.we-result {
+  display: block;
+  margin-top: 0.9rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--example) 12%, var(--bg-raised));
+  border: 1px solid color-mix(in srgb, var(--example) 30%, var(--border));
+  font-size: 0.92rem;
+}
+.we-result strong { color: var(--example-ink); }
+
 .python-note {
   border: 1px solid var(--border);
   border-left: 3px solid var(--py);

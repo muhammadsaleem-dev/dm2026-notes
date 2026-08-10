@@ -173,9 +173,16 @@
         <li>Doc 1: "cats love naps" (3 words)</li>
         <li>Doc 2: "dogs love walks" (3 words)</li>
       </ul>
-      <p><em>Term frequency (TF)</em> is "how often does this word appear in this document, relative to document length." For <strong>"love"</strong> in Doc 1: it appears once out of three words, so TF = 1/3.</p>
-      <p><em>Inverse document frequency (IDF)</em> measures rarity across the whole corpus: IDF(word) = ln(N / df), where N is the total number of documents and df is the number of documents containing the word. "love" appears in both documents, so df = 2, N = 2, and IDF(love) = ln(2/2) = ln(1) = <strong>0</strong>. Multiplying TF × IDF gives TF-IDF(love, Doc 1) = 1/3 × 0 = <strong>0</strong> — because "love" is common to every document, it contributes nothing to distinguishing them.</p>
-      <p>Now take <strong>"cats"</strong>, which only appears in Doc 1: TF(cats, Doc 1) = 1/3, df = 1, so IDF(cats) = ln(2/1) = ln(2) ≈ 0.6931. TF-IDF(cats, Doc 1) = 1/3 × 0.6931 ≈ <strong>0.231</strong> — a positive score, because "cats" is doing real work telling Doc 1 apart from Doc 2. That's the entire mechanic: common words get discounted toward zero, rare-but-present words get weighted up.</p>
+      <p><em>Term frequency (TF)</em> is "how often does this word appear in this document, relative to document length." <em>Inverse document frequency (IDF)</em> measures rarity across the whole corpus: IDF(word) = ln(N / df), where N is the total number of documents and df is the number of documents containing the word.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">TF("love", Doc 1)</span><span class="we-calc">"love" appears once out of three words → TF = 1/3</span></div></li>
+        <li><div><span class="we-step-label">IDF("love")</span><span class="we-calc">"love" appears in both documents → df = 2, N = 2 → IDF(love) = ln(2/2) = ln(1) = <strong>0</strong></span></div></li>
+        <li><div><span class="we-step-label">TF-IDF("love", Doc 1)</span><span class="we-calc">TF × IDF = 1/3 × 0 = <strong>0</strong> — "love" is common to every document, so it contributes nothing to distinguishing them</span></div></li>
+        <li><div><span class="we-step-label">TF("cats", Doc 1)</span><span class="we-calc">"cats" only appears in Doc 1 → TF = 1/3</span></div></li>
+        <li><div><span class="we-step-label">IDF("cats")</span><span class="we-calc">df = 1 → IDF(cats) = ln(2/1) = ln(2) ≈ 0.6931</span></div></li>
+        <li><div><span class="we-step-label">TF-IDF("cats", Doc 1)</span><span class="we-calc">1/3 × 0.6931 ≈ <strong>0.231</strong> — a positive score, because "cats" is doing real work telling Doc 1 apart from Doc 2</span></div></li>
+      </ol>
+      <p>That's the entire mechanic: common words get discounted toward zero, rare-but-present words get weighted up.</p>
     </div>
 
     <div class="python-note"><div><span class="pn-label">Python note</span><p>You'd never compute this by hand on a real corpus — <code>from sklearn.feature_extraction.text import TfidfVectorizer; X = TfidfVectorizer().fit_transform(list_of_documents)</code> takes a list of raw strings and returns a sparse matrix (rows = documents, columns = vocabulary terms, values = TF-IDF scores). Scikit-learn's actual formula adds smoothing terms to avoid division-by-zero edge cases, so exact numbers will differ slightly from the hand-calculation above, but the <em>shape</em> of the result — common words near zero, rare words higher — is the same.</p></div></div>
@@ -265,8 +272,13 @@
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
-      <p>A tiny, illustrative <code>age</code> column for five people: 25, <em>missing</em>, 30, <em>missing</em>, 35. First, capture <em>that</em> something was missing in a separate indicator column — this preserves the information even after you paper over the gap: <code>age_is_missing = [0, 1, 0, 1, 0]</code>. Then compute the median from the values you <em>do</em> have: sorting {25, 30, 35} gives a median of <strong>30</strong>. Filling the gaps with that median produces: 25, 30, 30, 30, 35. The imputed rows are now indistinguishable from a person whose real age happened to be 30 — which is exactly why the indicator column matters: it lets a downstream model learn "this row's age was guessed" as its own signal, if that turns out to be predictive.</p>
-      <p>Median rather than mean is the more common default because it's far less sensitive to a handful of extreme outliers dragging the fill value away from what's typical.</p>
+      <p>A tiny, illustrative <code>age</code> column for five people: 25, <em>missing</em>, 30, <em>missing</em>, 35.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Capture the missingness itself</span><span class="we-calc">age_is_missing = [0, 1, 0, 1, 0]</span></div></li>
+        <li><div><span class="we-step-label">Compute the median from the values you do have</span><span class="we-calc">sorted {25, 30, 35} → median = <strong>30</strong></span></div></li>
+        <li><div><span class="we-step-label">Fill the gaps with that median</span><span class="we-calc">25, <strong>30</strong>, 30, <strong>30</strong>, 35</span></div></li>
+      </ol>
+      <p>The imputed rows are now indistinguishable from a person whose real age happened to be 30 — which is exactly why the indicator column matters: it lets a downstream model learn "this row's age was guessed" as its own signal, if that turns out to be predictive. Median rather than mean is the more common default because it's far less sensitive to a handful of extreme outliers dragging the fill value away from what's typical.</p>
     </div>
 
     <h3>Imbalanced classes</h3>
@@ -288,7 +300,16 @@
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
-      <p>Take a tiny, illustrative feature — house size in m² for three houses: 50, 70, 90. The mean μ = (50+70+90)/3 = 210/3 = <strong>70</strong>. The deviations from the mean are −20, 0, and +20. Squaring them: 400, 0, 400. Using the sample-variance convention (divide by n−1): variance = (400+0+400)/(3−1) = 800/2 = <strong>400</strong>, so σ = √400 = <strong>20</strong>. Now apply the formula to each value: (50−70)/20 = <strong>−1</strong>, (70−70)/20 = <strong>0</strong>, (90−70)/20 = <strong>+1</strong>. The three houses, originally on a scale of tens of square meters, are now expressed purely in terms of "how many standard deviations from average" — a scale directly comparable to any other z-scored feature, regardless of its original units.</p>
+      <p>Take a tiny, illustrative feature — house size in m² for three houses: 50, 70, 90.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Mean</span><span class="we-calc">μ = (50+70+90)/3 = 210/3 = <strong>70</strong></span></div></li>
+        <li><div><span class="we-step-label">Deviations from the mean</span><span class="we-calc">50−70 = −20,&nbsp;&nbsp; 70−70 = 0,&nbsp;&nbsp; 90−70 = +20</span></div></li>
+        <li><div><span class="we-step-label">Squared deviations</span><span class="we-calc">(−20)² = 400,&nbsp;&nbsp; 0² = 0,&nbsp;&nbsp; (+20)² = 400</span></div></li>
+        <li><div><span class="we-step-label">Variance (sample convention, ÷ n−1)</span><span class="we-calc">(400+0+400)/(3−1) = 800/2 = <strong>400</strong></span></div></li>
+        <li><div><span class="we-step-label">Standard deviation</span><span class="we-calc">σ = √400 = <strong>20</strong></span></div></li>
+        <li><div><span class="we-step-label">Z-score for each house</span><span class="we-calc">(50−70)/20 = <strong>−1</strong>,&nbsp;&nbsp; (70−70)/20 = <strong>0</strong>,&nbsp;&nbsp; (90−70)/20 = <strong>+1</strong></span></div></li>
+      </ol>
+      <p>The three houses, originally on a scale of tens of square meters, are now expressed purely in terms of "how many standard deviations from average" — a scale directly comparable to any other z-scored feature, regardless of its original units.</p>
     </div>
 
     <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.preprocessing import StandardScaler</code> bundles exactly this computation: <code>scaler = StandardScaler(); scaler.fit(X_train)</code> computes and stores μ and σ per column from the training data, and <code>scaler.transform(X_train)</code> applies the formula. One easy-to-miss subtlety: NumPy's <code>array.std()</code> defaults to the <em>population</em> convention (divide by n), which is what <code>StandardScaler</code> uses internally — slightly different from the sample convention (divide by n−1) used above. For a small example the difference is minor, but it's worth knowing both conventions exist.</p></div></div>
@@ -328,15 +349,14 @@
         <tr><td>3</td><td>11</td><td>6</td></tr>
         <tr><td>4</td><td>12</td><td>7</td></tr>
       </tbody></table></div>
-      <p><strong>Step 1 — center.</strong> Mean of x = (8+9+11+12)/4 = 40/4 = <strong>10</strong>. Mean of y = (5+6+6+7)/4 = 24/4 = <strong>6</strong>. Subtracting the mean from each point gives the centered data: (−2,−1), (−1,0), (1,0), (2,1).</p>
-      <p><strong>Step 2 — covariance matrix.</strong></p>
-      <div class="formula-block">Cov(x,x) = [(−2)²+(−1)²+1²+2²] / 3 = 10/3 ≈ 3.33
-Cov(y,y) = [(−1)²+0²+0²+1²] / 3 = 2/3 ≈ 0.67
-Cov(x,y) = [(−2)(−1)+(−1)(0)+(1)(0)+(2)(1)] / 3 = 4/3 ≈ 1.33</div>
-      <p>So the covariance matrix is <code>[[3.33, 1.33], [1.33, 0.67]]</code>.</p>
-      <p><strong>Step 3 — eigenvalues.</strong> For a 2×2 matrix, the eigenvalues solve λ² − (trace)λ + (determinant) = 0. Trace = 3.33 + 0.67 = <strong>4.00</strong>. Determinant = (3.33)(0.67) − (1.33)² = 2.22 − 1.78 = <strong>0.44</strong>. Solving with the quadratic formula: λ = [4 ± √(16 − 1.78)] / 2 = [4 ± 3.77] / 2, giving <strong>λ₁ ≈ 3.89</strong> and <strong>λ₂ ≈ 0.11</strong> (they sum to 4.00, matching the trace, as they must).</p>
-      <p><strong>Step 4 — eigenvectors and variance explained.</strong> The eigenvector for λ₁ works out to a direction of approximately <strong>(0.92, 0.38)</strong> once normalized to length 1 — PC1 is mostly (but not entirely) driven by "hours studied," with a real contribution from "quiz score" too. The proportion of total variance PC1 captures is λ₁/(λ₁+λ₂) = 3.89/4.00 ≈ <strong>97.1%</strong> — almost all of the spread in this toy dataset lives along a single direction, since "more hours studied" and "higher quiz score" move together.</p>
-      <p><strong>Step 5 — project a point.</strong> Student 4's PC1 score, from centered coordinates (2, 1): PC1 = 0.92×2 + 0.38×1 = 1.84 + 0.38 = <strong>2.23</strong>. Student 1, at centered coordinates (−2, −1), gets PC1 = 0.92×(−2) + 0.38×(−1) = <strong>−2.23</strong> — the mirror image, since students 1 and 4 sit at opposite ends of the trend. A real PCA on 1000 features instead of 2 is this exact same arithmetic, just automated and scaled up.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Center the data</span><span class="we-calc">Mean of x = (8+9+11+12)/4 = 40/4 = <strong>10</strong>&nbsp;&nbsp; Mean of y = (5+6+6+7)/4 = 24/4 = <strong>6</strong><br>Centered points: (−2,−1), (−1,0), (1,0), (2,1)</span></div></li>
+        <li><div><span class="we-step-label">Covariance matrix</span><span class="we-calc">Cov(x,x) = [(−2)²+(−1)²+1²+2²] / 3 = 10/3 ≈ 3.33<br>Cov(y,y) = [(−1)²+0²+0²+1²] / 3 = 2/3 ≈ 0.67<br>Cov(x,y) = [(−2)(−1)+(−1)(0)+(1)(0)+(2)(1)] / 3 = 4/3 ≈ 1.33<br>→ matrix = <code>[[3.33, 1.33], [1.33, 0.67]]</code></span></div></li>
+        <li><div><span class="we-step-label">Eigenvalues</span><span class="we-calc">For a 2×2 matrix: λ² − (trace)λ + (determinant) = 0<br>Trace = 3.33 + 0.67 = <strong>4.00</strong>&nbsp;&nbsp; Determinant = (3.33)(0.67) − (1.33)² = 2.22 − 1.78 = <strong>0.44</strong><br>λ = [4 ± √(16 − 1.78)] / 2 = [4 ± 3.77] / 2 → <strong>λ₁ ≈ 3.89</strong>, <strong>λ₂ ≈ 0.11</strong> (sum = 4.00, matching the trace)</span></div></li>
+        <li><div><span class="we-step-label">Eigenvector &amp; variance explained</span><span class="we-calc">Eigenvector for λ₁ ≈ <strong>(0.92, 0.38)</strong> (normalized to length 1) — PC1 is mostly "hours studied," with a real contribution from "quiz score" too<br>Variance captured: λ₁/(λ₁+λ₂) = 3.89/4.00 ≈ <strong>97.1%</strong></span></div></li>
+        <li><div><span class="we-step-label">Project a point onto PC1</span><span class="we-calc">Student 4, centered (2, 1): PC1 = 0.92×2 + 0.38×1 = 1.84 + 0.38 = <strong>2.23</strong><br>Student 1, centered (−2, −1): PC1 = 0.92×(−2) + 0.38×(−1) = <strong>−2.23</strong></span></div></li>
+      </ol>
+      <p>PC1 is mostly (but not entirely) driven by "hours studied." Almost all of the spread in this toy dataset lives along a single direction, since "more hours studied" and "higher quiz score" move together — and students 1 and 4 land at opposite ends of that trend, the mirror image of each other. A real PCA on 1000 features instead of 2 is this exact same arithmetic, just automated and scaled up.</p>
     </div>
 
     <p>PCA is excellent at linear correlation and preserves <strong>global</strong> structure, but if the data lies on a curved manifold, PCA flattens it onto a plane and destroys the real geometry — imagine data shaped like a rolled-up sheet of paper: PCA's straight-line projection would squash the roll flat, merging points that were actually far apart along the curved surface.</p>
@@ -352,7 +372,13 @@ Pᵢⱼ = (P(j|i) + P(i|j)) / 2N
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
-      <p>To see the high-D similarity formula actually compute something, take three toy points on a number line (illustrative only): x₁=0, x₂=1, x₃=5. Pick σ₁=1 for point 1 (in a real run, t-SNE picks σ automatically based on the desired perplexity). The un-normalized similarity of point 1 to point 2 is exp(−(1−0)²/(2×1²)) = exp(−0.5) ≈ <strong>0.6065</strong>. The un-normalized similarity of point 1 to point 3 is exp(−(5−0)²/(2×1²)) = exp(−12.5) ≈ <strong>0.0000037</strong> — essentially zero. Normalizing (dividing by their sum ≈ 0.60654): P(2|1) ≈ <strong>0.99999</strong>, and P(3|1) ≈ <strong>0.000006</strong>. Point 1 assigns almost its entire "who's my neighbor" probability to the nearby point 2, and almost none to the distant point 3 — exactly the local-neighborhood behavior t-SNE is designed to preserve. A real run repeats this for every pair, symmetrizes it into Pᵢⱼ, and runs many rounds of gradient descent to arrange low-dimensional points until Q matches.</p>
+      <p>To see the high-D similarity formula actually compute something, take three toy points on a number line (illustrative only): x₁=0, x₂=1, x₃=5. Pick σ₁=1 for point 1 (in a real run, t-SNE picks σ automatically based on the desired perplexity).</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Un-normalized similarity, point 1 → point 2</span><span class="we-calc">exp(−(1−0)²/(2×1²)) = exp(−0.5) ≈ <strong>0.6065</strong></span></div></li>
+        <li><div><span class="we-step-label">Un-normalized similarity, point 1 → point 3</span><span class="we-calc">exp(−(5−0)²/(2×1²)) = exp(−12.5) ≈ <strong>0.0000037</strong> — essentially zero</span></div></li>
+        <li><div><span class="we-step-label">Normalize (divide by the sum ≈ 0.60654)</span><span class="we-calc">P(2|1) ≈ <strong>0.99999</strong>,&nbsp;&nbsp; P(3|1) ≈ <strong>0.000006</strong></span></div></li>
+      </ol>
+      <p>Point 1 assigns almost its entire "who's my neighbor" probability to the nearby point 2, and almost none to the distant point 3 — exactly the local-neighborhood behavior t-SNE is designed to preserve. A real run repeats this for every pair, symmetrizes it into Pᵢⱼ, and runs many rounds of gradient descent to arrange low-dimensional points until Q matches.</p>
     </div>
 
     <p><strong>Perplexity</strong> (a hyperparameter) sets the effective neighborhood size and controls the local/global trade-off — too low fragments real clusters, too high merges distinct ones into a blob. It has to be tuned per dataset; there's no universally correct value.</p>
@@ -432,7 +458,13 @@ Pᵢⱼ = (P(j|i) + P(i|j)) / 2N
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
-      <p>Using the spam numbers above: <strong>Precision</strong> = 8/(8+4) = 8/12 ≈ <strong>0.667</strong> (of the 12 flagged, two-thirds really were spam). <strong>Recall</strong> = 8/(8+2) = 8/10 = <strong>0.80</strong> (of the 10 real spam emails, 8 were caught). <strong>Specificity</strong> = 86/(86+4) = 86/90 ≈ <strong>0.956</strong>. <strong>Accuracy</strong> = (8+86)/100 = <strong>0.94</strong>.</p>
+      <p>Using the spam numbers above:</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Precision</span><span class="we-calc">8/(8+4) = 8/12 ≈ <strong>0.667</strong> — of the 12 flagged, two-thirds really were spam</span></div></li>
+        <li><div><span class="we-step-label">Recall</span><span class="we-calc">8/(8+2) = 8/10 = <strong>0.80</strong> — of the 10 real spam emails, 8 were caught</span></div></li>
+        <li><div><span class="we-step-label">Specificity</span><span class="we-calc">86/(86+4) = 86/90 ≈ <strong>0.956</strong></span></div></li>
+        <li><div><span class="we-step-label">Accuracy</span><span class="we-calc">(8+86)/100 = <strong>0.94</strong></span></div></li>
+      </ol>
     </div>
 
     <div class="callout watch"><span class="tag">Watch out</span><p>A classifier that predicts "positive" for <em>everyone</em> scores 100% recall — trivially, since it never produces a false negative — while its precision collapses to whatever the true prevalence is. One that predicts "negative" for everyone scores 100% specificity — and, if 98% of the data really is negative, 98% accuracy too. Neither model has learned anything; both are gaming a single metric by ignoring the class that metric doesn't measure.</p></div>
@@ -445,7 +477,12 @@ Pᵢⱼ = (P(j|i) + P(i|j)) / 2N
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
-      <p>Walking through every step: the numerator is P(P|D)·P(D) = 0.99 × 0.001 = <strong>0.00099</strong> — "the fraction of the entire population that is both diseased and tests positive." The first denominator term is that same 0.00099. The second denominator term is P(P|H)·P(H) = 0.02 × 0.999 = <strong>0.01998</strong> — "the fraction of the population that is healthy but tests positive anyway." Adding both: 0.00099 + 0.01998 = <strong>0.02097</strong> — "the total fraction of the population that tests positive at all." Dividing: 0.00099 / 0.02097 ≈ <strong>4.7%</strong>.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Numerator: P(positive AND diseased)</span><span class="we-calc">P(P|D)·P(D) = 0.99 × 0.001 = <strong>0.00099</strong> — the fraction of the entire population that is both diseased and tests positive</span></div></li>
+        <li><div><span class="we-step-label">Second denominator term: P(positive AND healthy)</span><span class="we-calc">P(P|H)·P(H) = 0.02 × 0.999 = <strong>0.01998</strong> — the fraction of the population that is healthy but tests positive anyway</span></div></li>
+        <li><div><span class="we-step-label">Denominator: P(positive at all)</span><span class="we-calc">0.00099 + 0.01998 = <strong>0.02097</strong> — the total fraction of the population that tests positive</span></div></li>
+        <li><div><span class="we-step-label">P(disease | positive)</span><span class="we-calc">0.00099 / 0.02097 ≈ <strong>4.7%</strong></span></div></li>
+      </ol>
       <p>To build intuition: imagine 100,000 people. Only 100 (0.1%) actually have the disease, and the test correctly flags 99 of those. But among the 99,900 healthy people, 2% — nearly 1,998 — test positive anyway, purely as false alarms. So out of roughly 99+1,998 ≈ 2,097 total positive results, only 99 are real — and 99/2,097 ≈ 4.7%, matching the Bayes calculation exactly.</p>
     </div>
     <p>Even with a "99% accurate" test, most positives are false positives — because healthy people vastly outnumber sick ones. Base rates dominate when the condition is rare, and no amount of test accuracy on its own fixes that.</p>
@@ -470,7 +507,11 @@ Pᵢⱼ = (P(j|i) + P(i|j)) / 2N
         <tr><td>D</td><td>0.40</td><td>Spam</td></tr>
         <tr><td>E</td><td>0.10</td><td>Not spam</td></tr>
       </tbody></table></div>
-      <p>At threshold <strong>0.85</strong> (only A flagged): TP=1, FN=2, FP=0, TN=2 → TPR=1/3≈<strong>0.33</strong>, FPR=0/2=<strong>0.00</strong>. At threshold <strong>0.50</strong> (A, B, C flagged): TP=2, FN=1, FP=1, TN=1 → TPR=2/3≈<strong>0.67</strong>, FPR=1/2=<strong>0.50</strong>. Plotting TPR against FPR at every threshold traces the ROC curve.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Threshold 0.85 (only A flagged)</span><span class="we-calc">TP=1, FN=2, FP=0, TN=2 → TPR=1/3≈<strong>0.33</strong>, FPR=0/2=<strong>0.00</strong></span></div></li>
+        <li><div><span class="we-step-label">Threshold 0.50 (A, B, C flagged)</span><span class="we-calc">TP=2, FN=1, FP=1, TN=1 → TPR=2/3≈<strong>0.67</strong>, FPR=1/2=<strong>0.50</strong></span></div></li>
+      </ol>
+      <p>Plotting TPR against FPR at every threshold traces the ROC curve.</p>
     </div>
     <p>The diagonal line (TPR=FPR everywhere) represents a random classifier; the closer the curve hugs the top-left corner, the better. <strong>AUC</strong> compresses the whole curve into one number between 0 and 1 (perfect = 1.0, random = 0.5) and lets you pick the threshold that matches how much your application tolerates false alarms vs. missed detections.</p>
 

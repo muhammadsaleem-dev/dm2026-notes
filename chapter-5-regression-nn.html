@@ -215,9 +215,11 @@
       <span class="we-label">Worked example</span>
       <p>Continuing the toy dataset from §2: (x,y)=(1,3),(2,5),(3,7), current guess ω=1.5, b=1, learning rate α=0.1. Small invented numbers, not the real dataset.</p>
       <p>Residuals from §2: 0.5, 1.0, 1.5.</p>
-      <p><strong>Bias gradient:</strong> ∂J/∂b = −(1/3)·(0.5+1.0+1.5) = −(1/3)·3.0 = <strong>−1.0</strong>.</p>
-      <p><strong>Weight gradient:</strong> ∂J/∂ω = −(1/3)·(0.5×1+1.0×2+1.5×3) = −(1/3)·7.0 ≈ <strong>−2.333</strong>.</p>
-      <p><strong>Update:</strong> b_new = 1 − 0.1×(−1.0) = <strong>1.1</strong>. ω_new = 1.5 − 0.1×(−2.333) ≈ <strong>1.733</strong>.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Bias gradient</span><span class="we-calc">∂J/∂b = −(1/3)·(0.5+1.0+1.5) = −(1/3)·3.0 = <strong>−1.0</strong></span></div></li>
+        <li><div><span class="we-step-label">Weight gradient</span><span class="we-calc">∂J/∂ω = −(1/3)·(0.5×1+1.0×2+1.5×3) = −(1/3)·7.0 ≈ <strong>−2.333</strong></span></div></li>
+        <li><div><span class="we-step-label">Update the parameters</span><span class="we-calc">b_new = 1 − 0.1×(−1.0) = <strong>1.1</strong><br>ω_new = 1.5 − 0.1×(−2.333) ≈ <strong>1.733</strong></span></div></li>
+      </ol>
       <p>ω moved <em>toward</em> the true value of 2 (the model was underestimating the slope), while b moved slightly <em>away</em> from its true value of 1 — not a bug. Gradient descent doesn't optimize each parameter's individual correctness in isolation; it moves the whole parameter vector in the direction that reduces total cost fastest given the <em>current</em> errors, which are dominated by the wrong slope. Later iterations correct the bias too — this is why the algorithm needs to repeat: one step rarely lands you at the minimum.</p>
     </div>
 
@@ -248,7 +250,11 @@
     <div class="worked-example">
       <span class="we-label">Worked example</span>
       <p>A made-up model has weights w=[0.5, −0.3], bias b=0.1, over two features. A patient has x=[2,1], true label y=1 (malignant). Invented toy example, not real clinical data.</p>
-      <p>z = 0.5×2 + (−0.3)×1 + 0.1 = 1.0 − 0.3 + 0.1 = <strong>0.8</strong>. With e⁻⁰·⁸≈0.449: ŷ = σ(0.8) = 1/(1+0.449) = 1/1.449 ≈ <strong>0.690</strong> — "69% probability malignant." At a 0.5 threshold that rounds to label 1, matching the true label — but the <em>probability</em> is the actual output; the hard label is a downstream decision.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Weighted sum z</span><span class="we-calc">z = 0.5×2 + (−0.3)×1 + 0.1 = 1.0 − 0.3 + 0.1 = <strong>0.8</strong></span></div></li>
+        <li><div><span class="we-step-label">Sigmoid</span><span class="we-calc">e⁻⁰·⁸ ≈ 0.449 → ŷ = σ(0.8) = 1/(1+0.449) = 1/1.449 ≈ <strong>0.690</strong> — "69% probability malignant"</span></div></li>
+      </ol>
+      <p>At a 0.5 threshold that rounds to label 1, matching the true label — but the <em>probability</em> is the actual output; the hard label is a downstream decision.</p>
     </div>
 
     <h3>Measuring wrongness for probabilities: cross-entropy</h3>
@@ -279,7 +285,13 @@
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
-      <p>Raw class scores z=[1.30, 5.10, 2.20, 0.70, 1.10]. Exponentiate: e^1.30≈3.67, e^5.10≈164.02, e^2.20≈9.03, e^0.70≈2.01, e^1.10≈3.00. Sum ≈ 181.73. Divide each by the sum: <strong>softmax(z) ≈ [0.02, 0.90, 0.05, 0.01, 0.02]</strong> — a clean distribution dominated by class 2, summing to 1.00. This is exactly the <code>Dense(10, softmax)</code> layer in the CIFAR-10 exercise's output: ten raw scores in, ten class probabilities out.</p>
+      <p>Raw class scores z=[1.30, 5.10, 2.20, 0.70, 1.10].</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Exponentiate every score</span><span class="we-calc">e^1.30≈3.67,&nbsp;&nbsp; e^5.10≈164.02,&nbsp;&nbsp; e^2.20≈9.03,&nbsp;&nbsp; e^0.70≈2.01,&nbsp;&nbsp; e^1.10≈3.00</span></div></li>
+        <li><div><span class="we-step-label">Sum them</span><span class="we-calc">3.67+164.02+9.03+2.01+3.00 ≈ <strong>181.73</strong></span></div></li>
+        <li><div><span class="we-step-label">Divide each by the sum</span><span class="we-calc">softmax(z) ≈ <strong>[0.02, 0.90, 0.05, 0.01, 0.02]</strong> — a clean distribution dominated by class 2, summing to 1.00</span></div></li>
+      </ol>
+      <p>This is exactly the <code>Dense(10, softmax)</code> layer in the CIFAR-10 exercise's output: ten raw scores in, ten class probabilities out.</p>
     </div>
 
     <h3>Why logistic regression isn't enough</h3>
@@ -319,10 +331,14 @@ z^[2] = W^[2]a^[1] + b^[2],  a^[2] = g^[2](z^[2]) = ŷ
     <div class="worked-example">
       <span class="we-label">Worked example</span>
       <p>2 inputs, 1 hidden neuron, 1 output neuron, both sigmoid. Small invented weights, purely to make the arithmetic easy — not values from real training.</p>
-      <p>Inputs x=[1.0, 0.5]. Hidden-layer: W^[1]=[0.4,−0.2], b^[1]=0.1.</p>
-      <p>z^[1] = 0.4×1.0 + (−0.2)×0.5 + 0.1 = 0.4−0.1+0.1 = <strong>0.4</strong>. With e⁻⁰·⁴≈0.670: a^[1] = σ(0.4) = 1/1.670 ≈ <strong>0.599</strong> — the hidden neuron's output, now becoming input to the output layer.</p>
-      <p>Output-layer weight: W^[2]=0.7, b^[2]=−0.2. z^[2] = 0.7×0.599 + (−0.2) = 0.419−0.2 = <strong>0.219</strong>. With e⁻⁰·²¹⁹≈0.803: a^[2] = σ(0.219) = 1/1.803 ≈ <strong>0.555</strong>.</p>
-      <p>So <strong>ŷ = a^[2] ≈ 0.555</strong> — the entire forward pass, two weighted sums and two sigmoid evaluations, chained. Everything after this — cost, gradients, updates — builds on this one computed number.</p>
+      <p>Inputs x=[1.0, 0.5]. Hidden-layer: W<sup>[1]</sup>=[0.4,−0.2], b<sup>[1]</sup>=0.1. Output-layer: W<sup>[2]</sup>=0.7, b<sup>[2]</sup>=−0.2.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Hidden layer: z<sup>[1]</sup></span><span class="we-calc">z<sup>[1]</sup> = 0.4×1.0 + (−0.2)×0.5 + 0.1 = 0.4−0.1+0.1 = <strong>0.4</strong></span></div></li>
+        <li><div><span class="we-step-label">Hidden layer: a<sup>[1]</sup></span><span class="we-calc">e⁻⁰·⁴≈0.670 → a<sup>[1]</sup> = σ(0.4) = 1/1.670 ≈ <strong>0.599</strong> — the hidden neuron's output, now becoming input to the output layer</span></div></li>
+        <li><div><span class="we-step-label">Output layer: z<sup>[2]</sup></span><span class="we-calc">z<sup>[2]</sup> = 0.7×0.599 + (−0.2) = 0.419−0.2 = <strong>0.219</strong></span></div></li>
+        <li><div><span class="we-step-label">Output layer: a<sup>[2]</sup></span><span class="we-calc">e⁻⁰·²¹⁹≈0.803 → a<sup>[2]</sup> = σ(0.219) = 1/1.803 ≈ <strong>0.555</strong></span></div></li>
+      </ol>
+      <p>So <strong>ŷ = a<sup>[2]</sup> ≈ 0.555</strong> — the entire forward pass, two weighted sums and two sigmoid evaluations, chained. Everything after this — cost, gradients, updates — builds on this one computed number.</p>
     </div>
 
     <h3>Backpropagation</h3>
@@ -337,9 +353,14 @@ W^[1] := W^[1] − η∇_W[1]J,   b^[1] := b^[1] − η∇_b[1]J</div>
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
-      <p>Using the forward pass above (ŷ≈0.555, a^[1]≈0.599), true label y=1, learning rate η=0.1. Invented toy step, not a real training run.</p>
-      <p>∇_z[2]J = ŷ−y = 0.555−1 = <strong>−0.445</strong>. ∇_W[2]J = (ŷ−y)·a^[1]ᵀ = −0.445×0.599 ≈ <strong>−0.267</strong>. Since z^[2] depends on b^[2] with coefficient 1: ∇_b[2]J = <strong>−0.445</strong>.</p>
-      <p>W^[2]_new = 0.7 − 0.1×(−0.267) ≈ <strong>0.727</strong>. b^[2]_new = −0.2 − 0.1×(−0.445) ≈ <strong>−0.156</strong>. Both parameters moved in the direction that would push ŷ higher, toward the true label of 1 — exactly right, since the network under-predicted. The same style of computation, one layer further back, updates W^[1] and b^[1], using the propagated error instead of ŷ−y directly.</p>
+      <p>Using the forward pass above (ŷ≈0.555, a<sup>[1]</sup>≈0.599), true label y=1, learning rate η=0.1. Invented toy step, not a real training run.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Output-layer error signal</span><span class="we-calc">∇<sub>z[2]</sub>J = ŷ−y = 0.555−1 = <strong>−0.445</strong></span></div></li>
+        <li><div><span class="we-step-label">Weight gradient</span><span class="we-calc">∇<sub>W[2]</sub>J = (ŷ−y)·a<sup>[1]ᵀ</sup> = −0.445×0.599 ≈ <strong>−0.267</strong></span></div></li>
+        <li><div><span class="we-step-label">Bias gradient</span><span class="we-calc">z<sup>[2]</sup> depends on b<sup>[2]</sup> with coefficient 1 → ∇<sub>b[2]</sub>J = <strong>−0.445</strong></span></div></li>
+        <li><div><span class="we-step-label">Update the parameters</span><span class="we-calc">W<sup>[2]</sup>_new = 0.7 − 0.1×(−0.267) ≈ <strong>0.727</strong><br>b<sup>[2]</sup>_new = −0.2 − 0.1×(−0.445) ≈ <strong>−0.156</strong></span></div></li>
+      </ol>
+      <p>Both parameters moved in the direction that would push ŷ higher, toward the true label of 1 — exactly right, since the network under-predicted. The same style of computation, one layer further back, updates W<sup>[1]</sup> and b<sup>[1]</sup>, using the propagated error instead of ŷ−y directly.</p>
     </div>
 
     <p><strong>Notation:</strong> ℓ = number of layers · n^[i] = units in layer i (n^[0]=inputs, n^[ℓ]=outputs) · a^[i] = activations of layer i (a^[ℓ]=ŷ) · g^[i] = layer i's activation function · W^[i], b^[i] = layer i's parameters · z^[i] = W^[i]a^[i−1]+b^[i].</p>

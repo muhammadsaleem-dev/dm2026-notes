@@ -170,7 +170,7 @@
         <tr><td>P4</td><td>8</td><td>8</td></tr><tr><td>P5</td><td>8</td><td>9</td></tr><tr><td>P6</td><td>9</td><td>8</td></tr>
       </tbody></table></div>
       <p>Random init happens to pick two data points as starting centroids: <strong>C1=(1,1)</strong>, <strong>C2=(8,8)</strong>.</p>
-      <p><strong>Step 3 — assign.</strong></p>
+      <p><strong>Assign</strong> each point to its nearest centroid:</p>
       <div class="table-wrap"><table><thead><tr><th>Point</th><th>dist² to C1</th><th>dist² to C2</th><th>Assigned</th></tr></thead><tbody>
         <tr><td>P1 (1,1)</td><td>0</td><td>98</td><td>C1</td></tr>
         <tr><td>P2 (1,2)</td><td>1</td><td>85</td><td>C1</td></tr>
@@ -180,9 +180,12 @@
         <tr><td>P6 (9,8)</td><td>113</td><td>1</td><td>C2</td></tr>
       </tbody></table></div>
       <p>Cluster 1 = {P1,P2,P3}, Cluster 2 = {P4,P5,P6} — every point unambiguously closer to one centroid.</p>
-      <p><strong>Step 4 — recompute.</strong> C1_new = mean of (1,1),(1,2),(2,2) = <strong>(1.33, 1.67)</strong>. C2_new = mean of (8,8),(8,9),(9,8) = <strong>(8.33, 8.33)</strong>.</p>
-      <p><strong>Step 5 — converged.</strong> Re-checking assignments against the new centroids, nothing changes — the algorithm has converged after one recomputation (messier real data typically needs several more rounds).</p>
-      <p><strong>WCSS.</strong> Cluster 1: P1 contributes 5/9, P2 contributes 2/9, P3 contributes 5/9 → 12/9 ≈ 1.333. Cluster 2: symmetric, also ≈ 1.333. <strong>Total WCSS = 8/3 ≈ 2.67</strong> — the total squared "wobble" of every point around its assigned centroid. Lower means tighter, more internally-consistent clusters.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Recompute centroids</span><span class="we-calc">C1_new = mean of (1,1),(1,2),(2,2) = <strong>(1.33, 1.67)</strong><br>C2_new = mean of (8,8),(8,9),(9,8) = <strong>(8.33, 8.33)</strong></span></div></li>
+        <li><div><span class="we-step-label">Check convergence</span><span class="we-calc">Re-checking assignments against the new centroids, nothing changes — converged after one recomputation (messier real data typically needs several more rounds)</span></div></li>
+        <li><div><span class="we-step-label">WCSS</span><span class="we-calc">Cluster 1: P1 contributes 5/9, P2 contributes 2/9, P3 contributes 5/9 → 12/9 ≈ 1.333<br>Cluster 2: symmetric, also ≈ 1.333<br>Total WCSS = 8/3 ≈ <strong>2.67</strong></span></div></li>
+      </ol>
+      <p>WCSS is the total squared "wobble" of every point around its assigned centroid — lower means tighter, more internally-consistent clusters.</p>
     </div>
 
     <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.cluster import KMeans; KMeans(n_clusters=2).fit(X)</code> runs the assign/recompute loop above until convergence. <code>.inertia_</code> gives you exactly the WCSS value computed by hand (2.67 above) — you never sum squared distances yourself in practice.</p></div></div>
@@ -210,9 +213,11 @@
     <div class="worked-example">
       <span class="we-label">Worked example</span>
       <p>Extend the six-point dataset from §2 to a few candidate K values.</p>
-      <p><strong>K=1</strong>: one centroid, the overall mean (4.83, 5). Summing squared distances from all six points gives <strong>WCSS(1) ≈ 142.83</strong> — large, since two genuinely far-apart groups are both measured against one center sitting uselessly between them.</p>
-      <p><strong>K=2</strong>: from §2, <strong>WCSS(2) = 8/3 ≈ 2.67</strong>.</p>
-      <p><strong>K=3</strong>: split {P2,P3} off from P1 — clusters {P1}, {P2,P3}, {P4,P5,P6}. {P1} contributes 0. {P2,P3} (centroid (1.5,2)) contributes 0.5. {P4,P5,P6} unchanged at 1.333. <strong>WCSS(3) ≈ 1.83</strong>.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">K=1</span><span class="we-calc">One centroid, the overall mean (4.83, 5). Summing squared distances from all six points gives <strong>WCSS(1) ≈ 142.83</strong> — large, since two genuinely far-apart groups are both measured against one center sitting uselessly between them.</span></div></li>
+        <li><div><span class="we-step-label">K=2</span><span class="we-calc">From §2: <strong>WCSS(2) = 8/3 ≈ 2.67</strong></span></div></li>
+        <li><div><span class="we-step-label">K=3</span><span class="we-calc">Split {P2,P3} off from P1 — clusters {P1}, {P2,P3}, {P4,P5,P6}<br>{P1} contributes 0. {P2,P3} (centroid (1.5,2)) contributes 0.5. {P4,P5,P6} unchanged at 1.333<br><strong>WCSS(3) ≈ 1.83</strong></span></div></li>
+      </ol>
       <div class="table-wrap"><table><thead><tr><th>K</th><th>WCSS</th></tr></thead><tbody>
         <tr><td>1</td><td>142.83</td></tr><tr><td>2</td><td>2.67</td></tr><tr><td>3</td><td>1.83</td></tr>
       </tbody></table></div>
@@ -240,7 +245,12 @@
         <tr><td>2</td><td>0.981</td><td>5.20</td><td>4.219</td></tr>
         <tr><td>3</td><td>0.606</td><td>4.70</td><td>4.094</td></tr>
       </tbody></table></div>
-      <p>With illustrative SE(2)=0.15, SE(3)=0.18: is Gap(1)=0.888 ≥ Gap(2)−SE(2)=4.069? No. Is Gap(2)=4.219 ≥ Gap(3)−SE(3)=3.914? Yes. So the gap statistic selects <strong>K=2</strong> — matching both the elbow method and simple visual inspection.</p>
+      <p>With illustrative SE(2)=0.15, SE(3)=0.18:</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Check K=1 vs. K=2</span><span class="we-calc">Is Gap(1)=0.888 ≥ Gap(2)−SE(2) = 4.219−0.15 = 4.069? <strong>No</strong></span></div></li>
+        <li><div><span class="we-step-label">Check K=2 vs. K=3</span><span class="we-calc">Is Gap(2)=4.219 ≥ Gap(3)−SE(3) = 4.094−0.18 = 3.914? <strong>Yes</strong></span></div></li>
+      </ol>
+      <p>So the gap statistic selects <strong>K=2</strong> — matching both the elbow method and simple visual inspection.</p>
     </div>
   </section>
 
@@ -256,14 +266,24 @@
     <p>K-Means never explicitly assumes clusters are round — but minimizing squared distance to a single centroid per cluster implicitly favors round, compact, similarly-sized blobs, because one point (the centroid) is a poor stand-in for a cluster's shape when that cluster is elongated or of very different density than its neighbors.</p>
     <div class="worked-example">
       <span class="we-label">Worked example</span>
-      <p>Group A is a long, thin process: points (0,0) and (16,0), genuinely elongated. Group B is tight and compact: (15,1), (17,1), (16,2). Centroid of A = <strong>(8, 0)</strong>. Centroid of B = <strong>(16, 1.33)</strong>. Where would K-Means place (16,0) — the far end of elongated group A? Squared distance to A's centroid: (16−8)²+(0−0)²=<strong>64</strong>. Squared distance to B's centroid: (16−16)²+(0−1.33)²≈<strong>1.78</strong>. 1.78 is dramatically smaller — K-Means assigns (16,0) to cluster B, even though it's a genuine member of A. A single average point is a bad geometric summary of a shape that isn't round.</p>
+      <p>Group A is a long, thin process: points (0,0) and (16,0), genuinely elongated. Group B is tight and compact: (15,1), (17,1), (16,2).</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Centroids</span><span class="we-calc">Centroid of A = <strong>(8, 0)</strong>&nbsp;&nbsp; Centroid of B = <strong>(16, 1.33)</strong></span></div></li>
+        <li><div><span class="we-step-label">Where does K-Means place (16,0) — the far end of elongated group A?</span><span class="we-calc">Squared distance to A's centroid: (16−8)²+(0−0)² = <strong>64</strong><br>Squared distance to B's centroid: (16−16)²+(0−1.33)² ≈ <strong>1.78</strong></span></div></li>
+      </ol>
+      <p>1.78 is dramatically smaller — K-Means assigns (16,0) to cluster B, even though it's a genuine member of A. A single average point is a bad geometric summary of a shape that isn't round.</p>
     </div>
 
     <h3>Why unscaled features distort distance</h3>
     <p>Squared Euclidean distance treats every feature's numeric units as directly comparable — which they almost never are.</p>
     <div class="worked-example">
       <span class="we-label">Worked example</span>
-      <p>Clustering on age (20–60) and income ($20,000–$200,000). Two customers differ by 5 years and $100. Squared contribution from age: 5²=25. Squared contribution from income: 100²=10,000. Income outweighs age by a factor of 400, even though $100 is nearly meaningless while 5 years might be quite meaningful. K-Means will cluster almost entirely on income.</p>
+      <p>Clustering on age (20–60) and income ($20,000–$200,000). Two customers differ by 5 years and $100.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Squared contribution from age</span><span class="we-calc">5² = <strong>25</strong></span></div></li>
+        <li><div><span class="we-step-label">Squared contribution from income</span><span class="we-calc">100² = <strong>10,000</strong></span></div></li>
+      </ol>
+      <p>Income outweighs age by a factor of 400, even though $100 is nearly meaningless while 5 years might be quite meaningful. K-Means will cluster almost entirely on income.</p>
     </div>
     <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.preprocessing import StandardScaler; X_scaled = StandardScaler().fit_transform(X)</code> rescales every feature to mean 0, std 1, so no feature's raw numeric range can dominate purely from its units.</p></div></div>
 
@@ -271,7 +291,11 @@
     <p>A centroid is a mean, and means are notoriously sensitive to extreme values.</p>
     <div class="worked-example">
       <span class="we-label">Worked example</span>
-      <p>Three tight points: (1,1),(2,2),(3,1). Mean = <strong>(2, 1.33)</strong>, sitting comfortably in the middle. Add an outlier (50,50): new mean over all four = <strong>(14, 13.5)</strong> — dragged far outside the region where three of the four "members" actually live. Every ordinary point is now measured against a centroid that no longer represents where they are.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Three tight points: (1,1), (2,2), (3,1)</span><span class="we-calc">Mean = <strong>(2, 1.33)</strong>, sitting comfortably in the middle</span></div></li>
+        <li><div><span class="we-step-label">Add one outlier: (50,50)</span><span class="we-calc">New mean over all four = <strong>(14, 13.5)</strong> — dragged far outside the region where three of the four "members" actually live</span></div></li>
+      </ol>
+      <p>Every ordinary point is now measured against a centroid that no longer represents where they are.</p>
     </div>
 
     <h3>Why categorical data doesn't fit</h3>
@@ -300,9 +324,12 @@
     <div class="worked-example">
       <span class="we-label">Worked example</span>
       <p>Reuse the six-point clustering from §2: Cluster 1={P1(1,1),P2(1,2),P3(2,2)}, Cluster 2={P4(8,8),P5(8,9),P6(9,8)}. Compute the silhouette for P3=(2,2).</p>
-      <p><strong>a(P3)</strong>: distance to P1 = √((2−1)²+(2−1)²) = √2 ≈ 1.414; distance to P2 = √((2−1)²+(2−2)²) = 1. a(P3) = (1.414+1)/2 ≈ <strong>1.207</strong>.</p>
-      <p><strong>b(P3)</strong>: distance to P4 ≈ 8.485, to P5 ≈ 9.220, to P6 ≈ 9.220. b(P3) = (8.485+9.220+9.220)/3 ≈ <strong>8.975</strong>.</p>
-      <p>s(P3) = (8.975 − 1.207) / max(1.207, 8.975) = 7.768 / 8.975 ≈ <strong>0.87</strong> — near +1, as expected: this toy dataset's two clusters are extremely well separated. On messier real data, silhouette values typically sit much closer to 0, and negative values flag likely misassignment.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">a(P3) — average distance to its own cluster</span><span class="we-calc">to P1 = √((2−1)²+(2−1)²) = √2 ≈ 1.414&nbsp;&nbsp; to P2 = √((2−1)²+(2−2)²) = 1<br>a(P3) = (1.414+1)/2 ≈ <strong>1.207</strong></span></div></li>
+        <li><div><span class="we-step-label">b(P3) — average distance to the nearest other cluster</span><span class="we-calc">to P4 ≈ 8.485, to P5 ≈ 9.220, to P6 ≈ 9.220<br>b(P3) = (8.485+9.220+9.220)/3 ≈ <strong>8.975</strong></span></div></li>
+        <li><div><span class="we-step-label">Silhouette score</span><span class="we-calc">s(P3) = (8.975 − 1.207) / max(1.207, 8.975) = 7.768 / 8.975 ≈ <strong>0.87</strong></span></div></li>
+      </ol>
+      <p>Near +1, as expected: this toy dataset's two clusters are extremely well separated. On messier real data, silhouette values typically sit much closer to 0, and negative values flag likely misassignment.</p>
     </div>
 
     <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.metrics import silhouette_score; silhouette_score(X, labels)</code> computes the average silhouette over an entire dataset in one call, rather than looping over every point by hand.</p></div></div>

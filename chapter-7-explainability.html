@@ -249,16 +249,23 @@
         <li>v({CreditScore}) = 60 — knowing just their (decent) Credit Score, prediction rises to 60%.</li>
         <li>v({Income, CreditScore}) = 90 — knowing both, the full model's actual prediction is 90%.</li>
       </ul>
-      <p>With two features, there are exactly two orderings: (Income, then Credit Score) or (Credit Score, then Income). Income's marginal contribution in both:</p>
-      <p><em>Income revealed first</em> (added to the empty set): v({Income}) − v(∅) = 70−50 = <strong>20</strong>.<br>
-      <em>Income revealed second</em> (after Credit Score is known): v({Income,CreditScore}) − v({CreditScore}) = 90−60 = <strong>30</strong>.</p>
-      <p>Averaging: <strong>φ_Income = (20+30)/2 = 25</strong>.</p>
-      <p>Same two steps for Credit Score: <em>revealed first</em>: v({CreditScore})−v(∅) = 60−50 = <strong>10</strong>. <em>Revealed second</em> (after Income): v({Income,CreditScore})−v({Income}) = 90−70 = <strong>20</strong>. Averaging: <strong>φ_CreditScore = (10+20)/2 = 15</strong>.</p>
-      <p>Checking this against the formula's factorial weights directly (not just the "average over orderings" shortcut): for n=2, subsets of N\{Income} are ∅ (size 0) and {CreditScore} (size 1). Weight for size 0: 0!·(2−0−1)!/2! = 1/2. Weight for size 1: 1!·(2−1−1)!/2! = 1/2. Both come out ½ — unsurprising, since with only two features, "average over orderings" and "average over subsets" coincide. Plugging in:</p>
-      <div class="formula-block">φ_Income = (1/2)·(v({Income})−v(∅)) + (1/2)·(v({Income,CreditScore})−v({CreditScore}))
-         = (1/2)·20 + (1/2)·30 = 10 + 15 = 25</div>
-      <p>— exactly matching the hand-averaged answer.</p>
-      <p>Two sanity checks that hold as a matter of mathematical guarantee (the <em>efficiency</em> property), not coincidence: first, the Shapley values should sum to the total swing from knowing both features vs. neither: φ_Income+φ_CreditScore = 25+15 = <strong>40</strong>, and indeed v({Income,CreditScore})−v(∅) = 90−50 = 40 ✓. Second, adding the Shapley values back onto the baseline should reproduce the actual prediction: 50+25+15 = <strong>90</strong> — exactly v({Income,CreditScore}) ✓.</p>
+      <p>With two features, there are exactly two orderings: (Income, then Credit Score) or (Credit Score, then Income).</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Income's marginal contribution, revealed first</span><span class="we-calc">added to the empty set: v({Income}) − v(∅) = 70−50 = <strong>20</strong></span></div></li>
+        <li><div><span class="we-step-label">Income's marginal contribution, revealed second</span><span class="we-calc">after Credit Score is known: v({Income,CreditScore}) − v({CreditScore}) = 90−60 = <strong>30</strong></span></div></li>
+        <li><div><span class="we-step-label">Average → φ_Income</span><span class="we-calc">(20+30)/2 = <strong>25</strong></span></div></li>
+        <li><div><span class="we-step-label">Credit Score's marginal contribution, revealed first</span><span class="we-calc">v({CreditScore})−v(∅) = 60−50 = <strong>10</strong></span></div></li>
+        <li><div><span class="we-step-label">Credit Score's marginal contribution, revealed second</span><span class="we-calc">after Income is known: v({Income,CreditScore})−v({Income}) = 90−70 = <strong>20</strong></span></div></li>
+        <li><div><span class="we-step-label">Average → φ_CreditScore</span><span class="we-calc">(10+20)/2 = <strong>15</strong></span></div></li>
+      </ol>
+      <p>Checking this against the formula's factorial weights directly (not just the "average over orderings" shortcut): for n=2, subsets of N\{Income} are ∅ (size 0) and {CreditScore} (size 1).</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Factorial weights</span><span class="we-calc">Weight for size 0: 0!·(2−0−1)!/2! = 1/2&nbsp;&nbsp; Weight for size 1: 1!·(2−1−1)!/2! = 1/2<br>Both come out ½ — with only two features, "average over orderings" and "average over subsets" coincide</span></div></li>
+        <li><div><span class="we-step-label">Plug into the formula</span><span class="we-calc">φ_Income = (1/2)·(v({Income})−v(∅)) + (1/2)·(v({Income,CreditScore})−v({CreditScore}))<br>= (1/2)·20 + (1/2)·30 = 10 + 15 = <strong>25</strong> — matching the hand-averaged answer</span></div></li>
+        <li><div><span class="we-step-label">Efficiency check 1: values sum to the total swing</span><span class="we-calc">φ_Income+φ_CreditScore = 25+15 = <strong>40</strong>, and indeed v({Income,CreditScore})−v(∅) = 90−50 = 40 ✓</span></div></li>
+        <li><div><span class="we-step-label">Efficiency check 2: baseline + values reproduce the prediction</span><span class="we-calc">50+25+15 = <strong>90</strong> — exactly v({Income,CreditScore}) ✓</span></div></li>
+      </ol>
+      <p>Both checks hold as a matter of mathematical guarantee (the <em>efficiency</em> property), not coincidence.</p>
     </div>
 
     <h3>Reading a SHAP output</h3>

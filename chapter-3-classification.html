@@ -144,19 +144,11 @@
         <tr><td>whale</td><td>White</td><td>No</td><td>Mammal</td></tr>
         <tr><td>horse</td><td>White</td><td>No</td><td>Mammal</td></tr>
       </tbody></table></div>
-      <p><strong>Step 1 — entropy of the whole set.</strong> 4 of 7 are Bird (p=4/7≈0.5714), 3 of 7 are Mammal (p=3/7≈0.4286):</p>
-      <div class="formula-block">log₂(4/7) = ln(0.5714)/ln(2) ≈ −0.8074
-log₂(3/7) = ln(0.4286)/ln(2) ≈ −1.2224
-
-entropy(X) = −(0.5714 × −0.8074) − (0.4286 × −1.2224)
-           = 0.4613 + 0.5239 = 0.9852 bits</div>
-      <p><strong>Step 2 — split on <code>fly</code>.</strong> Fly=Yes = {eagle, pigeon, hawk} — all Birds, <strong>pure</strong> → entropy = 0. Fly=No = {penguin, cat, whale, horse} — 1 Bird, 3 Mammals (p=1/4, 3/4):</p>
-      <div class="formula-block">log₂(1/4) = −2.0000     (exact)
-log₂(3/4) ≈ −0.4150
-
-entropy(Fly=No) = −(0.25×−2.0) − (0.75×−0.4150) = 0.5 + 0.3113 = 0.8113</div>
-      <p>Weighted average: (3/7)×0 + (4/7)×0.8113 = <strong>0.4636</strong>. So gain(X, fly) = 0.9852 − 0.4636 = <strong>0.5216 ≈ 0.521 bits</strong>.</p>
-      <p><strong>Step 3 — split on <code>color</code>, for comparison.</strong> Color=Brown = {eagle, hawk, cat} (2 Bird, 1 Mammal), entropy ≈ 0.9183. Color=White = {pigeon, penguin, whale, horse} — a dead-even 2/2 split, entropy = <strong>1.0000</strong> (the maximum possible). Weighted average: (3/7)×0.9183 + (4/7)×1.0 = <strong>0.9650</strong>. So gain(X, color) = 0.9852 − 0.9650 = <strong>0.0202 ≈ 0.020 bits</strong>.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Entropy of the whole set</span><span class="we-calc">4 of 7 are Bird (p=4/7≈0.5714), 3 of 7 are Mammal (p=3/7≈0.4286)<br>log₂(4/7) = ln(0.5714)/ln(2) ≈ −0.8074&nbsp;&nbsp; log₂(3/7) = ln(0.4286)/ln(2) ≈ −1.2224<br>entropy(X) = −(0.5714×−0.8074) − (0.4286×−1.2224) = 0.4613 + 0.5239 = <strong>0.9852 bits</strong></span></div></li>
+        <li><div><span class="we-step-label">Split on <code>fly</code></span><span class="we-calc">Fly=Yes = {eagle, pigeon, hawk} — all Birds, <strong>pure</strong> → entropy = 0<br>Fly=No = {penguin, cat, whale, horse} — 1 Bird, 3 Mammals (p=1/4, 3/4)<br>log₂(1/4) = −2.0000 (exact),&nbsp;&nbsp; log₂(3/4) ≈ −0.4150<br>entropy(Fly=No) = −(0.25×−2.0) − (0.75×−0.4150) = 0.5 + 0.3113 = <strong>0.8113</strong><br>Weighted average: (3/7)×0 + (4/7)×0.8113 = <strong>0.4636</strong> → gain(X, fly) = 0.9852 − 0.4636 = <strong>0.5216 ≈ 0.521 bits</strong></span></div></li>
+        <li><div><span class="we-step-label">Split on <code>color</code>, for comparison</span><span class="we-calc">Color=Brown = {eagle, hawk, cat} (2 Bird, 1 Mammal), entropy ≈ 0.9183<br>Color=White = {pigeon, penguin, whale, horse} — dead-even 2/2 split, entropy = <strong>1.0000</strong> (the maximum possible)<br>Weighted average: (3/7)×0.9183 + (4/7)×1.0 = <strong>0.9650</strong> → gain(X, color) = 0.9852 − 0.9650 = <strong>0.0202 ≈ 0.020 bits</strong></span></div></li>
+      </ol>
       <p>Why the two attributes differ so much: <code>fly</code> manages to carve out a perfectly pure subgroup (all 3 flyers are birds), which is what makes the resulting weighted entropy drop so far. <code>color</code> never produces a pure subgroup — one branch is still a coin flip. That gap (0.521 vs. 0.020) is exactly what drives the tree to test <code>fly</code> at the root.</p>
     </div>
 
@@ -215,7 +207,13 @@ clf.tree_                  # the underlying fitted tree structure</code></pre>
 
     <div class="worked-example">
       <span class="we-label">Worked example</span>
-      <p>Take the 7-animal table from §1. A bootstrap sample for Tree #1, drawn with replacement, might be: {eagle, eagle, penguin, cat, whale, whale, horse} — <code>eagle</code> and <code>whale</code> each appear twice, while <code>pigeon</code> and <code>hawk</code> don't appear at all in this tree's training data. Tree #2 gets a different resample entirely, e.g. {pigeon, hawk, hawk, penguin, penguin, cat, horse}. With the random subspace method set to 1-of-2 features per split, Tree #1 might only ever test <code>fly</code> at its root (never seeing <code>color</code>), while Tree #2 is restricted to <code>color</code>. The two trees end up structurally different purely from these two injected randomizations. Now imagine N=100 such trees: for a new test animal, if 82 vote Bird and 18 vote Mammal, the forest predicts Bird with 82% confidence.</p>
+      <p>Take the 7-animal table from §1.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Tree #1's bootstrap sample</span><span class="we-calc">{eagle, eagle, penguin, cat, whale, whale, horse} — <code>eagle</code> and <code>whale</code> each appear twice, while <code>pigeon</code> and <code>hawk</code> don't appear at all in this tree's training data</span></div></li>
+        <li><div><span class="we-step-label">Tree #2's bootstrap sample</span><span class="we-calc">A different resample entirely: {pigeon, hawk, hawk, penguin, penguin, cat, horse}</span></div></li>
+        <li><div><span class="we-step-label">Random subspace at 1-of-2 features per split</span><span class="we-calc">Tree #1 might only ever test <code>fly</code> at its root (never seeing <code>color</code>), while Tree #2 is restricted to <code>color</code> — the two trees end up structurally different purely from these two injected randomizations</span></div></li>
+        <li><div><span class="we-step-label">Forest vote (N=100 trees)</span><span class="we-calc">82 vote Bird, 18 vote Mammal → the forest predicts Bird with <strong>82%</strong> confidence</span></div></li>
+      </ol>
     </div>
 
     <div class="python-note"><div><span class="pn-label">Python note</span><pre style="white-space:pre-wrap;margin:0"><code>from sklearn.ensemble import RandomForestClassifier
@@ -246,12 +244,12 @@ clf = RandomForestClassifier(n_estimators=20)  # 20 trees</code></pre>
     <div class="worked-example">
       <span class="we-label">Worked example (illustrative toy — not from real data)</span>
       <p>Suppose 5 training samples, initial weights all 1/5 = 0.2. The first stump gets 4 of 5 right, 1 wrong.</p>
-      <p><strong>Step 1 — weighted error.</strong> Since all weights currently equal 0.2, ε = 0.2 (just the misclassified sample's weight).</p>
-      <p><strong>Step 2 — compute α.</strong> α = ½·ln((1−0.2)/0.2) = ½·ln(4) = ½×1.3863 = <strong>0.6931</strong>.</p>
-      <p><strong>Step 3 — reweight.</strong> e⁻ᵅ = 4^(−½) = 1/√4 = <strong>0.5</strong> exactly. Each correct sample: 0.2×0.5 = 0.1. e^α = 4^(½) = √4 = <strong>2</strong> exactly. The misclassified sample: 0.2×2 = 0.4. Total before renormalizing: 4×0.1 + 0.4 = 0.8. Renormalize by dividing by 0.8:</p>
-      <div class="formula-block">correctly-classified: 0.1 / 0.8 = 0.125   (×4 samples)
-misclassified:        0.4 / 0.8 = 0.5
-check: 4 × 0.125 + 0.5 = 1.0 ✓</div>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Weighted error</span><span class="we-calc">All weights currently equal 0.2 → ε = <strong>0.2</strong> (just the misclassified sample's weight)</span></div></li>
+        <li><div><span class="we-step-label">Compute α</span><span class="we-calc">α = ½·ln((1−0.2)/0.2) = ½·ln(4) = ½×1.3863 = <strong>0.6931</strong></span></div></li>
+        <li><div><span class="we-step-label">Reweight each sample</span><span class="we-calc">e⁻ᵅ = 4^(−½) = 1/√4 = <strong>0.5</strong> exactly → each correct sample: 0.2×0.5 = 0.1<br>e^α = 4^(½) = √4 = <strong>2</strong> exactly → the misclassified sample: 0.2×2 = 0.4<br>Total before renormalizing: 4×0.1 + 0.4 = 0.8</span></div></li>
+        <li><div><span class="we-step-label">Renormalize (divide by 0.8)</span><span class="we-calc">correctly-classified: 0.1 / 0.8 = <strong>0.125</strong> (×4 samples)<br>misclassified: 0.4 / 0.8 = <strong>0.5</strong><br>check: 4 × 0.125 + 0.5 = 1.0 ✓</span></div></li>
+      </ol>
       <p>Going into round 2, the single sample the first stump got wrong now carries <strong>half of the entire dataset's weight</strong> — even though it's just 1 of 5 records. One wrong answer, reweighted by a factor of 4 relative to the right answers (0.5 vs. 0.125), dominates the next round's training signal.</p>
     </div>
 
