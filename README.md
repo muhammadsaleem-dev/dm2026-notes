@@ -1,6 +1,6 @@
 # DM 2026 Notes
 
-Condensed, chapter-by-chapter reference notes for *Basic Data Mining Practice* (Prof. Dr. Matteo Marouf) — built from the course's 7 lecture decks (~450 slides total). Plain static HTML, no build step, ready for GitHub Pages.
+Condensed, chapter-by-chapter reference notes for *Basic Data Mining Practice* — built from the course's 7 lecture decks (~450 slides total). Plain static HTML, no build step, ready for GitHub Pages.
 
 ## Structure
 
