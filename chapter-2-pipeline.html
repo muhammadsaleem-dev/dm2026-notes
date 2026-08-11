@@ -803,6 +803,16 @@ X_tsne = TSNE(n_components=2, perplexity=30, random_state=42).fit_transform(X_pc
 
       <details class="drill-item">
         <summary>
+          <span class="drill-tag">Code</span>
+          <span class="drill-q">Complete this line to compute the mean purchase amount for each customer in a dataframe <code>df</code>:</span>
+          <span class="drill-code-inline">df.<span class="drill-blank">____</span>('customer_id')['purchase_amount'].mean()</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><code>df.groupby('customer_id')['purchase_amount'].mean()</code> — <code>groupby</code> collapses all rows sharing a <code>customer_id</code> into one group before <code>.mean()</code> reduces each group to a single number, the pandas equivalent of SQL's <code>GROUP BY</code> + <code>AVG</code> (§2).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
           <span class="drill-tag">Reorder</span>
           <span class="drill-q">Put these five preprocessing steps in the order this module recommends:</span>
           <ol class="drill-scramble">

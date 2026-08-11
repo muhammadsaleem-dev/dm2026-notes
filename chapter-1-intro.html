@@ -461,16 +461,6 @@ df.groupby("age_group")["survived"].mean()</div>
 
       <details class="drill-item">
         <summary>
-          <span class="drill-tag">Code</span>
-          <span class="drill-q">Complete this line to compute the mean fare for each passenger class in a Titanic dataframe <code>df</code>:</span>
-          <span class="drill-code-inline">df.<span class="drill-blank">____</span>('pclass')['fare'].mean()</span>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p><code>df.groupby('pclass')['fare'].mean()</code> — <code>groupby</code> collapses all rows sharing a <code>pclass</code> value into one group before <code>.mean()</code> reduces each group to a single number, the pandas equivalent of SQL's <code>GROUP BY</code> + <code>AVG</code>.</p></div>
-      </details>
-
-      <details class="drill-item">
-        <summary>
           <span class="drill-tag">Compute</span>
           <span class="drill-q">A tiny 2-document corpus: Doc 1 = "red red blue" (3 words), Doc 2 = "blue green green" (3 words). Compute TF-IDF for the word "blue" in Doc 1.</span>
           <span class="drill-reveal-hint"></span>
