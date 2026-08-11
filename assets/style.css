@@ -887,8 +887,9 @@ code {
   margin: 0.15rem 0 1.3rem;
 }
 .quiz-intro strong { color: var(--text); }
-.quiz-list { margin: 0 0 0.5rem; padding: 0; list-style: none; }
+.quiz-list { margin: 0 0 0.5rem; padding: 0; list-style: none; counter-reset: quiz-counter; }
 .quiz-item {
+  counter-increment: quiz-counter;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--bg-raised);
@@ -908,17 +909,19 @@ code {
 .quiz-item summary:hover { background: var(--code-bg); }
 .quiz-item summary::-webkit-details-marker { display: none; }
 .quiz-item summary::before {
-  content: "Q";
+  content: "Q" counter(quiz-counter);
   position: absolute;
   left: 0.8rem;
   top: 0.7rem;
-  width: 1.4rem;
+  min-width: 1.4rem;
   height: 1.4rem;
-  border-radius: 50%;
+  padding: 0 0.22rem;
+  box-sizing: border-box;
+  border-radius: 7px;
   background: var(--accent-soft);
   color: var(--accent-ink);
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -1105,8 +1108,9 @@ code {
 .concept-cards .concept-card p { margin: 0; font-size: 0.83rem; color: var(--text-muted); max-width: none; }
 
 /* ---------- Exam Drill (format-matched practice, distinct from Test Yourself) ---------- */
-.drill-list { margin: 0 0 0.5rem; padding: 0; list-style: none; }
+.drill-list { margin: 0 0 0.5rem; padding: 0; list-style: none; counter-reset: drill-counter; }
 .drill-item {
+  counter-increment: drill-counter;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--bg-raised);
@@ -1125,6 +1129,24 @@ code {
 .drill-item summary:hover { background: var(--code-bg); }
 .drill-item[open] summary { border-bottom: 1px solid var(--border); background: var(--code-bg); }
 .drill-item summary::-webkit-details-marker { display: none; }
+.drill-item summary::before {
+  content: counter(drill-counter);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.3rem;
+  height: 1.3rem;
+  padding: 0 0.2rem;
+  box-sizing: border-box;
+  border-radius: 7px;
+  background: var(--py-soft);
+  color: var(--py-ink);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 700;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
 .drill-tag {
   display: inline-block;
   font-family: var(--font-mono);
