@@ -44,3 +44,4 @@ Each page repeats the same nav bar and links to `assets/style.css`, so editing c
 ## Notes on accuracy
 
 These pages were distilled from photographed/exported lecture slides, then condensed for density — treat them as a *study aid*, not a verbatim transcript. A couple of formulas were corrected against the standard definition where a slide likely had a typo (e.g. z-score normalization uses `σ`, not `σ²`) — worth double-checking against the original deck before relying on them in an exam answer.
+
