@@ -473,6 +473,15 @@ response = OllamaLLM(model="llama3.2").invoke(prompt)      # runs locally via Ol
 
       <details class="drill-item">
         <summary>
+          <span class="drill-tag">Name it</span>
+          <span class="drill-q">A RAG system needs to rank stored document chunks by how relevant each one is to a user's query embedding. In ≤2 words, what mathematical method is commonly used?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>Cosine similarity.</strong> It measures the angle between the query vector and each chunk's vector, ignoring magnitude — a robust proxy for "are these about the same thing," worked through by hand in §4.</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
           <span class="drill-tag">Reorder</span>
           <span class="drill-q">Put these RAG pipeline steps in order:</span>
           <ol class="drill-scramble">
@@ -519,6 +528,15 @@ response = OllamaLLM(model="llama3.2").invoke(prompt)      # runs locally via Ol
           <span class="drill-reveal-hint"></span>
         </summary>
         <div class="drill-a"><p>e¹≈2.718, e¹≈2.718, e²≈7.389, e⁴≈54.598. Sum ≈ 67.42. Probability = 54.598/67.42 ≈ <strong>81.0%</strong> (§2).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Compute</span>
+          <span class="drill-q">A language model outputs logits <code>[0.5, 2.1, 1.8, -0.3, 3.4]</code> for its next token. (a) What is the model's vocabulary size here? (b) Using greedy decoding, which index (0-based) does it select?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p>(a) <strong>5</strong> — one logit per vocabulary token, so vocabulary size = <code>len(logits)</code> (§1's gotcha). (b) <strong>Index 4</strong> — greedy decoding picks <code>argmax(logits)</code>, and 3.4 (at position 4) is the highest value (§2).</p></div>
       </details>
 
     </div>

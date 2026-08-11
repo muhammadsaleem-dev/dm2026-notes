@@ -469,6 +469,16 @@ shap.summary_plot(shap_values[:,:,1], X_test)   # beeswarm</div>
 
       <details class="drill-item">
         <summary>
+          <span class="drill-tag">Code</span>
+          <span class="drill-q">You've run <code>result = permutation_importance(...)</code>, giving you <code>result.importances_mean</code> (one score per feature) and a list <code>feature_names</code>. Complete this to get the names of the top 3 most important features:</span>
+          <span class="drill-code-inline">top3 = pd.Series(result.importances_mean, index=feature_names).nlargest(<span class="drill-blank">____</span>).index.tolist()</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><code>nlargest(3)</code> — wrap the importance scores in a pandas Series indexed by feature name, then <code>.nlargest(3)</code> keeps only the 3 highest-scoring entries, and <code>.index.tolist()</code> pulls out just their names (§3).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
           <span class="drill-tag">Compute</span>
           <span class="drill-q">Toy 2-feature model: v(∅)=40, v({A})=55, v({B})=50, v({A,B})=70. Compute the Shapley value φ_A.</span>
           <span class="drill-reveal-hint"></span>
