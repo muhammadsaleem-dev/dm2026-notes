@@ -221,6 +221,21 @@
     border-color: var(--accent);
     outline: none;
   }
+
+  @media (max-width: 650px) {
+    .comic-nav {
+      flex-direction: column;
+      gap: 0.8rem;
+      padding: 1rem;
+    }
+    .comic-btn, .slide-dropdown {
+      width: 100%;
+      text-align: center;
+    }
+    .slide-dropdown {
+      background-position: calc(100% - 0.8rem) center;
+    }
+  }
 </style>
   
   <div class="comic-nav">

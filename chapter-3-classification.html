@@ -213,6 +213,21 @@
     height: auto;
     display: block;
   }
+
+  @media (max-width: 650px) {
+    .comic-nav {
+      flex-direction: column;
+      gap: 0.8rem;
+      padding: 1rem;
+    }
+    .comic-btn, .slide-dropdown {
+      width: 100%;
+      text-align: center;
+    }
+    .slide-dropdown {
+      background-position: calc(100% - 0.8rem) center;
+    }
+  }
 </style>
 <div id="visual-recap" style="scroll-margin-top: 4.5rem;">
   <div class="comic-nav">
