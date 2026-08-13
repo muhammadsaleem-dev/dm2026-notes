@@ -904,6 +904,16 @@ X_tsne = TSNE(n_components=2, perplexity=30, random_state=42).fit_transform(X_pc
         <div class="drill-a"><p><strong>(b), (c).</strong> t-SNE's optimization starts from a random low-dimensional layout, and K-Means starts from randomly chosen initial centroids, so different runs can land in different (locally optimal) places. Linear regression solved in closed form and PCA via full SVD are both deterministic exact computations — same input, same output, every time (§3).</p></div>
       </details>
 
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Code</span>
+          <span class="drill-q">Complete this to scale a <code>square_footage</code> column into the [0, 1] range, fitting only on the training data:</span>
+          <span class="drill-code-inline">scaler = <span class="drill-blank">____</span>()<br>X_train_scaled = scaler.fit_transform(X_train[['square_footage']])<br>X_test_scaled = scaler.<span class="drill-blank">____</span>(X_test[['square_footage']])</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><code>MinMaxScaler</code> rescales to [0, 1] via <code>(x − min) / (max − min)</code>; <code>.transform()</code> — fit on train only, then apply that same fitted transform to test, rather than <code>.fit_transform()</code> again, which would recompute a new min/max from the test set itself (§2).</p></div>
+      </details>
+
     </div>
   </section>
 

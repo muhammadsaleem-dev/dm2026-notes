@@ -539,6 +539,16 @@ response = OllamaLLM(model="llama3.2").invoke(prompt)      # runs locally via Ol
         <div class="drill-a"><p>(a) <strong>5</strong> — one logit per vocabulary token, so vocabulary size = <code>len(logits)</code> (§1's gotcha). (b) <strong>Index 4</strong> — greedy decoding picks <code>argmax(logits)</code>, and 3.4 (at position 4) is the highest value (§2).</p></div>
       </details>
 
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Code</span>
+          <span class="drill-q">Complete this function to convert <code>logits</code> into probabilities at a given <code>temperature</code>:</span>
+          <span class="drill-code-inline">def softmax_with_temp(logits, temperature):<br>&nbsp;&nbsp;&nbsp;&nbsp;scaled = np.array(logits) / <span class="drill-blank">____</span><br>&nbsp;&nbsp;&nbsp;&nbsp;exp_scaled = np.exp(scaled)<br>&nbsp;&nbsp;&nbsp;&nbsp;return exp_scaled / <span class="drill-blank">____</span>(exp_scaled)</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><code>temperature</code>; <code>np.sum</code> — every logit is divided by T <em>before</em> exponentiating (compressing or stretching the gaps between them), then the usual softmax normalization divides by the sum so the result is a proper probability distribution. Low T sharpens toward the top logit; high T flattens the distribution (§2).</p></div>
+      </details>
+
     </div>
   </section>
 
