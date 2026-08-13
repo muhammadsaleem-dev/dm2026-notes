@@ -241,7 +241,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .nav-toggle:hover { border-color: var(--border-strong); }
 .nav-panel { display: none; }
 
-@media (max-width: 720px) {
+@media (max-width: 1024px) {
   .sitenav-links { display: none; }
   .nav-toggle { display: inline-flex; }
   .nav-panel.open {
