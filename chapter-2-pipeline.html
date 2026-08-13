@@ -124,7 +124,8 @@
   </div>
 
 <!-- EMBEDDED COMIC READER -->
-<style>
+<div id="visual-recap" style="scroll-margin-top: 4.5rem;">
+  <style>
   /* Custom Comic Reader Layout */
   .comic-page {
     max-width: 1000px;
@@ -159,47 +160,19 @@
     color: white;
   }
   .comic-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    background: var(--bg);
+    background: transparent;
     color: var(--text-muted);
+    cursor: not-allowed;
     border-color: var(--border);
-  }
-  .slide-dropdown {
-    font-family: var(--font-mono);
-    font-weight: 600;
-    color: var(--text);
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.4rem 1.8rem 0.4rem 0.8rem;
-    font-size: 0.95rem;
-    cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B6670' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.4rem center;
-    background-size: 1em;
-    appearance: none;
-    -webkit-appearance: none;
-    transition: border-color 0.2s;
-  }
-  .slide-dropdown:hover:not(:disabled), .slide-dropdown:focus {
-    border-color: var(--accent);
-    outline: none;
-  }
-  .slide-dropdown:disabled {
-    opacity: 0.8;
-    cursor: default;
-    background-image: none;
-    padding-right: 0.8rem;
+    opacity: 0.5;
   }
   .carousel-container {
+    position: relative;
     width: 100%;
     overflow: hidden;
+    background: #000;
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-md);
-    background: var(--bg-raised);
-    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
   }
   .carousel-slides {
     display: flex;
@@ -210,13 +183,36 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 1rem 0;
   }
   .carousel-slide img {
-    width: 100%;
+    max-width: 100%;
+    width: auto;
+    max-height: 70vh;
     height: auto;
     display: block;
+    margin: 0 auto;
+    object-fit: contain;
   }
-
+  .slide-dropdown {
+    appearance: none;
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    font-size: 0.95rem;
+    font-family: var(--font-mono);
+    color: var(--text);
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%235B6670%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 0.65rem auto;
+  }
+  .slide-dropdown:hover, .slide-dropdown:focus {
+    border-color: var(--accent);
+    outline: none;
+  }
   @media (max-width: 650px) {
     .comic-nav {
       flex-direction: column;
@@ -232,28 +228,119 @@
     }
   }
 </style>
-<div id="visual-recap" style="scroll-margin-top: 4.5rem;">
-  <div class="comic-nav">
-    <button class="comic-btn" disabled>« Previous</button>
-    <select class="slide-dropdown" disabled>
-      <option value="0">Coming Soon: Visual Storyboard</option>
-    </select>
-    <button onclick="document.getElementById('framing').scrollIntoView({ behavior: 'smooth' });" class="comic-btn">Start Reading ↓</button>
-  </div>
   
+  <div class="comic-nav">
+    <button onclick="moveSlide(-1)" id="btnPrevTop" class="comic-btn" disabled>« Previous</button>
+    <select id="slideSelectTop" class="slide-dropdown" onchange="goToSlide(parseInt(this.value))">
+      <option value="0">Slide 1</option>
+      <option value="1">Slide 2</option>
+      <option value="2">Slide 3</option>
+      <option value="3">Slide 4</option>
+      <option value="4">Slide 5</option>
+      <option value="5">Slide 6</option>
+      <option value="6">Slide 7</option>
+      <option value="7">Slide 8</option>
+      <option value="8">Slide 9</option>
+      <option value="9">Slide 10</option>
+      <option value="10">Slide 11</option>
+      <option value="11">Slide 12</option>
+      <option value="12">Slide 13</option>
+      <option value="13">Slide 14</option>
+    </select>
+    <button onclick="moveSlide(1)" id="btnNextTop" class="comic-btn">Next »</button>
+  </div>
+
   <div class="carousel-container">
-    <div class="carousel-slides">
-      <div class="carousel-slide"><img src="assets/story/placeholder.jpg" alt="comic-placeholder"></div>
+    <div class="carousel-slides" id="carouselSlides" style="width: 1400%;">
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_01.png" alt="Pipeline Comic Panel 1"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_02.png" alt="Pipeline Comic Panel 2"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_03.png" alt="Pipeline Comic Panel 3"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_04.png" alt="Pipeline Comic Panel 4"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_05.png" alt="Pipeline Comic Panel 5"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_06.png" alt="Pipeline Comic Panel 6"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_07.png" alt="Pipeline Comic Panel 7"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_08.png" alt="Pipeline Comic Panel 8"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_09.png" alt="Pipeline Comic Panel 9"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_10.png" alt="Pipeline Comic Panel 10"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_11.png" alt="Pipeline Comic Panel 11"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_12.png" alt="Pipeline Comic Panel 12"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_13.png" alt="Pipeline Comic Panel 13"></div>
+      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_14.png" alt="Pipeline Comic Panel 14"></div>
     </div>
   </div>
 
   <div class="comic-nav">
-    <button class="comic-btn" disabled>« Previous</button>
-    <select class="slide-dropdown" disabled>
-      <option value="0">Coming Soon: Visual Storyboard</option>
+    <button onclick="moveSlide(-1)" id="btnPrevBottom" class="comic-btn" disabled>« Previous</button>
+    <select id="slideSelectBottom" class="slide-dropdown" onchange="goToSlide(parseInt(this.value))">
+      <option value="0">Slide 1</option>
+      <option value="1">Slide 2</option>
+      <option value="2">Slide 3</option>
+      <option value="3">Slide 4</option>
+      <option value="4">Slide 5</option>
+      <option value="5">Slide 6</option>
+      <option value="6">Slide 7</option>
+      <option value="7">Slide 8</option>
+      <option value="8">Slide 9</option>
+      <option value="9">Slide 10</option>
+      <option value="10">Slide 11</option>
+      <option value="11">Slide 12</option>
+      <option value="12">Slide 13</option>
+      <option value="13">Slide 14</option>
     </select>
-    <button onclick="document.getElementById('framing').scrollIntoView({ behavior: 'smooth' });" class="comic-btn">Start Reading ↓</button>
+    <button onclick="moveSlide(1)" id="btnNextBottom" class="comic-btn">Next »</button>
   </div>
+
+  <script>
+  let currentSlide = 0;
+  const slides = document.getElementById('carouselSlides');
+  const totalSlides = 14;
+
+  function updateCarousel() {
+    slides.style.transform = `translateX(-${currentSlide * (100/14)}%)`;
+    
+    document.getElementById('slideSelectTop').value = currentSlide;
+    document.getElementById('slideSelectBottom').value = currentSlide;
+    
+    // Update button states
+    const isFirst = currentSlide === 0;
+    const isLast = currentSlide === totalSlides - 1;
+    
+    document.getElementById('btnPrevTop').disabled = isFirst;
+    document.getElementById('btnPrevBottom').disabled = isFirst;
+    
+    const nextBtnTop = document.getElementById('btnNextTop');
+    const nextBtnBottom = document.getElementById('btnNextBottom');
+    
+    if (isLast) {
+      nextBtnTop.innerHTML = "Start Reading ↓";
+      nextBtnBottom.innerHTML = "Start Reading ↓";
+      nextBtnTop.onclick = () => document.getElementById('framing').scrollIntoView({ behavior: 'smooth' });
+      nextBtnBottom.onclick = () => document.getElementById('framing').scrollIntoView({ behavior: 'smooth' });
+    } else {
+      nextBtnTop.innerHTML = "Next »";
+      nextBtnBottom.innerHTML = "Next »";
+      nextBtnTop.onclick = () => moveSlide(1);
+      nextBtnBottom.onclick = () => moveSlide(1);
+    }
+  }
+
+  function moveSlide(dir) {
+    let newSlide = currentSlide + dir;
+    if (newSlide >= 0 && newSlide < totalSlides) {
+      currentSlide = newSlide;
+      updateCarousel();
+      // Scroll to top of image when changing slides
+      document.querySelector('.comic-nav').scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  function goToSlide(index) {
+    if (index >= 0 && index < totalSlides) {
+      currentSlide = index;
+      updateCarousel();
+    }
+  }
+  </script>
 </div>
 <!-- END COMIC READER -->
 
