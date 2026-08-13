@@ -47,6 +47,7 @@
     </div>
     <div class="nav-panel-section">
       <span class="nav-panel-label">On this page</span>
+      <a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a>
       <a href="#decision-trees"><span class="toc-num">1</span>Decision Trees</a>
       <a href="#random-forests"><span class="toc-num">2</span>Random Forests</a>
       <a href="#adaboost"><span class="toc-num">3</span>Adaptive Boosting (AdaBoost)</a>
@@ -72,6 +73,7 @@
     </div>
     <div class="sidebar-block">
       <span class="sidebar-label">On this page</span>
+      <a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a>
       <a href="#decision-trees"><span class="toc-num">1</span>Decision Trees</a>
       <a href="#random-forests"><span class="toc-num">2</span>Random Forests</a>
       <a href="#adaboost"><span class="toc-num">3</span>Adaptive Boosting (AdaBoost)</a>
@@ -107,6 +109,7 @@
   <div class="toc-card">
     <span class="toc-label">On this page</span>
     <ul class="toc-list">
+      <li><a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a></li>
       <li><a href="#decision-trees"><span class="toc-num">1</span>Decision Trees</a></li>
       <li><a href="#random-forests"><span class="toc-num">2</span>Random Forests</a></li>
       <li><a href="#adaboost"><span class="toc-num">3</span>Adaptive Boosting (AdaBoost)</a></li>
@@ -116,6 +119,126 @@
       <li><a href="#exam-drill"><span class="toc-num">7</span>Exam Drill</a></li>
     </ul>
   </div>
+
+<!-- EMBEDDED COMIC READER -->
+<style>
+  /* Custom Comic Reader Layout */
+  .comic-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2.75rem 1.75rem 4rem;
+  }
+  .comic-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1.5rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .comic-btn {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-body);
+  }
+  .comic-btn:hover:not(:disabled) {
+    background: var(--accent);
+    color: white;
+  }
+  .comic-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--bg);
+    color: var(--text-muted);
+    border-color: var(--border);
+  }
+  .slide-dropdown {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 1.8rem 0.4rem 0.8rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B6670' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.4rem center;
+    background-size: 1em;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+  }
+  .slide-dropdown:hover:not(:disabled), .slide-dropdown:focus {
+    border-color: var(--accent);
+    outline: none;
+  }
+  .slide-dropdown:disabled {
+    opacity: 0.8;
+    cursor: default;
+    background-image: none;
+    padding-right: 0.8rem;
+  }
+  .carousel-container {
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+  }
+  .carousel-slides {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+  }
+  .carousel-slide {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .carousel-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>
+<div id="visual-recap" style="scroll-margin-top: 4.5rem;">
+  <div class="comic-nav">
+    <button class="comic-btn" disabled>« Previous</button>
+    <select class="slide-dropdown" disabled>
+      <option value="0">Coming Soon: Visual Storyboard</option>
+    </select>
+    <button onclick="document.getElementById('decision-trees').scrollIntoView({ behavior: 'smooth' });" class="comic-btn">Start Reading ↓</button>
+  </div>
+  
+  <div class="carousel-container">
+    <div class="carousel-slides">
+      <div class="carousel-slide"><img src="assets/story/placeholder.jpg" alt="comic-placeholder"></div>
+    </div>
+  </div>
+
+  <div class="comic-nav">
+    <button class="comic-btn" disabled>« Previous</button>
+    <select class="slide-dropdown" disabled>
+      <option value="0">Coming Soon: Visual Storyboard</option>
+    </select>
+    <button onclick="document.getElementById('decision-trees').scrollIntoView({ behavior: 'smooth' });" class="comic-btn">Start Reading ↓</button>
+  </div>
+</div>
+<!-- END COMIC READER -->
+
 
   <!-- ============ 1 ============ -->
   <section class="chapter" id="decision-trees">
