@@ -803,6 +803,15 @@ X_tsne = TSNE(n_components=2, perplexity=30, random_state=42).fit_transform(X_pc
 
       <details class="drill-item">
         <summary>
+          <span class="drill-tag">Name it</span>
+          <span class="drill-q">You have a dataset with dozens of numerical features, expect mostly linear relationships between them, and want to reduce dimensionality while preserving overall (global) structure and interpretability. In ≤2 words, what technique fits?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>PCA.</strong> Deterministic and linear, it finds the orthogonal axes capturing the most overall variance — the opposite trade-off t-SNE makes above (§3).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
           <span class="drill-tag">Code</span>
           <span class="drill-q">Complete this line to compute the mean purchase amount for each customer in a dataframe <code>df</code>:</span>
           <span class="drill-code-inline">df.<span class="drill-blank">____</span>('customer_id')['purchase_amount'].mean()</span>
