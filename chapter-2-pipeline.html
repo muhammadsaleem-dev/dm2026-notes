@@ -249,41 +249,13 @@
     <button onclick="moveSlide(-1)" id="btnPrevTop" class="comic-btn" disabled>« Previous</button>
     <select id="slideSelectTop" class="slide-dropdown" onchange="goToSlide(parseInt(this.value))">
       <option value="0">Slide 1: Full Storyboard (Scrollable)</option>
-      <option value="1">Slide 2: Panel 1</option>
-      <option value="2">Slide 3: Panel 2</option>
-      <option value="3">Slide 4: Panel 3</option>
-      <option value="4">Slide 5: Panel 4</option>
-      <option value="5">Slide 6: Panel 5</option>
-      <option value="6">Slide 7: Panel 6</option>
-      <option value="7">Slide 8: Panel 7</option>
-      <option value="8">Slide 9: Panel 8</option>
-      <option value="9">Slide 10: Panel 9</option>
-      <option value="10">Slide 11: Panel 10</option>
-      <option value="11">Slide 12: Panel 11</option>
-      <option value="12">Slide 13: Panel 12</option>
-      <option value="13">Slide 14: Panel 13</option>
-      <option value="14">Slide 15: Panel 14</option>
     </select>
-    <button onclick="moveSlide(1)" id="btnNextTop" class="comic-btn">Next »</button>
+    <button onclick="moveSlide(1)" id="btnNextTop" class="comic-btn">Start Reading ↓</button>
   </div>
 
   <div class="carousel-container">
     <div class="carousel-slides" id="carouselSlides">
       <div class="carousel-slide"><img src="assets/story/Module2_Comic_Full_Storyboard.png" alt="Full Storyboard"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_01.png" alt="Pipeline Comic Panel 1"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_02.png" alt="Pipeline Comic Panel 2"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_03.png" alt="Pipeline Comic Panel 3"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_04.png" alt="Pipeline Comic Panel 4"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_05.png" alt="Pipeline Comic Panel 5"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_06.png" alt="Pipeline Comic Panel 6"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_07.png" alt="Pipeline Comic Panel 7"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_08.png" alt="Pipeline Comic Panel 8"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_09.png" alt="Pipeline Comic Panel 9"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_10.png" alt="Pipeline Comic Panel 10"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_11.png" alt="Pipeline Comic Panel 11"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_12.png" alt="Pipeline Comic Panel 12"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_13.png" alt="Pipeline Comic Panel 13"></div>
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Panel_14.png" alt="Pipeline Comic Panel 14"></div>
     </div>
   </div>
 
@@ -291,28 +263,14 @@
     <button onclick="moveSlide(-1)" id="btnPrevBottom" class="comic-btn" disabled>« Previous</button>
     <select id="slideSelectBottom" class="slide-dropdown" onchange="goToSlide(parseInt(this.value))">
       <option value="0">Slide 1: Full Storyboard (Scrollable)</option>
-      <option value="1">Slide 2: Panel 1</option>
-      <option value="2">Slide 3: Panel 2</option>
-      <option value="3">Slide 4: Panel 3</option>
-      <option value="4">Slide 5: Panel 4</option>
-      <option value="5">Slide 6: Panel 5</option>
-      <option value="6">Slide 7: Panel 6</option>
-      <option value="7">Slide 8: Panel 7</option>
-      <option value="8">Slide 9: Panel 8</option>
-      <option value="9">Slide 10: Panel 9</option>
-      <option value="10">Slide 11: Panel 10</option>
-      <option value="11">Slide 12: Panel 11</option>
-      <option value="12">Slide 13: Panel 12</option>
-      <option value="13">Slide 14: Panel 13</option>
-      <option value="14">Slide 15: Panel 14</option>
     </select>
-    <button onclick="moveSlide(1)" id="btnNextBottom" class="comic-btn">Next »</button>
+    <button onclick="moveSlide(1)" id="btnNextBottom" class="comic-btn">Start Reading ↓</button>
   </div>
 
   <script>
   let currentSlide = 0;
   const slides = document.getElementById('carouselSlides');
-  const totalSlides = 15;
+  const totalSlides = 1;
 
   function updateCarousel() {
     slides.style.transform = `translateX(-${currentSlide * 100}%)`;
