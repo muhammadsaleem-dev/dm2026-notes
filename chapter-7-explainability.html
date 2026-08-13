@@ -23,7 +23,6 @@
       <a href="chapter-4-clustering.html">4 · Clustering</a>
       <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
       <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
-      <a href="module-7-prerequisites.html">6.5 · Visual Recap</a>
       <a href="chapter-7-explainability.html" class="active">7 · Explainability</a>
     </div>
     <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
@@ -44,11 +43,11 @@
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
       <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
       <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
-      <a href="module-7-prerequisites.html">6.5 · Visual Prerequisites</a>
       <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
     </div>
     <div class="nav-panel-section">
       <span class="nav-panel-label">On this page</span>
+      <a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a>
       <a href="#why-it-matters"><span class="toc-num">1</span>Why Explainability Matters</a>
       <a href="#two-axes"><span class="toc-num">2</span>Two Axes of Explainability</a>
       <a href="#permutation-importance"><span class="toc-num">3</span>Permutation Feature Importance</a>
@@ -71,11 +70,11 @@
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
       <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
       <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
-      <a href="module-7-prerequisites.html">6.5 · Visual Prerequisites</a>
       <a href="chapter-7-explainability.html" class="active">7 · Explainability &amp; Causality</a>
     </div>
     <div class="sidebar-block">
       <span class="sidebar-label">On this page</span>
+      <a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a>
       <a href="#why-it-matters"><span class="toc-num">1</span>Why Explainability Matters</a>
       <a href="#two-axes"><span class="toc-num">2</span>Two Axes of Explainability</a>
       <a href="#permutation-importance"><span class="toc-num">3</span>Permutation Feature Importance</a>
@@ -112,6 +111,7 @@
   <div class="toc-card">
     <span class="toc-label">On this page</span>
     <ul class="toc-list">
+      <li><a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a></li>
       <li><a href="#why-it-matters"><span class="toc-num">1</span>Why Explainability Matters</a></li>
       <li><a href="#two-axes"><span class="toc-num">2</span>Two Axes of Explainability</a></li>
       <li><a href="#permutation-importance"><span class="toc-num">3</span>Permutation Feature Importance</a></li>
@@ -122,6 +122,225 @@
       <li><a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a></li>
     </ul>
   </div>
+
+  <!-- EMBEDDED COMIC READER -->
+<div id="visual-recap" style="scroll-margin-top: 4.5rem;">
+  <style>
+  /* Custom Comic Reader Layout */
+  .comic-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2.75rem 1.75rem 4rem;
+  }
+  .comic-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1.5rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .comic-btn {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-body);
+  }
+  .comic-btn:hover:not(:disabled) {
+    background: var(--accent);
+    color: white;
+  }
+  .comic-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--bg);
+    color: var(--text-muted);
+    border-color: var(--border);
+  }
+  .slide-counter {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .slide-counter span {
+    color: var(--text);
+    font-size: 1.1rem;
+  }
+  .carousel-container {
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+  }
+  .carousel-slides {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+  }
+  .carousel-slide {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .carousel-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .slide-dropdown {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 1.8rem 0.4rem 0.8rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B6670' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.4rem center;
+    background-size: 1em;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+  }
+  .slide-dropdown:hover, .slide-dropdown:focus {
+    border-color: var(--accent);
+    outline: none;
+  }
+</style>
+  
+  <div class="comic-nav">
+    <button onclick="moveSlide(-1)" id="btnPrevTop" class="comic-btn" disabled>« Previous</button>
+    <select class="slide-dropdown" onchange="goToSlide(parseInt(this.value))" id="slideSelectTop">
+      <option value="0">Slide 1: Overview</option>
+      <option value="1">Slide 2: Basics</option>
+      <option value="2">Slide 3: Process</option>
+      <option value="3">Slide 4: Classification</option>
+      <option value="4">Slide 5: Regression & NN</option>
+      <option value="5">Slide 6: Explainability</option>
+      <option value="6">Slide 7: M7 Intro</option>
+      <option value="7">Slide 8: Feature Importance</option>
+      <option value="8">Slide 9: Permutation</option>
+      <option value="9">Slide 10: SHAP</option>
+      <option value="10">Slide 11: Causality</option>
+    </select>
+    <button onclick="moveSlide(1)" id="btnNextTop" class="comic-btn">Next »</button>
+  </div>
+  
+  <div class="carousel-container">
+    <div class="carousel-slides" id="carouselSlides">
+      <div class="carousel-slide"><img src="assets/story/00-overview.png" alt="00-overview"></div>
+      <div class="carousel-slide"><img src="assets/story/01-basics.png" alt="01-basics"></div>
+      <div class="carousel-slide"><img src="assets/story/02-process.png" alt="02-process"></div>
+      <div class="carousel-slide"><img src="assets/story/03-classification.png" alt="03-classification"></div>
+      <div class="carousel-slide"><img src="assets/story/04-regression-nn.png" alt="04-regression-nn"></div>
+      <div class="carousel-slide"><img src="assets/story/05-explainability.png" alt="05-explainability"></div>
+      <div class="carousel-slide"><img src="assets/story/m7p1-intro.png" alt="m7p1-intro"></div>
+      <div class="carousel-slide"><img src="assets/story/m7p2-importance.png" alt="m7p2-importance"></div>
+      <div class="carousel-slide"><img src="assets/story/m7p3-permutation.png" alt="m7p3-permutation"></div>
+      <div class="carousel-slide"><img src="assets/story/m7p4-shap.png" alt="m7p4-shap"></div>
+      <div class="carousel-slide"><img src="assets/story/m7p5-causal.png" alt="m7p5-causal"></div>
+    </div>
+  </div>
+
+  <div class="comic-nav">
+    <button onclick="moveSlide(-1)" id="btnPrevBottom" class="comic-btn" disabled>« Previous</button>
+    <select class="slide-dropdown" onchange="goToSlide(parseInt(this.value))" id="slideSelectBottom">
+      <option value="0">Slide 1: Overview</option>
+      <option value="1">Slide 2: Basics</option>
+      <option value="2">Slide 3: Process</option>
+      <option value="3">Slide 4: Classification</option>
+      <option value="4">Slide 5: Regression & NN</option>
+      <option value="5">Slide 6: Explainability</option>
+      <option value="6">Slide 7: M7 Intro</option>
+      <option value="7">Slide 8: Feature Importance</option>
+      <option value="8">Slide 9: Permutation</option>
+      <option value="9">Slide 10: SHAP</option>
+      <option value="10">Slide 11: Causality</option>
+    </select>
+    <button onclick="moveSlide(1)" id="btnNextBottom" class="comic-btn">Next »</button>
+  </div>
+
+  
+  
+  <script>
+  let currentSlide = 0;
+  const slides = document.getElementById('carouselSlides');
+  const totalSlides = 11;
+
+  function updateCarousel() {
+    slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    document.getElementById('slideSelectTop').value = currentSlide;
+    document.getElementById('slideSelectBottom').value = currentSlide;
+    document.getElementById('currentSlideNumBottom').innerText = currentSlide + 1;
+    
+    // Update button states
+    const isFirst = currentSlide === 0;
+    const isLast = currentSlide === totalSlides - 1;
+    
+    document.getElementById('btnPrevTop').disabled = isFirst;
+    document.getElementById('btnPrevBottom').disabled = isFirst;
+    
+    const nextBtnTop = document.getElementById('btnNextTop');
+    const nextBtnBottom = document.getElementById('btnNextBottom');
+    
+    if (isLast) {
+      nextBtnTop.innerHTML = "Start Reading ↓";
+      nextBtnBottom.innerHTML = "Start Reading ↓";
+      nextBtnTop.onclick = () => document.getElementById('why-it-matters').scrollIntoView({ behavior: 'smooth' });
+      nextBtnBottom.onclick = () => document.getElementById('why-it-matters').scrollIntoView({ behavior: 'smooth' });
+    } else {
+      nextBtnTop.innerHTML = "Next »";
+      nextBtnBottom.innerHTML = "Next »";
+      nextBtnTop.onclick = () => moveSlide(1);
+      nextBtnBottom.onclick = () => moveSlide(1);
+    }
+  }
+
+  function moveSlide(dir) {
+    let newSlide = currentSlide + dir;
+    if (newSlide >= 0 && newSlide < totalSlides) {
+      currentSlide = newSlide;
+      updateCarousel();
+      // Scroll to top of image when changing slides
+      document.querySelector('.comic-nav').scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  
+  function goToSlide(index) {
+    if (index >= 0 && index < totalSlides) {
+      currentSlide = index;
+      updateCarousel();
+      document.querySelector('.comic-nav').scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  // Keyboard navigation
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'ArrowLeft') moveSlide(-1);
+    if(e.key === 'ArrowRight') moveSlide(1);
+  });
+</script>
+  </div>
+<!-- END COMIC READER -->
+
 
   <!-- ============ 1 ============ -->
   <section class="chapter" id="why-it-matters">
