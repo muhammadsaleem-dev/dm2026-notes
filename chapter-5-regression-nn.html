@@ -271,62 +271,14 @@
       <div class="carousel-slide"><img src="assets/story/mod5_p5_sigmoid_1786706569045.jpg" alt="5. The 'Yes/No' Filter (Sigmoid)"></div>
       <div class="carousel-slide"><img src="assets/story/mod5_p6_bce_1786706580226.jpg" alt="6. The Harsh Critic (BCE Loss)"></div>
       <div class="carousel-slide"><img src="assets/story/mod5_p7_megakitchen_1786706589793.jpg" alt="7. The Mega-Kitchen (Deep Network)"></div>
-      <div class="carousel-slide text-slide">
-        <div class="text-slide-content">
-            <div class="ts-icon">🔪</div>
-            <h2>Hierarchical Cooking</h2>
-            <div class="ts-concept"><strong>Concept:</strong> Hierarchical Feature Learning</div>
-            <p>Prep cooks chop vegetables (edges), line cooks assemble them (contours), and the Head Chef plates the final masterpiece (objects). Depth allows the network to learn combinations of combinations.</p>
-            <div class="ts-note"><em>(Image incoming once quota resets)</em></div>
-        </div>
-    </div>
-      <div class="carousel-slide text-slide">
-        <div class="text-slide-content">
-            <div class="ts-icon">🌶️</div>
-            <h2>The Magic Spices</h2>
-            <div class="ts-concept"><strong>Concept:</strong> Non-Linear Activations (ReLU)</div>
-            <p>Without magic spices, a million chefs just make the same linear soup. The chefs use a new spice (ReLU) that only activates if the flavor is positive, allowing them to bend the recipe into complex, curved decision boundaries!</p>
-            <div class="ts-note"><em>(Image incoming once quota resets)</em></div>
-        </div>
-    </div>
+      <div class="carousel-slide"><img src="assets/story/mod5_p8_hierarchy_1786729140306.jpg" alt="8. Hierarchical Cooking (Features)"></div>
+      <div class="carousel-slide"><img src="assets/story/mod5_p9_relu_1786729148871.jpg" alt="9. The Magic Spices (ReLU Activation)"></div>
       <div class="carousel-slide"><img src="assets/story/nn_forward_pass_1786705789294.jpg" alt="10. The Assembly Line (Forward Pass)"></div>
       <div class="carousel-slide"><img src="assets/story/nn_backpropagation_1786705805635.jpg" alt="11. The Chain of Blame (Backpropagation)"></div>
-      <div class="carousel-slide text-slide">
-        <div class="text-slide-content">
-            <div class="ts-icon">🗣️... 📉</div>
-            <h2>The Fading Voice</h2>
-            <div class="ts-concept"><strong>Concept:</strong> Vanishing Gradients</div>
-            <p>The Mega-Kitchen is so deep that the Head Chef's yells fade away. The prep cooks at the very beginning can't hear the instructions, so they don't know how to fix their mistakes and their weights never update.</p>
-            <div class="ts-note"><em>(Image incoming once quota resets)</em></div>
-        </div>
-    </div>
-      <div class="carousel-slide text-slide">
-        <div class="text-slide-content">
-            <div class="ts-icon">💥</div>
-            <h2>The Exploding Voice</h2>
-            <div class="ts-concept"><strong>Concept:</strong> Exploding Gradients</div>
-            <p>Suddenly, a mistake gets amplified backward, causing the Head Chef to scream so loudly the prep cooks panic, spin their dials wildly, and ruin the weights completely!</p>
-            <div class="ts-note"><em>(Image incoming once quota resets)</em></div>
-        </div>
-    </div>
-      <div class="carousel-slide text-slide">
-        <div class="text-slide-content">
-            <div class="ts-icon">🥄</div>
-            <h2>Taste-Tester Batch</h2>
-            <div class="ts-concept"><strong>Concept:</strong> Stochastic Gradient Descent (SGD)</div>
-            <p>Instead of making the chefs cook every single recipe in the book before adjusting the dials (Full Batch), they adjust the recipe after tasting just a few random bowls (Mini-batch SGD). It's noisier, but much faster!</p>
-            <div class="ts-note"><em>(Image incoming once quota resets)</em></div>
-        </div>
-    </div>
-      <div class="carousel-slide text-slide">
-        <div class="text-slide-content">
-            <div class="ts-icon">🛒</div>
-            <h2>The Heavy Cart</h2>
-            <div class="ts-concept"><strong>Concept:</strong> Momentum</div>
-            <p>The chefs put their spice cart on wheels. As they move downhill in the cost landscape, they build momentum and roll right over small bumps (local minima) without getting stuck.</p>
-            <div class="ts-note"><em>(Image incoming once quota resets)</em></div>
-        </div>
-    </div>
+      <div class="carousel-slide"><img src="assets/story/mod5_p12_vanishing_1786729159134.jpg" alt="12. The Fading Voice (Vanishing Gradients)"></div>
+      <div class="carousel-slide"><img src="assets/story/mod5_p13_exploding_1786729169233.jpg" alt="13. The Exploding Voice (Exploding Gradients)"></div>
+      <div class="carousel-slide"><img src="assets/story/mod5_p14_sgd_1786729180284.jpg" alt="14. Taste-Tester Batch (SGD)"></div>
+      <div class="carousel-slide"><img src="assets/story/mod5_p15_momentum_1786729188705.jpg" alt="15. The Heavy Cart (Momentum)"></div>
       <div class="carousel-slide"><img src="assets/story/nn_convergence_1786705826446.jpg" alt="16. The Smart Dials & Convergence (Adam)"></div>
     </div>
   </div>
@@ -354,14 +306,6 @@
     <button class="comic-btn">Next »</button>
   </div>
 
-  <style>
-  .text-slide { background: var(--bg-raised); padding: 3rem; display: flex; align-items: center; justify-content: center; text-align: center; border: 2px dashed var(--border); box-sizing: border-box; }
-  .text-slide-content { max-width: 600px; }
-  .text-slide-content h2 { margin-top: 0.5rem; color: var(--accent); }
-  .ts-icon { font-size: 4rem; margin-bottom: 1rem; }
-  .ts-concept { font-family: var(--font-mono); font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
-  .ts-note { margin-top: 2rem; font-size: 0.85rem; color: var(--text-muted); opacity: 0.7; }
-  </style>
   <script>
   let currentSlide = 0;
   const slides = document.querySelector('.carousel-slides');
