@@ -243,43 +243,236 @@
     <button class="comic-btn" disabled>« Previous</button>
     <select class="slide-dropdown">
       <option value="0">1. The Linear Soup Cart (Linear Regression)</option>
-      <option value="1">2. The Taste Test (MSE)</option>
-      <option value="2">3. The Diet Spices (Ridge & Lasso)</option>
+      <option value="1">2. The Taste Test (Mean Squared Error (MSE))</option>
+      <option value="2">3. The Diet Spices (Regularization (Ridge & Lasso))</option>
       <option value="3">4. Walking Down the Mountain (Gradient Descent)</option>
-      <option value="4">5. The 'Yes/No' Filter (Sigmoid)</option>
-      <option value="5">6. The Harsh Critic (BCE Loss)</option>
-      <option value="6">7. The Mega-Kitchen (Deep Network)</option>
-      <option value="7">8. Hierarchical Cooking (Features)</option>
-      <option value="8">9. The Magic Spices (ReLU Activation)</option>
-      <option value="9">10. The Assembly Line (Forward Pass)</option>
+      <option value="4">5. The 'Yes/No' Filter (Logistic Regression & Sigmoid)</option>
+      <option value="5">6. The Harsh Critic (Binary Cross Entropy)</option>
+      <option value="6">7. The Mega-Kitchen (Neural Network Architecture)</option>
+      <option value="7">8. Hierarchical Cooking (Hierarchical Features)</option>
+      <option value="8">9. The Magic Spices (Non-Linear Activations (ReLU))</option>
+      <option value="9">10. The Assembly Line (The Forward Pass)</option>
       <option value="10">11. The Chain of Blame (Backpropagation)</option>
       <option value="11">12. The Fading Voice (Vanishing Gradients)</option>
       <option value="12">13. The Exploding Voice (Exploding Gradients)</option>
-      <option value="13">14. Taste-Tester Batch (SGD)</option>
+      <option value="13">14. The Taste-Tester Batch (Stochastic Gradient Descent (SGD))</option>
       <option value="14">15. The Heavy Cart (Momentum)</option>
-      <option value="15">16. The Smart Dials & Convergence (Adam)</option>
+      <option value="15">16. The Smart Dials & Convergence (Adam Optimizer)</option>
     </select>
     <button class="comic-btn">Next »</button>
   </div>
   
   <div class="carousel-container">
     <div class="carousel-slides">
-      <div class="carousel-slide"><img src="assets/story/mod5_p1_linear_1786706530963.jpg" alt="1. The Linear Soup Cart (Linear Regression)"></div>
-      <div class="carousel-slide"><img src="assets/story/mod5_p2_mse_1786706540373.jpg" alt="2. The Taste Test (MSE)"></div>
-      <div class="carousel-slide"><img src="assets/story/mod5_p3_regularization_1786706549193.jpg" alt="3. The Diet Spices (Ridge & Lasso)"></div>
-      <div class="carousel-slide"><img src="assets/story/mod5_p4_gradient_1786706557180.jpg" alt="4. Walking Down the Mountain (Gradient Descent)"></div>
-      <div class="carousel-slide"><img src="assets/story/mod5_p5_sigmoid_1786706569045.jpg" alt="5. The 'Yes/No' Filter (Sigmoid)"></div>
-      <div class="carousel-slide"><img src="assets/story/mod5_p6_bce_1786706580226.jpg" alt="6. The Harsh Critic (BCE Loss)"></div>
-      <div class="carousel-slide"><img src="assets/story/mod5_p7_megakitchen_1786706589793.jpg" alt="7. The Mega-Kitchen (Deep Network)"></div>
-      <div class="carousel-slide"><img src="assets/story/mod5_p8_hierarchy_1786729140306.jpg" alt="8. Hierarchical Cooking (Features)"></div>
-      <div class="carousel-slide"><img src="assets/story/mod5_p9_relu_1786729148871.jpg" alt="9. The Magic Spices (ReLU Activation)"></div>
-      <div class="carousel-slide"><img src="assets/story/nn_forward_pass_1786705789294.jpg" alt="10. The Assembly Line (Forward Pass)"></div>
-      <div class="carousel-slide"><img src="assets/story/nn_backpropagation_1786705805635.jpg" alt="11. The Chain of Blame (Backpropagation)"></div>
-      <div class="carousel-slide"><img src="assets/story/mod5_p12_vanishing_1786729159134.jpg" alt="12. The Fading Voice (Vanishing Gradients)"></div>
-      <div class="carousel-slide"><img src="assets/story/mod5_p13_exploding_1786729169233.jpg" alt="13. The Exploding Voice (Exploding Gradients)"></div>
-      <div class="carousel-slide"><img src="assets/story/mod5_p14_sgd_1786729180284.jpg" alt="14. Taste-Tester Batch (SGD)"></div>
-      <div class="carousel-slide"><img src="assets/story/mod5_p15_momentum_1786729188705.jpg" alt="15. The Heavy Cart (Momentum)"></div>
-      <div class="carousel-slide"><img src="assets/story/nn_convergence_1786705826446.jpg" alt="16. The Smart Dials & Convergence (Adam)"></div>
+      
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p1_linear_1786706530963.jpg" alt="1. The Linear Soup Cart">
+            </div>
+            <div class="slide-caption">
+                <h3>1. The Linear Soup Cart</h3>
+                <span class="concept-badge">Linear Regression</span>
+                <p>A chef uses a simple linear recipe. If he adds exactly 2 carrots, a mechanical dial measuring the soup's "flavor" predictably ticks up by exactly 2 units.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p2_mse_1786706540373.jpg" alt="2. The Taste Test">
+            </div>
+            <div class="slide-caption">
+                <h3>2. The Taste Test</h3>
+                <span class="concept-badge">Mean Squared Error (MSE)</span>
+                <p>The chef measures exactly how bad the soup is by squaring the mistakes. Being off by a little is fine, but being off by a lot is a squared disaster!</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p3_regularization_1786706549193.jpg" alt="3. The Diet Spices">
+            </div>
+            <div class="slide-caption">
+                <h3>3. The Diet Spices</h3>
+                <span class="concept-badge">Regularization (Ridge & Lasso)</span>
+                <p>To prevent the soup from becoming too complex (overfitting), the health inspector forces the chef to shrink his spice usage or drop some entirely.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p4_gradient_1786706557180.jpg" alt="4. Walking Down the Mountain">
+            </div>
+            <div class="slide-caption">
+                <h3>4. Walking Down the Mountain</h3>
+                <span class="concept-badge">Gradient Descent</span>
+                <p>The chef is blindfolded on a foggy, hilly mountain (the cost landscape). He feels the slope with his foot and takes one small step downhill to minimize the cost.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p5_sigmoid_1786706569045.jpg" alt="5. The 'Yes/No' Filter">
+            </div>
+            <div class="slide-caption">
+                <h3>5. The 'Yes/No' Filter</h3>
+                <span class="concept-badge">Logistic Regression & Sigmoid</span>
+                <p>Instead of asking 'how spicy is it?', the restaurant now asks 'is it Spicy: YES or NO?'. A 'Squashing Filter' forces raw flavors into a neat probability between 0 and 1.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p6_bce_1786706580226.jpg" alt="6. The Harsh Critic">
+            </div>
+            <div class="slide-caption">
+                <h3>6. The Harsh Critic</h3>
+                <span class="concept-badge">Binary Cross Entropy</span>
+                <p>The Head Chef uses a harsh new scorecard. If the apprentice is 99% confident the soup is NOT spicy, but it IS, the Chef punishes him infinitely more than just a small mistake!</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p7_megakitchen_1786706589793.jpg" alt="7. The Mega-Kitchen">
+            </div>
+            <div class="slide-caption">
+                <h3>7. The Mega-Kitchen</h3>
+                <span class="concept-badge">Neural Network Architecture</span>
+                <p>The single soup cart expands into an industrial kitchen with multiple 'Hidden Layers' (Prep Cooks -> Line Cooks) and a final output window (Head Chef).</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p8_hierarchy_1786729140306.jpg" alt="8. Hierarchical Cooking">
+            </div>
+            <div class="slide-caption">
+                <h3>8. Hierarchical Cooking</h3>
+                <span class="concept-badge">Hierarchical Features</span>
+                <p>Prep cooks chop vegetables (edges), line cooks assemble them (contours), and the Head Chef plates the final masterpiece (objects). Depth allows the network to learn combinations.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p9_relu_1786729148871.jpg" alt="9. The Magic Spices">
+            </div>
+            <div class="slide-caption">
+                <h3>9. The Magic Spices</h3>
+                <span class="concept-badge">Non-Linear Activations (ReLU)</span>
+                <p>The chefs use a magic spice (ReLU) that only activates if the flavor is positive, and zeroes out negative flavors. This sudden, non-linear change allows them to cook complex boundaries!</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/nn_forward_pass_1786705789294.jpg" alt="10. The Assembly Line">
+            </div>
+            <div class="slide-caption">
+                <h3>10. The Assembly Line</h3>
+                <span class="concept-badge">The Forward Pass</span>
+                <p>Raw ingredients rush through the loading dock, get chopped, cooked, spiced, and finally plated by the Head Chef to serve to the customer to get a prediction.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/nn_backpropagation_1786705805635.jpg" alt="11. The Chain of Blame">
+            </div>
+            <div class="slide-caption">
+                <h3>11. The Chain of Blame</h3>
+                <span class="concept-badge">Backpropagation</span>
+                <p>The customer complains! The Head Chef calculates the error, yells at the line cooks, who then yell at the prep cooks, passing the blame backward proportionally based on who added what.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p12_vanishing_1786729159134.jpg" alt="12. The Fading Voice">
+            </div>
+            <div class="slide-caption">
+                <h3>12. The Fading Voice</h3>
+                <span class="concept-badge">Vanishing Gradients</span>
+                <p>The kitchen is so deep that the Head Chef's yells fade away. The prep cooks at the very beginning can't hear the instructions, so their weights never update and they never improve.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p13_exploding_1786729169233.jpg" alt="13. The Exploding Voice">
+            </div>
+            <div class="slide-caption">
+                <h3>13. The Exploding Voice</h3>
+                <span class="concept-badge">Exploding Gradients</span>
+                <p>A small complaint gets amplified backward by middle managers. By the time it hits the ground floor, it explodes like a sonic boom! The prep cooks panic and ruin their dials.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p14_sgd_1786729180284.jpg" alt="14. The Taste-Tester Batch">
+            </div>
+            <div class="slide-caption">
+                <h3>14. The Taste-Tester Batch</h3>
+                <span class="concept-badge">Stochastic Gradient Descent (SGD)</span>
+                <p>Instead of cooking the entire menu before adjusting the dials, they taste a small, random 'mini-batch' of soups and adjust immediately. It's noisier, but learns hundreds of times faster.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p15_momentum_1786729188705.jpg" alt="15. The Heavy Cart">
+            </div>
+            <div class="slide-caption">
+                <h3>15. The Heavy Cart</h3>
+                <span class="concept-badge">Momentum</span>
+                <p>The chef puts his spice cart on heavy wheels. As he rolls downhill, he builds physical momentum, rolling right over small bumps (local minima) without getting stuck.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/nn_convergence_1786705826446.jpg" alt="16. The Smart Dials & Convergence">
+            </div>
+            <div class="slide-caption">
+                <h3>16. The Smart Dials & Convergence</h3>
+                <span class="concept-badge">Adam Optimizer</span>
+                <p>They install highly advanced, adaptive dials on every stove. These dials remember past momentum and automatically adjust their own sensitivity for every single ingredient independently.</p>
+            </div>
+        </div>
+    </div>
+    
     </div>
   </div>
 
@@ -287,32 +480,52 @@
     <button class="comic-btn" disabled>« Previous</button>
     <select class="slide-dropdown">
       <option value="0">1. The Linear Soup Cart (Linear Regression)</option>
-      <option value="1">2. The Taste Test (MSE)</option>
-      <option value="2">3. The Diet Spices (Ridge & Lasso)</option>
+      <option value="1">2. The Taste Test (Mean Squared Error (MSE))</option>
+      <option value="2">3. The Diet Spices (Regularization (Ridge & Lasso))</option>
       <option value="3">4. Walking Down the Mountain (Gradient Descent)</option>
-      <option value="4">5. The 'Yes/No' Filter (Sigmoid)</option>
-      <option value="5">6. The Harsh Critic (BCE Loss)</option>
-      <option value="6">7. The Mega-Kitchen (Deep Network)</option>
-      <option value="7">8. Hierarchical Cooking (Features)</option>
-      <option value="8">9. The Magic Spices (ReLU Activation)</option>
-      <option value="9">10. The Assembly Line (Forward Pass)</option>
+      <option value="4">5. The 'Yes/No' Filter (Logistic Regression & Sigmoid)</option>
+      <option value="5">6. The Harsh Critic (Binary Cross Entropy)</option>
+      <option value="6">7. The Mega-Kitchen (Neural Network Architecture)</option>
+      <option value="7">8. Hierarchical Cooking (Hierarchical Features)</option>
+      <option value="8">9. The Magic Spices (Non-Linear Activations (ReLU))</option>
+      <option value="9">10. The Assembly Line (The Forward Pass)</option>
       <option value="10">11. The Chain of Blame (Backpropagation)</option>
       <option value="11">12. The Fading Voice (Vanishing Gradients)</option>
       <option value="12">13. The Exploding Voice (Exploding Gradients)</option>
-      <option value="13">14. Taste-Tester Batch (SGD)</option>
+      <option value="13">14. The Taste-Tester Batch (Stochastic Gradient Descent (SGD))</option>
       <option value="14">15. The Heavy Cart (Momentum)</option>
-      <option value="15">16. The Smart Dials & Convergence (Adam)</option>
+      <option value="15">16. The Smart Dials & Convergence (Adam Optimizer)</option>
     </select>
     <button class="comic-btn">Next »</button>
   </div>
 
+  <style>
+  .carousel-slide { padding: 1rem; box-sizing: border-box; background: var(--bg); }
+  .slide-layout { display: flex; flex-direction: column; background: var(--bg-raised); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); height: 100%; border: 1px solid var(--border); }
+  .slide-image-wrapper { width: 100%; aspect-ratio: 1/1; background: var(--bg-deep); display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .slide-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+  .slide-caption { padding: 1.5rem; text-align: left; }
+  .slide-caption h3 { margin: 0 0 0.5rem 0; color: var(--accent); font-size: 1.3rem; }
+  .concept-badge { display: inline-block; background: rgba(147, 51, 234, 0.1); color: var(--accent); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; font-family: var(--font-mono); margin-bottom: 1rem; border: 1px solid rgba(147, 51, 234, 0.2); text-transform: uppercase; letter-spacing: 0.05em; }
+  .slide-caption p { margin: 0; line-height: 1.6; color: var(--text); font-size: 1.05rem; }
+  
+  @media (min-width: 768px) {
+    .slide-layout { flex-direction: row; align-items: stretch; height: 500px; }
+    .slide-image-wrapper { width: 500px; min-width: 500px; aspect-ratio: auto; border-bottom: none; border-right: 1px solid var(--border); }
+    .slide-caption { flex: 1; padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+    .slide-caption h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+    .slide-caption p { font-size: 1.15rem; }
+    .concept-badge { align-self: flex-start; margin-bottom: 1.5rem; }
+  }
+  </style>
   <script>
   let currentSlide = 0;
   const slides = document.querySelector('.carousel-slides');
   const slideDropdown = document.querySelectorAll('.slide-dropdown');
-  const totalSlides = document.querySelectorAll('.carousel-slide').length;
+  let totalSlides = document.querySelectorAll('.carousel-slide').length;
 
   function updateCarousel() {
+    totalSlides = document.querySelectorAll('.carousel-slide').length;
     slides.style.transform = `translateX(-${currentSlide * 100}%)`;
     slideDropdown.forEach(dropdown => {
       dropdown.value = currentSlide;
@@ -349,7 +562,7 @@
     if (newSlide >= 0 && newSlide < totalSlides) {
       currentSlide = newSlide;
       updateCarousel();
-      document.querySelector('.comic-nav').scrollIntoView({ behavior: 'smooth' });
+      document.querySelector('.comic-nav').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
@@ -360,7 +573,9 @@
     }
   }
 
-  updateCarousel();
+  // Initial setup
+  setTimeout(updateCarousel, 100);
+  
   document.querySelectorAll('.comic-btn, .slide-dropdown').forEach(el => {
     if (el.disabled) {
         if (!el.textContent.includes('Previous')) {
