@@ -229,30 +229,213 @@
     }
   }
 </style>
+
 <div id="visual-recap" style="scroll-margin-top: 4.5rem;">
   <div class="comic-nav">
-    <button class="comic-btn" disabled>« Previous</button>
-    <select class="slide-dropdown" disabled>
-      <option value="0">Coming Soon: Visual Storyboard</option>
+    <button class="comic-btn" id="prevBtn" onclick="moveSlide(-1)" disabled>« Previous</button>
+    <select class="slide-dropdown" id="slideSelect" onchange="goToSlide(this.value)">
+      <option value="0">1. The Sorting Task (Classification)</option>
+      <option value="1">2. The Single Sorter (Decision Tree)</option>
+      <option value="2">3. Entropy & Information Gain</option>
+      <option value="3">4. Overfitting & Pruning</option>
+      <option value="4">5. The Sorting Team (Random Forest)</option>
+      <option value="5">6. Bagging & Random Subspace</option>
+      <option value="6">7. Majority Voting</option>
+      <option value="7">8. Reweighting (AdaBoost)</option>
+      <option value="8">9. Glass Box vs Black Box</option>
+      <option value="9">10. The Inspector (Explainable AI)</option>
+      <option value="10">11. Root Cause (Causal AI)</option>
     </select>
-    <button onclick="document.getElementById('decision-trees').scrollIntoView({ behavior: 'smooth' });" class="comic-btn">Start Reading ↓</button>
+    <button class="comic-btn" id="nextBtn" onclick="moveSlide(1)">Next »</button>
   </div>
   
   <div class="carousel-container">
-    <div class="carousel-slides">
-      <div class="carousel-slide"><img src="assets/story/placeholder.jpg" alt="comic-placeholder"></div>
+    <div class="carousel-slides" id="slidesContainer">
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p1_mailroom_1786766659743.jpg" alt="1. The Sorting Task">
+              </div>
+              <div class="slide-caption">
+                  <h3>1. The Sorting Task</h3>
+                  <span class="concept-badge">Classification / Supervised Learning</span>
+                  <p>A messy pile of packages arrives at the post office. We need a system to correctly route each package to Standard, Fragile, or Priority.</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p2_decisiontree_1786766669531.jpg" alt="2. The Single Sorter">
+              </div>
+              <div class="slide-caption">
+                  <h3>2. The Single Sorter</h3>
+                  <span class="concept-badge">Decision Tree</span>
+                  <p>A single worker routes packages using a simple checklist: "Is it heavy? If yes, is it fragile?" This is interpretable and easy to follow.</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p3_entropy_1786766677320.jpg" alt="3. Entropy & Information Gain">
+              </div>
+              <div class="slide-caption">
+                  <h3>3. Entropy & Information Gain</h3>
+                  <span class="concept-badge">Splitting Criterion</span>
+                  <p>The worker asks the most informative question first to reduce chaos (Entropy). Splitting "Local vs International" organizes the pile much faster than asking "Is the box blue?"</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p4_overfitting_1786766696285.jpg" alt="4. Overfitting & Pruning">
+              </div>
+              <div class="slide-caption">
+                  <h3>4. Overfitting & Pruning</h3>
+                  <span class="concept-badge">Regularization</span>
+                  <p>The worker gets obsessed with tiny smudges and memorizes every single package instead of learning general rules. Pruning stops this overcomplication!</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p5_randomforest_1786766703753.jpg" alt="5. The Sorting Team">
+              </div>
+              <div class="slide-caption">
+                  <h3>5. The Sorting Team</h3>
+                  <span class="concept-badge">Random Forest</span>
+                  <p>A single worker makes mistakes, so we hire a whole team! By combining multiple workers (an ensemble), we get much better overall accuracy.</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p6_subspace_1786766711940.jpg" alt="6. Bagging & Random Subspace">
+              </div>
+              <div class="slide-caption">
+                  <h3>6. Bagging & Random Subspace</h3>
+                  <span class="concept-badge">Ensemble Diversity</span>
+                  <p>To keep workers diverse, each gets a random subset of packages (Bagging) and is only allowed to look at certain features like weight or size (Random Subspace).</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p7_voting_1786766730873.jpg" alt="7. Majority Voting">
+              </div>
+              <div class="slide-caption">
+                  <h3>7. Majority Voting</h3>
+                  <span class="concept-badge">Inference Time</span>
+                  <p>When a new package arrives, every worker independently decides where it should go. The final decision is made by a majority vote!</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p8_adaboost_1786766740463.jpg" alt="8. Reweighting">
+              </div>
+              <div class="slide-caption">
+                  <h3>8. Reweighting</h3>
+                  <span class="concept-badge">AdaBoost</span>
+                  <p>Instead of working independently, workers form a line. If the first worker misclassifies a package, it gets a massive URGENT sticker (reweighting) so the next worker focuses extra hard on it.</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p9_glassbox_1786766746972.jpg" alt="9. Glass Box vs Black Box">
+              </div>
+              <div class="slide-caption">
+                  <h3>9. Glass Box vs Black Box</h3>
+                  <span class="concept-badge">Interpretability Dilemma</span>
+                  <p>A single worker (Decision Tree) is a transparent 'Glass Box'. The entire voting team (Random Forest) is highly accurate but a mysterious 'Black Box'.</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p10_xai_1786766766820.jpg" alt="10. The Inspector">
+              </div>
+              <div class="slide-caption">
+                  <h3>10. The Inspector</h3>
+                  <span class="concept-badge">Explainable AI (XAI)</span>
+                  <p>Since we can't easily see how the whole team votes, we hire an Inspector (XAI) to calculate which features—like 'weight'—had the biggest impact on the final decision.</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p11_causal_1786766773982.jpg" alt="11. Root Cause">
+              </div>
+              <div class="slide-caption">
+                  <h3>11. Root Cause</h3>
+                  <span class="concept-badge">Causal AI</span>
+                  <p>The manager steps in to find the root cause of delays. Instead of just finding correlations, Causal AI proves that 'Heavy Weight' actively causes 'Machine Jams', allowing us to intervene.</p>
+              </div>
+          </div>
+      </div>
     </div>
   </div>
 
   <div class="comic-nav">
-    <button class="comic-btn" disabled>« Previous</button>
-    <select class="slide-dropdown" disabled>
-      <option value="0">Coming Soon: Visual Storyboard</option>
+    <button class="comic-btn" id="prevBtn2" onclick="moveSlide(-1)" disabled>« Previous</button>
+    <select class="slide-dropdown" id="slideSelect2" onchange="goToSlide(this.value)">
+      <option value="0">1. The Sorting Task (Classification)</option>
+      <option value="1">2. The Single Sorter (Decision Tree)</option>
+      <option value="2">3. Entropy & Information Gain</option>
+      <option value="3">4. Overfitting & Pruning</option>
+      <option value="4">5. The Sorting Team (Random Forest)</option>
+      <option value="5">6. Bagging & Random Subspace</option>
+      <option value="6">7. Majority Voting</option>
+      <option value="7">8. Reweighting (AdaBoost)</option>
+      <option value="8">9. Glass Box vs Black Box</option>
+      <option value="9">10. The Inspector (Explainable AI)</option>
+      <option value="10">11. Root Cause (Causal AI)</option>
     </select>
-    <button onclick="document.getElementById('decision-trees').scrollIntoView({ behavior: 'smooth' });" class="comic-btn">Start Reading ↓</button>
+    <button class="comic-btn" id="nextBtn2" onclick="moveSlide(1)">Read Chapter ↓</button>
   </div>
+  
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 11;
+    const slidesContainer = document.getElementById('slidesContainer');
+    const selects = [document.getElementById('slideSelect'), document.getElementById('slideSelect2')];
+    const prevBtns = [document.getElementById('prevBtn'), document.getElementById('prevBtn2')];
+    const nextBtns = [document.getElementById('nextBtn'), document.getElementById('nextBtn2')];
+
+    function updateNav() {
+      selects.forEach(s => s.value = currentSlide);
+      prevBtns.forEach(b => b.disabled = currentSlide === 0);
+      nextBtns.forEach(b => b.innerHTML = currentSlide === totalSlides - 1 ? 'Read Chapter ↓' : 'Next »');
+      slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function moveSlide(dir) {
+      if (currentSlide + dir >= 0 && currentSlide + dir < totalSlides) {
+        currentSlide += dir;
+        updateNav();
+      } else if (currentSlide + dir >= totalSlides) {
+        document.getElementById('decision-trees').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function goToSlide(index) {
+      currentSlide = parseInt(index);
+      updateNav();
+    }
+  </script>
 </div>
 <!-- END COMIC READER -->
+
 
 
   <!-- ============ 1 ============ -->
