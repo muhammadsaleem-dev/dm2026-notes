@@ -846,7 +846,17 @@ W^[1] := W^[1] − η∇_W[1]J,   b^[1] := b^[1] − η∇_b[1]J</div>
     </div>
 
     <p><strong>Notation:</strong> ℓ = number of layers · n^[i] = units in layer i (n^[0]=inputs, n^[ℓ]=outputs) · a^[i] = activations of layer i (a^[ℓ]=ŷ) · g^[i] = layer i's activation function · W^[i], b^[i] = layer i's parameters · z^[i] = W^[i]a^[i−1]+b^[i].</p>
-    <p><strong>Training loop:</strong> ① forward propagation — push input through every layer to compute ŷ, then compute cost J; ② backpropagation — starting from the output layer, apply the chain rule to get every parameter's gradient, and update via gradient descent. Repeat until convergence or a max iteration count.</p>
+    <p><strong>The Full Neural Network Training Pipeline:</strong></p>
+    <ol>
+        <li><strong>Define Architecture</strong> — determine layer sizes and activation functions.</li>
+        <li><strong>Initialize Parameters</strong> — set initial weights and biases.</li>
+        <li><strong>Forward Pass</strong> — push a batch of inputs through the network to calculate predicted outputs.</li>
+        <li><strong>Compute Loss</strong> — use a loss function (e.g., MSE or Cross-Entropy) to measure the error.</li>
+        <li><strong>Backward Pass (Backprop)</strong> — compute the gradients of the loss with respect to every parameter.</li>
+        <li><strong>Update Weights</strong> — use an optimization algorithm (like SGD or Adam) to adjust the weights.</li>
+        <li><strong>Monitor</strong> — print the test/train error to track performance.</li>
+        <li><strong>Stop</strong> — repeat steps 3-7 until you have satisfactory results or reach the maximum number of epochs.</li>
+    </ol>
   </section>
 
   <!-- ============ 6 ============ -->
