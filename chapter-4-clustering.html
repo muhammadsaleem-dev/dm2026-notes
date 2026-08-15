@@ -232,30 +232,215 @@
     }
   }
 </style>
+
 <div id="visual-recap" style="scroll-margin-top: 4.5rem;">
   <div class="comic-nav">
-    <button class="comic-btn" disabled>« Previous</button>
-    <select class="slide-dropdown" disabled>
-      <option value="0">Coming Soon: Visual Storyboard</option>
+    <button class="comic-btn" id="prevBtn" onclick="moveSlide(-1)" disabled>« Previous</button>
+    <select class="slide-dropdown" id="slideSelect" onchange="goToSlide(this.value)">
+      <option value="0">1. The Unplanned Party (Unsupervised Learning)</option>
+      <option value="1">2. Dropping Tables (K-Means Init)</option>
+      <option value="2">3. Moving the Tables (K-Means Recompute)</option>
+      <option value="3">4. Table Cohesion (WCSS)</option>
+      <option value="4">5. The Elbow Method (Choosing K)</option>
+      <option value="5">6. The Buffet Line (Elongated Clusters)</option>
+      <option value="6">7. The Giant Magnet (Unscaled Features)</option>
+      <option value="7">8. The Loner (Outliers)</option>
+      <option value="8">9. The Happy Guest (Silhouette Score)</option>
     </select>
-    <button onclick="document.getElementById('unsupervised').scrollIntoView({ behavior: 'smooth' });" class="comic-btn">Start Reading ↓</button>
+    <button class="comic-btn" id="nextBtn" onclick="moveSlide(1)">Next »</button>
   </div>
   
   <div class="carousel-container">
-    <div class="carousel-slides">
-      <div class="carousel-slide"><img src="assets/story/placeholder.jpg" alt="comic-placeholder"></div>
+    <div class="carousel-slides" id="slidesContainer">
+      
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod4_p1_unsupervised_1786800369048.jpg" alt="1. The Unplanned Party">
+              </div>
+              <div class="slide-caption">
+                  <h3>1. The Unplanned Party</h3>
+                  <span class="concept-badge">Unsupervised Learning</span>
+                  <p>A massive crowd of guests arrives without name tags or an RSVP list. The organizer has no idea who belongs to which group because there are no ground-truth labels.</p>
+              </div>
+          </div>
+      </div>
+      
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod4_p2_kmeans_init_1786800376266.jpg" alt="2. Dropping Tables">
+              </div>
+              <div class="slide-caption">
+                  <h3>2. Dropping Tables</h3>
+                  <span class="concept-badge">K-Means Initialization</span>
+                  <p>The organizer randomly drops 3 tables (Centroids) into the room. Guests simply walk to whichever table is closest to them.</p>
+              </div>
+          </div>
+      </div>
+      
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod4_p3_kmeans_recompute_1786800383105.jpg" alt="3. Moving the Tables">
+              </div>
+              <div class="slide-caption">
+                  <h3>3. Moving the Tables</h3>
+                  <span class="concept-badge">K-Means Recompute</span>
+                  <p>The tables are physically dragged to the exact center of the guests seated around them. Guests shuffle, tables move, until nobody switches (Convergence).</p>
+              </div>
+          </div>
+      </div>
+      
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod4_p4_wcss_1786800397904.jpg" alt="4. Table Cohesion">
+              </div>
+              <div class="slide-caption">
+                  <h3>4. Table Cohesion</h3>
+                  <span class="concept-badge">WCSS</span>
+                  <p>The organizer uses a tape measure to check how tightly grouped the guests are around the center of their tables (Within-Cluster Sum of Squares).</p>
+              </div>
+          </div>
+      </div>
+      
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod4_p5_elbow_1786800405469.jpg" alt="5. The Elbow Method">
+              </div>
+              <div class="slide-caption">
+                  <h3>5. The Elbow Method</h3>
+                  <span class="concept-badge">Choosing K</span>
+                  <p>The organizer tests 2, 3, and 4 tables. At 3 tables, everyone is comfortable. Adding a 4th table barely improves the tightness (The "Elbow" point).</p>
+              </div>
+          </div>
+      </div>
+      
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod4_p6_elongated_1786800412523.jpg" alt="6. The Buffet Line">
+              </div>
+              <div class="slide-caption">
+                  <h3>6. The Buffet Line</h3>
+                  <span class="concept-badge">Where K-Means Breaks: Elongated Clusters</span>
+                  <p>Guests are standing in a long, continuous line for the buffet. K-Means incorrectly forces them into two round tables, awkwardly splitting the line in half.</p>
+              </div>
+          </div>
+      </div>
+      
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod4_p7_unscaled_1786800428353.jpg" alt="7. The Giant Magnet">
+              </div>
+              <div class="slide-caption">
+                  <h3>7. The Giant Magnet</h3>
+                  <span class="concept-badge">Where K-Means Breaks: Unscaled Features</span>
+                  <p>One guest's "Income" is towering high, while "Age" is tiny. The massive Income dimension acts like a giant magnet, pulling the table and completely ignoring Age.</p>
+              </div>
+          </div>
+      </div>
+      
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod4_p8_outliers_1786800435197.jpg" alt="8. The Loner">
+              </div>
+              <div class="slide-caption">
+                  <h3>8. The Loner</h3>
+                  <span class="concept-badge">Where K-Means Breaks: Outliers</span>
+                  <p>One lone, weird guest stands way out in the far corner. The table (centroid) is dragged far away from the main group just to accommodate them.</p>
+              </div>
+          </div>
+      </div>
+      
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod4_p9_silhouette_1786800442831.jpg" alt="9. The Happy Guest">
+              </div>
+              <div class="slide-caption">
+                  <h3>9. The Happy Guest</h3>
+                  <span class="concept-badge">Silhouette Score</span>
+                  <p>A guest checks two things: "Am I close to everyone at my table?" (Internal Cohesion) and "Am I far away from the noisy neighboring tables?" (Separation).</p>
+              </div>
+          </div>
+      </div>
+
     </div>
   </div>
 
   <div class="comic-nav">
-    <button class="comic-btn" disabled>« Previous</button>
-    <select class="slide-dropdown" disabled>
-      <option value="0">Coming Soon: Visual Storyboard</option>
+    <button class="comic-btn" id="prevBtn2" onclick="moveSlide(-1)" disabled>« Previous</button>
+    <select class="slide-dropdown" id="slideSelect2" onchange="goToSlide(this.value)">
+      <option value="0">1. The Unplanned Party (Unsupervised Learning)</option>
+      <option value="1">2. Dropping Tables (K-Means Init)</option>
+      <option value="2">3. Moving the Tables (K-Means Recompute)</option>
+      <option value="3">4. Table Cohesion (WCSS)</option>
+      <option value="4">5. The Elbow Method (Choosing K)</option>
+      <option value="5">6. The Buffet Line (Elongated Clusters)</option>
+      <option value="6">7. The Giant Magnet (Unscaled Features)</option>
+      <option value="7">8. The Loner (Outliers)</option>
+      <option value="8">9. The Happy Guest (Silhouette Score)</option>
     </select>
-    <button onclick="document.getElementById('unsupervised').scrollIntoView({ behavior: 'smooth' });" class="comic-btn">Start Reading ↓</button>
+    <button class="comic-btn" id="nextBtn2" onclick="moveSlide(1)">Read Chapter ↓</button>
   </div>
+  
+  <style>
+  .carousel-slide { padding: 1rem; box-sizing: border-box; background: var(--bg); }
+  .slide-layout { display: flex; flex-direction: column; background: var(--bg-raised); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); height: 100%; border: 1px solid var(--border); }
+  .slide-image-wrapper { width: 100%; aspect-ratio: 1/1; background: var(--bg-deep); display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .slide-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+  .slide-caption { padding: 1.5rem; text-align: left; }
+  .slide-caption h3 { margin: 0 0 0.5rem 0; color: var(--accent); font-size: 1.3rem; font-family: var(--font-head); }
+  .concept-badge { display: inline-block; background: rgba(147, 51, 234, 0.1); color: var(--accent); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; font-family: var(--font-mono); margin-bottom: 1rem; border: 1px solid rgba(147, 51, 234, 0.2); text-transform: uppercase; letter-spacing: 0.05em; }
+  .slide-caption p { margin: 0; line-height: 1.6; color: var(--text); font-size: 1.05rem; }
+  
+  @media (min-width: 768px) {
+    .slide-layout { flex-direction: row; align-items: stretch; height: 500px; }
+    .slide-image-wrapper { width: 500px; min-width: 500px; aspect-ratio: auto; border-bottom: none; border-right: 1px solid var(--border); }
+    .slide-caption { flex: 1; padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+    .slide-caption h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+    .slide-caption p { font-size: 1.15rem; }
+    .concept-badge { align-self: flex-start; margin-bottom: 1.5rem; }
+  }
+  </style>
+
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 9;
+    const slidesContainer = document.getElementById('slidesContainer');
+    const selects = [document.getElementById('slideSelect'), document.getElementById('slideSelect2')];
+    const prevBtns = [document.getElementById('prevBtn'), document.getElementById('prevBtn2')];
+    const nextBtns = [document.getElementById('nextBtn'), document.getElementById('nextBtn2')];
+
+    function updateNav() {
+      selects.forEach(s => s.value = currentSlide);
+      prevBtns.forEach(b => b.disabled = currentSlide === 0);
+      nextBtns.forEach(b => b.innerHTML = currentSlide === totalSlides - 1 ? 'Read Chapter ↓' : 'Next »');
+      slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function moveSlide(dir) {
+      if (currentSlide + dir >= 0 && currentSlide + dir < totalSlides) {
+        currentSlide += dir;
+        updateNav();
+      } else if (currentSlide + dir >= totalSlides) {
+        document.getElementById('unsupervised').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function goToSlide(index) {
+      currentSlide = parseInt(index);
+      updateNav();
+    }
+  </script>
 </div>
 <!-- END COMIC READER -->
+
 
 
   <!-- ============ 1 ============ -->
