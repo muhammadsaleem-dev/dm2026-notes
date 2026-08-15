@@ -722,6 +722,24 @@ shap.summary_plot(shap_values[:,:,1], X_test)   # beeswarm</div>
         <div class="drill-a"><p>A revealed first: v({A})−v(∅) = 55−40 = 15. A revealed second: v({A,B})−v({B}) = 70−50 = 20. Average: <strong>φ_A = (15+20)/2 = 17.5</strong> (§4).</p></div>
       </details>
 
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Reorder</span>
+          <span class="drill-q">Order the steps required to calculate feature importance via permutation:</span>
+          <ol class="drill-scramble">
+            <li>Subtract the corrupted metric from the baseline metric to determine the feature's importance score.</li>
+            <li>Train a base model and evaluate its baseline performance metric on a validation set.</li>
+            <li>Use the model to predict outcomes on this newly corrupted dataset.</li>
+            <li>Restore the column and repeat for the next feature.</li>
+            <li>Randomly shuffle the values in that single column, destroying its relationship with the target.</li>
+            <li>Select a single feature column to evaluate.</li>
+            <li>Calculate the new performance metric.</li>
+          </ol>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>2, 6, 5, 3, 7, 1, 4</strong> — Train base model → select feature → shuffle its values → predict again → calculate new metric → subtract from baseline → restore and repeat.</p></div>
+      </details>
+
     </div>
   </section>
 

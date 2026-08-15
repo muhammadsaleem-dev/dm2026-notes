@@ -621,6 +621,22 @@ X_train = X_train.where(~outlier_mask, np.nan)</div>
         <div class="drill-a"><p>p(Cat)=3/4=0.75, p(Dog)=1/4=0.25. entropy = −(0.75·log₂0.75 + 0.25·log₂0.25) = −(0.75×−0.415 + 0.25×−2.0) = 0.311+0.5 ≈ <strong>0.811 bits</strong> (§1).</p></div>
       </details>
 
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Reorder</span>
+          <span class="drill-q">Order the steps of evaluating a classification model's performance:</span>
+          <ol class="drill-scramble">
+            <li>Compare the predicted classes against the true labels to build a Confusion Matrix.</li>
+            <li>Calculate advanced metrics like Precision, Recall, and F1-Score.</li>
+            <li>Generate continuous probability predictions using the model.</li>
+            <li>Extract True Positives, False Positives, True Negatives, and False Negatives.</li>
+            <li>Apply a decision threshold (e.g., 0.5) to convert probabilities into binary classes.</li>
+          </ol>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>3, 5, 1, 4, 2</strong> — Predict probabilities → apply threshold → build Confusion Matrix → extract TP/FP/TN/FN → calculate Precision/Recall/F1.</p></div>
+      </details>
+
     </div>
   </section>
 

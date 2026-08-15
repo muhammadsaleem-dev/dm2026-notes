@@ -1130,6 +1130,23 @@ X_tsne = TSNE(n_components=2, perplexity=30, random_state=42).fit_transform(X_pc
         <div class="drill-a"><p><code>MinMaxScaler</code> rescales to [0, 1] via <code>(x − min) / (max − min)</code>; <code>.transform()</code> — fit on train only, then apply that same fitted transform to test, rather than <code>.fit_transform()</code> again, which would recompute a new min/max from the test set itself (§2).</p></div>
       </details>
 
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Reorder</span>
+          <span class="drill-q">Order the steps for safely preprocessing data without data leakage:</span>
+          <ol class="drill-scramble">
+            <li>Transform the training data using the fitted preprocessors.</li>
+            <li>Train the machine learning model.</li>
+            <li>Separate features (X) from the target (y).</li>
+            <li>Transform the test data using the existing preprocessors.</li>
+            <li>Perform a train/test split.</li>
+            <li>Fit the imputer/scaler/encoder strictly on the training data.</li>
+          </ol>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>3, 5, 6, 1, 4, 2</strong> — Separate X and y → Train/test split → Fit preprocessors on train only → Transform train → Transform test → Train model.</p></div>
+      </details>
+
     </div>
   </section>
 

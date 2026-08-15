@@ -669,6 +669,23 @@ kmeans.fit(rfm_scaled)</div>
         <div class="drill-a"><p>Centroid = mean = <strong>(3,3)</strong>. Squared distance from (2,2): (2−3)²+(2−3)²=2. From (4,4): (4−3)²+(4−3)²=2. WCSS = 2+2 = <strong>4</strong> (§2).</p></div>
       </details>
 
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Reorder</span>
+          <span class="drill-q">Order the mathematical steps of the K-Means algorithm:</span>
+          <ol class="drill-scramble">
+            <li>Assign each data point to the cluster of its nearest centroid.</li>
+            <li>Randomly initialize K centroids in the feature space.</li>
+            <li>Recalculate the position of each centroid as the mean of its assigned points.</li>
+            <li>Repeat distance calculations and mean updates until the centroids stop moving (convergence).</li>
+            <li>Choose the number of clusters (K).</li>
+            <li>Calculate the distance between every data point and every centroid.</li>
+          </ol>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>5, 2, 6, 1, 3, 4</strong> — Choose K → initialize centroids → calculate distances → assign points → update centroids → repeat until convergence.</p></div>
+      </details>
+
     </div>
   </section>
 
