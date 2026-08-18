@@ -462,80 +462,50 @@
   <!-- ============ 1 ============ -->
   <section class="chapter" id="decision-trees">
     <div class="chapter-head"><span class="chapter-num">1</span><h2>Decision Trees</h2></div>
-    <p class="chapter-dek">Classification is supervised learning: learn the pattern linking features to a known label, then apply it to new, unlabeled instances.</p>
+    <p class="chapter-dek">Classification is supervised learning: learn the pattern, predict the label.</p>
 
-    <p>Before any of the machinery below makes sense, it's worth asking why decision trees exist at all. Plenty of classifiers — logistic regression, k-NN, SVMs — draw some kind of dividing line (or curve) through feature space. A decision tree does something much closer to how a person actually reasons through a diagnosis or a triage checklist: ask one question, look at the answer, ask the next question conditioned on that answer, and so on until you're confident enough to commit to a label. There's no hidden weight vector, no distance metric — just a nested sequence of "if this, then that" tests you could, in principle, print out and follow with a pencil.</p>
+    <h3>1. The Analogy Recap</h3>
+    <p><strong>The Single Sorter:</strong> A single worker routes packages using a simple checklist ("Is it heavy? If yes, is it fragile?"). It's transparent and easy to follow, but prone to making mistakes if the checklist gets too long (<span class="important-term">overfitting</span>).</p>
 
-    <p>Structurally, a tree is built from <strong>nodes</strong> (attribute tests, e.g. "does it fly?"), <strong>branches</strong> (the possible outcomes of that test), and <strong>leaves</strong> (a class prediction, or a probability split if the leaf isn't pure). The objective driving every split decision is simple to state: ask as few questions as possible while still generalizing well to data you haven't seen. That leaves one real engineering question: at any node, out of all the attributes you could test next, which one should you pick?</p>
+    <div class="mini-box" style="margin: 1rem 0;">
+      <h4>Key Terms</h4>
+      <ul style="margin:0; padding-left:1.2rem;">
+        <li><strong><span class="important-term">Overfitting</span>:</strong> Memorizing the training data perfectly, but failing completely on new, unseen data (like memorizing an answer key instead of learning).</li>
+        <li><strong><span class="important-term">Underfitting</span>:</strong> When a model is too simple and fails on both training and new data.</li>
+        <li><strong>Pruning:</strong> Cutting off the deep, overly-specific branches of a tree to stop it from overfitting.</li>
+        <li><strong><span class="important-term">Entropy</span> / <span class="important-term">Information Gain</span>:</strong> Entropy is the mathematical measurement of "chaos" or mixed-up labels. Information Gain is how much a specific question reduces that chaos.</li>
+      </ul>
+    </div>
 
-    <h3>Choosing the best split: entropy &amp; information gain</h3>
-    <p>Imagine you're playing a guessing game: you have records with unknown class labels, and you're allowed to ask yes/no questions about their attributes to narrow things down. Some questions are worthless — if every record already has the same color, asking about color tells you nothing new. Other questions are extremely informative — if "does it fly?" perfectly separates birds from mammals, that one question does almost all the work. Decision trees need a precise, numeric way to measure "how informative is this question," so the algorithm — not a human — can decide, at every node, which attribute to test next. That numeric yardstick is <strong>entropy</strong>, and the quantity built on top of it is <strong>information gain</strong>.</p>
-    <p>Entropy measures how "mixed up" or unpredictable a set of labels is. If a set is pure (every record is the same class), entropy is 0. If a set is a 50/50 mix of two classes, entropy is at its highest value (1, in "bits," using log base 2):</p>
-    <div class="formula-block">entropy(X) = − Σᵢ pᵢ · log₂(pᵢ)</div>
-    <p>Why base 2? Because entropy is measured in <strong>bits</strong> — literally, the expected number of yes/no questions you'd need to identify a record's class if you asked optimally. A 50/50 split needs exactly 1 well-chosen question on average, hence entropy 1. If your calculator only has natural log, use log₂(p) = ln(p) / ln(2).</p>
-    <details class="micro-check">
-      <summary>A set is 100% one class — every record identical. What's its entropy, and why?</summary>
-      <div class="mc-a"><p><strong>0.</strong> There's nothing left to guess — you already know the class with certainty, so it takes zero yes/no questions to identify it.</p></div>
-    </details>
-    <p><strong>Information gain</strong> answers the question we actually care about: if I split X on attribute <em>a</em>, how much less mixed-up are the resulting subsets, on average, compared to before?</p>
-    <div class="formula-block">gain(X, a) = entropy(X) − Σ_{v ∈ Values(a)} (|X_v| / |X|) · entropy(X_v)</div>
-    <p>The attribute chosen is whichever maximizes this quantity — the split that reduces uncertainty the most.</p>
+    <h3>2. The Code Reality</h3>
+    <div class="python-note"><div>
+      <span class="pn-label">Python (Scikit-Learn)</span>
+      <pre style="white-space:pre-wrap;margin:0"><code>from sklearn.tree import DecisionTreeClassifier
+
+# min_samples_leaf=3 stops the tree from memorizing every single row (Pruning)
+clf = DecisionTreeClassifier(criterion="entropy", min_samples_leaf=3)
+
+# X_train = The inputs/features (e.g., patient's age, weight, blood pressure)
+# y_train = The answers/labels we want to predict (e.g., "Sick" or "Healthy")
+clf.fit(X_train, y_train)</code></pre>
+    </div></div>
 
     <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>A small 7-record dataset — 4 birds and 3 mammals — reproduces the two headline numbers to remember: splitting on <code>color</code> gains only 0.020 bits, while splitting on <code>fly</code> gains 0.521 bits.</p>
-      <div class="table-wrap"><table><thead><tr><th>Animal</th><th>Color</th><th>Flies?</th><th>Class</th></tr></thead><tbody>
-        <tr><td>eagle</td><td>Brown</td><td>Yes</td><td>Bird</td></tr>
-        <tr><td>pigeon</td><td>White</td><td>Yes</td><td>Bird</td></tr>
-        <tr><td>hawk</td><td>Brown</td><td>Yes</td><td>Bird</td></tr>
-        <tr><td>penguin</td><td>White</td><td>No</td><td>Bird</td></tr>
-        <tr><td>cat</td><td>Brown</td><td>No</td><td>Mammal</td></tr>
-        <tr><td>whale</td><td>White</td><td>No</td><td>Mammal</td></tr>
-        <tr><td>horse</td><td>White</td><td>No</td><td>Mammal</td></tr>
-      </tbody></table></div>
+      <span class="we-label">Quick Example: Information Gain</span>
+      <p>Imagine 4 Birds and 3 Mammals.</p>
       <ol class="we-steps">
-        <li><div><span class="we-step-label">Entropy of the whole set</span><span class="we-calc">4 of 7 are Bird (p=4/7≈0.5714), 3 of 7 are Mammal (p=3/7≈0.4286)<br>log₂(4/7) = ln(0.5714)/ln(2) ≈ −0.8074&nbsp;&nbsp; log₂(3/7) = ln(0.4286)/ln(2) ≈ −1.2224<br>entropy(X) = −(0.5714×−0.8074) − (0.4286×−1.2224) = 0.4613 + 0.5239 = <strong>0.9852 bits</strong></span></div></li>
-        <li><div><span class="we-step-label">Split on <code>fly</code></span><span class="we-calc">Fly=Yes = {eagle, pigeon, hawk} — all Birds, <strong>pure</strong> → entropy = 0<br>Fly=No = {penguin, cat, whale, horse} — 1 Bird, 3 Mammals (p=1/4, 3/4)<br>log₂(1/4) = −2.0000 (exact),&nbsp;&nbsp; log₂(3/4) ≈ −0.4150<br>entropy(Fly=No) = −(0.25×−2.0) − (0.75×−0.4150) = 0.5 + 0.3113 = <strong>0.8113</strong><br>Weighted average: (3/7)×0 + (4/7)×0.8113 = <strong>0.4636</strong> → gain(X, fly) = 0.9852 − 0.4636 = <strong>0.5216 ≈ 0.521 bits</strong></span></div></li>
-        <li><div><span class="we-step-label">Split on <code>color</code>, for comparison</span><span class="we-calc">Color=Brown = {eagle, hawk, cat} (2 Bird, 1 Mammal), entropy ≈ 0.9183<br>Color=White = {pigeon, penguin, whale, horse} — dead-even 2/2 split, entropy = <strong>1.0000</strong> (the maximum possible)<br>Weighted average: (3/7)×0.9183 + (4/7)×1.0 = <strong>0.9650</strong> → gain(X, color) = 0.9852 − 0.9650 = <strong>0.0202 ≈ 0.020 bits</strong></span></div></li>
+        <li><div><span class="we-step-label">Split on "Color"</span><span class="we-calc">Brown animals are a mix of Birds/Mammals. White animals are a mix. <strong>Chaos remains high.</strong> (<span class="important-term">Low Information Gain</span>)</span></div></li>
+        <li><div><span class="we-step-label">Split on "Flies?"</span><span class="we-calc">If Yes -> All Birds (Pure!). If No -> 1 Bird, 3 Mammals. <strong>Chaos is massively reduced!</strong> (<span class="important-term">High Information Gain</span>)</span></div></li>
       </ol>
-      <p>Why the two attributes differ so much: <code>fly</code> manages to carve out a perfectly pure subgroup (all 3 flyers are birds), which is what makes the resulting weighted entropy drop so far. <code>color</code> never produces a pure subgroup — one branch is still a coin flip. That gap (0.521 vs. 0.020) is exactly what drives the tree to test <code>fly</code> at the root.</p>
+      <p>The tree algorithm calculates <span class="important-term">Entropy</span> (math for chaos) and always chooses to split on the feature (like "Flies?") that drops the entropy the most.</p>
     </div>
 
-    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>math.log2(x)</code> computes log base 2 directly; for arrays, NumPy's <code>np.log2(array)</code> does it elementwise. You'll essentially never implement entropy/information-gain splitting yourself, though: <code>sklearn.tree.DecisionTreeClassifier</code> does it for you. Its <code>criterion</code> parameter selects the impurity measure — pass <code>criterion="entropy"</code> to use exactly the calculation above (the default, <code>"gini"</code>, is a closely related, slightly cheaper impurity measure).</p></div></div>
-
-    <h3>Overfitting, underfitting, and pruning</h3>
-    <p>Nothing in the entropy/information-gain machinery stops a tree from splitting forever — in the limit, you could keep adding tests until every leaf contains exactly one training record, achieving zero training error by simple memorization. That tree is useless: it has learned the noise of <em>this particular</em> training set rather than the underlying pattern. If you plot error against tree complexity for both train and test sets: <strong>train error</strong> keeps falling as the tree grows (more splits can only help fit training data better), but <strong>test error</strong> falls at first, then rises once the tree begins fitting noise. The low point of the <em>test</em> curve — not the train curve — is the complexity level you actually want.</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Failure mode</th><th>What's happening</th></tr></thead>
-        <tbody>
-          <tr><td>Underfitting</td><td>The tree is too simple/shallow — it does poorly on <em>both</em> training and test data.</td></tr>
-          <tr><td>Overfitting</td><td>The tree is too complex — it fits training data (including noise) "parrot fashion," but that memorized detail doesn't transfer.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p><strong>Regularization</strong> is the general name for any technique that penalizes model complexity specifically to head off overfitting — a word you'll meet again in every other model family in this bootcamp. For decision trees, the regularization technique is <strong>pruning</strong>: after growing a (possibly overly large) tree, remove nodes bottom-up whenever doing so <em>decreases</em> error on a held-out validation set, even though removing them will always make training error a little worse.</p>
-
-    <h3>Limitations</h3>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Issue</th><th>Description</th></tr></thead>
-        <tbody>
-          <tr><td>Overfitting risk</td><td>Builds overly complex trees on noise, worse with small/high-dimensional data</td></tr>
-          <tr><td>Lower predictive power</td><td>Often less accurate than ensemble methods (below)</td></tr>
-          <tr><td>Instability</td><td>Small data changes can produce a completely different tree — an early split near the root can cascade into an entirely different shape downstream</td></tr>
-          <tr><td>Axis-aligned splits only</td><td>Every test is "is feature X above/below a threshold?" so decision boundaries are always blocky, rectangular — never diagonal</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="callout watch"><span class="tag">Quiz</span><p>"Which plot shows a decision tree's decision boundary?" — the answer is always the one with <strong>blocky, axis-aligned rectangular regions</strong>, never smooth or diagonal ones. That boxiness comes directly from every split testing exactly one feature against one threshold — nothing in the model can express "a weighted combination of two features."</p></div>
-
-    <div class="python-note"><div><span class="pn-label">Python note</span><pre style="white-space:pre-wrap;margin:0"><code>from sklearn.tree import DecisionTreeClassifier
-clf = DecisionTreeClassifier(criterion="entropy", min_samples_leaf=3)
-clf.fit(X, y)
-clf.feature_importances_   # how much each feature reduced impurity, overall
-clf.tree_                  # the underlying fitted tree structure</code></pre>
-    <p style="margin-top:0.7rem"><code>min_samples_leaf=3</code> is a <em>pre-pruning</em> control — it stops the tree from ever creating a leaf with fewer than 3 records, a cheap way to cap complexity without a separate post-hoc pruning pass. Gotcha: scikit-learn's trees only accept numerical features — categorical strings need encoding (one-hot or ordinal) first.</p></div></div>
+    <h3>3. Exam Cheat Sheet</h3>
+    <ul>
+      <li><strong>Entropy & Information Gain:</strong> Entropy measures chaos. Information gain measures how much a question reduces that chaos. The tree always picks the question with the highest Information Gain.</li>
+      <li><strong>Overfitting vs Underfitting:</strong> If a tree is too deep, it memorizes the training data (overfits) and fails on new data. If it's too shallow, it underfits.</li>
+      <li><strong>Decision Boundaries:</strong> A decision tree boundary is ALWAYS blocky and axis-aligned (rectangles), never diagonal or smooth.</li>
+    </ul>
   </section>
 
   <!-- ============ 2 ============ -->
@@ -543,147 +513,142 @@ clf.tree_                  # the underlying fitted tree structure</code></pre>
     <div class="chapter-head"><span class="chapter-num">2</span><h2>Random Forests</h2></div>
     <p class="chapter-dek">Growing many different trees on purpose, then letting them vote.</p>
 
-    <p>The Limitations table above ended on a real problem: a single decision tree is unstable and often mediocre compared to other approaches. The fix is almost paradoxical at first glance: instead of trying to build one really good tree, build <em>many</em> deliberately different, individually mediocre trees, and combine their predictions. This is an instance of a bigger idea — <strong>ensemble learning</strong> — and it works because the individual trees' errors tend to be uncorrelated: one tree's idiosyncratic mistake gets outvoted by all the other trees that didn't see that noise.</p>
-    <p>The catch: if you train several trees on the <em>exact same</em> data with the exact same algorithm, the greedy, deterministic split-selection process typically gives you the same tree back every time — there's nothing to vote <em>between</em>. So Random Forests deliberately inject two separate sources of randomness to force the trees apart.</p>
+    <h3>1. The Analogy Recap</h3>
+    <p><strong>The Sorting Team:</strong> A single worker makes mistakes, so we hire a whole team! Each worker gets a random subset of packages (<span class="important-term">Bagging</span>) and a random subset of features (<span class="important-term">Random Subspace</span>). They all vote, and the majority wins.</p>
 
-    <h3>Two randomization mechanisms</h3>
-    <ul>
-      <li><strong>Bagging (Bootstrap Aggregating)</strong> — for each of M trees, draw a training subset the same size as the original data by sampling <em>with replacement</em>. The same original record can be picked more than once (and some records get left out entirely) for a given tree.</li>
-      <li><strong>Random Subspace Method</strong> — independently, restrict each tree so that at each split it's only allowed to consider a random subset of the <em>features</em>, not all of them.</li>
-    </ul>
-    <p><strong>Random Forest = Bagging + Random Subspace + Decision Trees.</strong> At inference, a test record is pushed through every one of the N trees; each independently votes a class; the forest's answer is decided by <strong>majority vote</strong>. The proportion of trees that agree doubles as a confidence score — if 3 of 4 trees vote "Bird," the forest reports 75% confidence, with no extra calculation required.</p>
-    <p><em>Analogy:</em> instead of giving one student 6 textbooks to summarize, split the class into small groups, each getting a different, overlapping subset of books and even different pages within those books. No individual group has the full picture, and a couple might genuinely misread their material — but the majority answer across the whole class is far more reliable than trusting any one student, because different groups' mistakes tend to be different mistakes and get outvoted.</p>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Take the 7-animal table from §1.</p>
-      <ol class="we-steps">
-        <li><div><span class="we-step-label">Tree #1's bootstrap sample</span><span class="we-calc">{eagle, eagle, penguin, cat, whale, whale, horse} — <code>eagle</code> and <code>whale</code> each appear twice, while <code>pigeon</code> and <code>hawk</code> don't appear at all in this tree's training data</span></div></li>
-        <li><div><span class="we-step-label">Tree #2's bootstrap sample</span><span class="we-calc">A different resample entirely: {pigeon, hawk, hawk, penguin, penguin, cat, horse}</span></div></li>
-        <li><div><span class="we-step-label">Random subspace at 1-of-2 features per split</span><span class="we-calc">Tree #1 might only ever test <code>fly</code> at its root (never seeing <code>color</code>), while Tree #2 is restricted to <code>color</code> — the two trees end up structurally different purely from these two injected randomizations</span></div></li>
-        <li><div><span class="we-step-label">Forest vote (N=100 trees)</span><span class="we-calc">82 vote Bird, 18 vote Mammal → the forest predicts Bird with <strong>82%</strong> confidence</span></div></li>
-      </ol>
+    <div class="mini-box" style="margin: 1rem 0;">
+      <h4>Key Terms</h4>
+      <ul style="margin:0; padding-left:1.2rem;">
+        <li><strong><span class="important-term">Ensemble Learning</span>:</strong> Combining many weak, simple models into one super strong model.</li>
+        <li><strong><span class="important-term">Bagging</span> (Bootstrap Aggregating):</strong> Giving each tree a random subset of the training rows (with replacement) so they all learn slightly different things.</li>
+        <li><strong><span class="important-term">Random Subspace</span>:</strong> Forcing each tree to only look at a random subset of the columns (features) at every split, guaranteeing that no two trees are identical.</li>
+      </ul>
     </div>
 
-    <div class="python-note"><div><span class="pn-label">Python note</span><pre style="white-space:pre-wrap;margin:0"><code>from sklearn.ensemble import RandomForestClassifier
-clf = RandomForestClassifier(n_estimators=20)  # 20 trees</code></pre>
-    <p style="margin-top:0.7rem"><code>n_estimators</code> is the number of trees N (bagging and random-subspace sampling are handled internally and on by default). More trees generally means a smoother, more stable vote at the cost of more computation — the Sprint Exercise below shows just how much dropping <code>n_estimators</code> from 1000 to 10 can hurt accuracy.</p></div></div>
+    <h3>2. The Code Reality</h3>
+    <div class="python-note"><div>
+      <span class="pn-label">Python (Scikit-Learn)</span>
+      <pre style="white-space:pre-wrap;margin:0"><code>from sklearn.ensemble import RandomForestClassifier
+
+# n_estimators is the number of trees in the forest. 
+clf = RandomForestClassifier(n_estimators=100)
+
+# X_train = Inputs (Features), y_train = Answers (Labels)
+clf.fit(X_train, y_train)</code></pre>
+    </div></div>
+
+    <div class="worked-example">
+      <span class="we-label">Quick Example: Randomization</span>
+      <p>Why do we need randomization? Because if we gave 100 decision trees the exact same data, they would all build the exact same tree and vote the exact same way!</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Bagging (Rows)</span><span class="we-calc">Tree 1 gets random rows: [Patient A, Patient A, Patient C]. Patient B is left out! Tree 2 gets [Patient B, Patient C, Patient C].</span></div></li>
+        <li><div><span class="we-step-label">Random Subspace (Columns)</span><span class="we-calc">Tree 1 is only allowed to look at [Age, Blood Pressure]. Tree 2 is only allowed to look at [Weight, Heart Rate].</span></div></li>
+      </ol>
+      <p>Because they see different data, their mistakes are totally different, making the final majority vote extremely reliable.</p>
+    </div>
+
+    <h3>3. Exam Cheat Sheet</h3>
+    <ul>
+      <li><strong>Ensemble Learning:</strong> Combining many weak models into one strong model.</li>
+      <li><strong>Bagging:</strong> Sampling the training data <em>with replacement</em> so each tree sees slightly different data.</li>
+      <li><strong>Random Subspace:</strong> Forcing each tree to only look at a random subset of features (e.g., only weight and size, but not color).</li>
+      <li><strong>Confidence Score:</strong> If 80 out of 100 trees vote for class A, the model predicts class A with 80% confidence.</li>
+    </ul>
   </section>
 
   <!-- ============ 3 ============ -->
   <section class="chapter" id="adaboost">
     <div class="chapter-head"><span class="chapter-num">3</span><h2>Adaptive Boosting (AdaBoost)</h2></div>
-    <p class="chapter-dek">Instead of many independent trees, build weak learners <em>sequentially</em>, each one fixing the last one's mistakes.</p>
+    <p class="chapter-dek">Build weak learners sequentially, each one fixing the last one's mistakes.</p>
 
-    <p>Random Forest's whole strategy is <em>parallel</em> and independent: grow many trees separately, only combine them at the end via a vote. That's powerful, but none of the trees ever get told which specific records the <em>other</em> trees are struggling with. AdaBoost takes the opposite strategy: build a sequence of very simple models, one at a time, where each new model is deliberately trained to focus on exactly the examples the previous models got wrong.</p>
-    <p>Because each round only needs to nudge the ensemble a little further, the individual models are typically <strong>decision stumps</strong>: a tree of depth 1, a single yes/no test on a single feature. A stump alone is barely better than a coin flip, but a weighted sequence of dozens of stumps, each patching the previous ones' blind spots, can become a very strong classifier.</p>
+    <h3>1. The Analogy Recap</h3>
+    <p><strong>Reweighting:</strong> Workers form a line. If the first worker misclassifies a package, it gets a massive URGENT sticker (<span class="important-term">reweighting</span>) so the next worker focuses extra hard on it.</p>
 
-    <ol>
-      <li><strong>Initialize weights</strong> — every one of N samples starts with equal weight 1/N. Weight represents "how much this example currently matters" when scoring the next stump.</li>
-      <li><strong>Train a stump, compute its say (α)</strong>:
-        <div class="formula-block">αᵢ = ½ · ln((1 − εᵢ) / εᵢ)</div>
-        where εᵢ is the stump's weighted error rate. As εᵢ → 0 (a great stump), α grows large and positive — it gets a loud voice. As εᵢ → 0.5 (a useless stump), α → 0 — it's effectively silenced. If a stump does worse than random (ε&gt;0.5), α goes negative, inverting its vote.</li>
-      <li><strong>Reweight samples</strong> — correctly-classified samples shrink (×e⁻ᵅ), misclassified ones grow (×e^α), then renormalize so weights sum to 1.</li>
-      <li><strong>Resample</strong> the next round according to the updated weights, so the next stump is forced to pay attention to this round's failures.</li>
-      <li><strong>Repeat</strong> for T rounds.</li>
-    </ol>
-    <p><strong>Final prediction</strong> is a vote weighted by each stump's α, not a simple majority:</p>
-    <div class="formula-block">C*(x) = argmax_y Σᵢ αᵢ · [Cᵢ(x) = y]</div>
+    <div class="mini-box" style="margin: 1rem 0;">
+      <h4>Key Terms</h4>
+      <ul style="margin:0; padding-left:1.2rem;">
+        <li><strong><span class="important-term">Decision Stump</span>:</strong> A tiny decision tree that is only 1 level deep (makes exactly one split). Barely better than a coin flip!</li>
+        <li><strong><span class="important-term">Reweighting</span>:</strong> The core math trick of AdaBoost. After every round, incorrectly predicted rows get their "weight" artificially increased so the next model is forced to fix the mistake.</li>
+      </ul>
+    </div>
+
+    <h3>2. The Code Reality</h3>
+    <div class="python-note"><div>
+      <span class="pn-label">Python (Scikit-Learn)</span>
+      <pre style="white-space:pre-wrap;margin:0"><code>from sklearn.ensemble import AdaBoostClassifier
+
+clf = AdaBoostClassifier(n_estimators=50)
+
+# X_train = Inputs (Features), y_train = Answers (Labels)
+clf.fit(X_train, y_train)</code></pre>
+    </div></div>
 
     <div class="worked-example">
-      <span class="we-label">Worked example (illustrative toy — not from real data)</span>
-      <p>Suppose 5 training samples, initial weights all 1/5 = 0.2. The first stump gets 4 of 5 right, 1 wrong.</p>
+      <span class="we-label">Quick Example: Reweighting</span>
+      <p>Suppose we have 5 patients. They all start with an equal weight of 20% importance.</p>
       <ol class="we-steps">
-        <li><div><span class="we-step-label">Weighted error</span><span class="we-calc">All weights currently equal 0.2 → ε = <strong>0.2</strong> (just the misclassified sample's weight)</span></div></li>
-        <li><div><span class="we-step-label">Compute α</span><span class="we-calc">α = ½·ln((1−0.2)/0.2) = ½·ln(4) = ½×1.3863 = <strong>0.6931</strong></span></div></li>
-        <li><div><span class="we-step-label">Reweight each sample</span><span class="we-calc">e⁻ᵅ = 4^(−½) = 1/√4 = <strong>0.5</strong> exactly → each correct sample: 0.2×0.5 = 0.1<br>e^α = 4^(½) = √4 = <strong>2</strong> exactly → the misclassified sample: 0.2×2 = 0.4<br>Total before renormalizing: 4×0.1 + 0.4 = 0.8</span></div></li>
-        <li><div><span class="we-step-label">Renormalize (divide by 0.8)</span><span class="we-calc">correctly-classified: 0.1 / 0.8 = <strong>0.125</strong> (×4 samples)<br>misclassified: 0.4 / 0.8 = <strong>0.5</strong><br>check: 4 × 0.125 + 0.5 = 1.0 ✓</span></div></li>
+        <li><div><span class="we-step-label">Round 1</span><span class="we-calc">Stump #1 gets 4 patients right, but misclassifies Patient #3.</span></div></li>
+        <li><div><span class="we-step-label">Reweighting</span><span class="we-calc">AdaBoost mathematically punishes the model! It shrinks the weight of the 4 correct patients, and massively boosts Patient #3's weight to 50%.</span></div></li>
+        <li><div><span class="we-step-label">Round 2</span><span class="we-calc">Stump #2 is now forced to prioritize Patient #3 above everything else.</span></div></li>
       </ol>
-      <p>Going into round 2, the single sample the first stump got wrong now carries <strong>half of the entire dataset's weight</strong> — even though it's just 1 of 5 records. One wrong answer, reweighted by a factor of 4 relative to the right answers (0.5 vs. 0.125), dominates the next round's training signal.</p>
+      <p>At the end, all the stumps vote, but the stumps that made fewer mistakes get a <strong>louder say (higher alpha weight)</strong> in the final vote.</p>
     </div>
 
-    <h3>Random Forest vs. AdaBoost</h3>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Dimension</th><th>Random Forest</th><th>AdaBoost</th></tr></thead>
-        <tbody>
-          <tr><td>Trees</td><td>Full trees (depth is a hyperparameter)</td><td>Almost always stumps (depth 1)</td></tr>
-          <tr><td>Computation</td><td>Parallel — trees are independent</td><td>Sequential — each stump depends on the last</td></tr>
-          <tr><td>Sampling</td><td>Bagging: independent random subsets</td><td>Boosting: reweighted toward past mistakes</td></tr>
-          <tr><td>Voting</td><td>Equal vote per tree</td><td>Weighted vote, via α</td></tr>
-          <tr><td>Overfitting</td><td>More robust — bagging reduces variance</td><td>More prone — keeps re-fitting to hard/outlier points</td></tr>
-          <tr><td>Outliers</td><td>Less sensitive (averaging)</td><td>Sensitive — an outlier keeps getting misclassified and keeps gaining weight, round after round</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="callout watch"><span class="tag">Trade-off</span><p>Random Forest is robust and broadly reliable, but harder to explain any single prediction from (it's an average over potentially hundreds of trees). AdaBoost can reach very high accuracy by successively refining simple rules, but that same sequential, corrective process makes it more easily thrown off by unusual or mislabeled records.</p></div>
-
-    <p><strong>Ensemble learning, summarized:</strong> Bagging = same algorithm, different random data samples, trained independently. Random Subspace = same algorithm, different random feature subsets. Boosting = a sequence of models, each explicitly correcting the previous one's mistakes via reweighting.</p>
-
-    <div class="python-note"><div><span class="pn-label">Python note</span><p>Just as <code>RandomForestClassifier</code> packages up bagging + random subspace, <code>sklearn.ensemble.AdaBoostClassifier</code> packages up everything above — weight initialization, per-round stump fitting, α computation, and reweighting are all handled internally by <code>.fit(X, y)</code>. You supply <code>n_estimators</code> for the number of boosting rounds T.</p></div></div>
+    <h3>3. Exam Cheat Sheet</h3>
+    <ul>
+      <li><strong>Sequential vs Parallel:</strong> Random Forest trains all trees at the same time (parallel). AdaBoost trains them one by one (sequential).</li>
+      <li><strong>Decision Stumps:</strong> AdaBoost usually uses trees with a depth of 1 (just a single split).</li>
+      <li><strong>Reweighting:</strong> After every round, incorrectly classified samples get their weights increased. Correctly classified samples get their weights decreased.</li>
+    </ul>
   </section>
 
   <!-- ============ 4 ============ -->
   <section class="chapter" id="xai-intro">
-    <div class="chapter-head"><span class="chapter-num">4</span><h2>A First Look at Explainability &amp; Causality</h2></div>
-    <p class="chapter-dek">This chapter's closing detour — developed in full in Module 7.</p>
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Explainability & Causality</h2></div>
+    <p class="chapter-dek">Why did the model make that decision?</p>
 
-    <p>Everything covered so far has been about getting a model to predict the right label. But in a lot of real deployments, "predicts correctly" is necessary but not sufficient — you also need to answer <em>why</em> the model predicted what it did. A bank that denies a loan, a hospital that flags a patient as high-risk, or a court using a risk score in sentencing all face the same requirement: a human is entitled to know what drove that specific decision. <strong>Explainable AI (XAI)</strong> is the umbrella term for techniques that make a model's individual predictions transparent.</p>
+    <h3>1. The Analogy Recap</h3>
+    <p><strong>The Inspector vs The Manager:</strong> The Inspector (XAI) tells you exactly which features (like weight) the Black Box used to make its decision. The Manager (Causal AI) figures out if weight actually <em>caused</em> the outcome, or if it was just a coincidence.</p>
 
-    <h3>Explainable AI</h3>
-    <p>Some model families are transparent by construction — you can read the decision logic straight off the trained model. A linear/logistic regression model's coefficients directly tell you how much each feature pushes the prediction. A single decision tree's path from root to leaf <em>is</em> a plain-English explanation. These are <strong>glass-box</strong> models.</p>
-    <p>Other families — Random Forests with hundreds of trees, neural networks, gradient boosting, high-dimensional SVMs — achieve strong accuracy precisely by combining huge numbers of small signals in ways too tangled to read off directly. These are <strong>black-box</strong> models.</p>
-    <details class="micro-check">
-      <summary>Getting an explanation out of a black-box model requires what, that a glass-box model doesn't need?</summary>
-      <div class="mc-a"><p>A separate, dedicated <strong>post-hoc</strong> explainability technique layered on top — the model itself won't hand you the reasoning, unlike a decision tree's root-to-leaf path or a regression's coefficients. Module 7 covers exactly these techniques.</p></div>
-    </details>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Glass-box (interpretable)</th><th>Black-box (opaque)</th></tr></thead>
-        <tbody>
-          <tr><td>Linear / Logistic Regression, Decision Tree, k-NN, Naive Bayes, low-dim SVM</td><td>Random Forest, Neural Nets, Gradient Boosting, high-dim SVM</td></tr>
-        </tbody>
-      </table>
+    <div class="mini-box" style="margin: 1rem 0;">
+      <h4>Key Terms</h4>
+      <ul style="margin:0; padding-left:1.2rem;">
+        <li><strong><span class="important-term">Glass-box</span> Models:</strong> Models like Decision Trees that are 100% transparent. You can print the rules and read them like a book.</li>
+        <li><strong><span class="important-term">Black-box</span> Models:</strong> Models like Random Forests or Neural Networks that are too mathematically tangled for a human to read.</li>
+        <li><strong><span class="important-term">Explainable AI</span> (XAI):</strong> External mathematical techniques (like SHAP) used to probe a black-box model and force it to explain its decision.</li>
+        <li><strong><span class="important-term">Causal AI</span>:</strong> Proving true cause-and-effect in the real world, rather than just spotting random correlations in a dataset.</li>
+      </ul>
     </div>
+
+    <h3>2. The Code Reality</h3>
+    <div class="python-note"><div>
+      <span class="pn-label">Python (Scikit-Learn)</span>
+      <pre style="white-space:pre-wrap;margin:0"><code># Glass-box models (like Decision Trees) explain themselves
+importances = clf.feature_importances_
+
+# Black-box models (like Neural Networks) need external tools like SHAP
+import shap
+
+# X_test = the new data we are making predictions on
+explainer = shap.TreeExplainer(clf)
+shap_values = explainer.shap_values(X_test)</code></pre>
+    </div></div>
 
     <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>A deliberately simplified glass-box model — a toy linear credit-scoring formula:</p>
-      <div class="formula-block">score = 2.5 + 0.00004 × income − 0.9 × missed_payments
-approve if score &gt; 0</div>
-      <p>For an applicant with income = $40,000 and 3 missed payments:</p>
-      <div class="formula-block">income contribution:          0.00004 × 40,000  = +1.6
-missed_payments contribution: −0.9 × 3           = −2.7
-intercept:                                        +2.5
-
-score = 2.5 + 1.6 − 2.7 = 1.4   →  score &gt; 0, so: approved</div>
-      <p>Because the model is glass-box, you can hand the applicant the actual breakdown: income pushed the decision up by 1.6, missed payments pulled it down by 2.7, the baseline intercept contributed 2.5. If a 500-tree Random Forest had made the same "approved" call, you'd have no equivalent breakdown available directly from the model — you'd need a separate explainability technique layered on top. Note the callback: <code>clf.feature_importances_</code> from §1 is exactly this kind of explanation applied to tree ensembles — how much each feature contributed to reducing impurity, in aggregate (rather than a per-prediction breakdown like the one above).</p>
+      <span class="we-label">Quick Example: Glass vs Black Box</span>
+      <p>If a bank denies your loan, they are legally required to tell you <em>why</em>.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Glass Box</span><span class="we-calc">A Decision Tree is fully transparent. You can print the tree and say: "You were denied because your income < 40k and missed_payments > 3."</span></div></li>
+        <li><div><span class="we-step-label">Black Box</span><span class="we-calc">A Random Forest is opaque. The bank can't say "37 out of 100 trees didn't like you." We have to use a tool like SHAP to mathematically estimate which features hurt your score the most.</span></div></li>
+      </ol>
     </div>
 
-    <h3>Causal AI</h3>
-    <p><strong>Causal AI</strong> pushes a step further than explainability. Explainability tells you which features the model <em>used</em> — it does not tell you whether those features actually <em>cause</em> the outcome, or merely happen to be correlated with something else that does. A model can be perfectly explainable while still being causally wrong about the world.</p>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Suppose you're studying patient survival time and treatment timing, and observe the following (illustrative) numbers:</p>
-      <div class="table-wrap"><table><thead><tr><th>Group</th><th>N patients</th><th>Avg. disease severity (1–10)</th><th>Avg. survival (months)</th></tr></thead><tbody>
-        <tr><td>Treated early</td><td>10</td><td>3.2</td><td>34</td></tr>
-        <tr><td>Treated late</td><td>10</td><td>7.8</td><td>19</td></tr>
-      </tbody></table></div>
-      <p>Read naively, this says "early treatment causes 15 extra months of survival" — and a predictive model would happily learn "treatment timing" as an important feature. But look at the severity column: patients treated early were, on average, far less sick to begin with (3.2 vs. 7.8) — likely caught by routine screening rather than diagnosed after symptoms progressed. Severity independently affects both <em>when</em> treatment happens and <em>how long</em> the patient survives — it's a <strong>confounder</strong>. Some (perhaps most) of that 15-month gap may simply be "healthier patients get treated earlier <em>and</em> healthier patients survive longer regardless of timing," not "earlier treatment causes longer survival." A model that only sees correlations can't tell these stories apart; only causal analysis — deliberately accounting for the confounder — can.</p>
-    </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th></th><th>Explainable AI</th><th>Causal AI</th></tr></thead>
-        <tbody>
-          <tr><th>Focus</th><td>Making a decision understandable</td><td>Uncovering true cause-and-effect</td></tr>
-          <tr><th>Method</th><td>Feature importance, attention, decision trees</td><td>Causal inference, domain knowledge, experiments</td></tr>
-          <tr><th>Answers</th><td>"What factors influenced this decision?"</td><td>"What would happen if we intervened on X?"</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>The distinction in that last row is the one to hold onto: explainability answers a question about the <em>model</em> ("what did you use to decide this?"), while causal inference answers a question about the <em>world</em> ("if I actually changed X, what would happen to Y?"). Scikit-learn — and ML tooling generally — is built almost entirely around the first question; answering the second requires a different toolkit, which is exactly where Module 7 picks up.</p>
+    <h3>3. Exam Cheat Sheet</h3>
+    <ul>
+      <li><strong>Glass-box vs Black-box:</strong> Decision Trees and Logistic Regression are transparent (glass-box). Random Forests and Neural Networks are opaque (black-box).</li>
+      <li><strong>Explainable AI (XAI):</strong> Answers "What features did the model use to predict this?" (e.g., Feature Importance, SHAP).</li>
+      <li><strong>Causal AI:</strong> Answers "What would happen if we changed this feature?" (Finding true root causes, avoiding confounders).</li>
+    </ul>
   </section>
 
   <!-- ============ 5 ============ -->

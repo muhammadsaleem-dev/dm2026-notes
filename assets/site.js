@@ -29,3 +29,11 @@
     });
   }
 })();
+
+  // Simple syntax highlighting for python comments
+  var codeBlocks = document.querySelectorAll('.python-note pre code');
+  codeBlocks.forEach(function(block) {
+    var html = block.innerHTML;
+    var highlighted = html.replace(/^( *)(#.*)$/gm, '$1<span class="py-comment">$2</span>');
+    block.innerHTML = highlighted;
+  });

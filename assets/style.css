@@ -1402,3 +1402,6 @@ footer.page-footer a:hover { color: var(--accent-ink); }
   .callout, table { break-inside: avoid; }
   .masthead, .hero, .chapter-card, .worked-example, .python-note, .outcomes-box, .toc-card, .table-wrap, .formula-block, .callout, .mini-box { box-shadow: none; }
 }
+.python-note pre code { background: transparent; padding: 0; }
+.py-comment { color: #6a9955; font-style: italic; opacity: 0.9; }
+.important-term { color: #d32f2f; font-weight: 600; }
