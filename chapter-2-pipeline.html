@@ -48,14 +48,12 @@
     <div class="nav-panel-section">
       <span class="nav-panel-label">On this page</span>
       <a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a>
+      <a href="#overview"><span class="toc-num">0.5</span>High-Level Overview</a>
       <a href="#framing"><span class="toc-num">1</span>Framing the Problem</a>
       <a href="#preprocessing"><span class="toc-num">2</span>Preprocessing</a>
       <a href="#pca-tsne"><span class="toc-num">3</span>PCA &amp; t-SNE</a>
       <a href="#evaluation"><span class="toc-num">4</span>Validating &amp; Evaluating Models</a>
       <a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a>
-      <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
-      <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
-      <a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a>
     </div>
   </div>
 </nav>
@@ -75,14 +73,12 @@
     <div class="sidebar-block">
       <span class="sidebar-label">On this page</span>
       <a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a>
+      <a href="#overview"><span class="toc-num">0.5</span>High-Level Overview</a>
       <a href="#framing"><span class="toc-num">1</span>Framing the Problem</a>
       <a href="#preprocessing"><span class="toc-num">2</span>Preprocessing</a>
       <a href="#pca-tsne"><span class="toc-num">3</span>PCA &amp; t-SNE</a>
       <a href="#evaluation"><span class="toc-num">4</span>Validating &amp; Evaluating Models</a>
       <a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a>
-      <a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a>
-      <a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a>
-      <a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a>
     </div>
   </aside>
 
@@ -95,31 +91,18 @@
     </div>
     <div class="masthead-meta">Zero to hero, from here<br><strong>Preprocessing → PCA/t-SNE → Evaluation → Modelling</strong></div>
   </div>
-  <p class="dek">The biggest module in this bootcamp's foundation: end-to-end preprocessing, PCA/t-SNE, evaluation metrics, and how to actually choose a model — with every formula worked through by hand at least once.</p>
-
-  <div class="outcomes-box">
-    <span class="outcomes-label">By the end of this module, you'll be able to</span>
-    <ul>
-      <li>Match a business question to the right technique, and pick a numeric representation for text with TF-IDF computed by hand</li>
-      <li>Build a full preprocessing pipeline — encoding, missing data, imbalance, scaling — and explain why every step fits on train data only</li>
-      <li>Run PCA by hand on a small dataset (covariance → eigenvalues → projection) and explain when t-SNE is the better tool instead</li>
-      <li>Compute precision, recall, F1, and a Bayesian base-rate correction from a confusion matrix — and know why "99% accurate" can still mean "almost always wrong"</li>
-      <li>Diagnose overfitting vs. underfitting from train/validation error, and choose a model on more than just its leaderboard score</li>
-    </ul>
-  </div>
+  <p class="dek">The ultimate end-to-end guide to the Data Mining Pipeline. We skip the massive walls of text and get straight to the analogies, the exact terms you need to know, the python code you will actually use, and the exam cheat sheet.</p>
 
   <div class="toc-card">
     <span class="toc-label">On this page</span>
     <ul class="toc-list">
       <li><a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a></li>
+      <li><a href="#overview"><span class="toc-num">0.5</span>High-Level Overview</a></li>
       <li><a href="#framing"><span class="toc-num">1</span>Framing the Problem</a></li>
       <li><a href="#preprocessing"><span class="toc-num">2</span>Preprocessing</a></li>
       <li><a href="#pca-tsne"><span class="toc-num">3</span>PCA &amp; t-SNE</a></li>
       <li><a href="#evaluation"><span class="toc-num">4</span>Validating &amp; Evaluating Models</a></li>
       <li><a href="#modelling"><span class="toc-num">5</span>Modelling &amp; Choosing a Model</a></li>
-      <li><a href="#exercises"><span class="toc-num">6</span>Sprint Exercises</a></li>
-      <li><a href="#test-yourself"><span class="toc-num">7</span>Test Yourself</a></li>
-      <li><a href="#exam-drill"><span class="toc-num">8</span>Exam Drill</a></li>
     </ul>
   </div>
 
@@ -181,35 +164,33 @@
   .carousel-slide {
     min-width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: flex-start; /* Must be flex-start so tall images scroll from the top! */
+    align-items: center;
     padding: 1rem 0;
-    max-height: 75vh;
-    overflow-y: auto; /* Enable scrolling for the full storyboard slide */
+  }
+  .carousel-caption {
+    color: #fff;
+    margin-top: 1rem;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    font-family: var(--font-body);
+    text-align: center;
+    padding: 0 1.5rem;
+    max-width: 800px;
+  }
+  .carousel-caption strong {
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 0.4rem;
+    color: var(--accent-hover);
   }
   .carousel-slide img {
     max-width: 100%;
-    width: auto;
-    height: auto; /* Allow image to be tall so it scrolls */
+    height: auto;
     display: block;
     margin: 0 auto;
-    object-fit: contain;
   }
-  /* Scrollbar for the comic panels */
-  .carousel-slide::-webkit-scrollbar {
-    width: 8px;
-  }
-  .carousel-slide::-webkit-scrollbar-track {
-    background: #111;
-  }
-  .carousel-slide::-webkit-scrollbar-thumb {
-    background: #444;
-    border-radius: 4px;
-  }
-  .carousel-slide::-webkit-scrollbar-thumb:hover {
-    background: #666;
-  }
-
   .slide-dropdown {
     appearance: none;
     background-color: var(--bg);
@@ -243,34 +224,91 @@
       background-position: calc(100% - 0.8rem) center;
     }
   }
-</style>
+  </style>
   
   <div class="comic-nav">
     <button onclick="moveSlide(-1)" id="btnPrevTop" class="comic-btn" disabled>« Previous</button>
     <select id="slideSelectTop" class="slide-dropdown" onchange="goToSlide(parseInt(this.value))">
-      <option value="0">Slide 1: Full Storyboard (Scrollable)</option>
+      <option value="0">1. Problem &amp; Sample Size</option>
+      <option value="1">2. Data Representation</option>
+      <option value="2">3. Train &amp; Test Split</option>
+      <option value="3">4. Missing Data &amp; Survivorship Bias</option>
+      <option value="4">5. Feature Eng &amp; Encoding</option>
+      <option value="5">6. Imbalance &amp; Scaling</option>
+      <option value="6">7. PCA &amp; t-SNE</option>
+      <option value="7">8. Validation Metrics</option>
+      <option value="8">9. Bias vs. Variance</option>
+      <option value="9">10. Deployment</option>
     </select>
-    <button onclick="moveSlide(1)" id="btnNextTop" class="comic-btn">Start Reading ↓</button>
+    <button onclick="moveSlide(1)" id="btnNextTop" class="comic-btn">Next »</button>
   </div>
 
   <div class="carousel-container">
     <div class="carousel-slides" id="carouselSlides">
-      <div class="carousel-slide"><img src="assets/story/Module2_Comic_Full_Storyboard.png" alt="Full Storyboard"></div>
+      <div class="carousel-slide">
+        <img src="assets/story/mod2_p1_blueprint_1787085443386.jpg" alt="Blueprint and Problem Framing">
+        <div class="carousel-caption"><strong>1. The Blueprint (Problem & Sample Size)</strong>Before building, we must know the goal (Classification vs Regression). Also, bringing in 10,000 rotten cabbages (Huge Sample Size) won't fix a terrible recipe (Poor Data Quality).</div>
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/story/mod2_p2_delivery_1787085453276.jpg" alt="Data Representation">
+        <div class="carousel-caption"><strong>2. The Delivery Dock (Data Representation)</strong>Raw data comes in bizarre formats (audio, text, images). We must mathematically transform them into standardized numerical 'ingredients' (like TF-IDF or Embeddings) before we can cook with them.</div>
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/story/mod2_p3_vault_1787085462724.jpg" alt="Train Test Split Vault">
+        <div class="carousel-caption"><strong>3. The Locked Vault (Train / Test Split)</strong>We lock away 20% of our data (the Test Set) and NEVER let the model see it during training. You can't grade a chef based on the exact same meal they just practiced on!</div>
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/story/mod2_p4_survivor_1787085471241.jpg" alt="Survivorship Bias">
+        <div class="carousel-caption"><strong>4. The Survivor's Trap (Survivorship Bias & Missing Data)</strong>During WWII, engineers only looked at planes that returned with bullet holes, ignoring the ones that crashed. If we only analyze the data that 'survived' our filters, our models will be fatally flawed.</div>
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/story/mod2_p5_chopping_1787085480958.jpg" alt="Feature Engineering and One Hot Encoding">
+        <div class="carousel-caption"><strong>5. The Chopping Block (Feature Eng. & One-Hot Encoding)</strong>We extract useful features and split categories (like colors) into separate Yes/No bowls. If we just numbered them 1, 2, 3, the model might mathematically assume that Blue is 'greater' than Red!</div>
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/story/mod2_p6_scale_1787085491296.jpg" alt="Imbalance and Scaling">
+        <div class="carousel-caption"><strong>6. The Balancer & Shrink-Ray (Imbalance & Scaling)</strong>We clone rare ingredients so they aren't ignored (Upsampling), and use a shrink-ray on massive pumpkins so their sheer size doesn't mathematically overpower a tiny pinch of salt (Z-Score Scaling).</div>
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/story/mod2_p7_blender_1787085501812.jpg" alt="PCA and t-SNE">
+        <div class="carousel-caption"><strong>7. The Master Blender (PCA & t-SNE)</strong>PCA squashes 50 spices into one intense paste to capture the most overall variance (Linear/Global). t-SNE draws a beautiful map grouping similar spices together (Non-Linear/Local).</div>
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/story/mod2_p8_critic_1787085510857.jpg" alt="Confusion Matrix and Critic">
+        <div class="carousel-caption"><strong>8. The Strict Critic (Validation Metrics)</strong>A harsh critic refuses to just use 'Accuracy'. He uses a Confusion Matrix to track True Hits vs False Alarms, knowing that if a disease is extremely rare, almost all alarms will be false (Base-Rate Trap).</div>
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/story/mod2_p9_chefs_1787085521189.jpg" alt="Underfitting vs Overfitting">
+        <div class="carousel-caption"><strong>9. The Two Bad Chefs (Underfitting vs Overfitting)</strong>Chef A serves raw dough to everyone (Underfitting: High Bias, too simple). Chef B perfectly sculpts a bizarre dish for exactly one customer, ruining it for everyone else (Overfitting: High Variance, memorized noise).</div>
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/story/mod2_p10_deploy_1787085530300.jpg" alt="Deployment">
+        <div class="carousel-caption"><strong>10. The Grand Opening (Model Selection & Deployment)</strong>The 'best' model isn't just the one with the highest training score. It's the one that is fast, explainable, and actually generalizes to the real world when the restaurant opens.</div>
+      </div>
     </div>
   </div>
 
   <div class="comic-nav">
     <button onclick="moveSlide(-1)" id="btnPrevBottom" class="comic-btn" disabled>« Previous</button>
     <select id="slideSelectBottom" class="slide-dropdown" onchange="goToSlide(parseInt(this.value))">
-      <option value="0">Slide 1: Full Storyboard (Scrollable)</option>
+      <option value="0">1. Problem &amp; Sample Size</option>
+      <option value="1">2. Data Representation</option>
+      <option value="2">3. Train &amp; Test Split</option>
+      <option value="3">4. Missing Data &amp; Survivorship Bias</option>
+      <option value="4">5. Feature Eng &amp; Encoding</option>
+      <option value="5">6. Imbalance &amp; Scaling</option>
+      <option value="6">7. PCA &amp; t-SNE</option>
+      <option value="7">8. Validation Metrics</option>
+      <option value="8">9. Bias vs. Variance</option>
+      <option value="9">10. Deployment</option>
     </select>
-    <button onclick="moveSlide(1)" id="btnNextBottom" class="comic-btn">Start Reading ↓</button>
+    <button onclick="moveSlide(1)" id="btnNextBottom" class="comic-btn">Next »</button>
   </div>
 
   <script>
   let currentSlide = 0;
   const slides = document.getElementById('carouselSlides');
-  const totalSlides = 1;
+  const totalSlides = 10;
 
   function updateCarousel() {
     slides.style.transform = `translateX(-${currentSlide * 100}%)`;
@@ -278,7 +316,6 @@
     document.getElementById('slideSelectTop').value = currentSlide;
     document.getElementById('slideSelectBottom').value = currentSlide;
     
-    // Update button states
     const isFirst = currentSlide === 0;
     const isLast = currentSlide === totalSlides - 1;
     
@@ -306,11 +343,7 @@
     if (newSlide >= 0 && newSlide < totalSlides) {
       currentSlide = newSlide;
       updateCarousel();
-      // Scroll to top of image when changing slides
       document.querySelector('.comic-nav').scrollIntoView({ behavior: 'smooth' });
-      // Also reset scroll position of the individual slide
-      const activeSlide = document.querySelectorAll('.carousel-slide')[currentSlide];
-      if (activeSlide) activeSlide.scrollTop = 0;
     }
   }
 
@@ -318,8 +351,6 @@
     if (index >= 0 && index < totalSlides) {
       currentSlide = index;
       updateCarousel();
-      const activeSlide = document.querySelectorAll('.carousel-slide')[currentSlide];
-      if (activeSlide) activeSlide.scrollTop = 0;
     }
   }
   </script>
@@ -327,515 +358,246 @@
 <!-- END COMIC READER -->
 
 
-  <div class="pipeline-strip" aria-label="Data mining pipeline stages">
-    <span class="stage">Problem understanding</span><span class="arrow">→</span>
-    <span class="stage current">Explore &amp; preprocess</span><span class="arrow">→</span>
-    <span class="stage">Modelling &amp; analysis</span><span class="arrow">→</span>
-    <span class="stage">Communicate results</span><span class="arrow">→</span>
-    <span class="stage">Deploy &amp; operationalize</span><span class="arrow">→</span>
-    <span class="stage">Test &amp; monitor</span>
-    <span class="loopback">↺ loops back to data whenever monitoring reveals drift</span>
-  </div>
+
+  <!-- ============ OVERVIEW ============ -->
+  <section class="chapter" id="overview">
+    <div class="chapter-head"><span class="chapter-num">0</span><h2>High-Level Overview</h2></div>
+    <p class="chapter-dek">Before diving into the code, here is the complete 7-step anatomy of a Machine Learning Pipeline.</p>
+    
+    <div class="concept-cards" style="grid-template-columns: 1fr;">
+      <div class="concept-card">
+        <h4>1. Determine Sample Size</h4>
+        <p>Ensure you have enough data to capture underlying patterns without being misled by noise.</p>
+      </div>
+      <div class="concept-card">
+        <h4>2. Divide Data (Train/Test/Validate)</h4>
+        <p>Lock away the test set to ensure your model generalizes to unseen data.</p>
+      </div>
+      <div class="concept-card" style="border-left: 4px solid var(--accent);">
+        <h4>3. Preprocessing</h4>
+        <ul style="margin: 0.5rem 0 0 1.2rem; font-size: 0.95rem; color: var(--text-muted);">
+          <li><strong>Engineer Features:</strong> Extract and combine data.</li>
+          <li><strong>Handle Missing Data:</strong> Impute or drop gaps.</li>
+          <li><strong>Handle Imbalance:</strong> Upsample or downsample.</li>
+          <li><strong>Scale/Normalize:</strong> Z-score or Min-Max.</li>
+          <li><strong>Dimensionality Reduction:</strong> PCA or t-SNE.</li>
+        </ul>
+      </div>
+      <div class="concept-card">
+        <h4>4. Determine Validation Metrics</h4>
+        <p>Select metrics (Precision, Recall, F1) that match your business goal, not just Accuracy.</p>
+      </div>
+      <div class="concept-card" style="border-left: 4px solid var(--accent);">
+        <h4>5. Prototyping (Modelling)</h4>
+        <ul style="margin: 0.5rem 0 0 1.2rem; font-size: 0.95rem; color: var(--text-muted);">
+          <li><strong>Prototype a Model:</strong> Start simple.</li>
+          <li><strong>Model Training:</strong> Fit parameters to minimize loss.</li>
+          <li><strong>Cross-Validation:</strong> Check for overfitting.</li>
+          <li><strong>Tune Hyperparameters:</strong> Optimize settings.</li>
+        </ul>
+      </div>
+      <div class="concept-card">
+        <h4>6. Select Suitable Model</h4>
+        <p>Balance accuracy with interpretability, speed, and maintainability.</p>
+      </div>
+      <div class="concept-card">
+        <h4>7. Deployment</h4>
+        <p>Test the model on the locked vault data, explain its decisions, and deploy it to production.</p>
+      </div>
+    </div>
+  </section>
 
   <!-- ============ 1 ============ -->
   <section class="chapter" id="framing">
     <div class="chapter-head"><span class="chapter-num">1</span><h2>Framing the Problem</h2></div>
     <p class="chapter-dek">Before touching a model: what kind of analysis is this, and what does the data actually represent?</p>
 
-    <p>Before you touch a model — before you even touch data-cleaning code — you need to answer two questions: <em>what kind of problem is this?</em> and <em>what does each row/column of my data actually represent?</em> Skipping this step is how experienced engineers waste a week building a regression model for a problem that was secretly a classification problem, or clustering data that already had perfectly good labels sitting in a column they didn't look at. Think of it as the equivalent of picking the right data structure before you start writing an algorithm: get it wrong and everything downstream — the preprocessing, the metrics, the model choice — is solving the wrong problem well.</p>
+    <h3>1. The Analogy Recap</h3>
+    <p>Before you ever touch data-cleaning code, you have to look at the blueprint of your kitchen. Are you building a bakery to make perfectly sized wedding cakes (<span class="important-term">Regression</span>—predicting a number), or a sandwich shop where you just need to sort ingredients into "Bread" or "Meat" (<span class="important-term">Classification</span>)? Also, the Head Chef knows the "Big Data Fallacy"—bringing in 10,000 rotten cabbages (huge sample size) will not fix a terrible recipe (bad data quality).</p>
 
-    <h3>Matching the question to a technique</h3>
-    <p>Start with one small table of home sales — square footage, neighborhood, sale price:</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Square footage</th><th>Neighborhood</th><th>Sale price</th></tr></thead>
-        <tbody>
-          <tr><td>1,450</td><td>Riverside</td><td>$420,000</td></tr>
-          <tr><td>2,100</td><td>Oakwood</td><td>$610,000</td></tr>
-          <tr><td>1,800</td><td>Riverside</td><td>$510,000</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>We have the same data. But we can ask different questions about it — and the question we ask, not the data itself, decides which technique applies.</p>
-
-    <h4 style="margin:1.1rem 0 0.3rem; font-size:0.95rem; font-family:var(--font-body); font-weight:700;">Question 1: "Will this house sell for more than $500k?"</h4>
-    <div class="flow-diagram">
-      <span class="flow-box">Sale price &gt; $500k</span><span class="flow-arrow">→</span><span class="flow-box flow-emphasis">YES</span>
-    </div>
-    <div class="flow-diagram">
-      <span class="flow-box">Sale price ≤ $500k</span><span class="flow-arrow">→</span><span class="flow-box">NO</span>
-    </div>
-    <p>The answer is no longer a dollar figure — it's now a <strong>category</strong>: YES or NO. This is called <strong>classification</strong>.</p>
-    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span><strong>Classification</strong> — predict a category.</span></p>
-    <details class="micro-check">
-      <summary>Is "YES / NO" a category, or a continuous number?</summary>
-      <div class="mc-a"><p>A <strong>category</strong> — a finite set of labels, not a measurement. That's what makes this classification rather than regression.</p></div>
-    </details>
-
-    <h4 style="margin:1.3rem 0 0.3rem; font-size:0.95rem; font-family:var(--font-body); font-weight:700;">Question 2: "What price will this house sell for?"</h4>
-    <p>Let's change <em>only</em> the question — same three houses, same columns.</p>
-    <div class="flow-diagram">
-      <span class="flow-box">House 1</span><span class="flow-arrow">→</span><span class="flow-box flow-emphasis">$420,000</span>
-    </div>
-    <div class="flow-diagram">
-      <span class="flow-box">House 2</span><span class="flow-arrow">→</span><span class="flow-box flow-emphasis">$610,000</span>
-    </div>
-    <p>This time the answer is a <strong>numerical value</strong> — it could be $420,000, or $421,384, or any number in between. This is called <strong>regression</strong>.</p>
-    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span><strong>Regression</strong> — predict a numerical value.</span></p>
-    <details class="micro-check">
-      <summary>Predicting a house's exact price in dollars — classification or regression?</summary>
-      <div class="mc-a"><p><strong>Regression.</strong> The target is a continuous number with no fixed set of categories to choose from.</p></div>
-    </details>
-
-    <h4 style="margin:1.3rem 0 0.3rem; font-size:0.95rem; font-family:var(--font-body); font-weight:700;">Question 3: "Which houses are similar to each other?"</h4>
-    <p>Now let's remove the price column entirely.</p>
-    <p>There is no "right answer" column here at all — no category to predict, no number to predict. We're just asking the data to reveal its own groupings. This is called <strong>clustering</strong>.</p>
-    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span><strong>Clustering</strong> — find groups, with no predefined target to predict.</span></p>
-    <details class="micro-check">
-      <summary>Does clustering require a predefined target column?</summary>
-      <div class="mc-a"><p><strong>No.</strong> That absence is exactly what defines clustering — you're discovering structure, not predicting a known kind of answer.</p></div>
-    </details>
-
-    <h4 style="margin:1.3rem 0 0.5rem; font-size:0.95rem; font-family:var(--font-body); font-weight:700;">Connecting the three</h4>
-    <div class="flow-vertical">
-      <span class="flow-box">Same dataset</span>
-      <span class="flow-down">↓</span>
-      <span class="flow-box">Different question</span>
-      <span class="flow-down">↓</span>
-      <span class="flow-box">Different task</span>
-    </div>
+    <h3>2. Key Terms</h3>
     <div class="concept-cards">
-      <div class="concept-card"><h4>Classification</h4><p>Category (YES/NO, spam/not-spam)</p></div>
-      <div class="concept-card"><h4>Regression</h4><p>Number ($420,000, 98.6°F)</p></div>
-      <div class="concept-card"><h4>Clustering</h4><p>Groups — no target at all</p></div>
+      <div class="concept-card"><h4>Classification</h4><p>Predicting a <strong>category</strong>. (e.g. YES/NO, Spam/Not-Spam).</p></div>
+      <div class="concept-card"><h4>Regression</h4><p>Predicting a <strong>numerical value</strong>. (e.g. $420,000, 98.6°F).</p></div>
+      <div class="concept-card"><h4>Clustering</h4><p>Finding groups automatically. <strong>No target variable</strong> exists.</p></div>
+      <div class="concept-card"><h4>TF-IDF</h4><p>Data representation for text. Words that appear everywhere (like "the") get 0 score. Words that are rare globally but common in one document get a high score.</p></div>
     </div>
+
+    <h3>3. The Code Reality</h3>
+    <pre><code>from sklearn.model_selection import train_test_split
+
+# Split your feature matrix X and target y
+# Hold back 20% of data purely for final testing (The locked vault!)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)</code></pre>
+
+    <h3>4. Quick Example: TF-IDF</h3>
+    <p>Doc 1: "cats love naps" | Doc 2: "dogs love walks"</p>
+    <ul>
+      <li><strong>TF ("love", Doc 1):</strong> Appears 1 out of 3 words (1/3).</li>
+      <li><strong>IDF ("love"):</strong> Appears in 2 out of 2 docs. ln(2/2) = ln(1) = 0.</li>
+      <li><strong>TF-IDF ("love"):</strong> 1/3 × 0 = <strong>0</strong>. It tells us nothing unique about the doc.</li>
+    </ul>
+
+    <h3>5. Exam Cheat Sheet</h3>
     <div class="exam-takeaway">
       <span class="et-icon">🎯</span>
-      <div><span class="et-label">Exam takeaway</span><p>The <strong>question</strong> determines the technique — not the dataset. The same table of houses supports all three tasks; what changes is what you're asking of it.</p></div>
+      <div>
+        <span class="et-label">Exam takeaway</span>
+        <ul>
+            <li>The <strong>question</strong> determines the technique, not the dataset. The exact same dataset can be used for Regression (predict price) or Classification (predict if price > $500k).</li>
+            <li><strong>Bigger isn't always better:</strong> Large samples reduce random noise, but they do <strong>not</strong> fix bias or poor data quality.</li>
+            <li><strong>Train/Test Split:</strong> The test set must remain 100% untouched until the absolute end to get an honest measure of generalization.</li>
+        </ul>
+      </div>
     </div>
-
-    <p>That three-way split is the first fork in the road. The full picture has a few more branches — do you have labels at all, and if you don't, what exactly are you trying to discover (groups? outliers? co-occurring items?). Each combination below maps to a different family of technique — worth having as a reference once the core three above feel solid:</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>You have…</th><th>You want to…</th><th>Technique</th></tr></thead>
-        <tbody>
-          <tr><td>Labelled data, target is a <strong>category</strong></td><td>Predict the category for new records</td><td>Classification</td></tr>
-          <tr><td>Labelled data, target is a <strong>number</strong></td><td>Predict the number for new records</td><td>Regression</td></tr>
-          <tr><td>No labels, similar records exist</td><td>Group similar records</td><td>Clustering</td></tr>
-          <tr><td>Transaction-style data</td><td>Find "items that occur together"</td><td>Association analysis</td></tr>
-          <tr><td>No labels, rare deviations exist</td><td>Flag outliers / fraud / faults</td><td>Anomaly detection</td></tr>
-          <tr><td>Constraints + an objective</td><td>Find the best feasible option</td><td>Optimization</td></tr>
-          <tr><td>Free-text data</td><td>Understand, mine, or generate language</td><td>Text mining</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3>Data representation isn't fixed</h3>
-    <p>Raw data rarely arrives in a form a model can consume directly — a sentence isn't a vector, a JPEG isn't a table row. Before any modelling decision, you have to decide <em>how</em> to turn the raw signal into numbers, and there's rarely only one valid way. The same underlying information — text, an image, a graph, sound — can be encoded numerically in several different ways, and the "right" encoding depends on what you're trying to do with it:</p>
-    <ul>
-      <li><strong>Text</strong> → TF-IDF (frequency-in-doc × rarity-across-corpus) or word embeddings (Word2Vec/GloVe place semantically similar words close together)</li>
-      <li><strong>Images</strong> → raw pixel values</li>
-      <li><strong>Graphs / molecules</strong> → nodes + edges, or learned node embeddings (Node2Vec)</li>
-      <li><strong>Audio</strong> → raw waveform <em>or</em> a spectrogram (frequency content over time)</li>
-    </ul>
-    <p>TF-IDF deserves a closer look since it's the default way to turn a pile of documents into numeric feature vectors. The intuition: a word that appears in <em>every</em> document tells you nothing about what makes one document distinct from another, so it should get a low score. A word that appears in only a few documents is doing real work distinguishing them, so it should get a high score — but only in the documents where it actually shows up a lot.</p>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Take a tiny, illustrative two-document corpus (not real data — just to show the mechanics):</p>
-      <ul>
-        <li>Doc 1: "cats love naps" (3 words)</li>
-        <li>Doc 2: "dogs love walks" (3 words)</li>
-      </ul>
-      <p><em>Term frequency (TF)</em> is "how often does this word appear in this document, relative to document length." <em>Inverse document frequency (IDF)</em> measures rarity across the whole corpus: IDF(word) = ln(N / df), where N is the total number of documents and df is the number of documents containing the word.</p>
-      <ol class="we-steps">
-        <li><div><span class="we-step-label">TF("love", Doc 1)</span><span class="we-calc">"love" appears once out of three words → TF = 1/3</span></div></li>
-        <li><div><span class="we-step-label">IDF("love")</span><span class="we-calc">"love" appears in both documents → df = 2, N = 2 → IDF(love) = ln(2/2) = ln(1) = <strong>0</strong></span></div></li>
-        <li><div><span class="we-step-label">TF-IDF("love", Doc 1)</span><span class="we-calc">TF × IDF = 1/3 × 0 = <strong>0</strong> — "love" is common to every document, so it contributes nothing to distinguishing them</span></div></li>
-        <li><div><span class="we-step-label">TF("cats", Doc 1)</span><span class="we-calc">"cats" only appears in Doc 1 → TF = 1/3</span></div></li>
-        <li><div><span class="we-step-label">IDF("cats")</span><span class="we-calc">df = 1 → IDF(cats) = ln(2/1) = ln(2) ≈ 0.6931</span></div></li>
-        <li><div><span class="we-step-label">TF-IDF("cats", Doc 1)</span><span class="we-calc">1/3 × 0.6931 ≈ <strong>0.231</strong> — a positive score, because "cats" is doing real work telling Doc 1 apart from Doc 2</span></div></li>
-      </ol>
-      <p>That's the entire mechanic: common words get discounted toward zero, rare-but-present words get weighted up.</p>
-    </div>
-
-    <div class="python-note"><div><span class="pn-label">Python note</span><p>You'd never compute this by hand on a real corpus — <code>from sklearn.feature_extraction.text import TfidfVectorizer; X = TfidfVectorizer().fit_transform(list_of_documents)</code> takes a list of raw strings and returns a sparse matrix (rows = documents, columns = vocabulary terms, values = TF-IDF scores). Scikit-learn's actual formula adds smoothing terms to avoid division-by-zero edge cases, so exact numbers will differ slightly from the hand-calculation above, but the <em>shape</em> of the result — common words near zero, rare words higher — is the same.</p></div></div>
-
-    <h3>Sample size: bigger isn't automatically better</h3>
-    <p>It's tempting to treat "more data" as a universal fix, the way an engineer might reach for more memory or more threads. More data does reduce random noise, increases statistical power, and helps models generalize instead of memorizing quirks of a small sample. But it does <strong>not</strong> fix bias or poor data quality — a biased sample stays biased no matter how large it gets — and at very large sample sizes, even tiny, practically-irrelevant effects can come out "statistically significant" simply because you have enough rows to detect them. Row count is not a substitute for asking whether the data actually represents the population you care about.</p>
-
-    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.model_selection import train_test_split</code> is the standard way to split your data: <code>X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)</code> takes your feature matrix <code>X</code> and target <code>y</code> and randomly partitions them, holding back 20% for testing. Setting <code>random_state</code> to a fixed number makes the "random" split reproducible.</p></div></div>
-
-    <div class="callout rule"><span class="tag">Rule</span><p>Always split into <strong>train / validation / test</strong> before modelling. Train fits the model, validation tunes hyperparameters, test gives an honest, untouched read on generalization. The test set must stay completely untouched by any decision-making until the very end; the moment you peek at test performance and adjust something in response, it stops being an honest measure of generalization.</p></div>
   </section>
 
   <!-- ============ 2 ============ -->
   <section class="chapter" id="preprocessing">
     <div class="chapter-head"><span class="chapter-num">2</span><h2>Preprocessing</h2></div>
-    <p class="chapter-dek">Engineer features → handle missing data → handle imbalance → scale → reduce dimensions. Order matters; every step below is fit on <em>train</em> only.</p>
+    <p class="chapter-dek">Engineer features → handle missing data → handle imbalance → scale. Order matters.</p>
 
-    <p>Raw data is almost never model-ready. Between "I have a CSV" and "I can call <code>.fit()</code>" sits a sequence of transformations, and the order isn't arbitrary: each step needs to be <em>fit</em> on the training data only, then applied unchanged to validation/test data.</p>
-    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span><strong>Data leakage</strong> — letting any information from validation/test data influence training, even indirectly. It's easy to introduce by accident (fitting a scaler on the <em>whole</em> dataset before splitting is a classic example), and every "fit on train only" rule in this module — for imputation, encoding, scaling, and PCA alike — exists to prevent this one failure mode.</span></p>
+    <h3>1. The Analogy Recap</h3>
+    <p>Raw data is like food straight from a dirty farm. The prep station chefs have to chop and combine items (<span class="important-term">Feature Engineering</span>). They sort categories like "Red" and "Blue" into completely separate bowls so the oven doesn't accidentally think Blue is "twice as big" as Red (<span class="important-term">One-Hot Encoding</span>). They clone rare truffles so they aren't drowned out by potatoes (<span class="important-term">Upsampling</span>), and they use a shrink-ray on giant pumpkins so their sheer size doesn't ruin the math of the recipe (<span class="important-term">Scaling</span>).</p>
+    <p>But the biggest danger is the WWII airplane: measuring only the data that "survived" and ignoring the data in the trash (<span class="important-term">Survivorship Bias</span>).</p>
 
-    <h3>Feature engineering</h3>
-    <p>A model can only find patterns in the columns you give it. If the <em>real</em> signal is a derived quantity — speed, rather than the raw time and distance columns it comes from — an algorithm that can't do that arithmetic internally will simply never find it. Feature engineering is doing that derivation yourself, ahead of time, so the signal is sitting right there in a column.</p>
+    <h3>2. Key Terms</h3>
+    <div class="concept-cards">
+      <div class="concept-card"><h4>One-Hot Encoding</h4><p>Turns categories into 0/1 binary columns. Prevents the model from inventing a fake numerical order (Red=0, Green=1, Blue=2).</p></div>
+      <div class="concept-card"><h4>Imputation</h4><p>Filling missing values with a guess (usually the <strong>median</strong>, to avoid extreme outliers).</p></div>
+      <div class="concept-card"><h4>Data Leakage</h4><p>Letting validation/test data accidentally influence training. <strong>Fatal error.</strong></p></div>
+      <div class="concept-card"><h4>StandardScaler</h4><p>Scales features to mean=0, std=1 (Z-Score). The default go-to for most ML algorithms.</p></div>
+      <div class="concept-card"><h4>MinMaxScaler</h4><p>Squashes values strictly into the [0, 1] range. Highly sensitive to extreme outliers.</p></div>
+      <div class="concept-card"><h4>RobustScaler</h4><p>Uses median and interquartile range (IQR). Ignores massive outliers completely.</p></div>
+    </div>
+
+    <h3>3. The Code Reality</h3>
+    <pre><code>from sklearn.preprocessing import StandardScaler, MinMaxScaler, OneHotEncoder
+
+# 1. One-Hot Encoding (drop='first' prevents multicollinearity)
+encoder = OneHotEncoder(drop='first')
+X_encoded = encoder.fit_transform(X_train[['Color']])
+
+# 2. Scaling (FIT ON TRAIN ONLY!)
+# Note: Use MinMaxScaler to bound to [0,1], or StandardScaler for mean=0, std=1.
+scaler = MinMaxScaler() 
+X_train_scaled = scaler.fit_transform(X_train) 
+X_test_scaled = scaler.transform(X_test) # NEVER fit on test data!</code></pre>
+
+    <h3>4. Quick Example: Z-Score Scaling</h3>
+    <p>House sizes: 50, 70, 90.</p>
     <ul>
-      <li><strong>Creation</strong> — derive new signal, e.g. speed from time + distance</li>
-      <li><strong>Combining</strong> — interaction terms (x·y, x²) e.g. income ÷ hours → income-per-hour</li>
-      <li><strong>Aggregation</strong> — mean/sum/count over a group</li>
-      <li><strong>Datetime</strong> — extract hour, weekday, season from a timestamp</li>
-      <li><strong>Text</strong> — word counts, sentiment, embeddings</li>
-    </ul>
-    <p>Good feature engineering leans on domain knowledge — e.g. an ECG signal becomes useful only once P/Q/R/S/T peak intervals are extracted from the raw waveform. A cardiologist doesn't look at raw voltage-over-time; they look at the timing between named peaks. If the informative structure is implicit in the raw signal, you often have to make it explicit for the model too.</p>
-
-    <div class="python-note"><div><span class="pn-label">Python note</span><p>"Aggregation" in pandas is usually a <code>groupby</code> followed by a reduction: <code>df.groupby('customer_id')['purchase_amount'].sum()</code> collapses all rows for each customer into one total-spend number — the pandas equivalent of a SQL <code>GROUP BY</code> + <code>SUM</code>. For datetime extraction, <code>pd.to_datetime(df['timestamp'])</code> parses a text column into a real datetime type, after which <code>df['timestamp'].dt.hour</code> or <code>.dt.dayofweek</code> pulls out the component you want.</p></div></div>
-
-    <h3>Encoding categorical variables</h3>
-    <p>Most ML algorithms are fundamentally arithmetic — they add, multiply, and compute distances between numbers. A column of strings like <code>"Red"</code>, <code>"Green"</code>, <code>"Blue"</code> isn't something a linear model or a distance calculation can operate on directly.</p>
-    <p>The naive fix: just assign each category a number — Red=0, Green=1, Blue=2. This is called <strong>label encoding</strong>.</p>
-    <details class="micro-check">
-      <summary>If Blue=2 and Green=1, what does the model now silently believe about Blue, relative to Green?</summary>
-      <div class="mc-a"><p>That Blue is exactly <strong>twice</strong> Green — a false numeric relationship invented purely by the encoding, not something true about colors. This corrupts any model that does arithmetic on its inputs (linear/logistic regression, k-NN, neural nets).</p></div>
-    </details>
-    <p>The fix: give each category its <em>own</em> binary column instead, so no fake ordering gets invented. This is called <strong>one-hot encoding</strong>.</p>
-    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span><strong>One-hot encoding</strong> — turn each category into its own 0/1 column, so no false numeric order is invented.</span></p>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Take three rows with a <code>Color</code> column: Red, Green, Blue. Full one-hot encoding creates one column per category:</p>
-      <div class="table-wrap"><table><thead><tr><th>Row</th><th>Color_Red</th><th>Color_Green</th><th>Color_Blue</th></tr></thead><tbody>
-        <tr><td>Red</td><td>1</td><td>0</td><td>0</td></tr>
-        <tr><td>Green</td><td>0</td><td>1</td><td>0</td></tr>
-        <tr><td>Blue</td><td>0</td><td>0</td><td>1</td></tr>
-      </tbody></table></div>
-      <p>Now drop <code>Color_Red</code> (see the rule below), and the same information survives with one fewer column:</p>
-      <div class="table-wrap"><table><thead><tr><th>Row</th><th>Color_Green</th><th>Color_Blue</th></tr></thead><tbody>
-        <tr><td>Red</td><td>0</td><td>0</td></tr>
-        <tr><td>Green</td><td>1</td><td>0</td></tr>
-        <tr><td>Blue</td><td>0</td><td>1</td></tr>
-      </tbody></table></div>
-      <p>Red is now represented as "neither Green nor Blue" — no information is lost, since the all-zeros row unambiguously implies Red.</p>
-    </div>
-
-    <div class="callout watch"><span class="tag">Watch out</span><p>After one-hot encoding, drop one of the new columns. Keeping all of them is redundant (the last category is implied by all-zeros elsewhere) and can introduce multicollinearity — once you know a row isn't Green and isn't Blue, you already know it's Red, so keeping a <code>Color_Red</code> column too is pure duplication.</p></div>
-
-    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.preprocessing import OneHotEncoder</code> gives you <code>encoder = OneHotEncoder(drop='first'); encoder.fit_transform(df[['Color']])</code> — <code>drop='first'</code> is exactly the "drop one column" step above. Pandas has a shortcut for quick exploratory work: <code>pd.get_dummies(df['Color'], drop_first=True)</code> does the same thing in one line, though <code>OneHotEncoder</code> is generally preferred inside a real pipeline since it remembers categories seen during training and handles unseen ones at prediction time more gracefully.</p></div></div>
-
-    <p><strong>Binning</strong> groups a numeric range into buckets (age 0–1 = infant, 1–3 = toddler, …), effectively converting numeric → categorical.</p>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Ages 0.5, 2, and 5 years old, binned into <code>[0–1) = infant</code>, <code>[1–3) = toddler</code>, <code>[3–12) = child</code>:</p>
-      <div class="table-wrap"><table><thead><tr><th>Age</th><th>Bin</th></tr></thead><tbody>
-        <tr><td>0.5</td><td>infant</td></tr>
-        <tr><td>2</td><td>toddler</td></tr>
-        <tr><td>5</td><td>child</td></tr>
-      </tbody></table></div>
-      <p>The trade-off is visible immediately: a model now treats 1 and 1.5 as <em>different</em> (different bins) but treats 6 and 10 as <em>identical</em> (same "child" bin), even though 6 and 10 are four years apart while 1 and 1.5 are six months apart. Binning trades numeric precision for simplicity, and sometimes for capturing genuinely non-linear thresholds.</p>
-    </div>
-
-    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>pd.cut(df['age'], bins=[0, 1, 3, 12], labels=['infant', 'toddler', 'child'])</code> does exactly this binning in pandas.</p></div></div>
-
-    <h3>Missing data</h3>
-    <p>Missingness comes in two flavors that need different thinking: missing <em>values</em> in a table you can see, and missing <em>categories</em> entirely — cases you never even collected. The second is more dangerous, and easy to miss because there's no null cell pointing at it.</p>
-    <p>The classic illustration: WWII engineers studied the bullet holes on planes that <em>returned</em> from combat, planning to reinforce the spots that were hit most.</p>
-    <details class="micro-check">
-      <summary>The returning planes were most damaged in the wings and tail. Should engineers reinforce those exact spots?</summary>
-      <div class="mc-a"><p><strong>No.</strong> Reinforce the spots with <em>no</em> damage — the engine and cockpit — because planes hit there never made it back to be studied at all. The data you can see already survived some filter; what's missing is the real signal.</p></div>
-    </details>
-    <p>This is called <strong>survivorship bias</strong>: whatever data you have access to already survived some filter, and that filter itself is information you're not seeing. Always ask what's absent from the sample, not just what's null in a cell.</p>
-    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span><strong>Survivorship bias</strong> — drawing conclusions only from the data that "survived" some filter, while the filtered-out cases carry the signal you actually needed.</span></p>
-    <p>For the more mundane case — missing values inside a table you do have — there are a handful of standard strategies:</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Strategy</th><th>When</th></tr></thead>
-        <tbody>
-          <tr><td>Ignore the record</td><td>Missingness is rare and random</td></tr>
-          <tr><td>Add an "is-missing" indicator column</td><td>Missingness itself might be predictive</td></tr>
-          <tr><td>Use a model robust to missing values</td><td>Some tree-based libraries handle it natively</td></tr>
-          <tr><td><strong>Impute</strong> — constant, mean/median, class-wise mean/median, or model-based (predict the missing value from other columns)</td><td>Default fallback; remember it's an educated guess</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>A tiny, illustrative <code>age</code> column for five people: 25, <em>missing</em>, 30, <em>missing</em>, 35.</p>
-      <ol class="we-steps">
-        <li><div><span class="we-step-label">Capture the missingness itself</span><span class="we-calc">age_is_missing = [0, 1, 0, 1, 0]</span></div></li>
-        <li><div><span class="we-step-label">Compute the median from the values you do have</span><span class="we-calc">sorted {25, 30, 35} → median = <strong>30</strong></span></div></li>
-        <li><div><span class="we-step-label">Fill the gaps with that median</span><span class="we-calc">25, <strong>30</strong>, 30, <strong>30</strong>, 35</span></div></li>
-      </ol>
-      <p>The imputed rows are now indistinguishable from a person whose real age happened to be 30 — which is exactly why the indicator column matters: it lets a downstream model learn "this row's age was guessed" as its own signal, if that turns out to be predictive. Median rather than mean is the more common default because it's far less sensitive to a handful of extreme outliers dragging the fill value away from what's typical.</p>
-    </div>
-
-    <h3>Imbalanced classes</h3>
-    <p>Suppose 98% of transactions are legitimate and only 2% are fraud.</p>
-    <details class="micro-check">
-      <summary>A lazy model predicts "legitimate" for every single transaction. What accuracy does it score?</summary>
-      <div class="mc-a"><p><strong>98%</strong> — despite never once catching fraud. That's why plain accuracy is a meaningless metric here: it rewards ignoring the minority class entirely (see §4 for metrics that don't).</p></div>
-    </details>
-    <p>Worse, it's not just the metric that's fooled — many algorithms' internal objective functions implicitly optimize for the majority class too, simply because that's where most of the loss reduction comes from during training. The standard responses:</p>
-    <ul>
-      <li>Use a model/objective suited to imbalance.</li>
-      <li>Resample — downsample the majority or upsample/augment the minority.</li>
-      <li>Evaluate with metrics that don't reward "always predict the majority" (see §4).</li>
+      <li>Mean (μ) = 70. Std Dev (σ) = 20.</li>
+      <li>Z-score of 50 = (50 - 70) / 20 = <strong>-1</strong></li>
+      <li>Z-score of 70 = (70 - 70) / 20 = <strong>0</strong></li>
+      <li>Z-score of 90 = (90 - 70) / 20 = <strong>+1</strong></li>
     </ul>
 
-    <h3>Feature scaling &amp; normalization</h3>
-    <p>Many algorithms compare features using literal arithmetic distance or gradient magnitude, with no built-in concept of "this number is in square meters and that one is a room count" — they just see numbers. Distance-based methods (k-NN, SVM, clustering) and gradient-based training (neural nets) implicitly let the largest-magnitude feature dominate. A 100 m² gap in house size will swamp a 1-room gap in room count unless both are rescaled to comparable ranges.</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Method</th><th>What it does</th><th>Typical use</th></tr></thead>
-        <tbody>
-          <tr><td>Min-Max</td><td>Rescales to [0, 1]</td><td>Neural nets, image data</td></tr>
-          <tr><td>Z-score (standardization)</td><td>Centers to mean 0, std 1</td><td>Most general-purpose ML</td></tr>
-          <tr><td>Robust scaling</td><td>Uses median &amp; IQR</td><td>Heavy-tailed / outlier-prone features</td></tr>
-        </tbody>
-      </table>
+    <h3>5. Exam Cheat Sheet</h3>
+    <div class="exam-takeaway">
+      <span class="et-icon">🎯</span>
+      <div>
+        <span class="et-label">Exam takeaway</span>
+        <ul>
+            <li><strong>Golden Rule:</strong> Always fit your scaler/imputer on the <strong>training data ONLY</strong>. Then apply it to the test data.</li>
+            <li><strong>Drop First:</strong> Always drop one column after one-hot encoding (if Red=0 and Green=0, Blue is implied). Keeping it causes multicollinearity.</li>
+            <li><strong>Scaling models:</strong> SVM, k-NN, and Neural Networks <strong>require</strong> scaling. Decision Trees and Random Forests <strong>do not</strong>.</li>
+            <li><strong>One-Hot Encoding models:</strong> Linear/Logistic Regression, k-Means, and Neural Networks <strong>require</strong> One-Hot Encoding for categorical data. Tree-based models (like Random Decision Forests) usually do not.</li>
+            <li><strong>Survivorship Bias:</strong> Drawing conclusions only from the data that survived a filter (e.g. WWII planes returning with bullet holes in the wings means you should reinforce the *engine*, because planes hit in the engine didn't survive).</li>
+        </ul>
+      </div>
     </div>
-    <div class="formula-block"><span class="label">Z-score</span>x_normalized = (x − μ) / σ</div>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Take a tiny, illustrative feature — house size in m² for three houses: 50, 70, 90.</p>
-      <ol class="we-steps">
-        <li><div><span class="we-step-label">Mean</span><span class="we-calc">μ = (50+70+90)/3 = 210/3 = <strong>70</strong></span></div></li>
-        <li><div><span class="we-step-label">Deviations from the mean</span><span class="we-calc">50−70 = −20,&nbsp;&nbsp; 70−70 = 0,&nbsp;&nbsp; 90−70 = +20</span></div></li>
-        <li><div><span class="we-step-label">Squared deviations</span><span class="we-calc">(−20)² = 400,&nbsp;&nbsp; 0² = 0,&nbsp;&nbsp; (+20)² = 400</span></div></li>
-        <li><div><span class="we-step-label">Variance (sample convention, ÷ n−1)</span><span class="we-calc">(400+0+400)/(3−1) = 800/2 = <strong>400</strong></span></div></li>
-        <li><div><span class="we-step-label">Standard deviation</span><span class="we-calc">σ = √400 = <strong>20</strong></span></div></li>
-        <li><div><span class="we-step-label">Z-score for each house</span><span class="we-calc">(50−70)/20 = <strong>−1</strong>,&nbsp;&nbsp; (70−70)/20 = <strong>0</strong>,&nbsp;&nbsp; (90−70)/20 = <strong>+1</strong></span></div></li>
-      </ol>
-      <p>The three houses, originally on a scale of tens of square meters, are now expressed purely in terms of "how many standard deviations from average" — a scale directly comparable to any other z-scored feature, regardless of its original units.</p>
-    </div>
-
-    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.preprocessing import StandardScaler</code> bundles exactly this computation: <code>scaler = StandardScaler(); scaler.fit(X_train)</code> computes and stores μ and σ per column from the training data, and <code>scaler.transform(X_train)</code> applies the formula. One easy-to-miss subtlety: NumPy's <code>array.std()</code> defaults to the <em>population</em> convention (divide by n), which is what <code>StandardScaler</code> uses internally — slightly different from the sample convention (divide by n−1) used above. For a small example the difference is minor, but it's worth knowing both conventions exist.</p></div></div>
-
-    <div class="callout rule"><span class="tag">Rule</span><p><strong>Fit the scaler on training data only.</strong> The resulting μ/σ (or min/max) are part of the model — save them and re-apply the identical transform to test and production data. Never re-fit on test data. Concretely: if a new house of 200 m² shows up at prediction time, you apply the <em>training</em> mean and std (70 and 20) to it — getting a z-score of (200−70)/20 = 6.5 — rather than recomputing a new mean/std that includes this outlier, which would change the meaning of every other point's z-score retroactively.</p></div>
-
-    <h3>Dimensionality reduction vs. feature selection</h3>
-    <p><strong>Feature selection</strong> drops columns unchanged — you end up with a subset of your original, still-interpretable features. <strong>Dimensionality reduction</strong> transforms many features into fewer <em>derived</em> ones (1000 → 10), via linear methods (PCA, LDA, ICA) or non-linear methods (t-SNE, UMAP, autoencoders) — detailed next. A "reduced" feature from PCA is a blend of the originals, not one of the original columns you started with.</p>
-    <p>Motivation is twofold: the <strong>curse of dimensionality</strong> (classifier performance peaks, then degrades as features keep growing without more samples — ten data points nicely cover a line, but scattering the same ten points across a 10-dimensional cube leaves them isolated, with almost none of the volume actually sampled), and <strong>visualization</strong> of otherwise unplottable data (e.g. scRNA-seq: ~100,000 cells × ~30,000 genes, reduced to 2–10 dimensions — no human can look at a 30,000-dimensional scatterplot, but a 2-dimensional projection is something you can actually put on a screen and reason about).</p>
   </section>
 
   <!-- ============ 3 ============ -->
   <section class="chapter" id="pca-tsne">
     <div class="chapter-head"><span class="chapter-num">3</span><h2>PCA &amp; t-SNE</h2></div>
-    <p class="chapter-dek">Two dimensionality-reduction workhorses with opposite philosophies — one linear and global, one non-linear and local.</p>
+    <p class="chapter-dek">Two dimensionality-reduction workhorses: PCA (linear/global) vs t-SNE (non-linear/local).</p>
 
-    <p>Both techniques take high-dimensional data and produce a lower-dimensional version of it, but they solve fundamentally different problems. PCA asks "what few directions capture most of the <em>overall spread</em> in this data?" — a global, linear question with one deterministic right answer. t-SNE asks "which points are <em>close neighbors</em>, and can I draw a 2D picture where that closeness is still visible?" — a local, non-linear question with a stochastic answer that can differ run to run.</p>
+    <h3>1. The Analogy Recap</h3>
+    <p>The kitchen has 50 different spices. The Master Blender takes them all and forcefully crushes them in a giant mortar into a single paste that captures the maximum overall flavor variance (<span class="important-term">PCA</span>). Meanwhile, the Spice Cartographer meticulously draws a beautiful map on the chalkboard, ensuring that spices with similar flavors are drawn close together, revealing complex clusters (<span class="important-term">t-SNE</span>).</p>
 
-    <h3>PCA — Principal Component Analysis</h3>
-    <p>If you have, say, 50 correlated features, a lot of that "50-dimensionality" is redundant — several columns are all roughly measuring the same underlying thing from slightly different angles. PCA finds new orthogonal axes ("principal components") ranked by how much variance they capture, then rotates the data onto them, so that most of the real information collapses into just the first handful of axes. It's deterministic and linear — run it twice on the same data and you get the identical answer, unlike t-SNE below.</p>
-    <ol>
-      <li><strong>Standardize/center</strong> the data (mean → 0) so PCA captures shape, not location</li>
-      <li><strong>Compute the covariance matrix</strong>, then its <strong>eigenvectors</strong> (directions) and <strong>eigenvalues</strong> (variance captured per direction)</li>
-      <li><strong>Sort by eigenvalue</strong>, descending — PC1 always captures the most variance possible, PC2 the most of what's left, etc.</li>
-      <li><strong>Project</strong> the data onto the top-k components and discard the rest</li>
-    </ol>
-    <div class="formula-block"><span class="label">Covariance</span>Cov(x, y) = 1/(n−1) · Σ (xᵢ − x̄)(yᵢ − ȳ)
-<span class="label" style="margin-top:.5rem">Projection (loadings)</span>PCᵢ = X · vᵢ  =  a₁x₁ + a₂x₂ + … + a_d x_d</div>
-    <p>Before working through the arithmetic: an eigenvector of the covariance matrix is a direction in feature-space that the data's spread naturally aligns with, and its eigenvalue is <em>how much</em> variance lies along that direction. PCA doesn't invent new information — it finds the rotation of your existing axes that lines them up with how the data actually stretches out in space.</p>
-    <details class="micro-check">
-      <summary>If PC1's eigenvalue is 9 and PC2's is 1, roughly what fraction of the data's total variance does PC1 alone capture?</summary>
-      <div class="mc-a"><p><strong>9/(9+1) = 90%.</strong> An eigenvalue is literally "how much variance lies along this direction," so a component's share of the total variance is just its eigenvalue divided by the sum of all eigenvalues — the exact ratio worked out numerically below.</p></div>
-    </details>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Take a small, illustrative dataset — 4 students, with "hours studied" (x) and "quiz score" (y), not from the real course dataset:</p>
-      <div class="table-wrap"><table><thead><tr><th>Student</th><th>Hours studied (x)</th><th>Quiz score (y)</th></tr></thead><tbody>
-        <tr><td>1</td><td>8</td><td>5</td></tr>
-        <tr><td>2</td><td>9</td><td>6</td></tr>
-        <tr><td>3</td><td>11</td><td>6</td></tr>
-        <tr><td>4</td><td>12</td><td>7</td></tr>
-      </tbody></table></div>
-      <ol class="we-steps">
-        <li><div><span class="we-step-label">Center the data</span><span class="we-calc">Mean of x = (8+9+11+12)/4 = 40/4 = <strong>10</strong>&nbsp;&nbsp; Mean of y = (5+6+6+7)/4 = 24/4 = <strong>6</strong><br>Centered points: (−2,−1), (−1,0), (1,0), (2,1)</span></div></li>
-        <li><div><span class="we-step-label">Covariance matrix</span><span class="we-calc">Cov(x,x) = [(−2)²+(−1)²+1²+2²] / 3 = 10/3 ≈ 3.33<br>Cov(y,y) = [(−1)²+0²+0²+1²] / 3 = 2/3 ≈ 0.67<br>Cov(x,y) = [(−2)(−1)+(−1)(0)+(1)(0)+(2)(1)] / 3 = 4/3 ≈ 1.33<br>→ matrix = <code>[[3.33, 1.33], [1.33, 0.67]]</code></span></div></li>
-        <li><div><span class="we-step-label">Eigenvalues</span><span class="we-calc">For a 2×2 matrix: λ² − (trace)λ + (determinant) = 0<br>Trace = 3.33 + 0.67 = <strong>4.00</strong>&nbsp;&nbsp; Determinant = (3.33)(0.67) − (1.33)² = 2.22 − 1.78 = <strong>0.44</strong><br>λ = [4 ± √(16 − 1.78)] / 2 = [4 ± 3.77] / 2 → <strong>λ₁ ≈ 3.89</strong>, <strong>λ₂ ≈ 0.11</strong> (sum = 4.00, matching the trace)</span></div></li>
-        <li><div><span class="we-step-label">Eigenvector &amp; variance explained</span><span class="we-calc">Eigenvector for λ₁ ≈ <strong>(0.92, 0.38)</strong> (normalized to length 1) — PC1 is mostly "hours studied," with a real contribution from "quiz score" too<br>Variance captured: λ₁/(λ₁+λ₂) = 3.89/4.00 ≈ <strong>97.1%</strong></span></div></li>
-        <li><div><span class="we-step-label">Project a point onto PC1</span><span class="we-calc">Student 4, centered (2, 1): PC1 = 0.92×2 + 0.38×1 = 1.84 + 0.38 = <strong>2.23</strong><br>Student 1, centered (−2, −1): PC1 = 0.92×(−2) + 0.38×(−1) = <strong>−2.23</strong></span></div></li>
-      </ol>
-      <p>PC1 is mostly (but not entirely) driven by "hours studied." Almost all of the spread in this toy dataset lives along a single direction, since "more hours studied" and "higher quiz score" move together — and students 1 and 4 land at opposite ends of that trend, the mirror image of each other. A real PCA on 1000 features instead of 2 is this exact same arithmetic, just automated and scaled up.</p>
+    <h3>2. Key Terms</h3>
+    <div class="concept-cards">
+      <div class="concept-card"><h4>PCA</h4><p>Linear, deterministic dimensionality reduction. Preserves <strong>global</strong> structure and maximizes variance.</p></div>
+      <div class="concept-card"><h4>t-SNE</h4><p>Non-linear, stochastic visualization tool. Preserves <strong>local</strong> neighborhoods. Clusters overlap in PCA but separate in t-SNE.</p></div>
+      <div class="concept-card"><h4>Eigenvalue</h4><p>A number that tells you how much variance is captured along a specific PCA direction.</p></div>
     </div>
 
-    <p>PCA is excellent at linear correlation and preserves <strong>global</strong> structure, but if the data lies on a curved manifold, PCA flattens it onto a plane and destroys the real geometry — imagine data shaped like a rolled-up sheet of paper: PCA's straight-line projection would squash the roll flat, merging points that were actually far apart along the curved surface.</p>
+    <h3>3. The Code Reality</h3>
+    <pre><code>from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
 
-    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.decomposition import PCA</code> handles every step above: <code>pca = PCA(n_components=2); X_reduced = pca.fit_transform(X_scaled)</code> returns the projected coordinates directly. <code>pca.explained_variance_ratio_</code> gives you the λᵢ/Σλ percentages (like the 97.1% above), and <code>pca.components_</code> gives you the loading vectors (like the (0.92, 0.38) above) so you can inspect which original features drive each component.</p></div></div>
+# Usually, you run PCA first to reduce noise, THEN run t-SNE for visualization!
+X_pca = PCA(n_components=50).fit_transform(X_scaled)
+X_tsne = TSNE(n_components=2, perplexity=30).fit_transform(X_pca)</code></pre>
 
-    <h3>t-SNE — t-Distributed Stochastic Neighbor Embedding</h3>
-    <p>PCA is a poor tool specifically for visualization when the interesting structure is local and non-linear — several genuinely distinct clusters that PCA might partially overlap because it's only allowed straight-line projections. t-SNE was built specifically to <strong>visualize</strong> high-dimensional data by preserving local neighborhoods, not global distances. It's non-linear and stochastic — rerun it and you'll get a differently-oriented (but similarly-clustered) picture each time.</p>
+    <h3>4. Quick Example: PCA Variance</h3>
+    <p>You compute the covariance matrix. PC1 has an eigenvalue of 3.89. PC2 has an eigenvalue of 0.11.</p>
+    <ul>
+      <li>Total Variance = 3.89 + 0.11 = 4.00</li>
+      <li>Variance captured by PC1 = 3.89 / 4.00 = <strong>97.25%</strong></li>
+    </ul>
 
-    <p>Here's the plan before any formula: for every point, t-SNE builds a "who's my neighbor" probability distribution — nearby points get high probability, distant points get probability close to zero. It builds this distribution <em>twice</em>: once in the original high-dimensional space (call it P), and once in the low-dimensional space it's constructing (call it Q). Then it nudges the low-dimensional points around — attracting or repelling them — until Q's neighbor-distribution looks as much like P's as possible.</p>
-
-    <p>First, how P itself is built — the "who's my neighbor" probability of point <em>j</em> given point <em>i</em>:</p>
-    <div class="formula-block"><span class="label">Similarity in high-D (Gaussian)</span>P(i|j) = exp(−‖xᵢ−xⱼ‖² / 2σᵢ²) / Σ_{k≠i} exp(−‖xᵢ−xₖ‖² / 2σᵢ²)</div>
-    <p>Reading the symbols: <code>‖xᵢ−xⱼ‖²</code> is just squared distance between the two points — closer points make the exponent less negative, so <code>exp(...)</code> comes out larger. The denominator sums that same quantity over every other point <em>k</em>, which normalizes the whole thing into a proper probability that sums to 1 across all of point <em>i</em>'s potential neighbors. σᵢ is a per-point bandwidth, chosen automatically to hit the target perplexity below.</p>
-    <p>That gives an asymmetric P(i|j); averaging it with its mirror image P(j|i) and normalizing produces the symmetric version actually used, Pᵢⱼ:</p>
-    <div class="formula-block">Pᵢⱼ = (P(j|i) + P(i|j)) / 2N</div>
-    <p>Finally, once P (high-D) and Q (low-D) both exist, t-SNE needs one number saying "how different are these two neighbor-distributions right now" — that's <strong>KL divergence</strong>, and gradient descent (Module 5) pushes the low-dimensional points to shrink it:</p>
-    <div class="formula-block"><span class="label">Minimize via gradient descent</span>KL(P ‖ Q) = Σ pᵢⱼ log(pᵢⱼ / qᵢⱼ)</div>
-    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span>Three formulas, one idea: build a neighbor-probability distribution twice (once in high-D, once in low-D), then use gradient descent to make the low-D one match the high-D one as closely as possible.</span></p>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>To see the high-D similarity formula actually compute something, take three toy points on a number line (illustrative only): x₁=0, x₂=1, x₃=5. Pick σ₁=1 for point 1 (in a real run, t-SNE picks σ automatically based on the desired perplexity).</p>
-      <ol class="we-steps">
-        <li><div><span class="we-step-label">Un-normalized similarity, point 1 → point 2</span><span class="we-calc">exp(−(1−0)²/(2×1²)) = exp(−0.5) ≈ <strong>0.6065</strong></span></div></li>
-        <li><div><span class="we-step-label">Un-normalized similarity, point 1 → point 3</span><span class="we-calc">exp(−(5−0)²/(2×1²)) = exp(−12.5) ≈ <strong>0.0000037</strong> — essentially zero</span></div></li>
-        <li><div><span class="we-step-label">Normalize (divide by the sum ≈ 0.60654)</span><span class="we-calc">P(2|1) ≈ <strong>0.99999</strong>,&nbsp;&nbsp; P(3|1) ≈ <strong>0.000006</strong></span></div></li>
-      </ol>
-      <p>Point 1 assigns almost its entire "who's my neighbor" probability to the nearby point 2, and almost none to the distant point 3 — exactly the local-neighborhood behavior t-SNE is designed to preserve. A real run repeats this for every pair, symmetrizes it into Pᵢⱼ, and runs many rounds of gradient descent to arrange low-dimensional points until Q matches.</p>
+    <h3>5. Exam Cheat Sheet</h3>
+    <div class="exam-takeaway">
+      <span class="et-icon">🎯</span>
+      <div>
+        <span class="et-label">Exam takeaway</span>
+        <ul>
+            <li><strong>PCA:</strong> Global, Linear, Deterministic, Fast. Projects data onto orthogonal axes.</li>
+            <li><strong>t-SNE:</strong> Local, Non-linear, Stochastic, Slow. Uses KL divergence. Distances between distant clusters are <strong>meaningless</strong>.</li>
+            <li><strong>Perplexity:</strong> A hyperparameter in t-SNE that controls the balance between local and global structure (typical values: 5 to 50).</li>
+        </ul>
+      </div>
     </div>
-
-    <p><strong>Perplexity</strong> (a hyperparameter) sets the effective neighborhood size and controls the local/global trade-off — too low fragments real clusters, too high merges distinct ones into a blob. It has to be tuned per dataset; there's no universally correct value.</p>
-    <p><strong>UMAP</strong> targets the same visualization goal as t-SNE — generally faster and better at preserving some global structure alongside the local — worth reaching for once PCA and t-SNE feel comfortable.</p>
-
-    <div class="table-wrap">
-      <table>
-        <caption>PCA vs. t-SNE</caption>
-        <thead><tr><th>Aspect</th><th>PCA</th><th>t-SNE</th></tr></thead>
-        <tbody>
-          <tr><td>Purpose</td><td>Reduction &amp; feature transform</td><td>Visualization (2D/3D)</td></tr>
-          <tr><td>Algorithm type</td><td>Deterministic</td><td>Stochastic</td></tr>
-          <tr><td>Approach</td><td>Linear transform</td><td>Probabilistic, local similarity</td></tr>
-          <tr><td>Speed</td><td>Fast</td><td>Slow</td></tr>
-          <tr><td>Noisy data</td><td>Robust</td><td>Struggles</td></tr>
-          <tr><td>Structure preserved</td><td>Global</td><td>Local only</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="callout rule"><span class="tag">Tip</span><p>They're complementary, not competing: running PCA first (to denoise / speed up), then t-SNE or UMAP on the PCA output, is a common combo — PCA quickly strips out low-variance noise dimensions, and t-SNE only has to do its expensive pairwise-similarity work on the remaining, more meaningful components.</p></div>
-
-    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.manifold import TSNE</code> gives you <code>tsne = TSNE(n_components=2, perplexity=30, random_state=42); X_embedded = tsne.fit_transform(X_pca)</code> — note it's common practice to feed it <code>X_pca</code> (the output of a prior <code>PCA(...).fit_transform(...)</code> call) rather than the raw scaled feature matrix. Setting <code>random_state</code> doesn't make t-SNE non-stochastic, but it does make a given run reproducible.</p></div></div>
   </section>
 
   <!-- ============ 4 ============ -->
   <section class="chapter" id="evaluation">
     <div class="chapter-head"><span class="chapter-num">4</span><h2>Validating &amp; Evaluating Models</h2></div>
-    <p class="chapter-dek">A model is only as trustworthy as the metric used to judge it — and the obvious metric is often the wrong one.</p>
+    <p class="chapter-dek">A model is only as trustworthy as the metric used to judge it.</p>
 
-    <p>A model is only as trustworthy as the metric used to judge it — and the obvious metric (plain accuracy) is often the wrong one, particularly whenever your classes aren't roughly balanced. This section works through why, using one running toy example so the numbers stay connected across metrics.</p>
+    <h3>1. The Analogy Recap</h3>
+    <p>A food critic sits at the table. He refuses to use "Accuracy" because if 98% of the food is good, a blindfolded man guessing "good" would score 98% accuracy. Instead, he uses a clipboard with a 4-square grid (<span class="important-term">Confusion Matrix</span>). He wants to know exactly how many times the chef yelled "Poison!" when the food was fine (False Alarm / False Positive) vs how many times he missed actual poison (False Negative).</p>
 
-    <h3>The confusion matrix</h3>
-    <p>"Accuracy" alone collapses four different kinds of outcomes into one number, discarding the information you usually care about most — <em>which kind</em> of mistake the model makes. The confusion matrix keeps that information visible by separately counting every combination of predicted vs. actual outcome:</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th></th><th>Predicted positive</th><th>Predicted negative</th></tr></thead>
-        <tbody>
-          <tr><th>Actually positive</th><td>True Positive (TP)</td><td>False Negative (FN)</td></tr>
-          <tr><th>Actually negative</th><td>False Positive (FP)</td><td>True Negative (TN)</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <details class="micro-check">
-      <summary>A spam filter flags a real spam email correctly. Which cell of the matrix does that land in?</summary>
-      <div class="mc-a"><p><strong>True Positive (TP)</strong> — "positive" means "flagged as spam," and it was actually spam, so predicted and actual agree on the positive class. Every metric in this section is built from just these four counts.</p></div>
-    </details>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Take a small, illustrative spam filter evaluated on 100 emails, of which 10 are genuinely spam and 90 are genuinely not. The model flags 12 emails as spam: 8 really are spam (TP=8), 4 are false alarms (FP=4); of the 10 real spam emails, 2 slipped through unflagged (FN=2); of the 90 real non-spam emails, 86 were correctly left alone (TN=86).</p>
-      <div class="table-wrap"><table><thead><tr><th></th><th>Predicted spam</th><th>Predicted not-spam</th></tr></thead><tbody>
-        <tr><th>Actually spam</th><td>TP = 8</td><td>FN = 2</td></tr>
-        <tr><th>Actually not-spam</th><td>FP = 4</td><td>TN = 86</td></tr>
-      </tbody></table></div>
-      <p>Check the totals: actual spam = TP+FN = 10 ✓, actual not-spam = FP+TN = 90 ✓, all four cells sum to 100 ✓. Every metric below is computed from these same four numbers.</p>
+    <h3>2. Key Terms</h3>
+    <div class="concept-cards">
+      <div class="concept-card"><h4>Precision</h4><p>Of everything we <strong>flagged</strong> as positive, how much was actually positive? TP / (TP + FP)</p></div>
+      <div class="concept-card"><h4>Recall</h4><p>Of everything that was <strong>actually</strong> positive, how much did we catch? TP / (TP + FN)</p></div>
+      <div class="concept-card"><h4>F1 Score</h4><p>The harmonic mean of Precision and Recall. Punishes models if there's a huge gap between the two.</p></div>
     </div>
 
-    <h3>Precision, recall, specificity, and accuracy</h3>
-    <div class="grid-2">
-      <div class="mini-box">
-        <h4>Precision</h4>
-        <p>Of everything flagged positive, how much was right?</p>
-        <div class="formula-block" style="margin:0.4rem 0 0">TP / (TP + FP)</div>
-      </div>
-      <div class="mini-box">
-        <h4>Recall (Sensitivity)</h4>
-        <p>Of everything actually positive, how much did we catch?</p>
-        <div class="formula-block" style="margin:0.4rem 0 0">TP / (TP + FN)</div>
-      </div>
-      <div class="mini-box">
-        <h4>Specificity</h4>
-        <p>Of everything actually negative, how much did we catch?</p>
-        <div class="formula-block" style="margin:0.4rem 0 0">TN / (TN + FP)</div>
-      </div>
-      <div class="mini-box">
-        <h4>Accuracy</h4>
-        <p>Of everything, how much was classified correctly?</p>
-        <div class="formula-block" style="margin:0.4rem 0 0">(TP+TN) / (TP+TN+FP+FN)</div>
+    <h3>3. The Code Reality</h3>
+    <pre><code>from sklearn.metrics import confusion_matrix, classification_report
+
+# Get the raw TP/FP/FN/TN counts
+cm = confusion_matrix(y_true, y_pred)
+
+# Get Precision, Recall, and F1 all at once
+print(classification_report(y_true, y_pred))</code></pre>
+
+    <h3>4. Quick Example: Base-Rate Trap</h3>
+    <p>A disease affects 0.1% of people. A test is 99% accurate (99% True Positive Rate, 2% False Positive Rate). You test positive.</p>
+    <ul>
+      <li>Out of 100,000 people: 100 are sick. The test catches 99 (True Positives).</li>
+      <li>99,900 are healthy. The test falsely alarms on 2% = 1,998 (False Positives).</li>
+      <li>Total positive alarms: 99 + 1,998 = 2,097.</li>
+      <li>Odds you are sick: 99 / 2097 = <strong>4.7%</strong>. The test is 99% accurate, but because the disease is rare, almost all positives are false alarms!</li>
+    </ul>
+
+    <h3>5. Exam Cheat Sheet</h3>
+    <div class="exam-takeaway">
+      <span class="et-icon">🎯</span>
+      <div>
+        <span class="et-label">Exam takeaway</span>
+        <ul>
+            <li><strong>Imbalanced Data:</strong> If 98% of data is negative, a model that predicts "negative" 100% of the time gets 98% Accuracy. Accuracy is useless here.</li>
+            <li><strong>ROC/AUC:</strong> Evaluates the model across <em>every possible threshold</em> at once. 1.0 is perfect, 0.5 is random guessing.</li>
+            <li>A model that predicts "Positive" for everyone gets 100% Recall. A model that predicts "Negative" for everyone gets 100% Specificity. Look at F1 to see the truth.</li>
+        </ul>
       </div>
     </div>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Using the spam numbers above:</p>
-      <ol class="we-steps">
-        <li><div><span class="we-step-label">Precision</span><span class="we-calc">8/(8+4) = 8/12 ≈ <strong>0.667</strong> — of the 12 flagged, two-thirds really were spam</span></div></li>
-        <li><div><span class="we-step-label">Recall</span><span class="we-calc">8/(8+2) = 8/10 = <strong>0.80</strong> — of the 10 real spam emails, 8 were caught</span></div></li>
-        <li><div><span class="we-step-label">Specificity</span><span class="we-calc">86/(86+4) = 86/90 ≈ <strong>0.956</strong></span></div></li>
-        <li><div><span class="we-step-label">Accuracy</span><span class="we-calc">(8+86)/100 = <strong>0.94</strong></span></div></li>
-      </ol>
-    </div>
-
-    <div class="callout watch"><span class="tag">Watch out</span><p>A classifier that predicts "positive" for <em>everyone</em> scores 100% recall — trivially, since it never produces a false negative — while its precision collapses to whatever the true prevalence is. One that predicts "negative" for everyone scores 100% specificity — and, if 98% of the data really is negative, 98% accuracy too. Neither model has learned anything; both are gaming a single metric by ignoring the class that metric doesn't measure.</p></div>
-
-    <h3>The base-rate trap</h3>
-    <p>Intuition about probabilities is notoriously unreliable when a condition is rare, even for people comfortable with math. This is the single most common way "the test is 99% accurate" gets misinterpreted in the real world (medical testing, fraud detection, spam filtering all hit this same trap).</p>
-    <p>Setup: a rare disease has prevalence 0.1%. A test has a 99% true-positive rate and a 2% false-positive rate. Someone tests positive.</p>
-    <details class="micro-check">
-      <summary>Guess before calculating: roughly what's the chance this person actually has the disease?</summary>
-      <div class="mc-a"><p>Most people guess close to 99%, matching the test's accuracy. The real answer is <strong>≈4.7%</strong> — worked out step by step below. The test's accuracy describes the test; it does not describe this one person's odds, because almost everyone being tested is healthy to begin with.</p></div>
-    </details>
-    <p>Bayes' rule, not intuition:</p>
-    <div class="formula-block">P(D|P) = P(P|D)·P(D) / [P(P|D)·P(D) + P(P|H)·P(H)]
-     = (.99 × .001) / (.99 × .001 + .02 × .999)  ≈  <strong>4.7%</strong></div>
-
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <ol class="we-steps">
-        <li><div><span class="we-step-label">Numerator: P(positive AND diseased)</span><span class="we-calc">P(P|D)·P(D) = 0.99 × 0.001 = <strong>0.00099</strong> — the fraction of the entire population that is both diseased and tests positive</span></div></li>
-        <li><div><span class="we-step-label">Second denominator term: P(positive AND healthy)</span><span class="we-calc">P(P|H)·P(H) = 0.02 × 0.999 = <strong>0.01998</strong> — the fraction of the population that is healthy but tests positive anyway</span></div></li>
-        <li><div><span class="we-step-label">Denominator: P(positive at all)</span><span class="we-calc">0.00099 + 0.01998 = <strong>0.02097</strong> — the total fraction of the population that tests positive</span></div></li>
-        <li><div><span class="we-step-label">P(disease | positive)</span><span class="we-calc">0.00099 / 0.02097 ≈ <strong>4.7%</strong></span></div></li>
-      </ol>
-      <p>To build intuition: imagine 100,000 people. Only 100 (0.1%) actually have the disease, and the test correctly flags 99 of those. But among the 99,900 healthy people, 2% — nearly 1,998 — test positive anyway, purely as false alarms. So out of roughly 99+1,998 ≈ 2,097 total positive results, only 99 are real — and 99/2,097 ≈ 4.7%, matching the Bayes calculation exactly.</p>
-    </div>
-    <p>Even with a "99% accurate" test, most positives are false positives — because healthy people vastly outnumber sick ones. Base rates dominate when the condition is rare, and no amount of test accuracy on its own fixes that.</p>
-
-    <h3>F1 score</h3>
-    <p>Precision and recall often trade off against each other. Reporting both separately is honest but inconvenient when you need one number to compare models. The F1 score is the harmonic mean of precision and recall — preferred over a plain average specifically because the harmonic mean punishes a large gap between the two (precision 0.99 and recall 0.01 gives an <em>arithmetic</em> mean of 0.50, which looks fine, but a harmonic mean that plunges toward 0.02, correctly reflecting a nearly useless model).</p>
-    <div class="formula-block">F1 = 2 · Precision · Recall / (Precision + Recall)</div>
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Reusing precision ≈ 0.667, recall = 0.80: F1 = 2 × 0.667 × 0.80 / (0.667+0.80) = 1.0672 / 1.467 ≈ <strong>0.727</strong>. This sits between precision and recall but pulled toward the smaller of the two — the harmonic mean's characteristic behavior.</p>
-    </div>
-
-    <h3>ROC / AUC</h3>
-    <p>Precision, recall, and F1 all describe a model at <em>one specific decision threshold</em>. ROC/AUC evaluates the model across <em>every possible threshold at once</em>, rather than committing prematurely to one.</p>
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Five toy emails (illustrative) with model-assigned spam probabilities:</p>
-      <div class="table-wrap"><table><thead><tr><th>Email</th><th>Spam score</th><th>True label</th></tr></thead><tbody>
-        <tr><td>A</td><td>0.90</td><td>Spam</td></tr>
-        <tr><td>B</td><td>0.80</td><td>Spam</td></tr>
-        <tr><td>C</td><td>0.60</td><td>Not spam</td></tr>
-        <tr><td>D</td><td>0.40</td><td>Spam</td></tr>
-        <tr><td>E</td><td>0.10</td><td>Not spam</td></tr>
-      </tbody></table></div>
-      <ol class="we-steps">
-        <li><div><span class="we-step-label">Threshold 0.85 (only A flagged)</span><span class="we-calc">TP=1, FN=2, FP=0, TN=2 → TPR=1/3≈<strong>0.33</strong>, FPR=0/2=<strong>0.00</strong></span></div></li>
-        <li><div><span class="we-step-label">Threshold 0.50 (A, B, C flagged)</span><span class="we-calc">TP=2, FN=1, FP=1, TN=1 → TPR=2/3≈<strong>0.67</strong>, FPR=1/2=<strong>0.50</strong></span></div></li>
-      </ol>
-      <p>Plotting TPR against FPR at every threshold traces the ROC curve.</p>
-    </div>
-    <p>The diagonal line (TPR=FPR everywhere) represents a random classifier; the closer the curve hugs the top-left corner, the better. <strong>AUC</strong> compresses the whole curve into one number between 0 and 1 (perfect = 1.0, random = 0.5) and lets you pick the threshold that matches how much your application tolerates false alarms vs. missed detections.</p>
-
-    <div class="python-note"><div><span class="pn-label">Python note</span><p>You'd never build this table by hand on real data: <code>from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, roc_auc_score, roc_curve</code> gives you each metric in one call — <code>confusion_matrix(y_true, y_pred)</code> returns the TP/FP/FN/TN grid directly, and <code>roc_curve(y_true, y_scores)</code> returns FPR/TPR pairs across all thresholds, ready to plot. <code>classification_report(y_true, y_pred)</code> prints precision, recall, and F1 together.</p></div></div>
-
-    <div class="callout rule"><span class="tag">Rule</span><p>The training cost function is only a proxy for the real-world objective. Choose evaluation metrics deliberately — they should reflect which errors actually cost you, and account for class imbalance. A spam filter and a cancer-screening test might have identical confusion-matrix shapes but wildly different tolerances for false negatives vs. false positives.</p></div>
   </section>
 
   <!-- ============ 5 ============ -->
@@ -843,310 +605,44 @@
     <div class="chapter-head"><span class="chapter-num">5</span><h2>Modelling &amp; Choosing a Model</h2></div>
     <p class="chapter-dek">Fitting is iterative; the best-scoring model on paper is not automatically the right one to ship.</p>
 
-    <h3>Training = minimizing a cost function</h3>
-    <p>"Training a model" can sound mysterious from the outside, but mechanically it's a search procedure — the learning algorithm repeatedly compares model output against ground truth, computes an error (the cost/objective function), and uses that error to nudge the model's parameters — forward pass, compute loss, backward pass, repeat. It's conceptually similar to a hill-climbing optimization loop, just applied to potentially millions of adjustable numeric weights.</p>
+    <h3>1. The Analogy Recap</h3>
+    <p>We look at two chefs trying to pass culinary school. Chef A serves raw dough to everyone because it's fast and easy—he hasn't learned the recipe at all (<span class="important-term">Underfitting / High Bias</span>). Chef B memorizes exactly what one specific customer wanted, including the exact shape of a burnt piece of toast. It perfectly scores 100% for that customer, but tastes like garbage to the rest of the world (<span class="important-term">Overfitting / High Variance</span>).</p>
 
-    <div class="grid-2">
-      <div class="mini-box">
-        <h4>Overfitting</h4>
-        <p>Low bias, high variance. The model memorizes training noise — it has, in effect, memorized the answer key instead of learning the underlying pattern.</p>
-      </div>
-      <div class="mini-box">
-        <h4>Underfitting</h4>
-        <p>High bias, low variance. The model hasn't even managed to memorize the training set, let alone generalize from it.</p>
-      </div>
+    <h3>2. Key Terms</h3>
+    <div class="concept-cards">
+      <div class="concept-card"><h4>Underfitting (High Bias)</h4><p>The model is too simple. Train error is high, and Validation error is high.</p></div>
+      <div class="concept-card"><h4>Overfitting (High Variance)</h4><p>The model memorized the training noise. Train error is tiny, but Validation error is huge.</p></div>
+      <div class="concept-card"><h4>Hyperparameters</h4><p>Settings you choose <strong>before</strong> training (e.g. tree depth, learning rate). Tuned using Validation data.</p></div>
+      <div class="concept-card"><h4>Model Parameters</h4><p>Weights learned <strong>during</strong> training by the algorithm.</p></div>
     </div>
 
-    <div class="worked-example">
-      <span class="we-label">Worked example</span>
-      <p>Comparing three model complexities fitting house price from square footage (illustrative numbers):</p>
-      <div class="table-wrap"><table><thead><tr><th>Model complexity</th><th>Train error</th><th>Validation error</th><th>Diagnosis</th></tr></thead><tbody>
-        <tr><td>Straight line (too simple)</td><td>12.4</td><td>12.9</td><td>Underfitting — both errors high and close</td></tr>
-        <tr><td>Degree-2 curve (reasonable)</td><td>3.1</td><td>3.4</td><td>Good fit — both errors low and close</td></tr>
-        <tr><td>Degree-9 curve (too flexible)</td><td>0.3</td><td>15.7</td><td>Overfitting — huge gap</td></tr>
-      </tbody></table></div>
-      <p>The diagnostic pattern: underfitting shows up as <em>both</em> numbers being bad; overfitting shows up as a big <em>gap</em> between a great training number and a poor validation number. A well-fit model has both errors low <strong>and</strong> close to each other.</p>
-    </div>
+    <h3>3. The Code Reality</h3>
+    <pre><code>from sklearn.model_selection import GridSearchCV
 
-    <h3>Hyperparameters vs. model parameters</h3>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th></th><th>Model parameters</th><th>Hyperparameters</th></tr></thead>
-        <tbody>
-          <tr><th>Set by</th><td>Learned during training</td><td>Chosen before training</td></tr>
-          <tr><th>Purpose</th><td>Define the model's learned behavior</td><td>Control the learning process itself</td></tr>
-          <tr><th>Examples</th><td>Weights, biases</td><td>Learning rate, epochs, tree depth, perplexity</td></tr>
-          <tr><th>Tuned via</th><td>Optimization (gradient descent, …)</td><td>Search / validation (grid, random, …)</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>Concretely: a linear regression's coefficients are model parameters — you never set them by hand, the optimizer finds them. But <em>how many</em> iterations it runs, or <em>how strongly</em> it penalizes large coefficients, are hyperparameters — chosen before training, then validated on held-out data (never the test set).</p>
+# We don't guess hyperparameters. We search for the best ones 
+# using cross-validation!
+param_grid = {'C': [0.001, 0.01, 0.1, 1]}
+search = GridSearchCV(model, param_grid, cv=5)
+search.fit(X_train_scaled, y_train)</code></pre>
 
-    <div class="python-note"><div><span class="pn-label">Python note</span><p><code>from sklearn.model_selection import GridSearchCV</code> automates the search: <code>GridSearchCV(model, param_grid={'C': [0.001, 0.01, 0.1, 1]}, cv=5)</code> tries each value of <code>C</code>, evaluates each using 5-fold cross-validation, and reports the best one.</p></div></div>
-
-    <h3>"Best score" ≠ "most suitable"</h3>
-    <p>Alongside raw performance, weigh:</p>
+    <h3>4. Quick Example: Diagnosing the Fit</h3>
     <ul>
-      <li><strong>Generalizability</strong> — avoids overfitting, holds up on unseen data</li>
-      <li><strong>Simplicity &amp; maintainability</strong> — easier to debug, update, deploy</li>
-      <li><strong>Speed &amp; efficiency</strong> — meets latency/resource constraints</li>
-      <li><strong>Interpretability</strong> — often non-negotiable in healthcare, finance, law</li>
-      <li><strong>Stability &amp; reproducibility</strong> — consistent across data variations</li>
+      <li><strong>Model A:</strong> Train Error: 12.4 | Val Error: 12.9 ➔ <strong>Underfitting</strong> (Both are high)</li>
+      <li><strong>Model B:</strong> Train Error: 3.1 | Val Error: 3.4 ➔ <strong>Good Fit</strong> (Both are low and close)</li>
+      <li><strong>Model C:</strong> Train Error: 0.3 | Val Error: 15.7 ➔ <strong>Overfitting</strong> (Huge gap between train and val)</li>
     </ul>
-    <p>A model that scores 0.5% higher AUC but takes 50× longer to run in production, or can't be explained to a regulator, is very often the wrong choice despite the leaderboard number. Choosing a model is a match between <strong>data properties</strong> (feature count, sample size, input/output format) and <strong>model properties</strong> (accuracy, simplicity, interpretability, speed) — closer to adjusting a recipe while cooking than picking one in advance. Start simple, measure, and add complexity only when the simple approach demonstrably falls short.</p>
 
-    <h3>Quick decision path</h3>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Question</th><th>Then look at</th></tr></thead>
-        <tbody>
-          <tr><td>&lt; 50 samples?</td><td>Get more data before modelling</td></tr>
-          <tr><td>No labels — just exploring structure?</td><td>Dimensionality reduction (PCA / UMAP)</td></tr>
-          <tr><td>No labels — grouping needed, category count known?</td><td>K-Means; unknown count → Mean-Shift / GMM</td></tr>
-          <tr><td>Labelled, predicting a <strong>category</strong>?</td><td>Naive Bayes / linear SVC (small data) → k-NN / ensembles / SGD (larger data)</td></tr>
-          <tr><td>Labelled, predicting a <strong>quantity</strong>?</td><td>Ridge/Lasso/ElasticNet (small data) → SVR / ensemble regressors (larger, or few important features)</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="python-note"><div><span class="pn-label">Python note</span><p>Every algorithm above has a corresponding scikit-learn class with a consistent <code>.fit(X, y)</code> / <code>.predict(X)</code> interface: <code>from sklearn.cluster import KMeans</code> and <code>from sklearn.mixture import GaussianMixture</code> for unsupervised grouping; <code>from sklearn.naive_bayes import GaussianNB</code>, <code>from sklearn.svm import SVC</code>, <code>from sklearn.neighbors import KNeighborsClassifier</code>, <code>from sklearn.linear_model import SGDClassifier</code> for classification; <code>from sklearn.linear_model import Ridge, Lasso, ElasticNet</code> and <code>from sklearn.svm import SVR</code> for regression. Model parameters get learned inside <code>.fit()</code>; hyperparameters (like <code>n_clusters</code> or <code>C</code>) get passed in when you construct the object, before training starts.</p></div></div>
-  </section>
-
-  <!-- ============ 6 ============ -->
-  <section class="chapter" id="exercises">
-    <div class="chapter-head"><span class="chapter-num">6</span><h2>Sprint Exercises</h2></div>
-    <p class="chapter-dek">The professor's actual hands-on assignments for this chapter, with solutions.</p>
-
-    <h3>Exercises 3 &amp; 4 — Titanic Survival Prediction Pipeline</h3>
-    <p>A full walk through the pipeline from §2: clean placeholder values, engineer features (a title extracted from name, a cabin letter), split <strong>before</strong> touching missing data, add missing-indicator columns, impute with the train median, collapse rare categories into <code>"Rare"</code>, one-hot encode, scale, then fit a regularized logistic regression.</p>
-    <div class="formula-block"><span class="label">Impute using train statistics only</span>X_train['age_NA'] = np.where(X_train['age'].isnull(), 1, 0)
-median_val = X_train['age'].median()
-X_train['age'] = X_train['age'].fillna(median_val)
-X_test['age']  = X_test['age'].fillna(median_val)   # reuse the TRAIN median</div>
-    <div class="callout rule"><span class="tag">Result</span><p><code>LogisticRegression(C=0.0005)</code> reached 70.2% test accuracy and 0.835 ROC-AUC — but only 0.36 F1, a concrete demonstration of why accuracy alone (§4) can look fine while the model is still struggling on the minority class.</p></div>
-
-    <h3>Exercise 5 — PCA &amp; t-SNE on Single-Cell RNA-seq</h3>
-    <p>2,700 immune cells × ~32,700 genes (<code>pbmc3k_sparse.pkl</code>) — filter near-zero genes, standardize, run PCA to 50 components, then run t-SNE <em>on the PCA output</em> rather than the raw scaled matrix.</p>
-    <div class="formula-block"><span class="label">PCA before t-SNE — not either/or</span>X_pca_50 = PCA(n_components=50).fit_transform(X_scaled)
-X_tsne = TSNE(n_components=2, perplexity=30, random_state=42).fit_transform(X_pca_50)</div>
-    <p>Sweeping perplexity across [2, 10, 50, 500] and re-running with three random seeds makes both t-SNE gotchas from §3 tangible: low perplexity fragments real clusters, and different seeds give different (but locally similar) layouts.</p>
-  </section>
-
-  <!-- ============ 7 ============ -->
-  <section class="chapter" id="test-yourself">
-    <div class="chapter-head"><span class="chapter-num">7</span><h2>Test Yourself</h2></div>
-    <p class="chapter-dek">Retrieval practice — the single best-evidenced study technique there is.</p>
-    <p class="quiz-intro">Cover the answer, try to recall it from memory, <em>then</em> click to check. Getting it wrong and then reading the answer still strengthens the memory — skipping straight to the answer doesn't. <strong>Do this before your exam, not while reading for the first time.</strong></p>
-    <div class="quiz-list">
-
-      <details class="quiz-item">
-        <summary>In the two-document TF-IDF worked example ("cats love naps" vs. "dogs love walks"), what were the IDF value and final TF-IDF score for the word "love" in Doc 1, and why?</summary>
-        <div class="quiz-a"><p>IDF(love) = ln(2/2) = ln(1) = 0, and TF-IDF(love, Doc 1) = 1/3 × 0 = 0, because "love" appears in every document so it contributes nothing to distinguishing them.</p></div>
-      </details>
-
-      <details class="quiz-item">
-        <summary>In the z-score worked example (house sizes 50, 70, 90 m²), what were the computed mean, variance, and standard deviation, and what were the resulting z-scores for each house?</summary>
-        <div class="quiz-a"><p>Mean = 70, variance = 400 (sample convention, n−1), so σ = 20. The z-scores were −1, 0, and +1 for 50, 70, and 90 m² respectively.</p></div>
-      </details>
-
-      <details class="quiz-item">
-        <summary>In the missing-age worked example (ages 25, missing, 30, missing, 35), what value was used to impute the missing entries, and why was the median chosen over the mean as the default?</summary>
-        <div class="quiz-a"><p>The median of the observed values {25, 30, 35} is 30, so both missing entries were filled with 30. Median is preferred because it's far less sensitive to a handful of extreme outliers dragging the fill value away from what's typical.</p></div>
-      </details>
-
-      <details class="quiz-item">
-        <summary>What does the "Watch out" callout on one-hot encoding say you must do after creating the dummy columns, and why?</summary>
-        <div class="quiz-a"><p>Drop one of the new columns (e.g. Color_Red), because keeping all of them is redundant — the last category is implied by all-zeros elsewhere — and can introduce multicollinearity.</p></div>
-      </details>
-
-      <details class="quiz-item">
-        <summary>In the PCA-by-hand worked example (hours studied vs. quiz score for 4 students), what were the two eigenvalues of the covariance matrix, and what percentage of total variance did PC1 capture?</summary>
-        <div class="quiz-a"><p>λ₁ ≈ 3.89 and λ₂ ≈ 0.11 (summing to the trace of 4.00). PC1 captured λ₁/(λ₁+λ₂) ≈ 97.1% of the total variance.</p></div>
-      </details>
-
-      <details class="quiz-item">
-        <summary>In the t-SNE toy example with points x₁=0, x₂=1, x₃=5 and σ₁=1, what were the normalized neighbor probabilities P(2|1) and P(3|1)?</summary>
-        <div class="quiz-a"><p>P(2|1) ≈ 0.99999 and P(3|1) ≈ 0.000006 — point 1 assigns almost all its "who's my neighbor" probability to the nearby point 2 and almost none to the distant point 3.</p></div>
-      </details>
-
-      <details class="quiz-item">
-        <summary>In the 100-email spam filter confusion-matrix example (TP=8, FP=4, FN=2, TN=86), what were the precision, recall, and F1 scores?</summary>
-        <div class="quiz-a"><p>Precision = 8/12 ≈ 0.667, recall = 8/10 = 0.80, and F1 ≈ 0.727 (pulled toward the smaller of precision and recall, as the harmonic mean does).</p></div>
-      </details>
-
-      <details class="quiz-item">
-        <summary>In the rare-disease Bayes example (0.1% prevalence, 99% true-positive rate, 2% false-positive rate), what was P(disease | positive test), and why is it so low despite the "99% accurate" test?</summary>
-        <div class="quiz-a"><p>P(disease|positive) ≈ 4.7%. It's low because healthy people vastly outnumber sick ones, so even a 2% false-positive rate among the large healthy population produces far more false positives (about 1,998) than true positives (99).</p></div>
-      </details>
-
-      <details class="quiz-item">
-        <summary>In the model-complexity worked example fitting house price from square footage, what were the train/validation error pairs for the straight-line, degree-2, and degree-9 models, and which one demonstrates overfitting?</summary>
-        <div class="quiz-a"><p>Straight line: 12.4/12.9 (underfitting, both errors high and close); degree-2: 3.1/3.4 (good fit, both low and close); degree-9: 0.3/15.7 (overfitting, huge gap between train and validation error).</p></div>
-      </details>
-
-      <details class="quiz-item">
-        <summary>In the Titanic Sprint Exercise, what test accuracy, ROC-AUC, and F1 score did the regularized logistic regression (C=0.0005) achieve, and what does that combination of numbers demonstrate?</summary>
-        <div class="quiz-a"><p>It reached 70.2% test accuracy, 0.835 ROC-AUC, but only 0.36 F1 — a concrete demonstration of why accuracy alone can look fine while the model is still struggling on the minority class.</p></div>
-      </details>
-
-    </div>
-  </section>
-
-  <!-- ============ 8 ============ -->
-  <section class="chapter" id="exam-drill">
-    <div class="chapter-head"><span class="chapter-num">8</span><h2>Exam Drill</h2></div>
-    <p class="chapter-dek">Same skills as Test Yourself, but in the exam's actual answer format.</p>
-    <p class="quiz-intro">Real exams rarely ask you to write a paragraph — they ask you to name a technique in a couple of words, reorder scrambled steps, pick every correct item from a list, or fill in one line of code. These drills train that exact shape of answer, not just the underlying concept.</p>
-    <div class="drill-list">
-
-      <details class="drill-item">
-        <summary>
-          <span class="drill-tag">Name it</span>
-          <span class="drill-q">You have a dataset with 60 features and want a 2D plot that preserves which points are close neighbors, even if that distorts the overall distances between far-apart groups. In ≤2 words, what technique fits?</span>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p><strong>t-SNE.</strong> It's built specifically to preserve local neighborhoods for visualization, at the cost of global distances — the opposite trade-off PCA makes (§3).</p></div>
-      </details>
-
-      <details class="drill-item">
-        <summary>
-          <span class="drill-tag">Name it</span>
-          <span class="drill-q">You have a dataset with dozens of numerical features, expect mostly linear relationships between them, and want to reduce dimensionality while preserving overall (global) structure and interpretability. In ≤2 words, what technique fits?</span>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p><strong>PCA.</strong> Deterministic and linear, it finds the orthogonal axes capturing the most overall variance — the opposite trade-off t-SNE makes above (§3).</p></div>
-      </details>
-
-      <details class="drill-item">
-        <summary>
-          <span class="drill-tag">Code</span>
-          <span class="drill-q">Complete this line to compute the mean purchase amount for each customer in a dataframe <code>df</code>:</span>
-          <span class="drill-code-inline">df.<span class="drill-blank">____</span>('customer_id')['purchase_amount'].mean()</span>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p><code>df.groupby('customer_id')['purchase_amount'].mean()</code> — <code>groupby</code> collapses all rows sharing a <code>customer_id</code> into one group before <code>.mean()</code> reduces each group to a single number, the pandas equivalent of SQL's <code>GROUP BY</code> + <code>AVG</code> (§2).</p></div>
-      </details>
-
-      <details class="drill-item">
-        <summary>
-          <span class="drill-tag">Reorder</span>
-          <span class="drill-q">Put these five preprocessing steps in the order this module recommends:</span>
-          <ol class="drill-scramble">
-            <li>A. Scale features</li>
-            <li>B. Handle missing data</li>
-            <li>C. Engineer features</li>
-            <li>D. Reduce dimensions</li>
-            <li>E. Handle class imbalance</li>
-          </ol>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p><strong>C, B, E, A, D</strong> — Engineer features → handle missing data → handle imbalance → scale → reduce dimensions (§2's chapter-dek).</p></div>
-      </details>
-
-      <details class="drill-item">
-        <summary>
-          <span class="drill-tag">Select all</span>
-          <span class="drill-q">Which of these models need feature scaling before training?</span>
-          <ul class="drill-options">
-            <li>(a) k-Nearest Neighbors</li>
-            <li>(b) Decision Tree</li>
-            <li>(c) Support Vector Machine</li>
-            <li>(d) Random Forest</li>
-            <li>(e) K-Means</li>
-            <li>(f) Logistic Regression</li>
-          </ul>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p><strong>(a), (c), (e), (f).</strong> These all compare features using literal distance or gradient magnitude, so an unscaled feature can dominate purely from its units. Decision Trees and Random Forests split on raw thresholds per feature independently, so scaling doesn't affect them (§2).</p></div>
-      </details>
-
-      <details class="drill-item">
-        <summary>
-          <span class="drill-tag">Code</span>
-          <span class="drill-q">Complete this call to reserve 25% of the data for testing, reproducibly:</span>
-          <span class="drill-code-inline">X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="drill-blank">____</span>, random_state=<span class="drill-blank">____</span>)</span>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p><code>test_size=0.25</code>, <code>random_state=</code> any fixed integer (e.g. <code>42</code>) so the "random" split is reproducible across runs (§1).</p></div>
-      </details>
-
-      <details class="drill-item">
-        <summary>
-          <span class="drill-tag">Compute</span>
-          <span class="drill-q">A fraud-detection model is evaluated on 50 transactions, 5 of which are truly fraud. The model flags 6 as fraud, of which 4 are truly fraud. Compute precision and recall.</span>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p>TP=4, FP=2 (6 flagged − 4 correct), FN=1 (5 real − 4 caught). Precision = 4/6 ≈ <strong>0.667</strong>. Recall = 4/5 = <strong>0.80</strong> (§4).</p></div>
-      </details>
-
-      <details class="drill-item">
-        <summary>
-          <span class="drill-tag">Code</span>
-          <span class="drill-q">Complete this to one-hot encode a <code>Size</code> column (Small/Medium/Large), dropping the first category to avoid redundancy:</span>
-          <span class="drill-code-inline">encoder = OneHotEncoder(drop=<span class="drill-blank">____</span>)<br>encoder.fit_transform(df[['Size']])</span>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p><code>drop='first'</code> — drops one of the new columns, since the last category is always implied by all-zeros elsewhere and keeping it would just duplicate information already present (§2).</p></div>
-      </details>
-
-      <details class="drill-item">
-        <summary>
-          <span class="drill-tag">Select all</span>
-          <span class="drill-q">Of these five models, which ones actually need one-hot encoding rather than raw category labels?</span>
-          <ul class="drill-options">
-            <li>(a) Support Vector Machine</li>
-            <li>(b) Gradient-Boosted Trees</li>
-            <li>(c) k-Nearest Neighbors</li>
-            <li>(d) Ridge Regression</li>
-            <li>(e) Random Forest</li>
-          </ul>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p><strong>(a), (c), (d).</strong> SVM, k-NN, and Ridge Regression are all arithmetic/distance-based, so a raw label-encoded category would introduce a false ordinal relationship. Gradient-Boosted Trees and Random Forest don't strictly need it — like any tree-based model, they split on raw category values directly and never do arithmetic across them (§2).</p></div>
-      </details>
-
-      <details class="drill-item">
-        <summary>
-          <span class="drill-tag">Select all</span>
-          <span class="drill-q">Which of these are STOCHASTIC — producing a different result on repeated runs over the same data?</span>
-          <ul class="drill-options">
-            <li>(a) Linear Regression (closed-form/OLS)</li>
-            <li>(b) t-SNE</li>
-            <li>(c) K-Means</li>
-            <li>(d) PCA (full SVD)</li>
-          </ul>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p><strong>(b), (c).</strong> t-SNE's optimization starts from a random low-dimensional layout, and K-Means starts from randomly chosen initial centroids, so different runs can land in different (locally optimal) places. Linear regression solved in closed form and PCA via full SVD are both deterministic exact computations — same input, same output, every time (§3).</p></div>
-      </details>
-
-      <details class="drill-item">
-        <summary>
-          <span class="drill-tag">Code</span>
-          <span class="drill-q">Complete this to scale a <code>square_footage</code> column into the [0, 1] range, fitting only on the training data:</span>
-          <span class="drill-code-inline">scaler = <span class="drill-blank">____</span>()<br>X_train_scaled = scaler.fit_transform(X_train[['square_footage']])<br>X_test_scaled = scaler.<span class="drill-blank">____</span>(X_test[['square_footage']])</span>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p><code>MinMaxScaler</code> rescales to [0, 1] via <code>(x − min) / (max − min)</code>; <code>.transform()</code> — fit on train only, then apply that same fitted transform to test, rather than <code>.fit_transform()</code> again, which would recompute a new min/max from the test set itself (§2).</p></div>
-      </details>
-
-      <details class="drill-item">
-        <summary>
-          <span class="drill-tag">Reorder</span>
-          <span class="drill-q">Order the steps for safely preprocessing data without data leakage:</span>
-          <ol class="drill-scramble">
-            <li>Transform the training data using the fitted preprocessors.</li>
-            <li>Train the machine learning model.</li>
-            <li>Separate features (X) from the target (y).</li>
-            <li>Transform the test data using the existing preprocessors.</li>
-            <li>Perform a train/test split.</li>
-            <li>Fit the imputer/scaler/encoder strictly on the training data.</li>
-          </ol>
-          <span class="drill-reveal-hint"></span>
-        </summary>
-        <div class="drill-a"><p><strong>3, 5, 6, 1, 4, 2</strong> — Separate X and y → Train/test split → Fit preprocessors on train only → Transform train → Transform test → Train model.</p></div>
-      </details>
-
+    <h3>5. Exam Cheat Sheet</h3>
+    <div class="exam-takeaway">
+      <span class="et-icon">🎯</span>
+      <div>
+        <span class="et-label">Exam takeaway</span>
+        <ul>
+            <li><strong>Cross Validation:</strong> Used to tune hyperparameters and check for overfitting *without* touching the sacred Test set.</li>
+            <li><strong>Model Selection:</strong> Accuracy is not everything. You must consider Generalizability, Simplicity, Speed/Latency, and Interpretability (crucial for medicine/finance).</li>
+            <li>The Training cost function is only a proxy for real-world objectives. The model with the highest Kaggle score might take 50x longer to run in production, making it useless.</li>
+        </ul>
+      </div>
     </div>
   </section>
 
