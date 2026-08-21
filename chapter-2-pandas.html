@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2.1 — Pandas & EDA | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-pandas.html" class="active">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-pandas.html" class="active">2.1 · Pandas &amp; EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+      <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">On this page</span>
+      <a href="#overview"><span class="toc-num">0</span>High-Level Overview</a>
+      <a href="#objects"><span class="toc-num">1</span>Pandas Objects</a>
+      <a href="#cleaning"><span class="toc-num">2</span>Data Cleaning</a>
+      <a href="#eda"><span class="toc-num">3</span>EDA</a>
+      <a href="#exam-drills"><span class="toc-num">4</span>Test Yourself</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-pandas.html" class="active">2.1 · Pandas &amp; EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+      <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">On this page</span>
+      <a href="#overview"><span class="toc-num">0</span>High-Level Overview</a>
+      <a href="#objects"><span class="toc-num">1</span>Pandas Objects</a>
+      <a href="#cleaning"><span class="toc-num">2</span>Data Cleaning</a>
+      <a href="#eda"><span class="toc-num">3</span>EDA</a>
+      <a href="#exam-drills"><span class="toc-num">4</span>Test Yourself</a>
+    </div>
+  </aside>
+
+<div class="page">
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 2.1</div>
+      <h1 class="title">Pandas &amp; EDA Survival Guide</h1>
+    </div>
+    <div class="masthead-meta">Wrangling the data beast<br><strong>Series vs DataFrame → Indexing → Cleaning → Grouping</strong></div>
+  </div>
+  <p class="dek">Before we can train a machine learning model, we have to wrestle the raw data into submission. This is your ultra-condensed survival guide to Pandas (the tool) and Exploratory Data Analysis (the mindset).</p>
+
+  <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#overview"><span class="toc-num">0</span>High-Level Overview</a></li>
+      <li><a href="#objects"><span class="toc-num">1</span>Pandas Objects &amp; Indexing</a></li>
+      <li><a href="#cleaning"><span class="toc-num">2</span>Data Cleaning (NaNs &amp; Types)</a></li>
+      <li><a href="#eda"><span class="toc-num">3</span>Exploratory Data Analysis (EDA)</a></li>
+      <li><a href="#exam-drills"><span class="toc-num">4</span>Test Yourself</a></li>
+    </ul>
+  </div>
+
+  <!-- ============ OVERVIEW ============ -->
+  <section class="chapter" id="overview">
+    <div class="chapter-head"><span class="chapter-num">0</span><h2>High-Level Overview</h2></div>
+    <p class="chapter-dek">What is Pandas, and why are we using it?</p>
+    
+    <div class="concept-cards" style="grid-template-columns: 1fr;">
+      <div class="concept-card">
+        <h4>The Spreadsheet Analogy</h4>
+        <p>Think of Pandas as Excel on steroids, but operated via Python code instead of clicking a mouse. A <strong>DataFrame</strong> is the entire spreadsheet (rows and columns). A <strong>Series</strong> is a single column pulled out of that spreadsheet.</p>
+      </div>
+      <div class="concept-card">
+        <h4>Why do we need it?</h4>
+        <p>Raw data is messy. Scikit-learn (our ML library) expects a pristine grid of numbers with no missing values, no strings (like "Mr." or "Male"), and no unnecessary clutter. Pandas is the knife we use to chop, clean, and organize the raw ingredients before handing them to the ML chef.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 1 ============ -->
+  <section class="chapter" id="objects">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>Pandas Objects &amp; Indexing</h2></div>
+    <p class="chapter-dek">How to grab exactly the data you want from the massive table.</p>
+
+    <h3>1. Key Terms</h3>
+    <div class="concept-cards">
+      <div class="concept-card"><h4>DataFrame</h4><p>A 2-dimensional table of data with rows and columns. (e.g. <code>df = pd.DataFrame(data)</code>).</p></div>
+      <div class="concept-card"><h4>Series</h4><p>A 1-dimensional array. If you grab one column from a DataFrame, it is returned as a Series. (e.g. <code>df['Age']</code>).</p></div>
+      <div class="concept-card"><h4>.loc (Label-based)</h4><p>Finds rows based on their actual <strong>name/label</strong> in the index (like finding a house by its street address).</p></div>
+      <div class="concept-card"><h4>.iloc (Integer-based)</h4><p>Finds rows based on their <strong>numerical position</strong> starting at 0, regardless of what they are named (like finding the 5th house on the block).</p></div>
+    </div>
+
+    <h3>2. The Code Reality</h3>
+    <pre><code>import pandas as pd
+import seaborn as sns
+
+# 1. Loading Data
+df = sns.load_dataset('titanic')
+
+# 2. Selecting Columns
+age_series = df['age']          # Returns a Series
+age_fare_df = df[['age', 'fare']] # Returns a DataFrame (note the double brackets!)
+
+# 3. Indexing (loc vs iloc)
+first_row_by_pos = df.iloc[0]       # Grabs the 1st row (position 0)
+specific_row = df.loc['Saleem']     # Grabs the row where the index label is 'Saleem'
+
+# 4. Filtering (Boolean Indexing)
+# Select the first 5 rows where passengers are female
+female_passengers = df[df['sex'] == 'female'].head(5)
+children = df[df['age'] < 18]</code></pre>
+  </section>
+
+  <!-- ============ 2 ============ -->
+  <section class="chapter" id="cleaning">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>Data Cleaning (NaNs &amp; Features)</h2></div>
+    <p class="chapter-dek">Dealing with missing data and broken formats.</p>
+
+    <h3>1. Key Concepts</h3>
+    <div class="concept-cards">
+      <div class="concept-card"><h4>NaN (Not a Number)</h4><p>Represents missing data. If you feed NaNs into most ML models, they crash immediately.</p></div>
+      <div class="concept-card"><h4>Dropping vs Imputing</h4><p>If a column is 90% missing, just <strong>drop</strong> it. If it's only 5% missing, <strong>impute</strong> (fill) it with the median/mean so you don't lose the rest of the row's valuable data.</p></div>
+      <div class="concept-card"><h4>Vectorized Operations</h4><p>Applying a function to an entire column at once, which is 100x faster than writing a Python <code>for</code> loop.</p></div>
+    </div>
+
+    <h3>2. The Code Reality</h3>
+    <pre><code># 1. Finding missing values
+missing_percentages = df.isna().mean() * 100
+
+# 2. Replacing garbage values with NaNs so Pandas recognizes them
+df = df.replace('?', pd.NA)
+
+# 3. Dropping useless or redundant columns
+# (e.g. keeping only the first cabin if multiple are listed)
+df = df.drop(columns=['deck', 'embark_town'])
+
+# 4. Vectorized Feature Engineering (Regex)
+# Extract titles (Mr., Mrs., Miss.) from a messy Name column
+df['Title'] = df['Name'].str.extract(' ([A-Za-z]+)\.', expand=False)
+
+# 5. Type Casting
+# Convert a column that looks like strings into usable floats
+df['fare'] = df['fare'].astype(float)</code></pre>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="chapter" id="eda">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Exploratory Data Analysis (EDA)</h2></div>
+    <p class="chapter-dek">Understanding the shape, spread, and secrets of your data.</p>
+
+    <h3>1. Key Concepts</h3>
+    <div class="concept-cards">
+      <div class="concept-card"><h4>Cardinality</h4><p>The number of <strong>unique</strong> values in a categorical column. A column with 2 unique values (Gender) has low cardinality. A column with 10,000 unique values (User_ID) has high cardinality and is usually useless for ML.</p></div>
+      <div class="concept-card"><h4>Grouping</h4><p>Splitting the data into buckets (e.g., by Class), applying math to each bucket (e.g., Mean Age), and gluing the results back together.</p></div>
+    </div>
+
+    <h3>2. The Code Reality</h3>
+    <pre><code># 1. Cardinality & Unique Values
+unique_counts = df.nunique()        # How many unique values per column?
+embarked_values = df['embarked'].unique() # List the actual unique values
+
+# 2. Value Counts
+# What percentage of people survived?
+survival_rates = df['survived'].value_counts(normalize=True)
+
+# 3. Groupby Aggregation
+# Calculate mean age per gender and class
+mean_age_by_group = df.groupby(['sex', 'class'])['age'].mean()
+
+# 4. Creating New Features based on math
+# Add a column for fare paid per year of age
+df['fare_per_age'] = df['fare'] / df['age']</code></pre>
+  </section>
+
+  <!-- ============ EXAM DRILLS ============ -->
+  <section class="chapter" id="exam-drills">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Test Yourself (Concept Drills)</h2></div>
+    <p class="chapter-dek">Test your knowledge with essential exam-style concept questions.</p>
+    
+    <div class="drill-list">
+      
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Code check</span>
+          <span class="drill-q">You want to grab the row labeled "Index_42". Which command is correct: <code>df.iloc['Index_42']</code> or <code>df.loc['Index_42']</code>?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>df.loc['Index_42']</strong>. Use <code>.loc</code> when referencing specific string labels in the index. Use <code>.iloc</code> when you just want a numerical position (like "row number 5").</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Concept check</span>
+          <span class="drill-q">A categorical column "Passenger_Name" has 891 unique values across 891 rows. Is this high or low cardinality? Should you One-Hot Encode it?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>Extremely High Cardinality.</strong> You should NOT One-Hot Encode it, because it would create 891 new columns (one for each passenger). You should either drop the column entirely, or extract a lower-cardinality feature from it (like extracting just the Title: Mr/Mrs/Miss).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Code check</span>
+          <span class="drill-q">How do you filter a DataFrame <code>df</code> to only show passengers who paid a fare greater than $50?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><code>df[df['fare'] > 50]</code></p></div>
+      </details>
+
+    </div>
+  </section>
+<footer class="page-footer">
+    <span>Condensed from Exercise 2 & 3 — Pandas and EDA</span>
+    <span><a href="index.html">← All modules</a></span>
+  </footer>
+
+</div>
+</div>
+<script src="assets/site.js" defer></script>
+</body>
+</html>

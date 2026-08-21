@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2.3 — Modelling & Evaluation | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html" class="active">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+      <a href="chapter-2-modelling.html" class="active">2.3 · Modelling &amp; Evaluation</a>
+      <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">On this page</span>
+      <a href="#overview"><span class="toc-num">0</span>High-Level Overview</a>
+      <a href="#regression"><span class="toc-num">1</span>Linear vs Logistic</a>
+      <a href="#training"><span class="toc-num">2</span>Training the Model</a>
+      <a href="#evaluation"><span class="toc-num">3</span>Evaluation & Bias/Variance</a>
+      <a href="#saving"><span class="toc-num">4</span>Saving the Model</a>
+      <a href="#exam-drills"><span class="toc-num">5</span>Test Yourself</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+      <a href="chapter-2-modelling.html" class="active">2.3 · Modelling &amp; Evaluation</a>
+      <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">On this page</span>
+      <a href="#overview"><span class="toc-num">0</span>High-Level Overview</a>
+      <a href="#regression"><span class="toc-num">1</span>Linear vs Logistic</a>
+      <a href="#training"><span class="toc-num">2</span>Training the Model</a>
+      <a href="#evaluation"><span class="toc-num">3</span>Evaluation & Bias/Variance</a>
+      <a href="#saving"><span class="toc-num">4</span>Saving the Model</a>
+      <a href="#exam-drills"><span class="toc-num">5</span>Test Yourself</a>
+    </div>
+  </aside>
+
+<div class="page">
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 2.3</div>
+      <h1 class="title">Modelling &amp; Evaluation</h1>
+    </div>
+    <div class="masthead-meta">Building the brain<br><strong>Regression → Gradient Descent → Evaluation → Saving</strong></div>
+  </div>
+  <p class="dek">Now that our data is clean and perfectly scaled, it's time to build the actual model. We will explore how models learn using Gradient Descent, train a Logistic Regression model to predict Titanic survivors, and evaluate its performance.</p>
+
+  <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#overview"><span class="toc-num">0</span>High-Level Overview</a></li>
+      <li><a href="#regression"><span class="toc-num">1</span>Linear vs Logistic Regression</a></li>
+      <li><a href="#training"><span class="toc-num">2</span>Training the Model</a></li>
+      <li><a href="#evaluation"><span class="toc-num">3</span>Evaluation & Bias/Variance</a></li>
+      <li><a href="#saving"><span class="toc-num">4</span>Saving the Model</a></li>
+      <li><a href="#exam-drills"><span class="toc-num">5</span>Test Yourself</a></li>
+    </ul>
+  </div>
+
+  <!-- ============ OVERVIEW ============ -->
+  <section class="chapter" id="overview">
+    <div class="chapter-head"><span class="chapter-num">0</span><h2>High-Level Overview</h2></div>
+    
+    <div class="concept-cards" style="grid-template-columns: 1fr;">
+      <div class="concept-card">
+        <h4>Gradient Descent (How models learn)</h4>
+        <p>Imagine you are blindfolded on top of a mountain, and you need to get to the lowest valley (the lowest "Cost" or "Error"). You feel the slope with your feet, and take a step downhill. You repeat this until it's completely flat. This is exactly how machine learning models adjust their internal weights to find the best fit!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REGRESSION ============ -->
+  <section class="chapter" id="regression">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>Linear vs Logistic Regression</h2></div>
+    
+    <p>Both are forms of regression, but they have completely different use cases.</p>
+    
+    <div class="concept-cards">
+      <div class="concept-card">
+        <h4>Linear Regression</h4>
+        <p>Predicts a <strong>continuous number</strong>. Example: Predicting the exact price of a house, or predicting someone's exact salary.</p>
+      </div>
+      <div class="concept-card">
+        <h4>Logistic Regression</h4>
+        <p>Predicts a <strong>probability between 0 and 1</strong>, which is used for classification. Example: Predicting if a passenger survived the Titanic (1) or not (0).</p>
+      </div>
+    </div>
+
+    <p>Since we are predicting Titanic survival, we must use <strong>Logistic Regression</strong>. (If there are more than 2 classes, like predicting if a fruit is an Apple, Banana, or Orange, we use <em>Multiclass</em> Logistic Regression, which operates the exact same way!).</p>
+  </section>
+
+
+  <!-- ============ TRAINING ============ -->
+  <section class="chapter" id="training">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>Training the Model</h2></div>
+    <p class="chapter-dek">Let's build the model using the preprocessed Titanic data from the previous page.</p>
+
+    <h3>The Code Reality</h3>
+    <pre><code>from sklearn.linear_model import LogisticRegression
+
+# 1. Initialize the model. 
+# The exercise asks for a regularization parameter C=0.0005 to prevent overfitting.
+# random_state=0 ensures we get the exact same results every time.
+model = LogisticRegression(C=0.0005, random_state=0)
+
+# 2. Train the model on the training data! (The blindfolded walk down the hill)
+model.fit(X_train_scaled, y_train)
+
+# 3. Generate predictions on the locked-away test set
+y_pred = model.predict(X_test_scaled)
+
+# We can also get the raw probabilities (e.g., 85% chance of survival)
+y_pred_proba = model.predict_proba(X_test_scaled)[:, 1]</code></pre>
+  </section>
+
+  <!-- ============ EVALUATION ============ -->
+  <section class="chapter" id="evaluation">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Evaluation & Bias vs Variance</h2></div>
+    
+    <figure class="carousel-container">
+      <div class="carousel-slides">
+        <div class="carousel-slide active"><img src="assets/story/mod2_p9_chefs_1787085521189.jpg" alt="Two chefs showing underfitting and overfitting"></div>
+      </div>
+      <div class="carousel-caption"><strong>Bias vs Variance.</strong> Chef A serves raw dough because it's fast (Underfitting / High Bias). Chef B memorized exactly what one specific customer wanted, but it tastes terrible to everyone else (Overfitting / High Variance). We need a model right in the middle!</div>
+    </figure>
+
+    <p>To see if our model is any good (and if it is overfitting), we must evaluate it using metrics.</p>
+
+    <div class="concept-cards">
+      <div class="concept-card"><h4>Accuracy</h4><p>Total correct predictions divided by total predictions. <em>Warning: Useless if the data is imbalanced (e.g. if 99% of people don't have a disease, predicting "No" always gives 99% accuracy).</em></p></div>
+      <div class="concept-card"><h4>ROC-AUC</h4><p>Measures how well the model separates the classes based on probabilities. 1.0 is a perfect score, 0.5 is literally random guessing.</p></div>
+    </div>
+
+    <figure class="carousel-container">
+      <div class="carousel-slides">
+        <div class="carousel-slide active"><img src="assets/story/mod2_p8_critic_1787085510857.jpg" alt="A food critic evaluating the dish"></div>
+      </div>
+      <div class="carousel-caption">The food critic grading our model using Accuracy and ROC-AUC.</div>
+    </figure>
+
+    <h3>The Code Reality</h3>
+    <pre><code>from sklearn.metrics import accuracy_score, roc_auc_score, f1_score
+
+# Note: For accuracy we pass the 0/1 predictions, but for ROC-AUC we pass the PROBABILITIES!
+acc = accuracy_score(y_test, y_pred)
+auc = roc_auc_score(y_test, y_pred_proba)
+
+print(f"Accuracy: {acc}")
+print(f"ROC-AUC: {auc}")</code></pre>
+  </section>
+
+  <!-- ============ SAVING ============ -->
+  <section class="chapter" id="saving">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Saving the Model</h2></div>
+    
+    <figure class="carousel-container">
+      <div class="carousel-slides">
+        <div class="carousel-slide active"><img src="assets/story/mod2_p10_deploy_1787085530300.jpg" alt="Deploying the model to the world"></div>
+      </div>
+      <div class="carousel-caption">We don't want to re-train the model every time the website loads. We can save the model to a file and just load it into memory instantly!</div>
+    </figure>
+
+    <h3>The Code Reality</h3>
+    <pre><code>import joblib
+
+# Save the trained model to disk
+joblib.dump(model, 'titanic_model.pkl')
+
+# Later, in a different Python file for our web app:
+loaded_model = joblib.load('titanic_model.pkl')
+prediction = loaded_model.predict(new_passenger_data)</code></pre>
+  </section>
+
+  <!-- ============ EXAM DRILLS ============ -->
+  <section class="chapter" id="exam-drills">
+    <div class="chapter-head"><span class="chapter-num">5</span><h2>Test Yourself (Concept Drills)</h2></div>
+    <p class="chapter-dek">Test your knowledge with essential exam-style concept questions.</p>
+    
+    <div class="drill-list">
+      
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Concept check</span>
+          <span class="drill-q">You train a model. Its accuracy on the training set is 98%, but its accuracy on the test set is only 52%. What has happened, and how does this relate to Bias and Variance?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p>The model is <strong>Overfitting</strong>. It has memorized the training data (including the noise), but fails to generalize to new, unseen data. This means it has <strong>High Variance</strong> (and low bias).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">True or False</span>
+          <span class="drill-q">To calculate the <code>roc_auc_score</code> in Scikit-Learn, you should pass in the binary predictions (0 or 1).</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>False!</strong> To calculate the ROC-AUC score, you must pass in the <em>probabilities</em> (e.g. <code>y_pred_proba</code>), not the hard 0/1 classes. The ROC curve evaluates how the model performs across all possible probability thresholds.</p></div>
+      </details>
+
+    </div>
+  </section>
+
+  <footer class="page-footer">
+    <span>Module 2.3 — Modelling & Evaluation</span>
+    <span><a href="chapter-2-pca.html">Next: PCA & t-SNE →</a></span>
+  </footer>
+
+</div>
+</div>
+<script src="assets/site.js" defer></script>
+</body>
+</html>

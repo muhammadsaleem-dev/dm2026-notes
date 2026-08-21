@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2.2 — Data Preprocessing | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<!-- Navigation will be updated later via python script, using placeholders for now -->
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html" class="active">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+      <a href="chapter-2-preprocessing.html" class="active">2.2 · Data Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+      <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">On this page</span>
+      <a href="#overview"><span class="toc-num">0</span>High-Level Overview</a>
+      <a href="#split"><span class="toc-num">1</span>The Train/Test Split</a>
+      <a href="#missing"><span class="toc-num">2</span>Handling Missing Data</a>
+      <a href="#categorical"><span class="toc-num">3</span>Categorical Data & OHE</a>
+      <a href="#scaling"><span class="toc-num">4</span>Scaling</a>
+      <a href="#exam-drills"><span class="toc-num">5</span>Test Yourself</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+      <a href="chapter-2-preprocessing.html" class="active">2.2 · Data Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+      <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">On this page</span>
+      <a href="#overview"><span class="toc-num">0</span>High-Level Overview</a>
+      <a href="#split"><span class="toc-num">1</span>The Train/Test Split</a>
+      <a href="#missing"><span class="toc-num">2</span>Handling Missing Data</a>
+      <a href="#categorical"><span class="toc-num">3</span>Categorical Data & OHE</a>
+      <a href="#scaling"><span class="toc-num">4</span>Scaling</a>
+      <a href="#exam-drills"><span class="toc-num">5</span>Test Yourself</a>
+    </div>
+  </aside>
+
+<div class="page">
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 2.2</div>
+      <h1 class="title">Data Preprocessing</h1>
+    </div>
+    <div class="masthead-meta">Preparing the raw ingredients<br><strong>Splitting → Imputing → Encoding → Scaling</strong></div>
+  </div>
+  <p class="dek">Machine learning algorithms are essentially just giant calculators. They can't read text, they crash if a value is missing, and they get confused if you don't put everything on the same scale. Preprocessing is the art of translating raw, messy real-world data into perfect numbers.</p>
+
+  <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#overview"><span class="toc-num">0</span>High-Level Overview</a></li>
+      <li><a href="#split"><span class="toc-num">1</span>The Train/Test Split</a></li>
+      <li><a href="#missing"><span class="toc-num">2</span>Handling Missing Data</a></li>
+      <li><a href="#categorical"><span class="toc-num">3</span>Categorical Data & OHE</a></li>
+      <li><a href="#scaling"><span class="toc-num">4</span>Scaling</a></li>
+      <li><a href="#exam-drills"><span class="toc-num">5</span>Test Yourself</a></li>
+    </ul>
+  </div>
+
+  <!-- ============ OVERVIEW ============ -->
+  <section class="chapter" id="overview">
+    <div class="chapter-head"><span class="chapter-num">0</span><h2>High-Level Overview</h2></div>
+    <p class="chapter-dek">Our concrete running example: The Titanic Dataset.</p>
+    
+    <div class="concept-cards" style="grid-template-columns: 1fr;">
+      <div class="concept-card">
+        <h4>The Running Example</h4>
+        <p>Throughout this module, we will be preparing the classic <strong>Titanic dataset</strong>. We want to predict if a passenger survived based on their Age, Ticket Fare, Cabin, and Port of Embarkation. But the data is messy: Ages are missing, Cabins are full of text, and Fare values are way larger than Age values.</p>
+      </div>
+      <div class="concept-card">
+        <h4>The Golden Rule of Leakage</h4>
+        <p>Before we do ANY cleaning (like filling missing ages with the average age), we must lock away 20% of our data for testing. If we calculate the "average age" using all passengers, the test set's data will "leak" into our training phase. <strong>Always split first.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SPLIT ============ -->
+  <section class="chapter" id="split">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>The Train/Test Split</h2></div>
+    
+    <figure class="carousel-container">
+      <div class="carousel-slides">
+        <div class="carousel-slide active"><img src="assets/story/mod2_p3_vault_1787085462724.jpg" alt="A bank vault holding 20% of the dataset"></div>
+      </div>
+      <div class="carousel-caption">We must lock away 20% of our data in a vault before we do anything else. This ensures our final exam is a true test of what the model learned, not what it memorized.</div>
+    </figure>
+
+    <h3>The Code Reality</h3>
+    <pre><code>from sklearn.model_selection import train_test_split
+
+# Let's pretend X contains our features (Age, Fare, Cabin) and y contains survival (0 or 1)
+# Step 1: Lock away 20% of the data!
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)</code></pre>
+
+    <div class="exam-takeaway">
+      <span class="et-icon">🎯</span>
+      <div>
+        <span class="et-label">Exam takeaway</span>
+        <ul>
+            <li><strong>Data Leakage:</strong> This is when information from outside the training dataset is used to create the model. It causes the model to look highly accurate during training, but fail miserably in the real world.</li>
+            <li><strong>random_state:</strong> Setting this seed (e.g., to 0 or 42) ensures that you get the exact same random split every time you run the code. Crucial for reproducible research!</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MISSING ============ -->
+  <section class="chapter" id="missing">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>Handling Missing Data (Imputation)</h2></div>
+    
+    <figure class="carousel-container">
+      <div class="carousel-slides">
+        <div class="carousel-slide active"><img src="assets/story/mod2_p4_survivor_1787085471241.jpg" alt="A survivor finding missing pieces"></div>
+      </div>
+      <div class="carousel-caption">Many algorithms crash if they hit a 'NaN' (Not a Number). We must fill the holes without destroying the integrity of the data.</div>
+    </figure>
+
+    <h3>Numerical vs Categorical</h3>
+    <div class="concept-cards">
+      <div class="concept-card"><h4>Numerical (e.g. Age)</h4><p>We usually fill missing numbers with the <strong>Median</strong> (less sensitive to extreme outliers like billionaires) or the <strong>Mean</strong>. Often, we also add a new binary column "Age_was_missing" (0 or 1) so the model knows the data was guessed.</p></div>
+      <div class="concept-card"><h4>Categorical (e.g. Cabin)</h4><p>We can't take the average of text! We usually replace missing categorical values with the literal string <strong>"Missing"</strong>, treating the absence of data as its own unique category.</p></div>
+    </div>
+
+    <h3>The Code Reality</h3>
+    <pre><code>import numpy as np
+
+# 1. Add a missing indicator (1 if missing, 0 if not)
+X_train['Age_was_missing'] = np.where(X_train['Age'].isnull(), 1, 0)
+X_test['Age_was_missing']  = np.where(X_test['Age'].isnull(), 1, 0)
+
+# 2. Fill numerical NaNs with the Median of the TRAIN set
+median_age = X_train['Age'].median()
+X_train['Age'].fillna(median_age, inplace=True)
+X_test['Age'].fillna(median_age, inplace=True) # NEVER use test median!
+
+# 3. Fill categorical NaNs with the word 'Missing'
+X_train['Cabin'].fillna('Missing', inplace=True)
+X_test['Cabin'].fillna('Missing', inplace=True)</code></pre>
+  </section>
+
+
+  <!-- ============ CATEGORICAL ============ -->
+  <section class="chapter" id="categorical">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Categorical Data & One-Hot Encoding</h2></div>
+    <p class="chapter-dek">Models can't do math on words. We must convert text to numbers.</p>
+
+    <h3>1. Handling Rare Labels</h3>
+    <p>If only 2 passengers out of 1000 embarked from port "Z", the model will just memorize them instead of learning a pattern. Best practice: Find labels that appear in less than 5% of the data, and group them into a new category called "Rare".</p>
+
+    <h3>2. One-Hot Encoding (OHE)</h3>
+    <p>If we encode ports as C=1, Q=2, S=3, the model will think S is mathematically "greater" than C. This is false! Instead, we create separate binary columns for each port.</p>
+    
+    <div class="concept-cards">
+      <div class="concept-card"><h4>The Dummy Variable Trap (k-1)</h4><p>If a person is not Male, they must be Female. If we create a column for "Is_Male" and "Is_Female", they are perfectly correlated and will break linear models (Multicollinearity). To fix this, if a category has <em>k</em> labels, we only create <strong>k-1</strong> columns. We drop the first one.</p></div>
+    </div>
+
+    <h3>The Code Reality</h3>
+    <pre><code>from sklearn.preprocessing import OneHotEncoder
+
+# Initialize encoder. drop='first' gives us the k-1 columns to avoid the trap!
+# handle_unknown='ignore' ensures it doesn't crash if it sees a weird port in the test set.
+encoder = OneHotEncoder(drop='first', handle_unknown='ignore', sparse=False)
+
+# Fit on training data ONLY, then transform both train and test!
+X_train_encoded = encoder.fit_transform(X_train[['Embarked']])
+X_test_encoded = encoder.transform(X_test[['Embarked']])</code></pre>
+  </section>
+
+  <!-- ============ SCALING ============ -->
+  <section class="chapter" id="scaling">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Scaling the Variables</h2></div>
+    
+    <figure class="carousel-container">
+      <div class="carousel-slides">
+        <div class="carousel-slide active"><img src="assets/story/mod2_p6_scale_1787085491296.jpg" alt="Balancing weights on a scale"></div>
+      </div>
+      <div class="carousel-caption">Ticket Fare ranges from $0 to $500. Age ranges from 0 to 80. If we don't scale, the algorithm will think Fare is infinitely more important just because the numbers are bigger.</div>
+    </figure>
+
+    <p>We use <strong>StandardScaler</strong> to force every numerical column to have a Mean of 0 and a Standard Deviation of 1. Now, Age and Fare are playing on the same even field.</p>
+
+    <h3>The Code Reality</h3>
+    <pre><code>from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+
+# GOLDEN RULE: Fit only on the training data!
+# (We don't want the test data's average fare leaking into the scaler's brain)
+X_train_scaled = scaler.fit_transform(X_train[['Age', 'Fare']])
+
+# We ONLY transform the test data.
+X_test_scaled = scaler.transform(X_test[['Age', 'Fare']])</code></pre>
+  </section>
+
+  <!-- ============ EXAM DRILLS ============ -->
+  <section class="chapter" id="exam-drills">
+    <div class="chapter-head"><span class="chapter-num">5</span><h2>Test Yourself (Concept Drills)</h2></div>
+    <p class="chapter-dek">Test your knowledge with essential exam-style concept questions.</p>
+    
+    <div class="drill-list">
+      
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Concept check</span>
+          <span class="drill-q">A data scientist applies <code>StandardScaler().fit_transform(X)</code> on their <strong>entire dataset</strong>, and <em>then</em> splits it into <code>X_train</code> and <code>X_test</code>. What terrible mistake have they made?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>Data Leakage.</strong> By fitting the scaler on the entire dataset, information about the Test Set (like its mean and standard deviation) has leaked into the training data. You must always split <em>first</em>, fit the scaler on <code>X_train</code> <em>only</em>, and then just <code>transform</code> <code>X_test</code>.</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Name it</span>
+          <span class="drill-q">You have a variable containing cities (New York, London, Paris, Tokyo). You One-Hot Encode them to feed into a Logistic Regression model. How many binary columns should you create?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>3 columns (k-1).</strong> This avoids the Dummy Variable Trap (multicollinearity). If a row is 0 for New York, 0 for London, and 0 for Paris, the model mathematically deduces they must be in Tokyo.</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Reorder</span>
+          <span class="drill-q">Put the following Machine Learning steps in the correct chronological order:</span>
+          <ol class="drill-scramble">
+            <li>A. Determine validation metrics</li>
+            <li>B. Divide data into train/test/validate</li>
+            <li>C. Prototyping (Modelling & Hyperparameter tuning)</li>
+            <li>D. Determine sample size</li>
+            <li>E. Preprocessing (Encoding, Scaling, Imputing)</li>
+          </ol>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>D &rarr; B &rarr; E &rarr; A &rarr; C</strong><br><br>1. Determine sample size<br>2. Divide data (Train/Test split!)<br>3. Preprocessing (Scale, OHE)<br>4. Determine validation metrics<br>5. Prototyping (Modelling)</p></div>
+      </details>
+
+    </div>
+  </section>
+
+  <footer class="page-footer">
+    <span>Module 2.2 — Data Preprocessing</span>
+    <span><a href="chapter-2-modelling.html">Next: Modelling & Evaluation →</a></span>
+  </footer>
+
+</div>
+</div>
+<script src="assets/site.js" defer></script>
+</body>
+</html>

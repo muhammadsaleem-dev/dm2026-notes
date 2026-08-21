@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2.4 — PCA & t-SNE | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html" class="active">2.4 · PCA</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+      <a href="chapter-2-pca.html" class="active">2.4 · PCA &amp; t-SNE</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">On this page</span>
+      <a href="#overview"><span class="toc-num">0</span>High-Level Overview</a>
+      <a href="#pca"><span class="toc-num">1</span>PCA (Principal Component Analysis)</a>
+      <a href="#tsne"><span class="toc-num">2</span>t-SNE (Non-Linear)</a>
+      <a href="#why-both"><span class="toc-num">3</span>Why PCA before t-SNE?</a>
+      <a href="#exam-drills"><span class="toc-num">4</span>Test Yourself</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+      <a href="chapter-2-pca.html" class="active">2.4 · PCA &amp; t-SNE</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">On this page</span>
+      <a href="#overview"><span class="toc-num">0</span>High-Level Overview</a>
+      <a href="#pca"><span class="toc-num">1</span>PCA (Principal Component Analysis)</a>
+      <a href="#tsne"><span class="toc-num">2</span>t-SNE (Non-Linear)</a>
+      <a href="#why-both"><span class="toc-num">3</span>Why PCA before t-SNE?</a>
+      <a href="#exam-drills"><span class="toc-num">4</span>Test Yourself</a>
+    </div>
+  </aside>
+
+<div class="page">
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 2.4</div>
+      <h1 class="title">Dimensionality Reduction</h1>
+    </div>
+    <div class="masthead-meta">The Curse of Dimensionality<br><strong>PCA → t-SNE → Visualization</strong></div>
+  </div>
+  <p class="dek">When you only have 2 features (like Age and Income), you can easily plot them on a scatterplot. But what happens when you have a dataset with 5,000 features? How do you visualize a 5,000-dimensional graph? You squash it.</p>
+
+  <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#overview"><span class="toc-num">0</span>High-Level Overview</a></li>
+      <li><a href="#pca"><span class="toc-num">1</span>PCA (Principal Component Analysis)</a></li>
+      <li><a href="#tsne"><span class="toc-num">2</span>t-SNE (Non-Linear)</a></li>
+      <li><a href="#why-both"><span class="toc-num">3</span>Why PCA before t-SNE?</a></li>
+      <li><a href="#exam-drills"><span class="toc-num">4</span>Test Yourself</a></li>
+    </ul>
+  </div>
+
+  <!-- ============ OVERVIEW ============ -->
+  <section class="chapter" id="overview">
+    <div class="chapter-head"><span class="chapter-num">0</span><h2>High-Level Overview</h2></div>
+    <p class="chapter-dek">Our concrete running example: Single-Cell RNA Sequencing (scRNA-seq).</p>
+    
+    <div class="concept-cards" style="grid-template-columns: 1fr;">
+      <div class="concept-card">
+        <h4>The PBMC3k Dataset</h4>
+        <p>In the Titanic dataset, we only had a few features. But in Biology, a single human immune cell might have thousands of genes expressed! We have a dataset where each row is a single cell, and there are thousands of columns (features) representing gene expressions. Visualizing this is impossible for humans.</p>
+      </div>
+      <div class="concept-card">
+        <h4>The Goal</h4>
+        <p>We want to squash these thousands of dimensions down to just 2 dimensions, so we can plot them on a standard X-Y graph and see if the different immune cells naturally form distinct clusters.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PCA ============ -->
+  <section class="chapter" id="pca">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>PCA (Principal Component Analysis)</h2></div>
+    
+    <figure class="carousel-container">
+      <div class="carousel-slides">
+        <div class="carousel-slide active"><img src="assets/story/mod2_p7_blender_1787085501812.jpg" alt="A master blender squashing features"></div>
+      </div>
+      <div class="carousel-caption">PCA is like a master blender. It takes 5,000 features and blends them together into 50 brand-new "super features" that capture almost all the important variance, throwing away the noise.</div>
+    </figure>
+
+    <p>PCA is a <strong>Linear</strong> technique. It looks at the <em>global structure</em> of the data and creates new orthogonal axes (Principal Components) that maximize variance.</p>
+
+    <h3>The Code Reality</h3>
+    <pre><code>from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+# Step 1: ALWAYS standardize your data before PCA! 
+# (Otherwise, genes with naturally huge numbers will dominate the variance)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X) # X has 5000 columns
+
+# Step 2: Apply PCA to squash it down to 50 dimensions
+pca = PCA(n_components=50)
+X_pca_50 = pca.fit_transform(X_scaled) 
+
+# X_pca_50 now only has 50 columns! But it retains most of the original information.</code></pre>
+  </section>
+
+
+  <!-- ============ TSNE ============ -->
+  <section class="chapter" id="tsne">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>t-SNE (t-Distributed Stochastic Neighbor Embedding)</h2></div>
+    
+    <p>PCA is great for preserving global structure, but it is terrible at separating complex, non-linear clusters (like a spiral shape). t-SNE is a <strong>Non-Linear</strong> technique that excels at preserving <em>local neighborhoods</em>. If two cells are similar in high-dimensional space, t-SNE forces them to be right next to each other in 2D space.</p>
+    
+    <div class="concept-cards">
+      <div class="concept-card"><h4>Perplexity</h4><p>A crucial t-SNE parameter. Think of it as "how many close neighbors each point considers". A low perplexity (e.g. 2) focuses purely on tiny local clusters, making the graph look like scattered dots. A higher perplexity (e.g. 30-50) considers broader regions. You must experiment with this!</p></div>
+      <div class="concept-card"><h4>Random Seed</h4><p>t-SNE is <strong>stochastic</strong> (random). If you run it 3 times without setting a <code>random_state</code>, the 2D plot will look completely different every time (even though the topological meaning remains the same). Always set a random seed!</p></div>
+    </div>
+
+  </section>
+
+  <!-- ============ WHY BOTH ============ -->
+  <section class="chapter" id="why-both">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Why apply PCA before t-SNE?</h2></div>
+    
+    <p>If we want a 2D plot, why not just run t-SNE directly on the 5,000-dimensional data?</p>
+    
+    <ul>
+      <li><strong>Speed:</strong> Computing distances between points in 5,000 dimensions is painfully slow.</li>
+      <li><strong>The Curse of Dimensionality:</strong> In incredibly high dimensions, distance metrics (like Euclidean distance) start to lose their meaning. Everything seems equally far apart!</li>
+      <li><strong>Noise Reduction:</strong> PCA strips away the random noise in the data.</li>
+    </ul>
+    
+    <p><strong>The Golden Pipeline:</strong> Use PCA to squash the data from 5,000D to ~50D (removing noise and speeding things up). THEN, use t-SNE to squash the 50D data down to 2D for beautiful cluster visualization!</p>
+
+    <h3>The Code Reality</h3>
+    <pre><code>from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+
+# Step 3: Run t-SNE on the 50D PCA data (NOT the raw 5000D data!)
+# We set perplexity to 30, and random_state so it looks the same tomorrow.
+tsne = TSNE(n_components=2, perplexity=30, random_state=42)
+X_tsne_2 = tsne.fit_transform(X_pca_50)
+
+# Step 4: Visualize!
+# X_tsne_2 has exactly 2 columns: The X coordinate, and the Y coordinate.
+plt.scatter(X_tsne_2[:, 0], X_tsne_2[:, 1])
+plt.title("t-SNE visualization of Immune Cells")
+plt.show()</code></pre>
+  </section>
+
+  <!-- ============ EXAM DRILLS ============ -->
+  <section class="chapter" id="exam-drills">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Test Yourself (Concept Drills)</h2></div>
+    <p class="chapter-dek">Test your knowledge with essential exam-style concept questions.</p>
+    
+    <div class="drill-list">
+      
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Name it</span>
+          <span class="drill-q">You need to visualize your high-dimensional dataset in 2D. You want to preserve local neighborhoods, you suspect the data is highly non-linear, and you don't care if the result is stochastic. Which algorithm do you choose?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>t-SNE!</strong> It is non-linear, stochastic, and focuses on preserving local structures for visualization. PCA is linear, deterministic, and preserves global variance.</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Concept check</span>
+          <span class="drill-q">You run t-SNE on your data and the plot looks like tiny, separated groups of 2 or 3 dots scattered randomly everywhere. What parameter is likely set incorrectly?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>Perplexity is too low.</strong> A very low perplexity (e.g., 2) forces the algorithm to only care about its absolute closest neighbors, destroying the broader structure of the clusters.</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Concept check</span>
+          <span class="drill-q">Why is PCA commonly applied before t-SNE on high-dimensional data?</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p>1. <strong>Speed:</strong> t-SNE is computationally expensive in high dimensions.<br>2. <strong>Noise Reduction:</strong> PCA filters out the noise, keeping only the variance that matters.<br>3. <strong>Distance Metrics:</strong> Distance calculations break down in extreme dimensions (Curse of Dimensionality), so reducing to ~50D helps t-SNE calculate true local neighborhoods.</p></div>
+      </details>
+
+    </div>
+  </section>
+
+  <footer class="page-footer">
+    <span>Module 2.4 — PCA & t-SNE</span>
+    <span><a href="chapter-3-classification.html">Next: Module 3 (Classification) →</a></span>
+  </footer>
+
+</div>
+</div>
+<script src="assets/site.js" defer></script>
+</body>
+</html>
