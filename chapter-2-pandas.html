@@ -207,9 +207,21 @@ df = df.replace('?', pd.NA)
 # (e.g. keeping only the first cabin if multiple are listed)
 df = df.drop(columns=['deck', 'embark_town'])
 
-# 4. Vectorized Feature Engineering (Regex)
-# Extract titles (Mr., Mrs., Miss.) from a messy Name column
-df['Title'] = df['Name'].str.extract(' ([A-Za-z]+)\.', expand=False)
+# 4. Feature Engineering (Apply vs Vectorized)
+# Task: Extract the title (Mr, Mrs, Miss, Master) from the Name, otherwise 'Other'
+
+# Approach A: The traditional Python function + apply()
+def get_title(name):
+    if 'Mrs' in name: return 'Mrs'
+    elif 'Mr' in name: return 'Mr'
+    elif 'Miss' in name: return 'Miss'
+    elif 'Master' in name: return 'Master'
+    else: return 'Other'
+
+df['title'] = df['name'].apply(get_title)
+
+# Approach B: The Nicer, Faster Vectorized Regex method!
+df['title'] = df['name'].str.extract(r'\b(Mrs|Mr|Miss|Master)\b', expand=False).fillna('Other')
 
 # 5. Type Casting
 # Convert a column that looks like strings into usable floats
