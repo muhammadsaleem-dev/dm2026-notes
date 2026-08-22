@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 5.3 — Training at Scale & Exercises | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-5-regression.html">5.1 · Regression</a>
+      <a href="chapter-5-neural-networks.html">5.2 · Neural Networks</a>
+      <a href="chapter-5-training.html" class="active">5.3 · Training</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html" class="active">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">On this page</span>
+      <a href="#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a>
+      <a href="#exercises"><span class="toc-num">8</span>Sprint Exercises</a>
+      <a href="#test-yourself"><span class="toc-num">9</span>Test Yourself</a>
+      <a href="#knowledge-drill"><span class="toc-num">10</span>Knowledge Drill</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html" class="active">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">On this page</span>
+      <a href="#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a>
+      <a href="#exercises"><span class="toc-num">8</span>Sprint Exercises</a>
+      <a href="#test-yourself"><span class="toc-num">9</span>Test Yourself</a>
+      <a href="#knowledge-drill"><span class="toc-num">10</span>Knowledge Drill</a>
+    </div>
+  </aside>
+
+<div class="page">
+<section class="chapter" id="gd-at-scale">
+    <div class="chapter-head"><span class="chapter-num">7</span><h2>Gradient Descent at Scale</h2></div>
+    <p class="chapter-dek">Full-batch gradient descent doesn't survive contact with real dataset sizes.</p>
+
+    <p>Every gradient formula so far — §2's linear regression, §4's logistic regression, §5's backprop — was written as a sum over <em>all M</em> training examples. Fine on paper and on a handful of toy points; not fine the moment your dataset is the size of anything real.</p>
+    <p>The motivating number: 30,000 features, 1,000,000 data points, 1,000 training epochs, using the full-batch gradient which touches every feature of every point every epoch. Multiply it out: 30,000 × 1,000,000 × 1,000 = 3×10¹³ — <strong>thirty trillion</strong> individual term evaluations before training even finishes. Not merely slow — on realistic hardware and time budgets, simply infeasible.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Batch GD</th><th>Stochastic GD</th><th>Mini-Batch GD</th></tr></thead>
+        <tbody>
+          <tr><th>Each step uses</th><td>The full dataset</td><td>One random point</td><td>A small batch</td></tr>
+          <tr><th>Cost curve</th><td>Smooth</td><td>Highly fluctuating</td><td>Mildly fluctuating</td></tr>
+          <tr><th>Pros</th><td>Exact gradient, ideal for convex problems</td><td>Fast updates, can escape local minima, memory-efficient</td><td>Stable <em>and</em> fast — best of both</td></tr>
+          <tr><th>Cons</th><td>Slow, expensive per step</td><td>Noisy, sensitive to outliers</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Why does SGD's cost curve fluctuate? Each step's "gradient" is now only an estimate, computed from a single randomly chosen point rather than the true average over all M points, so it can point in a noticeably wrong direction on any given step — noisy, but each step is nearly free, and you get to take vastly more of them per second. Mini-batch GD is the practical compromise almost everyone uses: average the gradient over a modest batch (commonly 32–256 points) — enough to smooth out most of the noise, few enough to keep each step cheap.</p>
+
+    <h3>Learning-rate schedules</h3>
+    <p>A single fixed α forces a trade-off across the whole run: large enough for meaningful early progress, small enough not to overshoot near the minimum. A <strong>learning-rate schedule</strong> resolves this by shrinking α over the course of training:</p>
+    <div class="formula-block">Step decay:        α = α₀ × factor^(epoch / decay_step)
+Exponential decay: α = α₀ × e^(−decay_rate × epoch)
+1/t decay:         α = α₀ / (1 + decay_rate × epoch)</div>
+    <p>Step decay drops by a fixed multiplicative factor every <code>decay_step</code> epochs (a staircase); exponential decay shrinks continuously every epoch; 1/t decay also shrinks continuously but more slowly (hyperbolically) over time. None is "the correct one" in any absolute sense — they're different shrinkage shapes to pick between based on how the cost curve behaves.</p>
+    <p>Course guidance: start with <strong>Adam</strong> for most tasks, since its per-parameter adaptive step sizes tend to work well without much tuning; reach for plain SGD paired with an explicit decay schedule when training very large models where stability matters more than convenience; and regardless of optimizer, watch the actual cost curve rather than assuming one is automatically right for your problem.</p>
+
+    <h3>Input normalization</h3>
+    <p>A different scale problem: if features live on wildly different numeric scales, the cost surface gets stretched into a long, narrow, skewed shape — a valley steep on one side, nearly flat on the other. Gradient descent handles that badly, since one learning rate has to serve both a steep and a shallow direction at once, forcing tiny, cautious steps everywhere. The fix: rescale every feature onto a comparable scale before training — z-score standardization.</p>
+    <div class="formula-block">μ = (1/M) Σ x⁽ⁱ⁾
+σ² = (1/M) Σ (x⁽ⁱ⁾ − μ)²
+x_normalized = (x − μ) / σ</div>
+    <div class="callout rule"><span class="tag">Rule</span><p>μ and σ are computed on <strong>training data only</strong> and become part of the saved model — reuse the exact same values on test/production data (see Module 2 §2 for the same rule applied to scikit-learn scalers). Recomputing μ and σ separately on the test set would let the test set's own statistics leak into how it's preprocessed — a subtle form of the same "the model has seen information it shouldn't have" problem that shows up elsewhere in this bootcamp.</p></div>
+
+    <h3>Closing recipe</h3>
+    <p>Pulling every piece of this module together, training essentially any model — from §4's single-neuron logistic regression through §5–6's deep networks — comes down to the same six-step recipe:</p>
+    <ol>
+      <li>Choose a framework</li>
+      <li>Build the model (size, normalization, dropout, …)</li>
+      <li>Define the cost function</li>
+      <li>Select an optimizer and learning rate</li>
+      <li>Apply backpropagation</li>
+      <li>Tune hyperparameters</li>
+    </ol>
+    <p><em>"Neural networks are the second-best way to do everything"</em> — a specialized method often beats a generic NN for any one task, but a NN is a strong fallback when nothing more specialized fits. If you know your problem is, say, a time series or an image, a purpose-built architecture will usually outperform a generic dense network — but when you don't have that domain-specific tool, or aren't sure yet what shape the problem has, the machinery in this module is the reliable, general-purpose fallback.</p>
+  </section>
+
+<section class="chapter" id="exercises">
+    <div class="chapter-head"><span class="chapter-num">8</span><h2>Sprint Exercises</h2></div>
+    <p class="chapter-dek">The professor's actual hands-on assignments for this chapter.</p>
+
+    <h3>Exercise 8 — Heating Load Regression</h3>
+    <p>Predicting a building's heating load from 8 architectural features (UCI Energy Efficiency, 768 samples). Plain linear regression fits well (R² = 0.90) but its coefficients are nonsense — <code>Surface_Area</code>, <code>Wall_Area</code>, and <code>Roof_Area</code> are near-perfectly correlated, so the model assigns them enormous, canceling-out weights (~10¹⁴) instead of anything interpretable.</p>
+    <div class="formula-block"><span class="label">Lasso resolves the multicollinearity Linear Regression can't</span>alphas = np.logspace(-4, 0, 50)
+lasso_cv = GridSearchCV(Lasso(max_iter=10000), {"alpha": alphas}, cv=5)
+lasso_cv.fit(X_train_scaled, y_train)   # best alpha ≈ 0.00139</div>
+    <p>Lasso's L1 penalty (§2) zeroes out the redundant features and leaves <code>Overall_Height</code> and <code>Relative_Compactness</code> as the real, interpretable drivers.</p>
+
+    <h3>Exercise 9 — Logistic Regression vs. a Neural Network on CIFAR-10</h3>
+    <p>Same 10-class image classification task (32×32×3 pixels, flattened), two models: <code>LogisticRegression(solver='saga')</code> and a small Keras net (<code>Flatten → Dense(128, relu) → Dense(10, softmax)</code>).</p>
+    <div class="callout rule"><span class="tag">Result</span><p>Logistic regression: <strong>34%</strong> test accuracy. The neural network: <strong>45%</strong> after 50 epochs — both well above the 10% random baseline, but the gap between them is the whole point of this module's title.</p></div>
+    <div class="callout watch"><span class="tag">Gotcha</span><p>Sweeping the learning rate (0.001 / 0.01 / 0.1, §7) requires rebuilding and recompiling the model each time — reusing one already-trained model across learning rates silently invalidates the comparison. The observed pattern matches the theory exactly: 0.001 is stable but slow, 0.01 balances convergence and generalization best, 0.1 overshoots and destabilizes training.</p></div>
+  </section>
+
+<section class="chapter" id="test-yourself">
+    <div class="chapter-head"><span class="chapter-num">9</span><h2>Test Yourself</h2></div>
+    <p class="chapter-dek">Retrieval practice — the single best-evidenced study technique there is.</p>
+    <p class="quiz-intro">Cover the answer, try to recall it from memory, <em>then</em> click to check. Getting it wrong and then reading the answer still strengthens the memory — skipping straight to the answer doesn't. <strong>Do this to test your knowledge, not while reading for the first time.</strong></p>
+    <div class="quiz-list">
+
+      <details class="quiz-item">
+        <summary>In §1's framing, what is a perceptron structurally identical to, and at how many hidden layers does "deep learning" conventionally start?</summary>
+        <div class="quiz-a"><p>A perceptron performs exactly the same computation as logistic regression (weighted sum, then a squashing function), and a network is many such units stacked in layers. Deep learning conventionally starts at three or more hidden layers.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In §2's worked MSE example, for the toy dataset (1,3),(2,5),(3,7) with candidate weights ω=1.5, b=1, what are the three predicted ŷ values and the resulting cost J(θ)?</summary>
+        <div class="quiz-a"><p>Predictions are ŷ=2.5, 4.0, 5.5 for x=1,2,3, giving residuals 0.5, 1.0, 1.5 and squared residuals summing to 3.5. With M=3 (2M=6), J(θ) = 3.5/6 ≈ 0.583.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>Continuing that same toy dataset (ω=1.5, b=1, α=0.1) in §3's gradient-descent worked example, what are the computed bias and weight gradients, and the updated ω and b after one step?</summary>
+        <div class="quiz-a"><p>∂J/∂b = −1.0 and ∂J/∂ω ≈ −2.333. The updated values are b_new = 1.1 and ω_new ≈ 1.733.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>For the §4 toy patient example (w=[0.5, −0.3], b=0.1, x=[2,1], true label y=1), what are z, ŷ, and the binary cross-entropy cost J?</summary>
+        <div class="quiz-a"><p>z = 0.5×2 + (−0.3)×1 + 0.1 = 0.8, giving ŷ = σ(0.8) ≈ 0.690. Since y=1, J = −log(0.690) ≈ 0.371.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In §5's worked forward-propagation example (2 inputs, 1 hidden neuron, 1 output neuron, both sigmoid; x=[1.0,0.5], W<sup>[1]</sup>=[0.4,−0.2], b<sup>[1]</sup>=0.1, W<sup>[2]</sup>=0.7, b<sup>[2]</sup>=−0.2), what are z<sup>[1]</sup>, a<sup>[1]</sup>, z<sup>[2]</sup>, and the final ŷ?</summary>
+        <div class="quiz-a"><p>z<sup>[1]</sup> = 0.4, a<sup>[1]</sup> = σ(0.4) ≈ 0.599; z<sup>[2]</sup> = 0.7×0.599 − 0.2 ≈ 0.219, and ŷ = a<sup>[2]</sup> = σ(0.219) ≈ 0.555.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>Continuing that forward pass in §5's backpropagation worked example (true label y=1, η=0.1), what are ∇<sub>z[2]</sub>J and ∇<sub>W[2]</sub>J, and what are the updated W<sup>[2]</sup> and b<sup>[2]</sup>?</summary>
+        <div class="quiz-a"><p>∇<sub>z[2]</sub>J = ŷ−y = 0.555−1 = −0.445, and ∇<sub>W[2]</sub>J = −0.445×0.599 ≈ −0.267 (with ∇<sub>b[2]</sub>J = −0.445). The updated values are W<sup>[2]</sup> ≈ 0.727 and b<sup>[2]</sup> ≈ −0.156.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>Per §6, why are sigmoid and tanh activations especially prone to causing vanishing gradients in deep networks?</summary>
+        <div class="quiz-a"><p>Backpropagation multiplies each layer's gradient by additional chain-rule factors, and sigmoid/tanh derivatives are always ≤0.25, so those factors are consistently less than 1. Multiplying many such factors together shrinks the product toward zero across layers, leaving the earliest layers with almost no update signal.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>What is the motivating calculation in §7 for why full-batch gradient descent doesn't scale, and what total does it produce?</summary>
+        <div class="quiz-a"><p>With 30,000 features, 1,000,000 data points, and 1,000 training epochs, full-batch gradient descent requires 30,000 × 1,000,000 × 1,000 = 3×10¹³ (thirty trillion) individual term evaluations. The module calls this simply infeasible on realistic hardware and time budgets.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>According to the "Rule" callout in §7, on what data must the normalization statistics μ and σ be computed, and what goes wrong if you don't follow that rule?</summary>
+        <div class="quiz-a"><p>μ and σ must be computed on training data only and then reused (as part of the saved model) on test/production data. Recomputing them separately on the test set would let the test set's own statistics leak into its preprocessing — a form of data leakage.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>In Exercise 9 (Logistic Regression vs. Neural Network on CIFAR-10), what test accuracy did each model achieve, and what gotcha does the callout warn about when sweeping learning rates?</summary>
+        <div class="quiz-a"><p>Logistic regression reached 34% test accuracy versus 45% for the small Keras neural network after 50 epochs (both above the 10% random baseline). The gotcha: sweeping learning rates requires rebuilding and recompiling the model for each one — reusing an already-trained model across learning rates silently invalidates the comparison.</p></div>
+      </details>
+
+      <details class="quiz-item">
+        <summary>You're building a Keras <code>Sequential</code> network for a 4-class image classification problem. What units and activation does the final <code>Dense</code> output layer need, and why?</summary>
+        <div class="quiz-a"><p><code>Dense(4, activation='softmax')</code>. The unit count matches the number of classes — one raw score per class — and softmax (§4) turns that vector of raw scores into a probability distribution over all 4 classes that sums to 1, generalizing the single-sigmoid-unit output used for binary classification.</p></div>
+      </details>
+
+    </div>
+  </section>
+
+<section class="chapter" id="knowledge-drill">
+    <div class="chapter-head"><span class="chapter-num">10</span><h2>Knowledge Drill</h2></div>
+    <p class="chapter-dek">Same skills as Test Yourself, but in a more structured format.</p>
+    <p class="quiz-intro">Sometimes you need to name a technique in a couple of words, reorder scrambled steps, pick every correct item from a list, or fill in one line of code. These drills train that exact shape of answer, not just the underlying concept.</p>
+    <div class="drill-list">
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Name it</span>
+          <span class="drill-q">A function squashes any real number into the range (0,1), used to turn a neuron's weighted sum into a probability. In ≤2 words, name it.</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>Sigmoid function.</strong> ŷ = σ(z) = 1/(1+e⁻ᶻ), the step that turns logistic regression's raw weighted sum into a (0,1) probability (§4).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Reorder </span>
+          <span class="drill-q">Reorder the following steps to correctly describe the typical forward pass and backpropagation process in training a neural network:</span>
+          <ol class="drill-scramble" style="list-style-type: none; padding-left: 0;">
+            <li>1: "Perform a backward pass to update the weights using an optimization algorithm (e.g., SGD)."</li>
+            <li>2: "Compute the loss using a loss function."</li>
+            <li>3: "Stop when you have satisfactory results or you reach the maximum number of epochs."</li>
+            <li>4: "Print the test and train error and monitor the training."</li>
+            <li>5: "Define the network architecture (e.g., layer sizes and activation functions)."</li>
+            <li>6: "Compute gradients of the loss with respect to every parameter."</li>
+            <li>7: "Initialize weights and biases."</li>
+            <li>8: "Perform a forward pass to calculate predicted outputs."</li>
+          </ol>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>5, 7, 8, 2, 6, 1, 4, 3</strong> — define architecture → initialize → forward pass → compute loss → compute gradients → update weights → monitor → stop.</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Select all</span>
+          <span class="drill-q">Which of these are valid activation functions?</span>
+          <ul class="drill-options">
+            <li>(a) sigmoid</li>
+            <li>(b) mean squared error</li>
+            <li>(c) ReLU</li>
+            <li>(d) gradient descent</li>
+            <li>(e) softmax</li>
+            <li>(f) tanh</li>
+          </ul>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><strong>(a), (c), (e), (f).</strong> Sigmoid, ReLU, softmax, and tanh all squash a neuron's weighted sum into a bounded/shaped output (§6). MSE is a cost function and gradient descent is the optimization algorithm — neither is an activation function.</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Code</span>
+          <span class="drill-q">Complete this output layer for a 3-class classification network:</span>
+          <span class="drill-code-inline">Dense(<span class="drill-blank">____</span>, activation=<span class="drill-blank">____</span>)</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p><code>Dense(3, activation='softmax')</code> — one unit per class, softmax to turn the raw scores into a probability distribution summing to 1 (§4).</p></div>
+      </details>
+
+      <details class="drill-item">
+        <summary>
+          <span class="drill-tag">Compute</span>
+          <span class="drill-q">A neuron has weights w=[1.0, −1.0], bias b=0, input x=[3,1]. Compute z and the sigmoid output ŷ.</span>
+          <span class="drill-reveal-hint"></span>
+        </summary>
+        <div class="drill-a"><p>z = 1.0×3 + (−1.0)×1 + 0 = <strong>2.0</strong>. e⁻² ≈ 0.135, so ŷ = σ(2.0) = 1/(1+0.135) ≈ <strong>0.881</strong> (§4).</p></div>
+      </details>
+
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

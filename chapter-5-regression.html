@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 5.1 — Linear & Logistic Regression | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-5-regression.html" class="active">5.1 · Regression</a>
+      <a href="chapter-5-neural-networks.html">5.2 · Neural Networks</a>
+      <a href="chapter-5-training.html">5.3 · Training</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html" class="active">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">On this page</span>
+      <a href="#framing"><span class="toc-num">1</span>Framing: NNs as Generalized Regression</a>
+      <a href="#linear-regression"><span class="toc-num">2</span>Linear Regression, Properly</a>
+      <a href="#gradient-descent"><span class="toc-num">3</span>Gradient Descent</a>
+      <a href="#logistic-regression"><span class="toc-num">4</span>Logistic Regression → One Neuron</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html" class="active">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">On this page</span>
+      <a href="#framing"><span class="toc-num">1</span>Framing: NNs as Generalized Regression</a>
+      <a href="#linear-regression"><span class="toc-num">2</span>Linear Regression, Properly</a>
+      <a href="#gradient-descent"><span class="toc-num">3</span>Gradient Descent</a>
+      <a href="#logistic-regression"><span class="toc-num">4</span>Logistic Regression → One Neuron</a>
+    </div>
+  </aside>
+
+<div class="page">
+<section class="chapter" id="framing">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>Framing: Neural Nets as Generalized Regression</h2></div>
+    <p class="chapter-dek">"Neural networks are the generalization of linear regression."</p>
+
+    <p>If you've never trained a model before, the natural question is: how does a program "learn" a function instead of being told one? The answer this whole module builds toward is reassuringly mechanical — a model is a small number of adjustable numbers (its <strong>parameters</strong>), a cost function that scores how wrong the model currently is, and a search procedure that nudges the parameters to make that score smaller. Everything else — logistic regression, neural networks, backpropagation — is a variation on that one idea, applied to bigger and more expressive families of functions.</p>
+    <p>Start with the smallest possible learning unit: a single artificial neuron, also called a perceptron. Structurally it does three things in sequence — take a set of inputs, combine them into one number via a weighted sum <code>Σwᵢxᵢ + b</code>, then pass that number through a non-linear "squashing" function φ(·) to produce an output. If that sounds familiar, it should: it's <em>exactly</em> the computation logistic regression performs (§4).</p>
+    <p class="concept-takeaway"><span class="ct-icon">🧠</span><span>The reveal the whole module is built around: <strong>a perceptron is logistic regression; a neural network is many logistic-regression units stacked in layers and chained together.</strong> Once that clicks, a lot of what looks like "deep learning magic" becomes just "logistic regression, repeated with feeling."</span></p>
+    <details class="micro-check">
+      <summary>If a single neuron is just logistic regression, what does stacking a hundred of them into layers actually buy you?</summary>
+      <div class="mc-a"><p>One logistic-regression unit can only draw a straight decision boundary. Chaining many of them lets the network build a <em>hierarchy</em> of learned combinations — each layer's output becomes the next layer's input — which is what lets the combined function bend into curved, complex boundaries a single unit never could (§5).</p></div>
+    </details>
+    <p>It's worth placing this next to the other ways of getting a computer to do a task, since they differ only in <em>where the rules/features come from</em>:</p>
+    <ul>
+      <li><strong>Classical programming</strong> — a human studies the problem and writes explicit rules by hand.</li>
+      <li><strong>Machine learning</strong> — a human still hand-designs the <em>features</em> (e.g. "tumor radius," "tumor texture"), but the model learns the weights that combine them.</li>
+      <li><strong>Deep learning</strong> — the model learns the features themselves, directly from raw inputs (pixels, characters, sensor readings), with no hand-engineering step at all.</li>
+    </ul>
+    <p>All three follow the same loop: <code>study problem → (write rules | train on hand-designed features | train on self-learned features) → evaluate → analyze errors → repeat</code>. The only thing that moves as you go from classical programming to deep learning is which stage of that pipeline is automated.</p>
+    <p>Vocabulary you'll need immediately: a network with a single hidden layer is informally "non-deep" — it's really just one logistic-regression unit feeding another. <strong>Deep learning conventionally starts at three or more hidden layers</strong>, and production networks often stack hundreds. Depth is what lets a network build a <em>hierarchy</em> of learned features rather than a single flat transformation — a theme §5 returns to with the image-recognition example (edges → contours → parts → whole object).</p>
+  </section>
+
+<section class="chapter" id="linear-regression">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>Linear Regression, Properly</h2></div>
+    <p class="chapter-dek">Every neuron's math starts here.</p>
+
+    <p>Before you can understand a neuron, you need to understand the piece of math sitting inside it: a linear model and how you measure whether it's any good. No non-linearity, no probabilities — every neuron's math <em>starts</em> here and adds complexity on top.</p>
+    <div class="formula-block"><span class="label">Model</span>ŷ = Xω + b</div>
+    <p><code>X</code> is your matrix of input features, <code>ω</code> a vector of weights (one per feature), <code>b</code> a scalar bias. Together θ = (ω, b) is the full set of numbers the learning algorithm is allowed to adjust — "fitting the model" means searching for the θ that makes <code>ŷ</code> track <code>y</code> as closely as possible.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Assumption</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Linearity</td><td>Relationship between X and Y is linear</td></tr>
+          <tr><td>Independence</td><td>Observations are independent</td></tr>
+          <tr><td>Homoscedasticity</td><td>Constant variance of residuals across predicted levels</td></tr>
+          <tr><td>Normality</td><td>Errors are normally distributed</td></tr>
+          <tr><td>No multicollinearity</td><td>Predictors aren't highly correlated with each other</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Violations of these aren't requirements for the code to run — they're exactly why a regression that "runs fine" can still give misleading coefficients (a concrete example appears in the Sprint Exercises, where near-perfectly correlated features blow up the coefficients into meaningless enormous numbers).</p>
+
+    <h3>Measuring wrongness: the cost function</h3>
+    <p>Once you have a candidate θ, you need a single number saying "how bad is this θ." The standard choice for regression is <strong>Mean Squared Error (MSE)</strong>:</p>
+    <div class="formula-block">J(θ) = (1/2M) · Σᵢ (y⁽ⁱ⁾ − ŷ⁽ⁱ⁾)²</div>
+    <div class="callout teacher-note">
+      <div class="callout-header"><span class="callout-icon">👨‍🏫</span>Teacher's Note: What does this actually mean?</div>
+      <p>Don't let the Greek letters scare you. This formula just says: "Find out how far off our prediction was from the truth (the error). Square that number so that a -5 error and a +5 error don't accidentally cancel each other out. Do this for every single data point, add them all up, and find the average." Squaring it also acts as a harsh penalty — it makes the model care <em>much</em> more about fixing huge mistakes than tiny ones.</p>
+    </div>
+    <p>For every data point, take the difference between true and predicted value (the <strong>residual</strong>), square it, add up all the squares, divide by 2M (the "2" cancels out neatly once you take a derivative in §3 — it doesn't change <em>where</em> the minimum is, only tidies the gradient formula).</p>
+    <p>Why squared error rather than absolute error? Squaring makes the cost differentiable everywhere, and — more importantly — makes the penalty grow faster the further off you are: being off by 4 costs 16× as much as being off by 1, not just 4×. That steep, curved shape is precisely what gradient-based search in §3 exploits to know not just <em>which direction</em> to move but <em>how urgently</em>. Brute-force search — trying a grid of candidate θ values — ignores that curvature and becomes hopeless once θ has more than a couple of dimensions (imagine gridding 30,000 weights).</p>
+
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>A tiny invented dataset, chosen so the "true" relationship is easy to see: (x,y) = (1,3), (2,5), (3,7), following y=2x+1 exactly. Suppose we haven't found that relationship yet — we're testing a candidate guess θ=(ω=1.5, b=1). Illustrative toy numbers, not the real dataset from the exercises.</p>
+      <p>Predictions using ŷ=ωx+b: x=1→ŷ=2.5, x=2→ŷ=4.0, x=3→ŷ=5.5.</p>
+      <div class="table-wrap"><table><thead><tr><th>x</th><th>y</th><th>ŷ</th><th>residual (y−ŷ)</th><th>squared residual</th></tr></thead><tbody>
+        <tr><td>1</td><td>3</td><td>2.5</td><td>0.5</td><td>0.25</td></tr>
+        <tr><td>2</td><td>5</td><td>4.0</td><td>1.0</td><td>1.00</td></tr>
+        <tr><td>3</td><td>7</td><td>5.5</td><td>1.5</td><td>2.25</td></tr>
+      </tbody></table></div>
+      <p>Sum of squared residuals = 3.5. With M=3, 2M=6: <strong>J(θ) = 3.5/6 ≈ 0.583</strong>. If we'd tried ω=2, b=1 (the actual generating relationship), every residual would be 0, and J would be 0 — the true global minimum. §3 is how you find that θ automatically, without already knowing the answer.</p>
+    </div>
+
+    <h3>Other linear-model variants</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>Idea</th></tr></thead>
+        <tbody>
+          <tr><td>Polynomial regression</td><td>Adds x², x³ terms — non-linear in x, still linear in the parameters</td></tr>
+          <tr><td>Ridge (L2)</td><td>Penalizes Σwⱼ² — fights multicollinearity/overfitting, shrinks weights but rarely to zero</td></tr>
+          <tr><td>Lasso (L1)</td><td>Can shrink weights to exactly zero → automatic feature selection</td></tr>
+          <tr><td>Elastic Net</td><td>Combines L1 + L2, useful when predictors are highly correlated</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>All three penalized variants add an extra term to J(θ) that punishes large weights, changing <em>what "minimizing J" means</em> without changing the gradient-descent machinery used to minimize it. Ridge and Lasso become central to the Sprint Exercises' heating-load problem, where ordinary linear regression's coefficients blow up due to near-duplicate features.</p>
+  </section>
+
+<section class="chapter" id="gradient-descent">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Gradient Descent</h2></div>
+    <p class="chapter-dek">The one optimization algorithm everything else in this module reuses.</p>
+
+    <p>You now have a way to score any candidate θ (§2's MSE). What you don't have is a way to <em>search</em> for a good one without brute-forcing every possibility. Gradient descent does this, and it is the single optimization procedure that logistic regression, neural-network training, and backpropagation all reuse without modification to the core idea.</p>
+    <p>Picture the cost function J(θ) as hilly terrain, where your current θ is a location and altitude is how bad that θ is. You're standing in fog, and you want to walk downhill. At any location you can feel which direction is steepest and how steep it is — that's the <strong>gradient</strong>: the direction of steepest ascent, and how fast the function is changing in that direction.</p>
+    <details class="micro-check">
+      <summary>The gradient points in the direction of steepest <em>ascent</em>. Which way should a step actually move θ?</summary>
+      <div class="mc-a"><p>The <strong>opposite</strong> direction — subtract the gradient, don't add it. That's the minus sign in gradient <em>descent</em>: step downhill by moving against the direction that increases cost fastest, taking a bigger step where the ground is steep and a smaller one as it flattens near the minimum.</p></div>
+    </details>
+    <p>That's the entire algorithm.</p>
+    <ol>
+      <li>Pick a random initial θ and a learning rate α.</li>
+      <li>Repeat until convergence: <code>θⱼ ← θⱼ − α · ∂J(θ)/∂θⱼ</code> for every parameter j.</li>
+    </ol>
+    <p>Each parameter gets its own partial derivative — its own "which way is downhill <em>for this one knob</em>" — updated independently. For linear regression + MSE, the chain rule gives closed-form expressions:</p>
+    <div class="formula-block">∂J/∂b = −(1/M) Σ (y⁽ⁱ⁾ − (ωx⁽ⁱ⁾+b))
+∂J/∂ω = −(1/M) Σ (y⁽ⁱ⁾ − (ωx⁽ⁱ⁾+b)) · xᵀ⁽ⁱ⁾</div>
+    <div class="callout teacher-note">
+      <div class="callout-header"><span class="callout-icon">👨‍🏫</span>Teacher's Note: Gradient Descent in Plain English</div>
+      <p>If those derivatives look intimidating, think of it like this: You are blindfolded at the top of a hilly terrain, trying to find the bottom of the valley (the lowest error). You can't see the whole valley, but you can feel the slope of the ground right under your feet. A <strong>partial derivative</strong> (<code>∂J/∂ω</code>) is just the computer asking the math: <em>"If I turn this specific weight knob (ω) up just a tiny bit, does my error go up or down?"</em> Once it knows which direction is downhill, it takes a step (adjusted by the learning rate) and asks again.</p>
+    </div>
+    <p><code>(ωx⁽ⁱ⁾+b)</code> is just ŷ⁽ⁱ⁾ — so both formulas are really "average residual" and "average residual weighted by x," with a minus sign from differentiating a squared-error term.</p>
+
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>Continuing the toy dataset from §2: (x,y)=(1,3),(2,5),(3,7), current guess ω=1.5, b=1, learning rate α=0.1. Small invented numbers, not the real dataset.</p>
+      <p>Residuals from §2: 0.5, 1.0, 1.5.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Bias gradient</span><span class="we-calc">∂J/∂b = −(1/3)·(0.5+1.0+1.5) = −(1/3)·3.0 = <strong>−1.0</strong></span></div></li>
+        <li><div><span class="we-step-label">Weight gradient</span><span class="we-calc">∂J/∂ω = −(1/3)·(0.5×1+1.0×2+1.5×3) = −(1/3)·7.0 ≈ <strong>−2.333</strong></span></div></li>
+        <li><div><span class="we-step-label">Update the parameters</span><span class="we-calc">b_new = 1 − 0.1×(−1.0) = <strong>1.1</strong><br>ω_new = 1.5 − 0.1×(−2.333) ≈ <strong>1.733</strong></span></div></li>
+      </ol>
+      <p>ω moved <em>toward</em> the true value of 2 (the model was underestimating the slope), while b moved slightly <em>away</em> from its true value of 1 — not a bug. Gradient descent doesn't optimize each parameter's individual correctness in isolation; it moves the whole parameter vector in the direction that reduces total cost fastest given the <em>current</em> errors, which are dominated by the wrong slope. Later iterations correct the bias too — this is why the algorithm needs to repeat: one step rarely lands you at the minimum.</p>
+    </div>
+
+    <p>For a <strong>convex</strong> cost surface — linear regression with MSE has exactly one basin, no false minima — this walk is <em>guaranteed</em> to reach the global minimum eventually. The caveat: convexity guarantees the destination exists, not that any learning rate gets you there. Too large an α can still overshoot and diverge even on a convex surface.</p>
+    <div class="callout common-pitfall">
+      <div class="callout-header"><span class="callout-icon">⚠️</span>Common Pitfall: Learning Rate (α)</div>
+      <p>Beginners often think "I want my model to learn fast, so I'll set a high learning rate!" In our blindfolded analogy, the learning rate is <strong>how big of a step you take</strong>. If your step is too big, you will step right over the valley and end up higher on the opposite hill. Your model will "bounce" back and forth, and your error will explode to infinity (divergence). If your step is too small, it might take weeks to reach the bottom. Finding the "Goldilocks" learning rate is one of the most important parts of training.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Learning rate α</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td>Too low</td><td>Many tiny steps, slow convergence</td></tr>
+          <tr><td>Just right</td><td>Efficient convergence</td></tr>
+          <tr><td>Too high</td><td>Overshoots, oscillates, can diverge</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+<section class="chapter" id="logistic-regression">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Logistic Regression → One Neuron</h2></div>
+    <p class="chapter-dek">Running example: predicting malignant vs. benign from tumor measurements.</p>
+
+    <p>Linear regression predicts an unbounded real number — fine for "how many degrees of heating load," useless for "is this tumor malignant." For that you want a prediction that behaves like a <em>probability</em>: a number between 0 and 1. Logistic regression bolts a probability-producing step onto the linear machinery from §2–3 — and, as promised in §1, it's also <em>exactly</em> the computation a single neuron performs.</p>
+    <p>The raw weighted sum <code>z = wᵀx + b</code> can be any real number. The <strong>sigmoid</strong> function squashes it into (0,1): very negative inputs map close to 0, very positive close to 1, and 0 maps to exactly 0.5.</p>
+    <div class="formula-block">z = wᵀx + b
+ŷ = σ(z) = 1 / (1 + e^−(wᵀx+b))</div>
+    <details class="micro-check">
+      <summary>The raw weighted sum for a patient comes out to z = 0 exactly. What probability does the model report?</summary>
+      <div class="mc-a"><p><strong>0.5</strong> — z = 0 is sigmoid's exact midpoint, "maximally undecided." Positive z pushes the probability above 0.5 toward 1; negative z pushes it below 0.5 toward 0.</p></div>
+    </details>
+    <p>Converting the probability ŷ to a hard decision is just picking a threshold — 0.5 by default, but movable if false negatives and false positives cost differently.</p>
+
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>A made-up model has weights w=[0.5, −0.3], bias b=0.1, over two features. A patient has x=[2,1], true label y=1 (malignant). Invented toy example, not real clinical data.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Weighted sum z</span><span class="we-calc">z = 0.5×2 + (−0.3)×1 + 0.1 = 1.0 − 0.3 + 0.1 = <strong>0.8</strong></span></div></li>
+        <li><div><span class="we-step-label">Sigmoid</span><span class="we-calc">e⁻⁰·⁸ ≈ 0.449 → ŷ = σ(0.8) = 1/(1+0.449) = 1/1.449 ≈ <strong>0.690</strong> — "69% probability malignant"</span></div></li>
+      </ol>
+      <p>At a 0.5 threshold that rounds to label 1, matching the true label — but the <em>probability</em> is the actual output; the hard label is a downstream decision.</p>
+    </div>
+
+    <h3>Measuring wrongness for probabilities: cross-entropy</h3>
+    <p>MSE isn't the right tool here — plugging a sigmoid output into squared error gives a non-convex cost surface, and gradient descent can get stuck. There's also a more intuitive reason: squared error treats "predicted 0.9, true 1" and "predicted 0.1, true 1" as differing only by degree, but a <em>confidently wrong</em> prediction should be penalized much more harshly. A logarithmic penalty does exactly that — as a predicted probability for the correct class approaches 0, −log(·) shoots toward infinity. This is <strong>binary cross-entropy</strong>:</p>
+    <div class="formula-block">J(ω,b) = −(1/M) Σᵢ [ y⁽ⁱ⁾ log(ŷ⁽ⁱ⁾) + (1−y⁽ⁱ⁾) log(1−ŷ⁽ⁱ⁾) ]</div>
+    <p>For any single point, only one bracketed term is ever active, since y is 0 or 1: if y=1 you're left with −log(ŷ); if y=0, −log(1−ŷ). Per-point, cross-entropy is "negative log of the probability the model assigned to the actual correct answer."</p>
+
+    <div class="callout exam-trap">
+      <div class="callout-header">🚨 Common Pitfall </div>
+      <p><strong>Task for students:</strong> You are working with a binary classification model that predicts if a specific patient is on risk for hospitalization. Predicted Probability: 0.8. True Label: 0 (meaning no risk).</p>
+      <p>Use the binary cross-entropy loss formula to calculate the loss for this specific data point (N=1). Store your answer in a variable called <code>cross_entropy_loss</code>.</p>
+      <hr style="border-color: rgba(220, 38, 38, 0.2); margin: 0.75rem 0;">
+      <p><strong>The Solution:</strong> Because the true label y=0, only the second half of the BCE formula matters: <code>-log(1 - ŷ)</code>. We plug in our prediction: <code>-log(1 - 0.8) = -log(0.2)</code>.</p>
+      <p>In NumPy, this is calculated as:</p>
+      <pre><code>cross_entropy_loss = -np.log(1 - 0.8)</code></pre>
+      <p><em>Why is the loss so high here? Because the model was confidently wrong (predicted 80% risk, but the reality was 0).</em></p>
+    </div>
+
+    <p>Differentiating J with respect to weights via the chain rule, using σ′(x)=σ(x)(1−σ(x)), all the log/exp terms cancel:</p>
+    <div class="formula-block">∂J/∂ω = (1/M) Σ (ŷ⁽ⁱ⁾ − y⁽ⁱ⁾) · xᵀ⁽ⁱ⁾</div>
+    <p>This is <em>the same shape</em> as the linear-regression gradient from §3 (average error, weighted by x) — not a coincidence, and the detail that lets §5 reuse one uniform update rule across every layer of a network.</p>
+
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>Same patient (ŷ=0.690, y=1, x=[2,1]), with M=1: ∂J/∂w = (0.690−1)×[2,1] = (−0.310)×[2,1] = <strong>[−0.620, −0.310]</strong>, and ∂J/∂b = ŷ−y = <strong>−0.310</strong>. Feed these into the exact same gradient-descent update rule from §3 and you're training a neuron. There is no separate "logistic regression algorithm" beyond swapping in this gradient.</p>
+    </div>
+
+    <h3>More than two classes</h3>
+    <p>Real classification problems often have more than two labels — the CIFAR-10 image task in the Sprint Exercises has ten. Two standard extensions:</p>
+    <ul>
+      <li><strong>One-vs-Rest (OvR)</strong> — train one separate binary model per class, then pick whichever is most confident.</li>
+      <li><strong>Softmax regression</strong> — direct generalization of sigmoid to many classes: <code>softmax(zᵢ) = e^zᵢ / Σⱼ e^zⱼ</code>, turning a whole vector of raw scores into a probability distribution summing to 1.</li>
+    </ul>
+
+    <div class="worked-example">
+      <span class="we-label">Worked example</span>
+      <p>Raw class scores z=[1.30, 5.10, 2.20, 0.70, 1.10].</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Exponentiate every score</span><span class="we-calc">e^1.30≈3.67,&nbsp;&nbsp; e^5.10≈164.02,&nbsp;&nbsp; e^2.20≈9.03,&nbsp;&nbsp; e^0.70≈2.01,&nbsp;&nbsp; e^1.10≈3.00</span></div></li>
+        <li><div><span class="we-step-label">Sum them</span><span class="we-calc">3.67+164.02+9.03+2.01+3.00 ≈ <strong>181.73</strong></span></div></li>
+        <li><div><span class="we-step-label">Divide each by the sum</span><span class="we-calc">softmax(z) ≈ <strong>[0.02, 0.90, 0.05, 0.01, 0.02]</strong> — a clean distribution dominated by class 2, summing to 1.00</span></div></li>
+      </ol>
+      <p>This is exactly the <code>Dense(10, softmax)</code> layer in the CIFAR-10 exercise's output: ten raw scores in, ten class probabilities out.</p>
+    </div>
+
+    <h3>Why logistic regression isn't enough</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Limitation</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Linear boundaries only</td><td>Fails on non-linearly-separable data</td></tr>
+          <tr><td>Limited feature interaction</td><td>Doesn't capture interactions unless manually engineered</td></tr>
+          <tr><td>Limited capacity</td><td>Struggles with complex tasks (image/audio classification)</td></tr>
+          <tr><td>Sensitive to outliers</td><td>Outliers disproportionately affect the cost function</td></tr>
+          <tr><td>Scalability</td><td>Weak on large, high-dimensional data</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The "linear boundaries only" row matters most: a single neuron's decision boundary is always a flat hyperplane, no matter how you tune w and b. If your classes can't be separated by a straight line, no amount of retraining a single unit fixes that. The fix isn't a better neuron — it's <em>more than one</em>, arranged so their combined output can bend into curved, complex boundaries. That's §5.</p>
+  </section>
+
+</div>
+</body>
+</html>

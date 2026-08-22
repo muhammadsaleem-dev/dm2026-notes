@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 5 — From Regression to Neural Networks | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-overview.html" class="active">5 · Regression→NN</a>
+      <a href="chapter-5-regression.html">5.1 · Regression</a>
+      <a href="chapter-5-neural-networks.html">5.2 · Neural Networks</a>
+      <a href="chapter-5-training.html">5.3 · Training</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html" class="active">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">On this page</span>
+      <a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html" class="active">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">On this page</span>
+      <a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a>
+    </div>
+  </aside>
+
+<div class="page">
+<div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 5</div>
+      <h1 class="title">From Regression to Neural Networks</h1>
+    </div>
+    <div class="masthead-meta">Zero to hero, from here<br><strong>The biggest, most math-heavy module — every formula worked by hand</strong></div>
+  </div>
+  <p class="dek">The one idea this whole module builds toward: a neuron is logistic regression, and a network is many of them chained together. Gradient descent, backprop, and a full forward+backward pass computed by hand, start to finish.</p>
+
+  <div class="outcomes-box">
+    <span class="outcomes-label">By the end of this module, you'll be able to</span>
+    <ul>
+      <li>Explain why a neural network is "just" stacked logistic regression, and why depth requires non-linear activations to matter at all</li>
+      <li>Compute MSE and one full gradient-descent update step by hand for a tiny dataset</li>
+      <li>Compute sigmoid, binary cross-entropy, and its gradient by hand for a single data point</li>
+      <li>Forward-propagate and backpropagate through a 2-input, 1-hidden-neuron, 1-output network by hand</li>
+      <li>Explain vanishing/exploding gradients, and choose sensible defaults for network size, activation, and optimizer</li>
+    </ul>
+  </div>
+
+  <div class="toc-card">
+    <span class="toc-label">In this module</span>
+    <ul class="toc-list">
+      <li><a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a></li>
+      <li><a href="chapter-5-regression.html#framing"><span class="toc-num">1</span>Framing: NNs as Generalized Regression</a></li>
+      <li><a href="chapter-5-regression.html#linear-regression"><span class="toc-num">2</span>Linear Regression, Properly</a></li>
+      <li><a href="chapter-5-regression.html#gradient-descent"><span class="toc-num">3</span>Gradient Descent</a></li>
+      <li><a href="chapter-5-regression.html#logistic-regression"><span class="toc-num">4</span>Logistic Regression → One Neuron</a></li>
+      <li><a href="chapter-5-neural-networks.html#building-the-network"><span class="toc-num">5</span>Building the Network</a></li>
+      <li><a href="chapter-5-neural-networks.html#hyperparameters"><span class="toc-num">6</span>Hyperparameters, Activations &amp; Training Difficulty</a></li>
+      <li><a href="chapter-5-training.html#gd-at-scale"><span class="toc-num">7</span>Gradient Descent at Scale</a></li>
+      <li><a href="chapter-5-training.html#exercises"><span class="toc-num">8</span>Sprint Exercises</a></li>
+      <li><a href="chapter-5-training.html#test-yourself"><span class="toc-num">9</span>Test Yourself</a></li>
+      <li><a href="chapter-5-training.html#knowledge-drill"><span class="toc-num">10</span>Knowledge Drill</a></li>
+    </ul>
+  </div>
+
+<!-- EMBEDDED COMIC READER -->
+<style>
+  /* Custom Comic Reader Layout */
+  .comic-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2.75rem 1.75rem 4rem;
+  }
+  .comic-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1.5rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .comic-btn {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-body);
+  }
+  .comic-btn:hover:not(:disabled) {
+    background: var(--accent);
+    color: white;
+  }
+  .comic-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--bg);
+    color: var(--text-muted);
+    border-color: var(--border);
+  }
+  .slide-dropdown {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 1.8rem 0.4rem 0.8rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B6670' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.4rem center;
+    background-size: 1em;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+  }
+  .slide-dropdown:hover:not(:disabled), .slide-dropdown:focus {
+    border-color: var(--accent);
+    outline: none;
+  }
+  .slide-dropdown:disabled {
+    opacity: 0.8;
+    cursor: default;
+    background-image: none;
+    padding-right: 0.8rem;
+  }
+  .carousel-container {
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+  }
+  .carousel-slides {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    width: 100%;
+    transition: transform 0.4s ease-in-out;
+  }
+  .carousel-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .carousel-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (max-width: 650px) {
+    .comic-nav {
+      flex-direction: column;
+      gap: 0.8rem;
+      padding: 1rem;
+    }
+    .comic-btn, .slide-dropdown {
+      width: 100%;
+      text-align: center;
+    }
+    .slide-dropdown {
+      background-position: calc(100% - 0.8rem) center;
+    }
+  }
+</style>
+<div id="visual-recap" style="scroll-margin-top: 4.5rem;">
+  <div class="comic-nav">
+    <button class="comic-btn" disabled>« Previous</button>
+    <select class="slide-dropdown">
+      <option value="0">1. The Linear Soup Cart (Linear Regression)</option>
+      <option value="1">2. The Taste Test (Mean Squared Error (MSE))</option>
+      <option value="2">3. The Diet Spices (Regularization (Ridge & Lasso))</option>
+      <option value="3">4. Walking Down the Mountain (Gradient Descent)</option>
+      <option value="4">5. The 'Yes/No' Filter (Logistic Regression & Sigmoid)</option>
+      <option value="5">6. The Harsh Critic (Binary Cross Entropy)</option>
+      <option value="6">7. The Mega-Kitchen (Neural Network Architecture)</option>
+      <option value="7">8. Hierarchical Cooking (Hierarchical Features)</option>
+      <option value="8">9. The Magic Spices (Non-Linear Activations (ReLU))</option>
+      <option value="9">10. The Assembly Line (The Forward Pass)</option>
+      <option value="10">11. The Chain of Blame (Backpropagation)</option>
+      <option value="11">12. The Fading Voice (Vanishing Gradients)</option>
+      <option value="12">13. The Exploding Voice (Exploding Gradients)</option>
+      <option value="13">14. The Taste-Tester Batch (Stochastic Gradient Descent (SGD))</option>
+      <option value="14">15. The Heavy Cart (Momentum)</option>
+      <option value="15">16. The Smart Dials & Convergence (Adam Optimizer)</option>
+    </select>
+    <button class="comic-btn">Next »</button>
+  </div>
+  
+  <div class="carousel-container">
+    <div class="carousel-slides">
+      
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p1_linear_1786706530963.jpg" alt="1. The Linear Soup Cart">
+            </div>
+            <div class="slide-caption">
+                <h3>1. The Linear Soup Cart</h3>
+                <span class="concept-badge">Linear Regression</span>
+                <p>A chef uses a simple linear recipe. If he adds exactly 2 carrots, a mechanical dial measuring the soup's "flavor" predictably ticks up by exactly 2 units.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p2_mse_1786706540373.jpg" alt="2. The Taste Test">
+            </div>
+            <div class="slide-caption">
+                <h3>2. The Taste Test</h3>
+                <span class="concept-badge">Mean Squared Error (MSE)</span>
+                <p>The chef measures exactly how bad the soup is by squaring the mistakes. Being off by a little is fine, but being off by a lot is a squared disaster!</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p3_regularization_1786706549193.jpg" alt="3. The Diet Spices">
+            </div>
+            <div class="slide-caption">
+                <h3>3. The Diet Spices</h3>
+                <span class="concept-badge">Regularization (Ridge & Lasso)</span>
+                <p>To prevent the soup from becoming too complex (overfitting), the health inspector forces the chef to shrink his spice usage or drop some entirely.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p4_gradient_1786706557180.jpg" alt="4. Walking Down the Mountain">
+            </div>
+            <div class="slide-caption">
+                <h3>4. Walking Down the Mountain</h3>
+                <span class="concept-badge">Gradient Descent</span>
+                <p>The chef is blindfolded on a foggy, hilly mountain (the cost landscape). He feels the slope with his foot and takes one small step downhill to minimize the cost.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p5_sigmoid_1786706569045.jpg" alt="5. The 'Yes/No' Filter">
+            </div>
+            <div class="slide-caption">
+                <h3>5. The 'Yes/No' Filter</h3>
+                <span class="concept-badge">Logistic Regression & Sigmoid</span>
+                <p>Instead of asking 'how spicy is it?', the restaurant now asks 'is it Spicy: YES or NO?'. A 'Squashing Filter' forces raw flavors into a neat probability between 0 and 1.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p6_bce_1786706580226.jpg" alt="6. The Harsh Critic">
+            </div>
+            <div class="slide-caption">
+                <h3>6. The Harsh Critic</h3>
+                <span class="concept-badge">Binary Cross Entropy</span>
+                <p>The Head Chef uses a harsh new scorecard. If the apprentice is 99% confident the soup is NOT spicy, but it IS, the Chef punishes him infinitely more than just a small mistake!</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p7_megakitchen_1786706589793.jpg" alt="7. The Mega-Kitchen">
+            </div>
+            <div class="slide-caption">
+                <h3>7. The Mega-Kitchen</h3>
+                <span class="concept-badge">Neural Network Architecture</span>
+                <p>The single soup cart expands into an industrial kitchen with multiple 'Hidden Layers' (Prep Cooks -> Line Cooks) and a final output window (Head Chef).</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p8_hierarchy_1786729140306.jpg" alt="8. Hierarchical Cooking">
+            </div>
+            <div class="slide-caption">
+                <h3>8. Hierarchical Cooking</h3>
+                <span class="concept-badge">Hierarchical Features</span>
+                <p>Prep cooks chop vegetables (edges), line cooks assemble them (contours), and the Head Chef plates the final masterpiece (objects). Depth allows the network to learn combinations.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p9_relu_1786729148871.jpg" alt="9. The Magic Spices">
+            </div>
+            <div class="slide-caption">
+                <h3>9. The Magic Spices</h3>
+                <span class="concept-badge">Non-Linear Activations (ReLU)</span>
+                <p>The chefs use a magic spice (ReLU) that only activates if the flavor is positive, and zeroes out negative flavors. This sudden, non-linear change allows them to cook complex boundaries!</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/nn_forward_pass_1786705789294.jpg" alt="10. The Assembly Line">
+            </div>
+            <div class="slide-caption">
+                <h3>10. The Assembly Line</h3>
+                <span class="concept-badge">The Forward Pass</span>
+                <p>Raw ingredients rush through the loading dock, get chopped, cooked, spiced, and finally plated by the Head Chef to serve to the customer to get a prediction.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/nn_backpropagation_1786705805635.jpg" alt="11. The Chain of Blame">
+            </div>
+            <div class="slide-caption">
+                <h3>11. The Chain of Blame</h3>
+                <span class="concept-badge">Backpropagation</span>
+                <p>The customer complains! The Head Chef calculates the error, yells at the line cooks, who then yell at the prep cooks, passing the blame backward proportionally based on who added what.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p12_vanishing_1786729159134.jpg" alt="12. The Fading Voice">
+            </div>
+            <div class="slide-caption">
+                <h3>12. The Fading Voice</h3>
+                <span class="concept-badge">Vanishing Gradients</span>
+                <p>The kitchen is so deep that the Head Chef's yells fade away. The prep cooks at the very beginning can't hear the instructions, so their weights never update and they never improve.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p13_exploding_1786729169233.jpg" alt="13. The Exploding Voice">
+            </div>
+            <div class="slide-caption">
+                <h3>13. The Exploding Voice</h3>
+                <span class="concept-badge">Exploding Gradients</span>
+                <p>A small complaint gets amplified backward by middle managers. By the time it hits the ground floor, it explodes like a sonic boom! The prep cooks panic and ruin their dials.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p14_sgd_1786729180284.jpg" alt="14. The Taste-Tester Batch">
+            </div>
+            <div class="slide-caption">
+                <h3>14. The Taste-Tester Batch</h3>
+                <span class="concept-badge">Stochastic Gradient Descent (SGD)</span>
+                <p>Instead of cooking the entire menu before adjusting the dials, they taste a small, random 'mini-batch' of soups and adjust immediately. It's noisier, but learns hundreds of times faster.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/mod5_p15_momentum_1786729188705.jpg" alt="15. The Heavy Cart">
+            </div>
+            <div class="slide-caption">
+                <h3>15. The Heavy Cart</h3>
+                <span class="concept-badge">Momentum</span>
+                <p>The chef puts his spice cart on heavy wheels. As he rolls downhill, he builds physical momentum, rolling right over small bumps (local minima) without getting stuck.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel-slide">
+        <div class="slide-layout">
+            <div class="slide-image-wrapper">
+                <img src="assets/story/nn_convergence_1786705826446.jpg" alt="16. The Smart Dials & Convergence">
+            </div>
+            <div class="slide-caption">
+                <h3>16. The Smart Dials & Convergence</h3>
+                <span class="concept-badge">Adam Optimizer</span>
+                <p>They install highly advanced, adaptive dials on every stove. These dials remember past momentum and automatically adjust their own sensitivity for every single ingredient independently.</p>
+            </div>
+        </div>
+    </div>
+    
+    </div>
+  </div>
+
+  <div class="comic-nav">
+    <button class="comic-btn" disabled>« Previous</button>
+    <select class="slide-dropdown">
+      <option value="0">1. The Linear Soup Cart (Linear Regression)</option>
+      <option value="1">2. The Taste Test (Mean Squared Error (MSE))</option>
+      <option value="2">3. The Diet Spices (Regularization (Ridge & Lasso))</option>
+      <option value="3">4. Walking Down the Mountain (Gradient Descent)</option>
+      <option value="4">5. The 'Yes/No' Filter (Logistic Regression & Sigmoid)</option>
+      <option value="5">6. The Harsh Critic (Binary Cross Entropy)</option>
+      <option value="6">7. The Mega-Kitchen (Neural Network Architecture)</option>
+      <option value="7">8. Hierarchical Cooking (Hierarchical Features)</option>
+      <option value="8">9. The Magic Spices (Non-Linear Activations (ReLU))</option>
+      <option value="9">10. The Assembly Line (The Forward Pass)</option>
+      <option value="10">11. The Chain of Blame (Backpropagation)</option>
+      <option value="11">12. The Fading Voice (Vanishing Gradients)</option>
+      <option value="12">13. The Exploding Voice (Exploding Gradients)</option>
+      <option value="13">14. The Taste-Tester Batch (Stochastic Gradient Descent (SGD))</option>
+      <option value="14">15. The Heavy Cart (Momentum)</option>
+      <option value="15">16. The Smart Dials & Convergence (Adam Optimizer)</option>
+    </select>
+    <button class="comic-btn">Next »</button>
+  </div>
+
+  <style>
+  /* slide padding merged above */
+  .slide-layout { display: flex; flex-direction: column; background: var(--bg-raised); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); height: 100%; border: 1px solid var(--border); }
+  .slide-image-wrapper { width: 100%; aspect-ratio: 1/1; background: var(--bg-deep); display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .slide-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+  .slide-caption { padding: 1.5rem; text-align: left; }
+  .slide-caption h3 { margin: 0 0 0.5rem 0; color: var(--accent); font-size: 1.3rem; }
+  .concept-badge { display: inline-block; background: rgba(147, 51, 234, 0.1); color: var(--accent); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; font-family: var(--font-mono); margin-bottom: 1rem; border: 1px solid rgba(147, 51, 234, 0.2); text-transform: uppercase; letter-spacing: 0.05em; }
+  .slide-caption p { margin: 0; line-height: 1.6; color: var(--text); font-size: 1.05rem; }
+  
+  @media (min-width: 768px) {
+    .slide-layout { flex-direction: row; align-items: stretch; height: 500px; }
+    .slide-image-wrapper { width: 500px; min-width: 500px; aspect-ratio: auto; border-bottom: none; border-right: 1px solid var(--border); }
+    .slide-caption { flex: 1; padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+    .slide-caption h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+    .slide-caption p { font-size: 1.15rem; }
+    .concept-badge { align-self: flex-start; margin-bottom: 1.5rem; }
+  }
+  </style>
+  <script>
+  let currentSlide = 0;
+  const slides = document.querySelector('.carousel-slides');
+  const slideDropdown = document.querySelectorAll('.slide-dropdown');
+  let totalSlides = document.querySelectorAll('.carousel-slide').length;
+
+  function updateCarousel() {
+    totalSlides = document.querySelectorAll('.carousel-slide').length;
+    slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+    slideDropdown.forEach(dropdown => {
+      dropdown.value = currentSlide;
+    });
+
+    const prevBtns = document.querySelectorAll('.comic-nav button:first-child');
+    const nextBtns = document.querySelectorAll('.comic-nav button:last-child');
+    
+    prevBtns.forEach(btn => btn.disabled = currentSlide === 0);
+    nextBtns.forEach(btn => btn.disabled = currentSlide === totalSlides - 1);
+  }
+
+  slideDropdown.forEach(dropdown => {
+    dropdown.addEventListener('change', (e) => {
+      goToSlide(parseInt(e.target.value));
+    });
+  });
+
+  const navs = document.querySelectorAll('.comic-nav');
+  if (navs.length >= 2) {
+    const prevBtnTop = navs[0].querySelector('button:first-child');
+    const nextBtnTop = navs[0].querySelector('button:last-child');
+    const prevBtnBottom = navs[1].querySelector('button:first-child');
+    const nextBtnBottom = navs[1].querySelector('button:last-child');
+
+    if (prevBtnTop) prevBtnTop.onclick = () => moveSlide(-1);
+    if (nextBtnTop) nextBtnTop.onclick = () => moveSlide(1);
+    if (prevBtnBottom) prevBtnBottom.onclick = () => moveSlide(-1);
+    if (nextBtnBottom) nextBtnBottom.onclick = () => moveSlide(1);
+  }
+
+  function moveSlide(dir) {
+    let newSlide = currentSlide + dir;
+    if (newSlide >= 0 && newSlide < totalSlides) {
+      currentSlide = newSlide;
+      updateCarousel();
+      document.querySelector('.comic-nav').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function goToSlide(index) {
+    if (index >= 0 && index < totalSlides) {
+      currentSlide = index;
+      updateCarousel();
+    }
+  }
+
+  // Initial setup
+  setTimeout(updateCarousel, 100);
+  
+  document.querySelectorAll('.comic-btn, .slide-dropdown').forEach(el => {
+    if (el.disabled) {
+        if (!el.textContent.includes('Previous')) {
+            el.disabled = false;
+        }
+    }
+  });
+  </script>
+
+</div>
+<!-- END COMIC READER -->
+
+</div>
+</body>
+</html>

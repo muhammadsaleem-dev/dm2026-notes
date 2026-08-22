@@ -10,7 +10,10 @@ nav_links_html = """<div class="sitenav-links">
       <a href="chapter-2-pca.html">2.4 · PCA</a>
       <a href="chapter-3-classification.html">3 · Classification</a>
       <a href="chapter-4-clustering.html">4 · Clustering</a>
-      <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-5-regression.html">5.1 · Regression</a>
+      <a href="chapter-5-neural-networks.html">5.2 · Neural Networks</a>
+      <a href="chapter-5-training.html">5.3 · Training</a>
       <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
       <a href="chapter-7-explainability.html">7 · Explainability</a>
     </div>"""
@@ -31,7 +34,17 @@ sidebar_modules_html = """<span class="sidebar-label">Modules</span>
       </details>
       <a href="chapter-3-classification.html">3 · Classification</a>
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
-      <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
       <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
       <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>"""
 
@@ -53,22 +66,29 @@ def update_file(filepath):
     # Apply 'active' class based on filename
     filename = filepath.split('/')[-1]
     
-    # Regex to find the link for this file and add class="active"
-    # But only inside the navigation areas. The easiest way is string replacement for the specific link.
+    # Remove existing active classes first to avoid duplicates
+    content = content.replace('class="active"', '')
+    # The above replace will strip 'active' from everywhere. But it might break if a tag had multiple classes like `class="nav-link active"`.
+    # Let's use a safer regex for removing active class from links
+    content = re.sub(r'class="active"', '', content) # wait, we just stripped it.
+    
+    # Then add it back for the correct link
     if filename != "index.html":
         # Make the exact match active
-        link_str = f'<a href="{filename}">'
-        active_str = f'<a href="{filename}" class="active">'
-        content = content.replace(link_str, active_str)
+        # Links might be: <a href="filename.html"> or <a href="filename.html" >
+        content = content.replace(f'<a href="{filename}">', f'<a href="{filename}" class="active">')
+        # Also handle sub-modules which might have formatting diffs, but they are all written exactly as `<a href="file.html">` in the HTML blocks above
 
-    # Open the details accordion if we are on a module 2 page
+    # Open the details accordion if we are on a module 2 or module 5 page
     if "chapter-2-" in filename:
         content = content.replace('<details class="nav-details" id="mod2-details">', '<details class="nav-details" id="mod2-details" open>')
+    if "chapter-5-" in filename:
+        content = content.replace('<details class="nav-details" id="mod5-details">', '<details class="nav-details" id="mod5-details" open>')
 
     with open(filepath, 'w') as f:
         f.write(content)
 
 for filepath in glob.glob("*.html"):
-    if filepath != "chapter-2-pipeline.html": # Ignore the one we are deleting
+    if filepath not in ["chapter-2-pipeline.html", "chapter-5-regression-nn.html"]: # Ignore the ones we are deleting/deleted
         print(f"Updating {filepath}")
         update_file(filepath)
