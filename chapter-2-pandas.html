@@ -18,6 +18,7 @@
     <a class="sitenav-home" href="index.html">DM Bootcamp</a>
     <div class="sitenav-links">
       <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
       <a href="chapter-2-pandas.html" class="active">2.1 · Pandas/EDA</a>
       <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
       <a href="chapter-2-modelling.html">2.3 · Modelling</a>
@@ -41,10 +42,18 @@
     <div class="nav-panel-section">
       <span class="nav-panel-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
-      <a href="chapter-2-pandas.html" class="active">2.1 · Pandas &amp; EDA</a>
-      <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
-      <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
-      <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+      <details class="nav-details" id="mod2-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html" class="active">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
       <a href="chapter-3-classification.html">3 · Classification</a>
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
       <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
@@ -67,10 +76,18 @@
     <div class="sidebar-block">
       <span class="sidebar-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
-      <a href="chapter-2-pandas.html" class="active">2.1 · Pandas &amp; EDA</a>
-      <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
-      <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
-      <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+      <details class="nav-details" id="mod2-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html" class="active">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
       <a href="chapter-3-classification.html">3 · Classification</a>
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
       <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
@@ -171,6 +188,14 @@ children = df[df['age'] < 18]</code></pre>
       <div class="concept-card"><h4>Vectorized Operations</h4><p>Applying a function to an entire column at once, which is 100x faster than writing a Python <code>for</code> loop.</p></div>
     </div>
 
+    <div class="callout teacher-note">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong>Teacher's Note: The Golden Rule</strong>
+        <p>The very first things you should type when handed a new DataFrame are <code>df.info()</code> (to check data types) and <code>df.isna().sum()</code> (to find missing values). It's the equivalent of a chef checking the expiration dates of ingredients before cooking. If you don't do this, your model <em>will</em> crash later.</p>
+      </div>
+    </div>
+
     <h3>2. The Code Reality</h3>
     <pre><code># 1. Finding missing values
 missing_percentages = df.isna().mean() * 100
@@ -226,6 +251,21 @@ df['fare_per_age'] = df['fare'] / df['age']</code></pre>
     <p class="chapter-dek">Test your knowledge with essential exam-style concept questions.</p>
     
     <div class="drill-list">
+      
+      <div class="drill-item">
+        <span class="drill-q">You want to view the third row of your DataFrame, but its index label is "Row_A". Will <code>df.loc[2]</code> work?</span>
+        <div class="drill-a"><p><strong>No.</strong> <code>.loc</code> strictly searches for the actual label name. To get the third row by its position, you must use <code>.iloc[2]</code>.</p></div>
+      </div>
+      
+      <div class="drill-item">
+        <div class="callout exam-trap" style="margin-top: 0; padding: 1rem;">
+          <div class="callout-icon">🚨</div>
+          <div class="callout-content">
+            <strong>Exam Trap: .loc vs .iloc gotcha!</strong>
+            <p>If your DataFrame has default integer indices (0, 1, 2, 3) and you drop row 1, the index becomes [0, 2, 3]. <br><br>Now, <code>df.loc[2]</code> returns the <strong>second</strong> row (because its label is '2'). But <code>df.iloc[2]</code> returns the <strong>third</strong> row (because its absolute position is 2). Always remember this distinction!</p>
+          </div>
+        </div>
+      </div>
       
       <details class="drill-item">
         <summary>

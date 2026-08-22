@@ -19,6 +19,7 @@
     <a class="sitenav-home" href="index.html">DM Bootcamp</a>
     <div class="sitenav-links">
       <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
       <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
       <a href="chapter-2-preprocessing.html" class="active">2.2 · Preprocessing</a>
       <a href="chapter-2-modelling.html">2.3 · Modelling</a>
@@ -42,10 +43,18 @@
     <div class="nav-panel-section">
       <span class="nav-panel-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
-      <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
-      <a href="chapter-2-preprocessing.html" class="active">2.2 · Data Preprocessing</a>
-      <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
-      <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+      <details class="nav-details" id="mod2-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html" class="active">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
       <a href="chapter-3-classification.html">3 · Classification</a>
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
       <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
@@ -69,10 +78,18 @@
     <div class="sidebar-block">
       <span class="sidebar-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
-      <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
-      <a href="chapter-2-preprocessing.html" class="active">2.2 · Data Preprocessing</a>
-      <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
-      <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+      <details class="nav-details" id="mod2-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html" class="active">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
       <a href="chapter-3-classification.html">3 · Classification</a>
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
       <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
@@ -147,12 +164,19 @@
 # Step 1: Lock away 20% of the data!
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)</code></pre>
 
-    <div class="exam-takeaway">
+    <div class="callout exam-trap">
+      <div class="callout-icon">🚨</div>
+      <div class="callout-content">
+        <strong>Exam Trap: Data Leakage</strong>
+        <p>This is a favorite exam trick! <strong>Data Leakage</strong> is when information from the Test set accidentally "leaks" into the Training set (e.g., if you scale or impute data <em>before</em> splitting). It causes the model to look highly accurate during training, but fail miserably in the real world. <strong>Always split first.</strong></p>
+      </div>
+    </div>
+
+    <div class="exam-takeaway" style="margin-top: 1rem;">
       <span class="et-icon">🎯</span>
       <div>
         <span class="et-label">Exam takeaway</span>
         <ul>
-            <li><strong>Data Leakage:</strong> This is when information from outside the training dataset is used to create the model. It causes the model to look highly accurate during training, but fail miserably in the real world.</li>
             <li><strong>random_state:</strong> Setting this seed (e.g., to 0 or 42) ensures that you get the exact same random split every time you run the code. Crucial for reproducible research!</li>
         </ul>
       </div>
@@ -219,6 +243,18 @@ encoder = OneHotEncoder(drop='first', handle_unknown='ignore', sparse=False)
 # Fit on training data ONLY, then transform both train and test!
 X_train_encoded = encoder.fit_transform(X_train[['Embarked']])
 X_test_encoded = encoder.transform(X_test[['Embarked']])</code></pre>
+
+    <div class="callout teacher-note">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong>Cheat Sheet: Which models need One-Hot Encoding?</strong>
+        <p>A classic exam question asks you to identify models that require OHE. Here is the rule of thumb:</p>
+        <ul style="margin-top: 0.5rem; margin-bottom: 0;">
+          <li><strong>REQUIRE OHE:</strong> Distance-based or Math-equation models (Logistic Regression, Linear Regression, SVMs, K-Means, Neural Networks). They cannot do math on words.</li>
+          <li><strong>DO NOT REQUIRE OHE:</strong> Tree-based models (Decision Trees, Random Forests, XGBoost). They can natively split on categorical labels (e.g., "Is Color == Red?").</li>
+        </ul>
+      </div>
+    </div>
   </section>
 
   <!-- ============ SCALING ============ -->
@@ -232,20 +268,26 @@ X_test_encoded = encoder.transform(X_test[['Embarked']])</code></pre>
       <div class="carousel-caption">Ticket Fare ranges from $0 to $500. Age ranges from 0 to 80. If we don't scale, the algorithm will think Fare is infinitely more important just because the numbers are bigger.</div>
     </figure>
 
-    <p>We use <strong>StandardScaler</strong> to force every numerical column to have a Mean of 0 and a Standard Deviation of 1. Now, Age and Fare are playing on the same even field.</p>
+    <p>We use <strong>StandardScaler</strong> to force every numerical column to have a Mean of 0 and a Standard Deviation of 1 (Z-score). Alternatively, we use <strong>MinMaxScaler</strong> to squash every number between 0 and 1.</p>
 
     <h3>The Code Reality</h3>
-    <pre><code>from sklearn.preprocessing import StandardScaler
+    <pre><code>from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
+# 1. StandardScaler (Mean=0, Std=1)
 scaler = StandardScaler()
 
 # GOLDEN RULE: Fit only on the training data!
-# (We don't want the test data's average fare leaking into the scaler's brain)
 X_train_scaled = scaler.fit_transform(X_train[['Age', 'Fare']])
 
 # We ONLY transform the test data.
-X_test_scaled = scaler.transform(X_test[['Age', 'Fare']])</code></pre>
-  </section>
+X_test_scaled = scaler.transform(X_test[['Age', 'Fare']])
+
+
+# 2. MinMaxScaler (Values between 0 and 1)
+minmax = MinMaxScaler()
+X_train_minmax = minmax.fit_transform(X_train[['Age', 'Fare']])
+X_test_minmax = minmax.transform(X_test[['Age', 'Fare']])
+</code></pre>
 
   <!-- ============ EXAM DRILLS ============ -->
   <section class="chapter" id="exam-drills">

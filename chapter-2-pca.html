@@ -18,6 +18,7 @@
     <a class="sitenav-home" href="index.html">DM Bootcamp</a>
     <div class="sitenav-links">
       <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
       <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
       <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
       <a href="chapter-2-modelling.html">2.3 · Modelling</a>
@@ -41,10 +42,18 @@
     <div class="nav-panel-section">
       <span class="nav-panel-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
-      <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
-      <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
-      <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
-      <a href="chapter-2-pca.html" class="active">2.4 · PCA &amp; t-SNE</a>
+      <details class="nav-details" id="mod2-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html" class="active">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
       <a href="chapter-3-classification.html">3 · Classification</a>
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
       <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
@@ -67,10 +76,18 @@
     <div class="sidebar-block">
       <span class="sidebar-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
-      <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
-      <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
-      <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
-      <a href="chapter-2-pca.html" class="active">2.4 · PCA &amp; t-SNE</a>
+      <details class="nav-details" id="mod2-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html" class="active">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
       <a href="chapter-3-classification.html">3 · Classification</a>
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
       <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
@@ -164,6 +181,40 @@ X_pca_50 = pca.fit_transform(X_scaled)
     <div class="concept-cards">
       <div class="concept-card"><h4>Perplexity</h4><p>A crucial t-SNE parameter. Think of it as "how many close neighbors each point considers". A low perplexity (e.g. 2) focuses purely on tiny local clusters, making the graph look like scattered dots. A higher perplexity (e.g. 30-50) considers broader regions. You must experiment with this!</p></div>
       <div class="concept-card"><h4>Random Seed</h4><p>t-SNE is <strong>stochastic</strong> (random). If you run it 3 times without setting a <code>random_state</code>, the 2D plot will look completely different every time (even though the topological meaning remains the same). Always set a random seed!</p></div>
+    </div>
+
+    <div class="callout teacher-note">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content" style="width: 100%;">
+        <strong>Cheat Sheet: PCA vs t-SNE</strong>
+        <p style="margin-bottom: 0.8rem;">Memorize this exact table for the exam!</p>
+        <table style="width: 100%; text-align: left; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--border);">
+              <th style="padding: 0.5rem 0;">Feature</th>
+              <th style="padding: 0.5rem 0;">PCA</th>
+              <th style="padding: 0.5rem 0;">t-SNE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 0.5rem 0; font-weight: 500;">Nature</td>
+              <td style="padding: 0.5rem 0;">Linear</td>
+              <td style="padding: 0.5rem 0;">Non-Linear</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 0.5rem 0; font-weight: 500;">Preserves</td>
+              <td style="padding: 0.5rem 0;">Global Structure (Variance)</td>
+              <td style="padding: 0.5rem 0;">Local Structure (Neighborhoods)</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.5rem 0; font-weight: 500;">Determinism</td>
+              <td style="padding: 0.5rem 0;">Deterministic (Always the same)</td>
+              <td style="padding: 0.5rem 0;">Stochastic (Randomized)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
   </section>

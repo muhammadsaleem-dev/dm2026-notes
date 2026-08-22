@@ -18,6 +18,7 @@
     <a class="sitenav-home" href="index.html">DM Bootcamp</a>
     <div class="sitenav-links">
       <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
       <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
       <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
       <a href="chapter-2-modelling.html" class="active">2.3 · Modelling</a>
@@ -41,10 +42,18 @@
     <div class="nav-panel-section">
       <span class="nav-panel-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
-      <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
-      <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
-      <a href="chapter-2-modelling.html" class="active">2.3 · Modelling &amp; Evaluation</a>
-      <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+      <details class="nav-details" id="mod2-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html" class="active">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
       <a href="chapter-3-classification.html">3 · Classification</a>
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
       <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
@@ -68,10 +77,18 @@
     <div class="sidebar-block">
       <span class="sidebar-label">Modules</span>
       <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
-      <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
-      <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
-      <a href="chapter-2-modelling.html" class="active">2.3 · Modelling &amp; Evaluation</a>
-      <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+      <details class="nav-details" id="mod2-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html" class="active">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
       <a href="chapter-3-classification.html">3 · Classification</a>
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
       <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
@@ -141,6 +158,14 @@
     </div>
 
     <p>Since we are predicting Titanic survival, we must use <strong>Logistic Regression</strong>. (If there are more than 2 classes, like predicting if a fruit is an Apple, Banana, or Orange, we use <em>Multiclass</em> Logistic Regression, which operates the exact same way!).</p>
+
+    <div class="callout teacher-note">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong>Teacher's Note: The Sigmoid Function (S-Curve)</strong>
+        <p>You might wonder: how does Logistic Regression force the answer to be exactly between 0 and 1? <br><br>It uses the <strong>Sigmoid Function</strong>. Imagine a straight, diagonal line (Linear Regression) going from negative infinity to positive infinity. The Sigmoid function grabs both ends of that straight line and bends them down flat, creating an "S" shape that never goes below 0 and never goes above 1. It acts as an ultimate mathematical squasher!</p>
+      </div>
+    </div>
   </section>
 
 
@@ -181,8 +206,16 @@ y_pred_proba = model.predict_proba(X_test_scaled)[:, 1]</code></pre>
     <p>To see if our model is any good (and if it is overfitting), we must evaluate it using metrics.</p>
 
     <div class="concept-cards">
-      <div class="concept-card"><h4>Accuracy</h4><p>Total correct predictions divided by total predictions. <em>Warning: Useless if the data is imbalanced (e.g. if 99% of people don't have a disease, predicting "No" always gives 99% accuracy).</em></p></div>
+      <div class="concept-card"><h4>Accuracy</h4><p>Total correct predictions divided by total predictions.</p></div>
       <div class="concept-card"><h4>ROC-AUC</h4><p>Measures how well the model separates the classes based on probabilities. 1.0 is a perfect score, 0.5 is literally random guessing.</p></div>
+    </div>
+
+    <div class="callout teacher-note">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong>Teacher's Note: When Accuracy is a Liar</strong>
+        <p>Imagine a rare disease that only 1% of the population has. If I build a completely useless model that just hardcodes the prediction to "No, you don't have the disease" for literally everyone, my model will be <strong>99% accurate</strong>! <br><br>This is why Accuracy is dangerous for imbalanced datasets. ROC-AUC is much better because it grades the model on how well it distinguishes between the 1% and the 99% using actual probabilities.</p>
+      </div>
     </div>
 
     <figure class="carousel-container">

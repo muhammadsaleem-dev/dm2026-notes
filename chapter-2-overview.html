@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2 — The Data Mining Pipeline | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html" class="active">2 · Overview</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-regression-nn.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html" class="active">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html" class="active">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-regression-nn.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+  </aside>
+
+<div class="page">
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 2</div>
+      <h1 class="title">The Data Mining Pipeline</h1>
+    </div>
+    <div class="masthead-meta">The Journey Ahead<br><strong>Raw Data → Cleaning → Modelling → Insight</strong></div>
+  </div>
+  
+  <p class="dek">Welcome to Module 2! Before we write a single line of code, let's look at the big picture. Data Mining isn't just about throwing algorithms at numbers—it is a strict, structured pipeline. If you skip a step, your model will fail.</p>
+
+  <div class="pipeline-strip">
+    <span class="stage current">2.1 Explore Data</span>
+    <span class="arrow">→</span>
+    <span class="stage">2.2 Preprocess</span>
+    <span class="arrow">→</span>
+    <span class="stage">2.3 Model &amp; Evaluate</span>
+    <span class="arrow">→</span>
+    <span class="stage">2.4 Visualize (PCA)</span>
+  </div>
+
+  <section class="chapter" style="margin-top: 3rem;">
+    <h2>The Story of a Data Point</h2>
+    <p>Before diving into the code, let's visualize the entire pipeline. Think of a raw data point as an unrefined ingredient arriving at a high-end restaurant.</p>
+
+    <div class="storyboard-grid">
+      <div class="storyboard-panel">
+        <img src="assets/story/mod2_p1_blueprint_1787085443386.jpg" alt="The Blueprint">
+        <div class="storyboard-caption">
+          <strong>1. The Blueprint</strong>
+          Before touching data, we must understand the end goal. What problem are we solving?
+        </div>
+      </div>
+      <div class="storyboard-panel">
+        <img src="assets/story/mod2_p2_delivery_1787085453276.jpg" alt="The Delivery">
+        <div class="storyboard-caption">
+          <strong>2. The Delivery (Pandas)</strong>
+          Raw, messy data arrives at the loading dock. We use Pandas to inspect and wrangle it.
+        </div>
+      </div>
+      <div class="storyboard-panel">
+        <img src="assets/story/mod2_p3_vault_1787085462724.jpg" alt="The Vault">
+        <div class="storyboard-caption">
+          <strong>3. The Vault (Train/Test Split)</strong>
+          We lock away 20% of our data in a vault to test our final model on unseen data. No peeking!
+        </div>
+      </div>
+      <div class="storyboard-panel">
+        <img src="assets/story/mod2_p4_survivor_1787085471241.jpg" alt="The Survivor">
+        <div class="storyboard-caption">
+          <strong>4. The Survivor (Imputation)</strong>
+          Missing values are gaps in our knowledge. We fill them in with educated guesses (mean/median).
+        </div>
+      </div>
+      <div class="storyboard-panel">
+        <img src="assets/story/mod2_p5_chopping_1787085480958.jpg" alt="The Chopping Block">
+        <div class="storyboard-caption">
+          <strong>5. The Chopping Block</strong>
+          Useless columns and rare outliers are chopped away to reduce noise.
+        </div>
+      </div>
+      <div class="storyboard-panel">
+        <img src="assets/story/mod2_p6_scale_1787085491296.jpg" alt="The Scale">
+        <div class="storyboard-caption">
+          <strong>6. The Scale (Normalization)</strong>
+          We shrink massive numbers so they don't overpower the small ones. Everything must be on equal footing.
+        </div>
+      </div>
+      <div class="storyboard-panel">
+        <img src="assets/story/mod2_p7_blender_1787085501812.jpg" alt="The Blender">
+        <div class="storyboard-caption">
+          <strong>7. The Blender (OHE)</strong>
+          Models only understand math. We blend words and categories into 1s and 0s using One-Hot Encoding.
+        </div>
+      </div>
+      <div class="storyboard-panel">
+        <img src="assets/story/mod2_p9_chefs_1787085521189.jpg" alt="The Chef">
+        <div class="storyboard-caption">
+          <strong>8. The Master Chef (Modelling)</strong>
+          The Logistic Regression algorithm learns the patterns from our perfectly prepped data.
+        </div>
+      </div>
+      <div class="storyboard-panel">
+        <img src="assets/story/mod2_p8_critic_1787085510857.jpg" alt="The Critic">
+        <div class="storyboard-caption">
+          <strong>9. The Critic (Evaluation)</strong>
+          We unlock the Test Data from the vault and grade our model's performance using ROC-AUC.
+        </div>
+      </div>
+      <div class="storyboard-panel">
+        <img src="assets/story/mod2_p10_deploy_1787085530300.jpg" alt="The Feast">
+        <div class="storyboard-caption">
+          <strong>10. The Grand Feast (Insight)</strong>
+          We use PCA to visualize the results and deliver actionable insights.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <h2>The 4-Part Journey</h2>
+    <p>This module is broken down into four distinct steps. We will follow a real dataset (The Titanic) from raw, messy data all the way to a finished, evaluated machine learning model.</p>
+
+    <div class="chapter-grid">
+
+      <a class="chapter-card" href="chapter-2-pandas.html" data-num="2.1">
+        <span class="card-num">Step 1</span>
+        <h3>Pandas &amp; EDA</h3>
+        <p>Before doing anything, you must understand your data. We'll learn how to load, inspect, and slice data using Pandas.</p>
+      </a>
+
+      <a class="chapter-card" href="chapter-2-preprocessing.html" data-num="2.2">
+        <span class="card-num">Step 2</span>
+        <h3>Data Preprocessing</h3>
+        <p>Real data is messy. We'll learn how to properly split data, fill missing holes (imputation), convert words to numbers (OHE), and scale it.</p>
+      </a>
+
+      <a class="chapter-card" href="chapter-2-modelling.html" data-num="2.3">
+        <span class="card-num">Step 3</span>
+        <h3>Modelling &amp; Evaluation</h3>
+        <p>With clean data, we will train our very first Logistic Regression model and learn how to grade it like a harsh food critic.</p>
+      </a>
+
+      <a class="chapter-card" href="chapter-2-pca.html" data-num="2.4">
+        <span class="card-num">Step 4</span>
+        <h3>PCA &amp; t-SNE</h3>
+        <p>What happens when data has thousands of columns instead of just a few? We squash it using advanced dimensionality reduction techniques.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <footer class="page-footer">
+    <span>Module 2 Overview</span>
+    <span><a href="chapter-2-pandas.html">Start the journey: 2.1 Pandas &amp; EDA →</a></span>
+  </footer>
+
+</div>
+</div>
+<script src="assets/site.js" defer></script>
+</body>
+</html>
