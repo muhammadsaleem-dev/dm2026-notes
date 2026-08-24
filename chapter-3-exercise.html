@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Module 3 — Classification | DM Bootcamp</title>
+<title>Module 4 — Clustering | DM Bootcamp</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,7 +34,7 @@
       <a href="chapter-4-kmeans.html">4.1 · K-Means</a>
       <a href="chapter-4-choosing-k.html">4.2 · Choosing K</a>
       <a href="chapter-4-limitations.html">4.3 · Limitations</a>
-      <a href="chapter-4-exercise.html">4.4 · Sprint Exercise</a>
+      <a href="chapter-4-exercise.html" class="active">4.4 · Sprint Exercise</a>
       <a href="chapter-4-test.html">4.5 · Test Yourself</a>
       <a href="chapter-4-notes.html">4.6 · Technical Notes</a>
       <a href="chapter-5-overview.html">5 · Regression→NN</a>
@@ -112,10 +112,6 @@
       <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
       <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
     </div>
-    <div class="nav-panel-section">
-            <span class="nav-panel-label">On this page</span>
-      <a href="#exercises"><span class="toc-num">1</span>Sprint Exercise</a>
-    </div>
   </div>
 </nav>
 
@@ -178,180 +174,258 @@
       <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
       <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
     </div>
-    <div class="sidebar-block">
-            <span class="sidebar-label">On this page</span>
-      <a href="#exercises"><span class="toc-num">1</span>Sprint Exercise</a>
-    </div>
   </aside>
 
 <div class="page">
-
-
-    <div class="masthead">
+  <div class="masthead">
     <div>
-      <div class="eyebrow">Data Mining Bootcamp · Module 3</div>
-      <h1 class="title">Sprint Exercise</h1>
+      <div class="eyebrow">Data Mining Bootcamp · Module 3.4</div>
+      <h1 class="title">Sprint Exercise: Cancer Classification</h1>
     </div>
   </div>
-  <p class="dek">Apply your classification skills to a real-world coding exercise.</p>
 
-  <div class="toc-card">
-    <span class="toc-label">On this page</span>
-    <ul class="toc-list">
-      <li><a href="#exercises"><span class="toc-num">1</span>Sprint Exercise</a></li>
-    </ul>
-  </div>
-    <!-- ============ 4 ============ --><!-- ============ 5 ============ -->
-  <section class="chapter" id="exercises">
-    <div class="chapter-head"><span class="chapter-num">1</span><h2>Sprint Exercise: The Full Pipeline</h2></div>
-    
-    <div class="mode-kid">
-      <p class="chapter-dek">Playing cell detective with a Random Forest from start to finish!</p>
+  <div class="mode-kid">
+    <p class="dek" style="font-size:1.2rem; color:var(--text-light); margin-bottom:2rem;">Welcome to the project! Let's build a real-world medical diagnostic engine.</p>
+    <section class="chapter">
       
-      <p>In this exercise, we are predicting a <code>cancer_type</code> by looking at clues inside a cell. But before our Random Forest can make any guesses, we have to clean up a massive mess! Think of the dataset like a messy playroom.</p>
+      <div class="callout" style="background: var(--bg-deep); border-left: 4px solid var(--accent); padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 0 8px 8px 0;">
+        <h3 style="margin-top: 0; color: var(--accent); display: flex; align-items: center; gap: 0.5rem;">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          The Mission
+        </h3>
+        <p>Imagine you just got hired as a Data Scientist at a cancer research hospital. The chief pathologist hands you a massive file containing measurements of cell nuclei (radius, texture, perimeter) for hundreds of patients.</p>
+        <p style="margin-bottom:0;">"We need a machine learning model that can instantly predict if a tissue sample is cancerous or healthy based on these cell sizes," he says. "Can you build this pipeline for us?"</p>
+      </div>
 
-      <div class="callout" style="margin-bottom: 2rem;">
-        <span class="tag">🎯 What this Exercise Covers</span>
-        <ul style="margin-top:0.5rem; padding-left:1.5rem; margin-bottom:0;">
-          <li>✅ End-to-End Data Cleaning</li>
-          <li>✅ Outlier Detection (IQR Method)</li>
-          <li>✅ Random Forest Classification (RDF)</li>
-          <li>❌ <em>Note: This exercise does NOT cover AdaBoost or Decision Trees. It focuses purely on mastering the Random Forest!</em></li>
+      <div class="callout" style="margin-bottom: 2rem; border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;">
+        <span class="tag" style="background: var(--bg-raised); border: 1px solid var(--border); margin-bottom:1rem; display:inline-block;">🎯 What this Exercise Covers</span>
+        <ul style="margin-top:0.5rem; padding-left:1.5rem; margin-bottom:0; line-height: 1.8;">
+          <li>🧹 <strong>Data Cleansing:</strong> Handling Impossible Dates & Negative Sizes</li>
+          <li>✂️ <strong>Data Splitting:</strong> Hiding the Test Set</li>
+          <li>📊 <strong>Outlier Detection:</strong> The IQR Method</li>
+          <li>🌲 <strong>Random Forest:</strong> Configuring the Algorithm</li>
+          <li>🧪 <strong>Evaluation:</strong> Reading a Confusion Matrix</li>
         </ul>
       </div>
 
-      <h3>Step 1: Cleaning the Messy Room (Data Cleaning)</h3>
-      <p>First, we find broken toys and weird items that don't belong:</p>
-      <ul>
-        <li><strong>Wrong formats:</strong> Some numbers were written as words! We convert them back to numbers.</li>
-        <li><strong>Time travel mistakes:</strong> Some cells were "treated" before they were "diagnosed." We fix the ages and throw away those dates because they confuse the detective!</li>
-        <li><strong>Impossible things:</strong> We found negative sizes (you can't have a negative size!). We erase them and mark them as missing (NaN).</li>
-      </ul>
+      <p>Since we have labels ("Cancerous" or "Healthy"), this is a <strong>Classification</strong> problem! Let's walk through exactly how we solve this, step-by-step.</p>
 
-      <h3>Step 2: Splitting the Toys (Train vs Test)</h3>
-      <p>Before we fix everything else, we hide 20% of the toys (the test set) in a closet. The detective is NOT allowed to see them until the very end!</p>
+      <div style="margin-top: 2rem;">
+        <h3 style="color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; display: inline-block;">Step 1: Taking out the Trash</h3>
+        <p>If you look closely at the hospital records, some are totally broken. Some patients were "treated" before they were even "diagnosed" (time travel!). And some cell sizes are "Negative" (you can't have a negative size!). If we feed these into our algorithm, it's going to get very confused! So, our very first step is to erase these impossible numbers.</p>
+      </div>
 
-      <h3>Step 3: Fixing the Weird Toys (Outliers & Missing Data)</h3>
-      <p>Sometimes a cell size is listed as the size of a basketball. That's a mistake! We use a math trick called the <strong>IQR (Interquartile Range)</strong> to spot these crazy mistakes. Then, we fill in all the missing gaps (imputation) so the detective has complete files.</p>
+      <div style="margin-top: 2rem;">
+        <h3 style="color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; display: inline-block;">Step 2: Hiding the Test Set</h3>
+        <p>Before we fix anything else, we must hide 25% of the patient records in a locked closet (our Test Set). The Random Forest is NOT allowed to see them until the very end! If it sees them early, it will just memorize the answers instead of actually learning how to diagnose cancer.</p>
+      </div>
 
-      <h3>Step 4: The Game Plan (Config Dictionary)</h3>
-      <p>Instead of guessing how to fix the toys, we write down our entire game plan <strong>before</strong> we even start. This is our config dictionary!</p>
-      
-      <div class="python-note"><div>
-        <span class="pn-label">Python (Config Dict)</span>
-        <pre style="white-space:pre-wrap;margin:0"><code># Our Game Plan!
+      <div style="margin-top: 2rem;">
+        <h3 style="color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; display: inline-block;">Step 3: Fixing the Weird Cells (Outliers)</h3>
+        <p>Sometimes a cell size is listed as the size of a basketball. That's a typo from the doctors! We use a math trick called the <strong>IQR (Interquartile Range)</strong> to spot these crazy mistakes and delete them.</p>
+        <img src="assets/mod3_plot_2.png?v=2" alt="Boxplots showing outliers for cell features" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; border: 1px solid var(--border); background: white;">
+        <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;"><em><strong>How to read this:</strong> Boxplots spot mistakes! The colored box is the "normal" cells. Any black dot floating way above the box is an impossible typo we need to delete.</em></p>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h3 style="color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; display: inline-block;">Step 4: The Game Plan</h3>
+        <p>Instead of guessing how to fix the missing data, we write down our entire game plan <strong>before</strong> we even start. We decide to use a <code>StandardScaler</code> (a shrink ray that makes all cell sizes fair) and we configure our Random Forest.</p>
+      </div>
+
+      <div style="margin-top: 2rem; background: rgba(147, 51, 234, 0.05); padding: 1.5rem; border-radius: 8px; border: 1px dashed rgba(147, 51, 234, 0.3);">
+        <h3 style="color: var(--accent); margin-top:0;">Step 5: The Final Exam</h3>
+        <p>We train our Random Forest, and then we unlock the closet and force it to diagnose the hidden patients. We grade it using a <strong>Confusion Matrix</strong>.</p>
+        <img src="assets/mod3_plot_4.png?v=2" alt="Confusion Matrix" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; border: 1px solid var(--border); background: white;">
+        <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;"><em><strong>How to read this:</strong> This is a scorecard! The bright yellow square (Top-Left) means our algorithm correctly guessed a healthy patient. The teal square (Bottom-Right) means it correctly caught the cancer!</em></p>
+      </div>
+
+    </section>
+  </div>
+
+  <div class="mode-tech">
+    <div class="callout teacher-note">
+      <span class="tag">🎓 Technical Tutorial: Cancer Classification Pipeline</span>
+      <p>Welcome to the technical walkthrough. Today we are building an end-to-end supervised learning pipeline using clinical data. Our goal is to transform raw, unstructured measurements into an accurate Random Forest classifier.</p>
+
+      <h3>1. Global Configuration</h3>
+      <p>A good pipeline is driven by a configuration dictionary, allowing us to easily swap out strategies without rewriting core logic.</p>
+      <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python"># Configuration dictionary to track preprocessing and modeling choices
 config = {
-    'missing_value_strategy': 'median',
-    'scaling_method': 'standard',
-    # We hire 1000 kids for our forest, and tell them to only ask 6 questions max!
-    'RDF': {'n_estimators': 1000, 'max_depth': 6, 'class_weight': 'balanced'} 
-}</code></pre>
-      </div></div>
+    "missing_value_strategy": "replace_by_mean_cancer_type",
+    "scaling_method": "StandardScaler",
+    "RDF": {"n_estimators": 1000,
+            "max_depth": 6,
+            "min_samples_split": 2,
+            "min_samples_leaf": 2,
+            "max_features": 0.7,
+            "class_weight": 'balanced'}
+}
 
-      <h3>Step 5: The Final Refit (Exam Trap!)</h3>
-      <p>After we test our detective and give them a final grade (using a Confusion Matrix), we let them look at ALL the toys (train + test) one last time to make them as smart as possible for the real world! But remember: once they look at the test toys, they've seen the answers. You can never test them again!</p>
+# Set global random seed for reproducibility
+import numpy as np
+RANDOM_STATE = 42
+np.random.seed(RANDOM_STATE)
+</code></pre>
+      </div>
 
+      <h3>2. Data Cleansing: Garbage In, Garbage Out</h3>
+      <p>If you feed raw measurements into an algorithm, you will predict noise. Here is how we clean it up:</p>
+      <ul>
+        <li><strong>Wrong formats:</strong> We force string representations into numeric values using <code>pd.to_numeric(errors='coerce')</code>.</li>
+        <li><strong>Logical impossibilities:</strong> A treatment date cannot precede a diagnose date. We calculate the difference, fix the ages, and drop the dates.</li>
+        <li><strong>Negative Numbers:</strong> Measurements like <code>texture_0</code> cannot be negative. We replace them with <code>np.nan</code>.</li>
+      </ul>
+      <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python">import pandas as pd
 
+data = pd.read_csv('./data.csv', header='infer')
 
-    </div>
-
-
-    <div class="mode-tech">
-      <div class="callout teacher-note">
-        <span class="tag">🎓 Technical Notes: Exercise 6 Pipeline</span>
-        <p>Instead of just describing the steps, here is the concrete Python code from the solution notebook to execute the end-to-end classification pipeline.</p>
-        
-        <div class="callout" style="margin-bottom: 2rem;">
-          <span class="tag">🎯 Covered Topics</span>
-          <p style="margin-top:0.5rem; margin-bottom:0;">This sprint exercise focuses <strong>exclusively</strong> on building a production-ready pipeline using a <strong>Random Forest Classifier (RDF)</strong>. While Module 3 covers other ensemble methods (like AdaBoost), this exercise is designed solely to test your RDF implementation, Outlier Detection (IQR), and Data Leakage prevention skills.</p>
-        </div>
-        
-        <h3>1. Data Cleaning (Pandas)</h3>
-        <p>Real-world datasets contain formatting errors and impossible values that must be corrected before modeling.</p>
-        <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
-<pre><code class="language-python"># Convert strings to numeric, forcing unparseable text to NaN
+# Force to numeric
 data['texture_2'] = pd.to_numeric(data['texture_2'], errors='coerce')
 
-# Parse dates and calculate age mathematically
+# Fix impossible dates
 data['diagnose_date'] = pd.to_datetime(data.diagnose_date)
 data['treatment_date'] = pd.to_datetime(data.treatment_date)
+mask = data['treatment_date'] > data['diagnose_date']
+year_diff = data.loc[mask, 'treatment_date'].dt.year - data.loc[mask, 'diagnose_date'].dt.year
+data.loc[mask, 'age'] -= year_diff
+data.drop(['treatment_date', 'diagnose_date'], axis=1, inplace=True)
 
 # Replace physically impossible negative values with NaN
 data.loc[data.texture_0 < 0, 'texture_0'] = np.nan
+data.loc[data.texture_2 < 0, 'texture_2'] = np.nan
+</code></pre>
+      </div>
 
-# Drop columns irrelevant to the target classification
-data.drop(['treatment_date', 'diagnose_date'], axis=1, inplace=True)</code></pre>
-        </div>
-
-        <h3>2. Train/Test Split</h3>
-        <p>Split the data <em>before</em> applying imputation or scaling to strictly prevent <strong>data leakage</strong>.</p>
-        <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+      <h3>3. Train/Test Split</h3>
+      <p>Here is where most junior data scientists fail: <strong>You MUST split your data before applying Imputation or Scaling!</strong> If you scale the entire dataset before splitting, information from the test set "leaks" into the scaler's mean/variance calculations, ruining the integrity of your evaluation.</p>
+      <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
 <pre><code class="language-python">from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)</code></pre>
-        </div>
 
-        <h3>3. Outlier Detection & Imputation</h3>
-        <p>Use the Interquartile Range (IQR) to detect and nullify outliers, then impute all missing values.</p>
-        <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
-<pre><code class="language-python"># 1. IQR Outlier Detection
+features_list = ['radius_0', 'texture_0', 'perimeter_0', 'radius_1', 'texture_1',
+                 'perimeter_1', 'radius_2', 'texture_2', 'perimeter_2', 'age']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    data[features_list], 
+    data['cancer_type'],
+    test_size=0.25, 
+    random_state=RANDOM_STATE
+)
+</code></pre>
+      </div>
+
+      <h3>4. Outlier Detection (IQR Method)</h3>
+      <p>We use the <strong>IQR (Interquartile Range) method</strong> to detect outliers, and replace them with NaN so our Imputer can handle them later.</p>
+      
+      <div style="margin: 2.5rem 0; padding: 1.5rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px;">
+        <p style="margin-top: 0; color: var(--text-light); font-size: 0.9rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; text-align:center;">Visual Output: Outlier Detection</p>
+        <img src="assets/mod3_plot_2.png?v=2" alt="Boxplots showing outliers for features" style="max-width: 100%; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem; background: white;">
+        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-left: 3px solid #3b82f6; font-size: 0.95rem;">
+          <strong>How to read this:</strong> The boxplots reveal massive outliers in features like <code>perimeter_0</code> and <code>perimeter_2</code>. Any dots floating above the whiskers are considered statistically anomalous and will be removed.
+        </div>
+      </div>
+
+      <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python"># Define the threshold for outlier detection
+k = 1.5
+
+# Compute Q1, Q3, and IQR using ONLY THE TRAINING DATA!
 Q1 = X_train.quantile(0.25)
 Q3 = X_train.quantile(0.75)
 IQR = Q3 - Q1
-k = 1.5 
-lower_bound = Q1 - k * IQR
-upper_bound = Q3 + k * IQR
 
-# 2. Imputation and Scaling
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler
+# Create a mask identifying outliers
+outlier_mask_train = (X_train < (Q1 - k * IQR)) | (X_train > (Q3 + k * IQR))
+outlier_mask_test = (X_test < (Q1 - k * IQR)) | (X_test > (Q3 + k * IQR))
 
-imputer = SimpleImputer(strategy='median')
-scaler = StandardScaler()
-
-X_train_clean = scaler.fit_transform(imputer.fit_transform(X_train))
-X_test_clean = scaler.transform(imputer.transform(X_test)) # Note: transform ONLY
+# Replace outliers with NaN
+X_train = X_train.where(~outlier_mask_train, np.nan)
+X_test = X_test.where(~outlier_mask_test, np.nan)
 </code></pre>
-        </div>
+      </div>
 
-        <h3>4. Modeling & Evaluation</h3>
-        <p>Use the predefined config dictionary to instantiate and evaluate the Random Forest.</p>
-        <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+      <h3>5. Imputation & Scaling</h3>
+      <p>We dynamically execute the strategies we defined in our <code>config</code> dictionary.</p>
+      <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python">from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler, RobustScaler, Normalizer, MinMaxScaler
+
+# 1. IMPUTATION
+if config['missing_value_strategy'] == 'replace_by_mean_cancer_type':
+    imp = SimpleImputer(missing_values=np.nan, strategy='mean')
+imp.fit(X_train)  # Fit on training data ONLY
+X_train = imp.transform(X_train)
+X_test = imp.transform(X_test)
+
+# 2. SCALING
+if config['scaling_method'] == 'StandardScaler':
+    scaler = StandardScaler()
+scaler.fit(X_train)  # Fit on training data ONLY
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
+
+X_train = pd.DataFrame(X_train, columns=features_list)
+X_test = pd.DataFrame(X_test, columns=features_list)
+</code></pre>
+      </div>
+
+      <h3>6. Random Forest Classification</h3>
+      <p>We initialize the model using our config, fit it to our clean training data, and generate predictions on the test data.</p>
+      <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
 <pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
 
-clf = RandomForestClassifier(**config['RDF'])
-clf.fit(X_train_clean, y_train)
-y_pred = clf.predict(X_test_clean)
+clf = RandomForestClassifier(
+    n_estimators=config["RDF"]["n_estimators"], 
+    max_depth=config["RDF"]["max_depth"],
+    min_samples_split=config["RDF"]["min_samples_split"],
+    min_samples_leaf=config["RDF"]["min_samples_leaf"],
+    max_features=config["RDF"]["max_features"],
+    class_weight=config["RDF"]["class_weight"],
+    random_state=RANDOM_STATE
+)
 
-print(classification_report(y_test, y_pred))
-# Visualizing False Positives vs False Negatives
-ConfusionMatrixDisplay(confusion_matrix(y_test, y_pred)).plot()
+clf.fit(X_train, y_train)
+y_predict = clf.predict(X_test)
+
+# Print metrics
+print(classification_report(y_test, y_predict, target_names=['healthy','cancer']))
+
+# Plot Confusion Matrix
+cm = confusion_matrix(y_test, y_predict)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=clf.classes_)
+disp.plot()
+plt.show()
 </code></pre>
+      </div>
+
+      <div style="margin: 2.5rem 0; padding: 1.5rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px;">
+        <p style="margin-top: 0; color: var(--text-light); font-size: 0.9rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; text-align:center;">Visual Output: Confusion Matrix</p>
+        <img src="assets/mod3_plot_4.png?v=2" alt="Confusion Matrix for Random Forest" style="max-width: 100%; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem; background: white;">
+        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-left: 3px solid #3b82f6; font-size: 0.95rem;">
+          <strong>How to read this:</strong> A Confusion Matrix visualizes True Positives, True Negatives, False Positives, and False Negatives. <br><br>
+          • <strong>Top-Left:</strong> Healthy patients correctly identified as healthy.<br>
+          • <strong>Bottom-Right:</strong> Cancerous patients correctly identified as cancerous.
         </div>
+      </div>
 
-        <h3>5. Productionizing (The Final Refit)</h3>
-        <p>To maximize predictive power before deployment, combine the datasets to train on 100% of available data.</p>
-        <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
-<pre><code class="language-python">import pandas as pd
-
-# Combine train and test data back together
+      <h3>7. Productionizing (The Final Refit)</h3>
+      <p>To maximize predictive power before deployment, combine the datasets to train on 100% of available data.</p>
+      <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python"># Combine train and test data back together
 X_all = pd.concat([X_train, X_test], axis=0).reset_index(drop=True)
 Y_all = pd.concat([y_train, y_test], axis=0).reset_index(drop=True)
 
 # Retrain the model on everything
 clf.fit(X_all, Y_all)
-# Rule: The model can NEVER be evaluated against X_test again!
 </code></pre>
-        </div>
-
-
-
-
       </div>
-    </div>
 
-  </section>
-                  <footer class="page-footer">
+    </div>
+  </div>
+<footer class="page-footer">
     <span><a href="chapter-3-explainability.html">← Previous: 3.3 Explainability</a></span>
     <span><a href="chapter-3-test.html">Next: 3.5 Test Yourself →</a></span>
   </footer>
