@@ -188,8 +188,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .sitenav-links a:hover { background: var(--code-bg); color: var(--text); }
 .sitenav-links a.active { background: var(--accent-soft); color: var(--accent-ink); }
 
+
 /* theme toggle */
-.theme-toggle {
+.theme-toggle, .mode-toggle {
   position: relative;
   flex-shrink: 0;
   display: inline-flex;
@@ -197,14 +198,24 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
   justify-content: center;
   width: 1.9rem;
   height: 1.9rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--bg-raised);
+  border-radius: 6px;
+  background: transparent;
   color: var(--text-muted);
+  border: 1px solid var(--border);
   cursor: pointer;
-  transition: color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: all 0.2s ease;
 }
-.theme-toggle:hover { color: var(--text); border-color: var(--border-strong); box-shadow: var(--shadow-sm); }
+.theme-toggle:hover, .mode-toggle:hover {
+  background: var(--code-bg);
+  color: var(--text);
+  border-color: var(--accent-subtle);
+}
+
+/* Mode toggling */
+html[data-mode="tech"] .mode-kid { display: none !important; }
+html[data-mode="kid"] .mode-tech { display: none !important; }
+
+
 .theme-toggle svg {
   position: absolute;
   top: 50%;
@@ -1591,4 +1602,32 @@ footer.page-footer a:hover { color: var(--accent-ink); }
 .callout.exam-trap p {
   grid-column: auto;
   margin-bottom: 0.75rem;
+}
+
+
+/* Toast Notification */
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: var(--accent-ink, #007aff);
+  color: #fff;
+  text-align: center;
+  border-radius: 20px;
+  padding: 12px 20px;
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  opacity: 0;
+  transition: opacity 0.3s, bottom 0.3s;
+  pointer-events: none;
+}
+#toast.show {
+  visibility: visible;
+  opacity: 1;
+  bottom: 40px;
 }

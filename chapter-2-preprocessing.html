@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css">
-<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/style.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'kid';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
 </head>
 <body>
 
@@ -24,7 +24,13 @@
       <a href="chapter-2-preprocessing.html" class="active">2.2 · Preprocessing</a>
       <a href="chapter-2-modelling.html">2.3 · Modelling</a>
       <a href="chapter-2-pca.html">2.4 · PCA</a>
-      <a href="chapter-3-classification.html">3 · Classification</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+      <a href="chapter-3-ensembles.html">3.2 · Ensembles</a>
+      <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+      <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+      <a href="chapter-3-test.html">3.5 · Test Yourself</a>
+      <a href="chapter-3-notes.html">3.6 · Technical Notes</a>
       <a href="chapter-4-clustering.html">4 · Clustering</a>
       <a href="chapter-5-overview.html">5 · Regression→NN</a>
       <a href="chapter-5-regression.html">5.1 · Regression</a>
@@ -41,6 +47,7 @@
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
       <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
     </button>
+    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
   </div>
   <div class="nav-panel" id="navPanel">
     <div class="nav-panel-section">
@@ -58,7 +65,20 @@
           <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
         </div>
       </details>
-      <a href="chapter-3-classification.html">3 · Classification</a>
+      <details class="nav-details" id="mod3-details">
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
       <details class="nav-details" id="mod5-details">
         <summary class="nav-summary">
@@ -103,7 +123,20 @@
           <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
         </div>
       </details>
-      <a href="chapter-3-classification.html">3 · Classification</a>
+      <details class="nav-details" id="mod3-details">
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
       <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
       <details class="nav-details" id="mod5-details">
         <summary class="nav-summary">
@@ -356,13 +389,13 @@ X_test_minmax = minmax.transform(X_test[['Age', 'Fare']])
     </div>
   </section>
 
-  <footer class="page-footer">
-    <span>Module 2.2 — Data Preprocessing</span>
-    <span><a href="chapter-2-modelling.html">Next: Modelling & Evaluation →</a></span>
+        <footer class="page-footer">
+    <span><a href="chapter-2-pandas.html">← Previous: 2.1 Pandas & EDA</a></span>
+    <span><a href="chapter-2-modelling.html">Next: 2.3 Modelling →</a></span>
   </footer>
 
 </div>
 </div>
-<script src="assets/site.js" defer></script>
+<script src="assets/site.js?v=4" defer></script>
 </body>
 </html>

@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3 — Classification | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'kid';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-overview.html" class="active">3 · Classification</a>
+      <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+      <a href="chapter-3-ensembles.html">3.2 · Ensembles</a>
+      <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+      <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+      <a href="chapter-3-test.html">3.5 · Test Yourself</a>
+      <a href="chapter-3-notes.html">3.6 · Technical Notes</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-5-regression.html">5.1 · Regression</a>
+      <a href="chapter-5-neural-networks.html">5.2 · Neural Networks</a>
+      <a href="chapter-5-training.html">5.3 · Training</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html" class="active">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">On this page</span>
+      <a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html" class="active">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">On this page</span>
+      <a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a>
+    </div>
+  </aside>
+
+<div class="page">
+
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 3</div>
+      <h1 class="title">Classification</h1>
+    </div>
+    <div class="masthead-meta">Zero to hero, from here<br><strong>Decision trees → Random Forest → AdaBoost → XAI/Causal intro</strong></div>
+  </div>
+  <p class="dek">Decision Trees, Random Forests, and AdaBoost, with entropy computed by hand — framed by an early look at explainability and causality that Module 7 develops fully.</p>
+  <!-- Module Abstract -->
+  <div class="callout teacher-note" style="margin-top: 1.5rem; margin-bottom: 2rem;">
+    <div class="mode-kid">
+    <span class="tag">📝 Module Abstract</span>
+    <p>This module provides a comprehensive overview of <strong>supervised learning</strong>, specifically focusing on <strong>classification analysis</strong> through techniques like <strong>decision trees</strong> and <strong>random forests</strong>. It explores the fundamental mechanics of building a model, such as selecting attributes with high <strong>information gain</strong> and using <strong>regularization</strong> or <strong>pruning</strong> to address the <strong>generalization dilemma</strong> of overfitting versus underfitting. The material further distinguishes between <strong>ensemble methods</strong> like <strong>adaptive boosting</strong> and random forests, comparing their robustness to noise and their computational complexity. Beyond technical execution, the source emphasizes the importance of <strong>Explainable AI (XAI)</strong> and <strong>Causal AI</strong>, highlighting the need for transparency and cause-and-effect understanding in high-stakes fields like healthcare. Finally, it offers practical <strong>Python implementation</strong> guidance and discusses the trade-offs between model <strong>accuracy</strong> and <strong>interpretability</strong>.</p>
+  </div>
+
+  <div class="outcomes-box">
+    <span class="outcomes-label">By the end of this module, you'll be able to</span>
+    <ul>
+      <li>Compute entropy and information gain by hand, and explain why a tree picks one attribute to split on over another</li>
+      <li>Diagnose overfitting vs. underfitting in a tree, and explain what pruning actually removes</li>
+      <li>Explain why Random Forest injects randomness on purpose (bagging + random subspace), and how majority voting produces a confidence score</li>
+      <li>Walk through one full round of AdaBoost's reweighting math by hand, and contrast it with Random Forest's parallel voting</li>
+      <li>Tell glass-box from black-box models, and explain why a feature mattering to a model isn't the same as it causing the outcome</li>
+    </ul>
+  </div>
+
+    <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a></li>
+    </ul>
+  </div>
+
+<!-- EMBEDDED COMIC READER -->
+<style>
+  /* Custom Comic Reader Layout */
+  .comic-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2.75rem 1.75rem 4rem;
+  }
+  .comic-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1.5rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .comic-btn {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-body);
+  }
+  .comic-btn:hover:not(:disabled) {
+    background: var(--accent);
+    color: white;
+  }
+  .comic-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--bg);
+    color: var(--text-muted);
+    border-color: var(--border);
+  }
+  .slide-dropdown {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 1.8rem 0.4rem 0.8rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B6670' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.4rem center;
+    background-size: 1em;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+  }
+  .slide-dropdown:hover:not(:disabled), .slide-dropdown:focus {
+    border-color: var(--accent);
+    outline: none;
+  }
+  .slide-dropdown:disabled {
+    opacity: 0.8;
+    cursor: default;
+    background-image: none;
+    padding-right: 0.8rem;
+  }
+  .carousel-container {
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+  }
+  .carousel-slides {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+  }
+  .carousel-slide {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .carousel-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (max-width: 650px) {
+    .comic-nav {
+      flex-direction: column;
+      gap: 0.8rem;
+      padding: 1rem;
+    }
+    .comic-btn, .slide-dropdown {
+      width: 100%;
+      text-align: center;
+    }
+    .slide-dropdown {
+      background-position: calc(100% - 0.8rem) center;
+    }
+  }
+</style>
+
+<div id="visual-recap" style="scroll-margin-top: 4.5rem;">
+  <div class="comic-nav">
+    <button class="comic-btn" id="prevBtn" onclick="moveSlide(-1)" disabled>« Previous</button>
+    <select class="slide-dropdown" id="slideSelect" onchange="goToSlide(this.value)">
+      <option value="0">1. The Sorting Task (Classification)</option>
+      <option value="1">2. The Single Sorter (Decision Tree)</option>
+      <option value="2">3. Entropy & Information Gain</option>
+      <option value="3">4. Overfitting & Pruning</option>
+      <option value="4">5. The Sorting Team (Random Forest)</option>
+      <option value="5">6. Bagging & Random Subspace</option>
+      <option value="6">7. Majority Voting</option>
+      <option value="7">8. Reweighting (AdaBoost)</option>
+      <option value="8">9. Glass Box vs Black Box</option>
+      <option value="9">10. The Inspector (Explainable AI)</option>
+      <option value="10">11. Root Cause (Causal AI)</option>
+    </select>
+    <button class="comic-btn" id="nextBtn" onclick="moveSlide(1)">Next »</button>
+  </div>
+  
+  <div class="carousel-container">
+    <div class="carousel-slides" id="slidesContainer">
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p1_mailroom_1786766659743.jpg" alt="1. The Sorting Task">
+              </div>
+              <div class="slide-caption">
+                  <h3>1. The Sorting Task</h3>
+                  <span class="concept-badge">Classification / Supervised Learning</span>
+                  <p>A messy pile of packages arrives at the post office. We need a system to correctly route each package to Standard, Fragile, or Priority.</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p2_decisiontree_1786766669531.jpg" alt="2. The Single Sorter">
+              </div>
+              <div class="slide-caption">
+                  <h3>2. The Single Sorter</h3>
+                  <span class="concept-badge">Decision Tree</span>
+                  <p>A single worker routes packages using a simple checklist: "Is it heavy? If yes, is it fragile?" This is interpretable and easy to follow.</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p3_entropy_1786766677320.jpg" alt="3. Entropy & Information Gain">
+              </div>
+              <div class="slide-caption">
+                  <h3>3. Entropy & Information Gain</h3>
+                  <span class="concept-badge">Splitting Criterion</span>
+                  <p>The worker asks the most informative question first to reduce chaos (Entropy). Splitting "Local vs International" organizes the pile much faster than asking "Is the box blue?"</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p4_overfitting_1786766696285.jpg" alt="4. Overfitting & Pruning">
+              </div>
+              <div class="slide-caption">
+                  <h3>4. Overfitting & Pruning</h3>
+                  <span class="concept-badge">Regularization</span>
+                  <p>The worker gets obsessed with tiny smudges and memorizes every single package instead of learning general rules. Pruning stops this overcomplication!</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p5_randomforest_1786766703753.jpg" alt="5. The Sorting Team">
+              </div>
+              <div class="slide-caption">
+                  <h3>5. The Sorting Team</h3>
+                  <span class="concept-badge">Random Forest</span>
+                  <p>A single worker makes mistakes, so we hire a whole team! By combining multiple workers (an ensemble), we get much better overall accuracy.</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p6_subspace_1786766711940.jpg" alt="6. Bagging & Random Subspace">
+              </div>
+              <div class="slide-caption">
+                  <h3>6. Bagging & Random Subspace</h3>
+                  <span class="concept-badge">Ensemble Diversity</span>
+                  <p>To keep workers diverse, each gets a random subset of packages (Bagging) and is only allowed to look at certain features like weight or size (Random Subspace).</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p7_voting_1786766730873.jpg" alt="7. Majority Voting">
+              </div>
+              <div class="slide-caption">
+                  <h3>7. Majority Voting</h3>
+                  <span class="concept-badge">Inference Time</span>
+                  <p>When a new package arrives, every worker independently decides where it should go. The final decision is made by a majority vote!</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p8_adaboost_1786766740463.jpg" alt="8. Reweighting">
+              </div>
+              <div class="slide-caption">
+                  <h3>8. Reweighting</h3>
+                  <span class="concept-badge">AdaBoost</span>
+                  <p>Instead of working independently, workers form a line. If the first worker misclassifies a package, it gets a massive URGENT sticker (reweighting) so the next worker focuses extra hard on it.</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p9_glassbox_1786766746972.jpg" alt="9. Glass Box vs Black Box">
+              </div>
+              <div class="slide-caption">
+                  <h3>9. Glass Box vs Black Box</h3>
+                  <span class="concept-badge">Interpretability Dilemma</span>
+                  <p>A single worker (Decision Tree) is a transparent 'Glass Box'. The entire voting team (Random Forest) is highly accurate but a mysterious 'Black Box'.</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p10_xai_1786766766820.jpg" alt="10. The Inspector">
+              </div>
+              <div class="slide-caption">
+                  <h3>10. The Inspector</h3>
+                  <span class="concept-badge">Explainable AI (XAI)</span>
+                  <p>Since we can't easily see how the whole team votes, we hire an Inspector (XAI) to calculate which features—like 'weight'—had the biggest impact on the final decision.</p>
+              </div>
+          </div>
+      </div>
+      <div class="carousel-slide">
+          <div class="slide-layout">
+              <div class="slide-image-wrapper">
+                  <img src="assets/story/mod3_p11_causal_1786766773982.jpg" alt="11. Root Cause">
+              </div>
+              <div class="slide-caption">
+                  <h3>11. Root Cause</h3>
+                  <span class="concept-badge">Causal AI</span>
+                  <p>The manager steps in to find the root cause of delays. Instead of just finding correlations, Causal AI proves that 'Heavy Weight' actively causes 'Machine Jams', allowing us to intervene.</p>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="comic-nav">
+    <button class="comic-btn" id="prevBtn2" onclick="moveSlide(-1)" disabled>« Previous</button>
+    <select class="slide-dropdown" id="slideSelect2" onchange="goToSlide(this.value)">
+      <option value="0">1. The Sorting Task (Classification)</option>
+      <option value="1">2. The Single Sorter (Decision Tree)</option>
+      <option value="2">3. Entropy & Information Gain</option>
+      <option value="3">4. Overfitting & Pruning</option>
+      <option value="4">5. The Sorting Team (Random Forest)</option>
+      <option value="5">6. Bagging & Random Subspace</option>
+      <option value="6">7. Majority Voting</option>
+      <option value="7">8. Reweighting (AdaBoost)</option>
+      <option value="8">9. Glass Box vs Black Box</option>
+      <option value="9">10. The Inspector (Explainable AI)</option>
+      <option value="10">11. Root Cause (Causal AI)</option>
+    </select>
+    <button class="comic-btn" id="nextBtn2" onclick="moveSlide(1)">Read Chapter ↓</button>
+  </div>
+  
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 11;
+    const slidesContainer = document.getElementById('slidesContainer');
+    const selects = [document.getElementById('slideSelect'), document.getElementById('slideSelect2')];
+    const prevBtns = [document.getElementById('prevBtn'), document.getElementById('prevBtn2')];
+    const nextBtns = [document.getElementById('nextBtn'), document.getElementById('nextBtn2')];
+
+    function updateNav() {
+      selects.forEach(s => s.value = currentSlide);
+      prevBtns.forEach(b => b.disabled = currentSlide === 0);
+      nextBtns.forEach(b => b.innerHTML = currentSlide === totalSlides - 1 ? 'Read Chapter ↓' : 'Next »');
+      slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function moveSlide(dir) {
+      if (currentSlide + dir >= 0 && currentSlide + dir < totalSlides) {
+        currentSlide += dir;
+        updateNav();
+      } else if (currentSlide + dir >= totalSlides) {
+        document.getElementById('decision-trees').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function goToSlide(index) {
+      currentSlide = parseInt(index);
+      updateNav();
+    }
+  </script>
+</div>
+
+  <style>
+  .carousel-slide { padding: 1rem; box-sizing: border-box; background: var(--bg); }
+  .slide-layout { display: flex; flex-direction: column; background: var(--bg-raised); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); height: 100%; border: 1px solid var(--border); }
+  .slide-image-wrapper { width: 100%; aspect-ratio: 1/1; background: var(--bg-deep); display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .slide-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+  .slide-caption { padding: 1.5rem; text-align: left; }
+  .slide-caption h3 { margin: 0 0 0.5rem 0; color: var(--accent); font-size: 1.3rem; font-family: var(--font-head); }
+  .concept-badge { display: inline-block; background: rgba(147, 51, 234, 0.1); color: var(--accent); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; font-family: var(--font-mono); margin-bottom: 1rem; border: 1px solid rgba(147, 51, 234, 0.2); text-transform: uppercase; letter-spacing: 0.05em; }
+  .slide-caption p { margin: 0; line-height: 1.6; color: var(--text); font-size: 1.05rem; }
+  
+  @media (min-width: 768px) {
+    .slide-layout { flex-direction: row; align-items: stretch; height: 500px; }
+    .slide-image-wrapper { width: 500px; min-width: 500px; aspect-ratio: auto; border-bottom: none; border-right: 1px solid var(--border); }
+    .slide-caption { flex: 1; padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+    .slide-caption h3 { font-size: 1.8rem; margin-bottom: 1rem; }
+    .slide-caption p { font-size: 1.15rem; }
+    .concept-badge { align-self: flex-start; margin-bottom: 1.5rem; }
+  }
+  </style>
+
+<!-- END COMIC READER -->
+
+
+
+    
+
+      <!-- Introduction to Classification -->
+  <section class="chapter" style="margin-top: 3rem;">
+    <h2>What is Classification?</h2>
+    <p>Imagine you have a giant bucket of mixed-up Halloween candy. Your job is to sort them into different piles: 'Chocolate', 'Gummy', and 'Hard Candy'. That's exactly what <strong>Classification</strong> is! It's when we teach a computer to look at clues (like color, shape, or squishiness) and sort things into the right buckets (called <strong>labels</strong> or <strong>classes</strong>).</p>
+    
+    <h3>The Two Main Types</h3>
+    <p>There are two main ways to play the sorting game:</p>
+    <ul>
+      <li><strong>Binary Classification:</strong> "Binary" means TWO. It's like a simple "Yes" or "No" question. Is this email Spam or Not Spam? Is this patient Sick or Healthy? You only have exactly two buckets to choose from!</li>
+      <li><strong>Multiclass Classification:</strong> This is when you have MORE than two buckets. Like sorting pictures of animals into 'Dog', 'Cat', 'Bird', or 'Fish'. The computer has to choose exactly one bucket out of many choices.</li>
+    </ul>
+
+    <h3>Why and How?</h3>
+    <p><strong>Why do we use it?</strong> Because it solves massive real-world mysteries! Classification helps doctors figure out what medicine to give a sick patient, it helps banks know if someone is trying to steal a credit card, and it helps your phone recognize your face to unlock it.</p>
+    
+    <p><strong>How do we do it?</strong> We use smart math recipes called <strong>Algorithms</strong>. In this module, we will learn three amazing ones:</p>
+    <ol>
+      <li><strong>Decision Trees:</strong> Like playing a smart game of '20 Questions' to guess the answer.</li>
+      <li><strong>Random Forests:</strong> Asking a whole classroom of kids to play '20 Questions' at the same time, and letting the majority win.</li>
+      <li><strong>AdaBoost:</strong> A relay race where each kid tries to fix the mistakes made by the kid before them!</li>
+    </ol>
+  </section>
+
+<section class="chapter">
+    <h2>The 5-Part Journey</h2>
+    <p>This module breaks down the world of Classification into five distinct steps.</p>
+
+    <div class="chapter-grid">
+      <a class="chapter-card" href="chapter-3-decision-trees.html" data-num="3.1">
+        <span class="card-num">Step 1</span>
+        <h3>Decision Trees</h3>
+        <p>The foundation of classification. Learn how trees use Information Gain to sort data.</p>
+      </a>
+
+      <a class="chapter-card" href="chapter-3-ensembles.html" data-num="3.2">
+        <span class="card-num">Step 2</span>
+        <h3>Ensembles</h3>
+        <p>Combine multiple decision trees into Random Forests and AdaBoost models.</p>
+      </a>
+
+      <a class="chapter-card" href="chapter-3-explainability.html" data-num="3.3">
+        <span class="card-num">Step 3</span>
+        <h3>Explainability &amp; Exercises</h3>
+        <p>Learn to explain black-box models using SHAP, and apply everything in a Sprint Exercise.</p>
+      </a>
+      
+      <a class="chapter-card" href="chapter-3-exercise.html" data-num="3.4">
+        <span class="card-num">Step 4</span>
+        <h3>Sprint Exercise</h3>
+        <p>Apply your classification skills to a real-world coding exercise.</p>
+      </a>
+
+      <a class="chapter-card" href="chapter-3-test.html" data-num="3.5">
+        <span class="card-num">Step 5</span>
+        <h3>Test Yourself</h3>
+        <p>Put your knowledge to the test with real exam drills and practice questions.</p>
+      </a>
+    </div>
+  </section>
+
+          <footer class="page-footer">
+    <span><a href="chapter-2-pca.html">← Previous: 2.4 PCA</a></span>
+    <span><a href="chapter-3-decision-trees.html">Next: 3.1 Decision Trees →</a></span>
+  </footer>
+</div>
+</div>
+<script src="assets/site.js?v=4" defer></script>
+</body>
+</html>

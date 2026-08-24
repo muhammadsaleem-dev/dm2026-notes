@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3 — Classification | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'kid';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+      <a href="chapter-3-ensembles.html">3.2 · Ensembles</a>
+      <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+      <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+      <a href="chapter-3-test.html">3.5 · Test Yourself</a>
+      <a href="chapter-3-notes.html" class="active">3.6 · Technical Notes</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-5-regression.html">5.1 · Regression</a>
+      <a href="chapter-5-neural-networks.html">5.2 · Neural Networks</a>
+      <a href="chapter-5-training.html">5.3 · Training</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html" class="active">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="nav-panel-section">
+                  <span class="nav-panel-label">On this page</span>
+      <a href="#supervised"><span class="toc-num">1</span>Supervised Learning</a>
+      <a href="#decision-trees"><span class="toc-num">2</span>Decision Trees</a>
+      <a href="#attribute-selection"><span class="toc-num">3</span>Attribute Selection</a>
+      <a href="#generalization"><span class="toc-num">4</span>Generalization</a>
+      <a href="#regularization"><span class="toc-num">5</span>Regularization</a>
+      <a href="#ensembles"><span class="toc-num">6</span>Ensembles</a>
+      <a href="#xai"><span class="toc-num">7</span>Explainable AI</a>
+      <a href="#implementation"><span class="toc-num">8</span>Implementation</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html" class="active">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="sidebar-block">
+                  <span class="sidebar-label">On this page</span>
+      <a href="#supervised"><span class="toc-num">1</span>Supervised Learning</a>
+      <a href="#decision-trees"><span class="toc-num">2</span>Decision Trees</a>
+      <a href="#attribute-selection"><span class="toc-num">3</span>Attribute Selection</a>
+      <a href="#generalization"><span class="toc-num">4</span>Generalization</a>
+      <a href="#regularization"><span class="toc-num">5</span>Regularization</a>
+      <a href="#ensembles"><span class="toc-num">6</span>Ensembles</a>
+      <a href="#xai"><span class="toc-num">7</span>Explainable AI</a>
+      <a href="#implementation"><span class="toc-num">8</span>Implementation</a>
+    </div>
+  </aside>
+
+<div class="page">
+
+
+      <div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 3</div>
+      <h1 class="title">Comprehensive Study Notes</h1>
+    </div>
+  </div>
+  <p class="dek">A complete, consolidated technical reference guide for Classification Analysis.</p>
+
+  <div class="toc-card" style="margin-bottom: 2rem;">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#supervised"><span class="toc-num">1</span>Supervised Learning</a></li>
+      <li><a href="#decision-trees"><span class="toc-num">2</span>Decision Tree Fundamentals</a></li>
+      <li><a href="#attribute-selection"><span class="toc-num">3</span>Attribute Selection</a></li>
+      <li><a href="#generalization"><span class="toc-num">4</span>The Generalization Dilemma</a></li>
+      <li><a href="#regularization"><span class="toc-num">5</span>Regularization & Pruning</a></li>
+      <li><a href="#ensembles"><span class="toc-num">6</span>Ensemble Methods</a></li>
+      <li><a href="#xai"><span class="toc-num">7</span>Explainable AI & Causal AI</a></li>
+      <li><a href="#implementation"><span class="toc-num">8</span>Practical Implementation</a></li>
+    </ul>
+  </div>
+    <!-- ============ 4 ============ --><!-- ============ 6 ============ -->
+  <section class="chapter" id="supervised">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>Introduction to Supervised Learning</h2></div>
+    <p>Classification is a subset of supervised learning dedicated to identifying the underlying patterns that define specific classes. The core objective is for the model to learn the logical associations between input features and the corresponding supervisor-provided labels.</p>
+    <ul>
+      <li><strong>Input Features:</strong> Descriptive data used to characterize objects (e.g., color, shape, or dimensions).</li>
+      <li><strong>Supervisor Input:</strong> The predefined classes or labels provided during training (e.g., "cubes" vs. "cylinders").</li>
+      <li><strong>The Task:</strong> By analyzing these associations, the model learns to recognize patterns so it can accurately categorize new, unseen objects during the deployment phase.</li>
+    </ul>
+  </section>
+
+  <section class="chapter" id="decision-trees">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>Decision Tree Fundamentals</h2></div>
+    <p>A Decision Tree is a structured supervised learning model used to derive predictions by asking a series of targeted questions about the data.</p>
+    <p><strong>The Three Primary Components:</strong></p>
+    <ul>
+      <li><strong>Labeled Data Usage:</strong> The model utilizes training data where outcomes are already known to construct the logical paths of the tree.</li>
+      <li><strong>Node/Branch Representation:</strong> Each node signifies a test on a specific attribute, and each branch represents the outcome or result of that specific test.</li>
+      <li><strong>The Goal:</strong> To develop a structure that generalizes effectively to unseen data while maintaining efficiency—reaching a classification with the minimum number of nodes (questions).</li>
+    </ul>
+    <p><strong>Limitations of Decision Trees:</strong> While intuitive, Decision Trees possess three notable weaknesses:</p>
+    <ul>
+      <li><em>Overfitting Risk:</em> They tend to create overly complex structures that "memorize" noise in the data, particularly in small datasets.</li>
+      <li><em>Lower Predictive Power:</em> Compared to ensemble methods, individual trees are often less accurate and prone to underfitting.</li>
+      <li><em>Instability:</em> They are highly sensitive to the training set; small variations in data can lead to a completely different tree structure.</li>
+    </ul>
+  </section>
+
+  <section class="chapter" id="attribute-selection">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Attribute Selection: Entropy and Information Gain</h2></div>
+    <p>To build an efficient tree, we must identify which attribute provides the "best" split. A superior split results in Pure Subsets (lower randomness) rather than Mixed Subsets. We measure this effectiveness using Information Gain.</p>
+    <p><strong>Mathematical Logic:</strong> Information Gain calculates the reduction in entropy (uncertainty) after a dataset is split on an attribute. The attribute with the highest gain is selected as the splitting criterion.</p>
+    <div class="formula-block" style="background: var(--bg-deep); padding: 1rem; border-radius: 8px; text-align: center; margin: 1rem 0; font-family: var(--font-mono); font-size: 1.1rem; overflow-x: auto;">
+      gain(X, a) = entropy(X) - Σ [ (|X_v| / |X|) * entropy(X_v) ]
+    </div>
+    <p>Where <em>X_v</em> is the subset of <em>X</em> for which attribute <em>a = v</em>.</p>
+  </section>
+
+  <section class="chapter" id="generalization">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>The Generalization Dilemma</h2></div>
+    <p>The success of a classifier is defined by its ability to generalize—performing well on both training data and new, unseen testing data.</p>
+    <table class="data-table" style="width:100%; border-collapse: collapse; margin-top:1rem;">
+      <tr style="border-bottom: 1px solid var(--border);">
+          <th style="text-align:left; padding:0.5rem;">Model State</th>
+          <th style="text-align:left; padding:0.5rem;">Description</th>
+          <th style="text-align:left; padding:0.5rem;">Performance Detail</th>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:0.5rem;"><strong>Underfitting</strong></td>
+          <td style="padding:0.5rem;">A model that is too simple for the problem complexity.</td>
+          <td style="padding:0.5rem;">Fails to learn patterns; high error on both training and test data.</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:0.5rem;"><strong>Balanced</strong></td>
+          <td style="padding:0.5rem;">The "Best Fit" where complexity is optimal.</td>
+          <td style="padding:0.5rem;">Generalizes well; low error on both training and testing data.</td>
+      </tr>
+      <tr>
+          <td style="padding:0.5rem;"><strong>Overfitting</strong></td>
+          <td style="padding:0.5rem;">A complex model that learns noise as if it were a pattern.</td>
+          <td style="padding:0.5rem;">Very low training error, but high error on unseen (test) data.</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="chapter" id="regularization">
+    <div class="chapter-head"><span class="chapter-num">5</span><h2>Regularization and Pruning</h2></div>
+    <p>Regularization encompasses techniques designed to prevent a model from learning training data in a "parrot-fashion."</p>
+    <ol>
+      <li><strong>Objective:</strong> To force the model to focus on underlying patterns rather than noise, ensuring it is robust when faced with new data.</li>
+      <li><strong>Mechanics:</strong> It adds a penalty to model complexity and encourages slower updates to weights and parameters.</li>
+      <li><strong>Pruning:</strong> This is the specific regularization technique for decision trees. It involves removing nodes in a bottom-up manner only if the removal results in a decrease in validation error.</li>
+    </ol>
+  </section>
+
+  <section class="chapter" id="ensembles">
+    <div class="chapter-head"><span class="chapter-num">6</span><h2>Ensemble Methods: Random Forest vs. AdaBoost</h2></div>
+    <p>Ensemble methods combine multiple learners to produce a more stable and accurate prediction than a single model could achieve.</p>
+    <ul>
+      <li><strong>Random Forest (RDF):</strong> Utilizes Bagging (parallel training on random data subsets) and the Random Subspace Method (random feature subsets). Because trees are built in parallel, RDF can be parallelized across processors to handle large datasets efficiently.</li>
+      <li><strong>Adaptive Boosting (AdaBoost):</strong> Utilizes Boosting, a sequential process. It uses "weak learners" (usually stumps) and focuses on previously misclassified samples by increasing their weight in the next iteration.</li>
+    </ul>
+    <p><strong>Technical Summary Table:</strong></p>
+    <table class="data-table" style="width:100%; border-collapse: collapse; margin-top:1rem;">
+      <tr style="border-bottom: 1px solid var(--border);">
+          <th style="text-align:left; padding:0.5rem;">Feature</th>
+          <th style="text-align:left; padding:0.5rem;">Random Forest</th>
+          <th style="text-align:left; padding:0.5rem;">Adaptive Boosting</th>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:0.5rem;"><strong>Structure</strong></td>
+          <td style="padding:0.5rem;">Parallel Full Trees (Parallelizable)</td>
+          <td style="padding:0.5rem;">Sequential Stumps (Step-by-step)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:0.5rem;"><strong>Sensitivity</strong></td>
+          <td style="padding:0.5rem;">Robust to noise and outliers</td>
+          <td style="padding:0.5rem;">Sensitive to outliers (tries to fit them)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border);">
+          <td style="padding:0.5rem;"><strong>Overfitting</strong></td>
+          <td style="padding:0.5rem;">Robust (Bagging reduces variance)</td>
+          <td style="padding:0.5rem;">Can generate redundant/useless classifiers</td>
+      </tr>
+      <tr>
+          <td style="padding:0.5rem;"><strong>Combining Results</strong></td>
+          <td style="padding:0.5rem;">Equal votes for all trees</td>
+          <td style="padding:0.5rem;">Weighted votes (some stumps have more say)</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="chapter" id="xai">
+    <div class="chapter-head"><span class="chapter-num">7</span><h2>Explainable AI (XAI) and Causal AI</h2></div>
+    <p>In high-stakes environments, "Black box" models—which offer high accuracy but low transparency—can be problematic. XAI and Causal AI seek to bridge this gap.</p>
+    <p><strong>Glass Box vs. Black Box Models:</strong></p>
+    <ul>
+      <li><strong>Glass Box (High Explainability):</strong> Linear/Logistic Regression, Naive Bayes, Decision Trees, k-Nearest Neighbor.</li>
+      <li><strong>Black Box (High Accuracy):</strong> Neural Networks (CNN, RNN), Random Forests, Gradient Boosted Models.</li>
+    </ul>
+    <p><strong>Key Definitions:</strong></p>
+    <ul>
+      <li><strong>Model Interpretability:</strong> Understanding the internal logic of the model.</li>
+      <li><strong>Feature Importance:</strong> Identifying which features (e.g., Age vs. Income) most influenced the prediction. In Scikit-Learn, this is accessed via the <code>feature_importances_</code> attribute.</li>
+      <li><strong>Causal AI:</strong> Moves beyond correlation to identify cause-and-effect relationships (e.g., "Does smoking cause the cancer?").</li>
+    </ul>
+  </section>
+
+  <section class="chapter" id="implementation">
+    <div class="chapter-head"><span class="chapter-num">8</span><h2>Practical Implementation (Scikit-Learn)</h2></div>
+    <div class="python-note" style="margin-top:1rem;">
+<pre><code class="language-python">from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+
+# Decision Tree Implementation
+clf = DecisionTreeClassifier(criterion="entropy", min_samples_leaf=3)
+clf.fit(X, y)
+
+# Random Forest Implementation
+clf_rdf = RandomForestClassifier(n_estimators=20)
+clf_rdf.fit(X, y)
+
+# Accessing Feature Importance (XAI)
+importances = clf_rdf.feature_importances_
+</code></pre>
+    </div>
+    <p style="margin-top:1rem;"><strong>Technical Note:</strong> Scikit-Learn classifiers require numerical attributes. Categorical data must be processed using OneHotEncoder or LabelEncoder.</p>
+  </section>
+    <footer class="page-footer">
+    <span><a href="chapter-3-test.html">← Previous: 3.5 Test Yourself</a></span>
+    <span><a href="chapter-4-clustering.html">Next: 4 Clustering →</a></span>
+  </footer>
+</div>
+</div>
+<script src="assets/site.js?v=4" defer></script>
+</body>
+</html>

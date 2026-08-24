@@ -13,6 +13,44 @@
     });
   }
 
+
+// Toast notification
+  function showToast(message) {
+    var toast = document.getElementById("toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "toast";
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.className = "toast show";
+    setTimeout(function(){ toast.className = "toast"; }, 2500);
+  }
+
+  // Mode toggle
+  var modeBtn = document.getElementById("modeToggle");
+  if (modeBtn) {
+    // Initialize button icon based on current state
+    var currentMode = document.documentElement.getAttribute("data-mode") || "kid";
+    modeBtn.textContent = currentMode === "tech" ? "📖" : "🎓";
+    
+    modeBtn.addEventListener("click", function () {
+      var root = document.documentElement;
+      var current = root.getAttribute("data-mode") === "tech" ? "tech" : "kid";
+      var next = current === "tech" ? "kid" : "tech";
+      root.setAttribute("data-mode", next);
+      try { localStorage.setItem("dm2026-mode", next); } catch (e) {}
+      
+      if (next === "tech") {
+        modeBtn.textContent = "📖";
+        showToast("Technical Notes Enabled");
+      } else {
+        modeBtn.textContent = "🎓";
+        showToast("Intuitive Analogies Enabled");
+      }
+    });
+  }
+
   // Mobile menu (chapters + on-page contents)
   var navToggle = document.getElementById("navToggle");
   var navPanel = document.getElementById("navPanel");

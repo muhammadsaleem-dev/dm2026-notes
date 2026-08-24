@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3 — Classification | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'kid';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+      <a href="chapter-3-ensembles.html">3.2 · Ensembles</a>
+      <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+      <a href="chapter-3-exercise.html" class="active">3.4 · Sprint Exercise</a>
+      <a href="chapter-3-test.html">3.5 · Test Yourself</a>
+      <a href="chapter-3-notes.html">3.6 · Technical Notes</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-5-regression.html">5.1 · Regression</a>
+      <a href="chapter-5-neural-networks.html">5.2 · Neural Networks</a>
+      <a href="chapter-5-training.html">5.3 · Training</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html" class="active">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="nav-panel-section">
+            <span class="nav-panel-label">On this page</span>
+      <a href="#exercises"><span class="toc-num">1</span>Sprint Exercise</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html" class="active">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="sidebar-block">
+            <span class="sidebar-label">On this page</span>
+      <a href="#exercises"><span class="toc-num">1</span>Sprint Exercise</a>
+    </div>
+  </aside>
+
+<div class="page">
+
+
+    <div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 3</div>
+      <h1 class="title">Sprint Exercise</h1>
+    </div>
+  </div>
+  <p class="dek">Apply your classification skills to a real-world coding exercise.</p>
+
+  <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#exercises"><span class="toc-num">1</span>Sprint Exercise</a></li>
+    </ul>
+  </div>
+    <!-- ============ 4 ============ --><!-- ============ 5 ============ -->
+  <section class="chapter" id="exercises">
+    <div class="chapter-head"><span class="chapter-num">1</span><h2>Sprint Exercise: The Full Pipeline</h2></div>
+    
+    <div class="mode-kid">
+      <p class="chapter-dek">Playing cell detective with a Random Forest from start to finish!</p>
+      
+      <p>In this exercise, we are predicting a <code>cancer_type</code> by looking at clues inside a cell. But before our Random Forest can make any guesses, we have to clean up a massive mess! Think of the dataset like a messy playroom.</p>
+
+      <h3>Step 1: Cleaning the Messy Room (Data Cleaning)</h3>
+      <p>First, we find broken toys and weird items that don't belong:</p>
+      <ul>
+        <li><strong>Wrong formats:</strong> Some numbers were written as words! We convert them back to numbers.</li>
+        <li><strong>Time travel mistakes:</strong> Some cells were "treated" before they were "diagnosed." We fix the ages and throw away those dates because they confuse the detective!</li>
+        <li><strong>Impossible things:</strong> We found negative sizes (you can't have a negative size!). We erase them and mark them as missing (NaN).</li>
+      </ul>
+
+      <h3>Step 2: Splitting the Toys (Train vs Test)</h3>
+      <p>Before we fix everything else, we hide 20% of the toys (the test set) in a closet. The detective is NOT allowed to see them until the very end!</p>
+
+      <h3>Step 3: Fixing the Weird Toys (Outliers & Missing Data)</h3>
+      <p>Sometimes a cell size is listed as the size of a basketball. That's a mistake! We use a math trick called the <strong>IQR (Interquartile Range)</strong> to spot these crazy mistakes. Then, we fill in all the missing gaps (imputation) so the detective has complete files.</p>
+
+      <h3>Step 4: The Game Plan (Config Dictionary)</h3>
+      <p>Instead of guessing how to fix the toys, we write down our entire game plan <strong>before</strong> we even start. This is our config dictionary!</p>
+      
+      <div class="python-note"><div>
+        <span class="pn-label">Python (Config Dict)</span>
+        <pre style="white-space:pre-wrap;margin:0"><code># Our Game Plan!
+config = {
+    'missing_value_strategy': 'median',
+    'scaling_method': 'standard',
+    # We hire 1000 kids for our forest, and tell them to only ask 6 questions max!
+    'RDF': {'n_estimators': 1000, 'max_depth': 6, 'class_weight': 'balanced'} 
+}</code></pre>
+      </div></div>
+
+      <h3>Step 5: The Final Refit (Exam Trap!)</h3>
+      <p>After we test our detective and give them a final grade (using a Confusion Matrix), we let them look at ALL the toys (train + test) one last time to make them as smart as possible for the real world! But remember: once they look at the test toys, they've seen the answers. You can never test them again!</p>
+    </div>
+
+
+    <div class="mode-tech">
+      <div class="callout teacher-note">
+        <span class="tag">🎓 Technical Notes: Exercise 6 Pipeline</span>
+        <p>Instead of just describing the steps, here is the concrete Python code from the solution notebook to execute the end-to-end classification pipeline.</p>
+        
+        <h3>1. Data Cleaning (Pandas)</h3>
+        <p>Real-world datasets contain formatting errors and impossible values that must be corrected before modeling.</p>
+        <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python"># Convert strings to numeric, forcing unparseable text to NaN
+data['texture_2'] = pd.to_numeric(data['texture_2'], errors='coerce')
+
+# Parse dates and calculate age mathematically
+data['diagnose_date'] = pd.to_datetime(data.diagnose_date)
+data['treatment_date'] = pd.to_datetime(data.treatment_date)
+
+# Replace physically impossible negative values with NaN
+data.loc[data.texture_0 < 0, 'texture_0'] = np.nan
+
+# Drop columns irrelevant to the target classification
+data.drop(['treatment_date', 'diagnose_date'], axis=1, inplace=True)</code></pre>
+        </div>
+
+        <h3>2. Train/Test Split</h3>
+        <p>Split the data <em>before</em> applying imputation or scaling to strictly prevent <strong>data leakage</strong>.</p>
+        <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python">from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)</code></pre>
+        </div>
+
+        <h3>3. Outlier Detection & Imputation</h3>
+        <p>Use the Interquartile Range (IQR) to detect and nullify outliers, then impute all missing values.</p>
+        <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python"># 1. IQR Outlier Detection
+Q1 = X_train.quantile(0.25)
+Q3 = X_train.quantile(0.75)
+IQR = Q3 - Q1
+k = 1.5 
+lower_bound = Q1 - k * IQR
+upper_bound = Q3 + k * IQR
+
+# 2. Imputation and Scaling
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+
+imputer = SimpleImputer(strategy='median')
+scaler = StandardScaler()
+
+X_train_clean = scaler.fit_transform(imputer.fit_transform(X_train))
+X_test_clean = scaler.transform(imputer.transform(X_test)) # Note: transform ONLY
+</code></pre>
+        </div>
+
+        <h3>4. Modeling & Evaluation</h3>
+        <p>Use the predefined config dictionary to instantiate and evaluate the Random Forest.</p>
+        <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+
+clf = RandomForestClassifier(**config['RDF'])
+clf.fit(X_train_clean, y_train)
+y_pred = clf.predict(X_test_clean)
+
+print(classification_report(y_test, y_pred))
+# Visualizing False Positives vs False Negatives
+ConfusionMatrixDisplay(confusion_matrix(y_test, y_pred)).plot()
+</code></pre>
+        </div>
+
+        <h3>5. Productionizing (The Final Refit)</h3>
+        <p>To maximize predictive power before deployment, combine the datasets to train on 100% of available data.</p>
+        <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python">import pandas as pd
+
+# Combine train and test data back together
+X_all = pd.concat([X_train, X_test], axis=0).reset_index(drop=True)
+Y_all = pd.concat([y_train, y_test], axis=0).reset_index(drop=True)
+
+# Retrain the model on everything
+clf.fit(X_all, Y_all)
+# Rule: The model can NEVER be evaluated against X_test again!
+</code></pre>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+            <footer class="page-footer">
+    <span><a href="chapter-3-explainability.html">← Previous: 3.3 Explainability</a></span>
+    <span><a href="chapter-3-test.html">Next: 3.5 Test Yourself →</a></span>
+  </footer>
+</div>
+</div>
+<script src="assets/site.js?v=4" defer></script>
+</body>
+</html>

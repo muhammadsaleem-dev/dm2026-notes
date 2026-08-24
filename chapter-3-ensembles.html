@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3 — Classification | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'kid';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+      <a href="chapter-3-ensembles.html" class="active">3.2 · Ensembles</a>
+      <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+      <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+      <a href="chapter-3-test.html">3.5 · Test Yourself</a>
+      <a href="chapter-3-notes.html">3.6 · Technical Notes</a>
+      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-5-regression.html">5.1 · Regression</a>
+      <a href="chapter-5-neural-networks.html">5.2 · Neural Networks</a>
+      <a href="chapter-5-training.html">5.3 · Training</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html" class="active">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">On this page</span>
+      <a href="#visual-recap"><span class="toc-num">0</span>Visual Storyboard</a>
+      <a href="#decision-trees"><span class="toc-num">1</span>Decision Trees</a>
+      <a href="#random-forests"><span class="toc-num">2</span>Random Forests</a>
+      <a href="#adaboost"><span class="toc-num">3</span>Adaptive Boosting (AdaBoost)</a>
+      <a href="#xai-intro"><span class="toc-num">4</span>Explainability &amp; Causality (intro)</a>
+      <a href="#exercises"><span class="toc-num">5</span>Sprint Exercise</a>
+      <a href="#test-yourself"><span class="toc-num">6</span>Test Yourself</a>
+      <a href="#exam-drill"><span class="toc-num">7</span>Exam Drill</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html" class="active">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">On this page</span>
+      <a href="#random-forests"><span class="toc-num">1</span>Random Forests</a>
+      <a href="#adaboost"><span class="toc-num">2</span>Adaptive Boosting (AdaBoost)</a>
+    </div>
+  </aside>
+
+<div class="page">
+
+
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 3</div>
+      <h1 class="title">Ensembles</h1>
+    </div>
+  </div>
+  <p class="dek">Combining multiple decision trees to create robust models using Bagging and Boosting.</p>
+
+  <div class="toc-card">
+    <span class="toc-label">On this page</span>
+    <ul class="toc-list">
+      <li><a href="#random-forests"><span class="toc-num">1</span>Random Forests</a></li>
+      <li><a href="#adaboost"><span class="toc-num">2</span>Adaptive Boosting (AdaBoost)</a></li>
+    </ul>
+  </div>
+    <!-- ============ 2 ============ -->
+  <section class="chapter" id="random-forests">
+    <div class="chapter-head"><span class="chapter-num">2</span><h2>Random Forests</h2></div>
+    <p class="chapter-dek">Asking a whole classroom of kids to guess, and letting the majority win!</p>
+
+    <h3>1. The Classroom Analogy</h3>
+    <p><strong>The Sorting Team:</strong> One kid sorting toys makes a lot of mistakes, so we hire a whole classroom! Each kid gets to look at a random handful of toys (<span class="important-term">Bagging</span>) and is only allowed to look at certain clues, like color or shape (<span class="important-term">Random Subspace</span>). They all cast a vote on where the toy goes, and the majority wins.</p>
+
+    <div class="mini-box" style="margin: 1rem 0;">
+      <h4>Key Terms</h4>
+      <ul style="margin:0; padding-left:1.2rem;">
+        <li><strong><span class="important-term">Ensemble Learning</span>:</strong> Teaming up a bunch of simple guessers (like a classroom of kids) into one super smart team.</li>
+        <li><strong><span class="important-term">Bagging</span> (Bootstrap Aggregating):</strong> Giving each kid a random handful of toys (with replacement) so they all learn slightly different things.</li>
+        <li><strong><span class="important-term">Random Subspace</span>:</strong> Forcing each kid to only look at a random set of clues (like only looking at color and size, but ignoring weight). This makes sure no two kids are exactly the same!</li>
+      </ul>
+    </div>
+
+    <h3>2. The Code Reality</h3>
+    <div class="python-note"><div>
+      <span class="pn-label">Python (Scikit-Learn)</span>
+      <pre style="white-space:pre-wrap;margin:0"><code>from sklearn.ensemble import RandomForestClassifier
+
+# n_estimators is the number of kids in our classroom (trees in the forest). 
+clf = RandomForestClassifier(n_estimators=100)
+
+# X_train = Clues (Features), y_train = Answers (Labels)
+clf.fit(X_train, y_train)</code></pre>
+    </div></div>
+
+    <div class="worked-example">
+      <span class="we-label">Quick Example: Why Randomize?</span>
+      <p>Why do we need to randomize? Because if we gave 100 kids the exact same toys and the exact same clues, they would all make the exact same guess! That defeats the purpose of having a team!</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Bagging (Rows)</span><span class="we-calc">Kid 1 gets random toys: [Car, Car, Ball]. Bear is left out! Kid 2 gets [Bear, Ball, Ball].</span></div></li>
+        <li><div><span class="we-step-label">Random Subspace (Columns)</span><span class="we-calc">Kid 1 is only allowed to look at [Color, Weight]. Kid 2 is only allowed to look at [Size, Shape].</span></div></li>
+      </ol>
+      <p>Because they see different things, their mistakes are totally different, making their final team vote extremely reliable.</p>
+    </div>
+
+    <div class="callout teacher-note">
+      <span class="tag">💡 Key Concept</span>
+      <p>Because Random Forests are opaque "black boxes" (you can't ask all 100 kids exactly what they were thinking), it's critical to know which clues are actually driving the team's decisions. We calculate <strong>Permutation Feature Importance</strong> using the "Blindfold Test". We randomly blindfold the kids to one clue at a time (like hiding all the colors) and measure how much their accuracy drops. The larger the drop, the more important the clue!</p>
+    </div>
+
+    
+    <div class="callout teacher-note">
+      <span class="tag">🎬 Real-World Analogy: Netflix & Spotify</span>
+      <p><strong>Random Forest</strong> is highly robust for massive user bases. By looking at age, location, and timing across parallel trees, it handles a massive range of scenarios well (even if Netflix can't explain exactly <em>why</em> it recommended a movie).</p>
+      <p><strong>AdaBoost</strong> provides high iterative accuracy for specific patterns (e.g., "Under 25s like pop... unless they follow indie artists"). But, a few users with weird outlier tastes could skew the entire model's logic!</p>
+    </div>
+<div class="mode-kid">
+<h3>3. Exam Cheat Sheet</h3>
+    <ul>
+      <li><strong>Ensemble Learning:</strong> Combining many weak models into one strong model.</li>
+      <li><strong>Bagging:</strong> Sampling the training data <em>with replacement</em> so each tree sees slightly different data.</li>
+      <li><strong>Random Subspace:</strong> Forcing each tree to only look at a random subset of features (e.g., only weight and size, but not color).</li>
+      <li><strong>Confidence Score:</strong> If 80 out of 100 trees vote for class A, the model predicts class A with 80% confidence.</li>
+    </ul>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="chapter" id="adaboost">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Adaptive Boosting (AdaBoost)</h2></div>
+    <p class="chapter-dek">A relay race where each kid tries to fix the mistakes of the kid before them.</p>
+
+    <h3>1. The Relay Race Analogy</h3>
+    <p><strong>Reweighting:</strong> Kids form a line. The first kid tries to sort the toys. Any toys they get wrong get a giant, glowing URGENT sticker (<span class="important-term">reweighting</span>) slapped on them, so the next kid in line knows to focus extra hard on those specific toys!</p>
+
+    <div class="mini-box" style="margin: 1rem 0;">
+      <h4>Key Terms</h4>
+      <ul style="margin:0; padding-left:1.2rem;">
+        <li><strong><span class="important-term">Decision Stump</span>:</strong> A tiny, silly kid who can only ask 1 question before guessing. They are barely better than flipping a coin!</li>
+        <li><strong><span class="important-term">Reweighting</span>:</strong> Slapping the URGENT sticker on toys. After every round, incorrectly sorted toys get their "weight" magically increased so the next kid is forced to fix the mistake.</li>
+      </ul>
+    </div>
+
+    <h3>2. The Code Reality</h3>
+    <div class="python-note"><div>
+      <span class="pn-label">Python (Scikit-Learn)</span>
+      <pre style="white-space:pre-wrap;margin:0"><code>from sklearn.ensemble import AdaBoostClassifier
+
+clf = AdaBoostClassifier(n_estimators=50)
+
+# X_train = Clues (Features), y_train = Answers (Labels)
+clf.fit(X_train, y_train)</code></pre>
+    </div></div>
+
+    <div class="worked-example">
+      <span class="we-label">Quick Example: The Urgent Sticker</span>
+      <p>Suppose we have 5 toys. They all start equally important (20% each).</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Round 1</span><span class="we-calc">Kid #1 gets 4 toys right, but accidentally puts the Robot in the wrong box.</span></div></li>
+        <li><div><span class="we-step-label">Reweighting</span><span class="we-calc">AdaBoost slaps a giant URGENT sticker on the Robot! The other 4 toys become less important, and the Robot's importance boosts to 50%.</span></div></li>
+        <li><div><span class="we-step-label">Round 2</span><span class="we-calc">Kid #2 steps up and is forced to prioritize the Robot above everything else.</span></div></li>
+      </ol>
+      <p>At the end, all the kids vote, but the kids who made fewer mistakes get to shout their vote <strong>louder (higher alpha weight)</strong>.</p>
+    </div>
+
+    
+    <div class="callout teacher-note">
+      <span class="tag">🎬 Real-World Analogy: Netflix & Spotify</span>
+      <p><strong>Random Forest</strong> is highly robust for massive user bases. By looking at age, location, and timing across parallel trees, it handles a massive range of scenarios well (even if Netflix can't explain exactly <em>why</em> it recommended a movie).</p>
+      <p><strong>AdaBoost</strong> provides high iterative accuracy for specific patterns (e.g., "Under 25s like pop... unless they follow indie artists"). But, a few users with weird outlier tastes could skew the entire model's logic!</p>
+    </div>
+<div class="mode-kid">
+<h3>3. Exam Cheat Sheet</h3>
+    <ul>
+      <li><strong>Sequential vs Parallel:</strong> Random Forest trains all trees at the same time (parallel). AdaBoost trains them one by one in a line (sequential).</li>
+      <li><strong>Decision Stumps:</strong> AdaBoost usually uses trees with a depth of 1 (just a single split).</li>
+      <li><strong>Reweighting:</strong> After every round, incorrectly classified samples get their weights increased. Correctly classified samples get their weights decreased.</li>
+      <li><strong>Outliers (Weird Mistakes):</strong> Because AdaBoost is obsessed with fixing mistakes, it is very sensitive to weird outliers (it will try too hard to fix them). Random Forest is much safer against outliers because the team vote averages them out!</li>
+    </ul>
+  </section>
+
+  <!-- ============ 3 ============ -->
+  <section class="chapter" id="adaboost">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Adaptive Boosting (AdaBoost)</h2></div>
+    <p class="chapter-dek">Build weak learners sequentially, each one fixing the last one's mistakes.</p>
+
+    <h3>1. The Analogy Recap</h3>
+    <p><strong>Reweighting:</strong> Workers form a line. If the first worker misclassifies a package, it gets a massive URGENT sticker (<span class="important-term">reweighting</span>) so the next worker focuses extra hard on it.</p>
+
+    <div class="mini-box" style="margin: 1rem 0;">
+      <h4>Key Terms</h4>
+      <ul style="margin:0; padding-left:1.2rem;">
+        <li><strong><span class="important-term">Decision Stump</span>:</strong> A tiny decision tree that is only 1 level deep (makes exactly one split). Barely better than a coin flip!</li>
+        <li><strong><span class="important-term">Reweighting</span>:</strong> The core math trick of AdaBoost. After every round, incorrectly predicted rows get their "weight" artificially increased so the next model is forced to fix the mistake.</li>
+      </ul>
+    </div>
+
+    <h3>2. The Code Reality</h3>
+    <div class="python-note"><div>
+      <span class="pn-label">Python (Scikit-Learn)</span>
+      <pre style="white-space:pre-wrap;margin:0"><code>from sklearn.ensemble import AdaBoostClassifier
+
+clf = AdaBoostClassifier(n_estimators=50)
+
+# X_train = Inputs (Features), y_train = Answers (Labels)
+clf.fit(X_train, y_train)</code></pre>
+    </div></div>
+
+    <div class="worked-example">
+      <span class="we-label">Quick Example: Reweighting</span>
+      <p>Suppose we have 5 patients. They all start with an equal weight of 20% importance.</p>
+      <ol class="we-steps">
+        <li><div><span class="we-step-label">Round 1</span><span class="we-calc">Stump #1 gets 4 patients right, but misclassifies Patient #3.</span></div></li>
+        <li><div><span class="we-step-label">Reweighting</span><span class="we-calc">AdaBoost mathematically punishes the model! It shrinks the weight of the 4 correct patients, and massively boosts Patient #3's weight to 50%.</span></div></li>
+        <li><div><span class="we-step-label">Round 2</span><span class="we-calc">Stump #2 is now forced to prioritize Patient #3 above everything else.</span></div></li>
+      </ol>
+      <p>At the end, all the stumps vote, but the stumps that made fewer mistakes get a <strong>louder say (higher alpha weight)</strong> in the final vote.</p>
+    </div>
+
+    
+    <div class="callout teacher-note">
+      <span class="tag">🎬 Real-World Analogy: Netflix & Spotify</span>
+      <p><strong>Random Forest</strong> is highly robust for massive user bases. By looking at age, location, and timing across parallel trees, it handles a massive range of scenarios well (even if Netflix can't explain exactly <em>why</em> it recommended a movie).</p>
+      <p><strong>AdaBoost</strong> provides high iterative accuracy for specific patterns (e.g., "Under 25s like pop... unless they follow indie artists"). But, a few users with weird outlier tastes could skew the entire model's logic!</p>
+    </div>
+<div class="mode-kid">
+<h3>3. Exam Cheat Sheet</h3>
+    <ul>
+      <li><strong>Sequential vs Parallel:</strong> Random Forest trains all trees at the same time (parallel). AdaBoost trains them one by one (sequential).</li>
+      <li><strong>Decision Stumps:</strong> AdaBoost usually uses trees with a depth of 1 (just a single split).</li>
+      <li><strong>Reweighting:</strong> After every round, incorrectly classified samples get their weights increased. Correctly classified samples get their weights decreased.</li>
+      <li><strong>Outliers (Weird Mistakes):</strong> Because AdaBoost is obsessed with fixing mistakes, it is very sensitive to weird outliers (it will try too hard to fix them). Random Forest is much safer against outliers because the team vote averages them out!</li>
+    </ul>
+  </section>
+
+      </div>
+
+
+  <!-- TECHNICAL NOTES MODE -->
+  <div class="mode-tech">
+    <div class="callout teacher-note">
+      <span class="tag">🎓 Technical Notes</span>
+      
+      <h3>6. Ensemble Methods: Random Forest (RDF) vs. Adaptive Boosting (AdaBoost)</h3>
+      <p>Ensemble methods combine multiple learners to produce a more stable and accurate prediction than a single model could achieve.</p>
+      
+      <ul>
+        <li><strong>Random Forest (RDF):</strong> Utilizes Bagging (parallel training on random data subsets) and the Random Subspace Method (random feature subsets). Because trees are built in parallel, RDF can be parallelized across processors to handle large datasets efficiently.</li>
+        <li><strong>Adaptive Boosting (AdaBoost):</strong> Utilizes Boosting, a sequential process. It uses "weak learners" (usually stumps) and focuses on previously misclassified samples by increasing their weight in the next iteration.</li>
+      </ul>
+
+      <p><strong>Technical Summary Table:</strong></p>
+      <table style="width:100%; border-collapse: collapse; margin-top:1rem;">
+        <tr style="border-bottom: 1px solid var(--border);">
+            <th style="text-align:left; padding:0.5rem;">Feature</th>
+            <th style="text-align:left; padding:0.5rem;">Random Forest</th>
+            <th style="text-align:left; padding:0.5rem;">Adaptive Boosting</th>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding:0.5rem;"><strong>Structure</strong></td>
+            <td style="padding:0.5rem;">Parallel Full Trees (Parallelizable)</td>
+            <td style="padding:0.5rem;">Sequential Stumps (Step-by-step)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding:0.5rem;"><strong>Sensitivity</strong></td>
+            <td style="padding:0.5rem;">Robust to noise and outliers</td>
+            <td style="padding:0.5rem;">Sensitive to outliers (tries to fit them)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding:0.5rem;"><strong>Overfitting</strong></td>
+            <td style="padding:0.5rem;">Robust (Bagging reduces variance)</td>
+            <td style="padding:0.5rem;">Can generate redundant/useless classifiers</td>
+        </tr>
+        <tr>
+            <td style="padding:0.5rem;"><strong>Combining Results</strong></td>
+            <td style="padding:0.5rem;">Equal votes for all trees</td>
+            <td style="padding:0.5rem;">Weighted votes (some stumps have more say)</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+    <footer class="page-footer">
+    <span><a href="chapter-3-decision-trees.html">← Previous: 3.1 Decision Trees</a></span>
+    <span><a href="chapter-3-explainability.html">Next: 3.3 Explainability →</a></span>
+  </footer>
+</div>
+</div>
+<script src="assets/site.js?v=4" defer></script>
+</body>
+</html>
