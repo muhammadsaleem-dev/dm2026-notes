@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 4 — Clustering | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'kid';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+      <a href="chapter-3-ensembles.html">3.2 · Ensembles</a>
+      <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+      <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+      <a href="chapter-3-test.html">3.5 · Test Yourself</a>
+      <a href="chapter-3-notes.html">3.6 · Technical Notes</a>
+      <a href="chapter-4-overview.html">4 · Clustering</a>
+      <a href="chapter-4-kmeans.html" class="active">4.1 · K-Means</a>
+      <a href="chapter-4-choosing-k.html">4.2 · Choosing K</a>
+      <a href="chapter-4-limitations.html">4.3 · Limitations</a>
+      <a href="chapter-4-exercise.html">4.4 · Sprint Exercise</a>
+      <a href="chapter-4-test.html">4.5 · Test Yourself</a>
+      <a href="chapter-4-notes.html">4.6 · Technical Notes</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-5-regression.html">5.1 · Regression</a>
+      <a href="chapter-5-neural-networks.html">5.2 · Neural Networks</a>
+      <a href="chapter-5-training.html">5.3 · Training</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details">
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod4-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-4-kmeans.html" class="active">4.1 · K-Means &amp; Initializations</a>
+          <a href="chapter-4-choosing-k.html">4.2 · Choosing K (Elbow vs Gap)</a>
+          <a href="chapter-4-limitations.html">4.3 · Geometric Bias &amp; Limitations</a>
+          <a href="chapter-4-exercise.html">4.4 · Sprint Exercise: RFM</a>
+          <a href="chapter-4-test.html">4.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-4-notes.html">4.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details">
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod4-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-4-kmeans.html" class="active">4.1 · K-Means &amp; Initializations</a>
+          <a href="chapter-4-choosing-k.html">4.2 · Choosing K (Elbow vs Gap)</a>
+          <a href="chapter-4-limitations.html">4.3 · Geometric Bias &amp; Limitations</a>
+          <a href="chapter-4-exercise.html">4.4 · Sprint Exercise: RFM</a>
+          <a href="chapter-4-test.html">4.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-4-notes.html">4.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+  </aside>
+
+<div class="page">
+
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 4.1</div>
+      <h1 class="title">K-Means & The Initialization Trap</h1>
+    </div>
+  </div>
+
+  <div class="mode-kid">
+    <p class="dek">Dropping genre flags in our music library.</p>
+    <section class="chapter">
+      <div class="chapter-head"><span class="chapter-num">1</span><h2>How K-Means Works</h2></div>
+      <p>K-Means is a very greedy, step-by-step game. Here's how it works:</p>
+      <ol>
+        <li><strong>Drop the Flags:</strong> You randomly drop <em>K</em> flags on the floor of your music room (let's say 3 flags for Rock, Pop, and Jazz).</li>
+        <li><strong>Assign the Songs:</strong> Every cassette tape looks for the flag closest to it, and joins that team.</li>
+        <li><strong>Move the Flags:</strong> You pick up each flag and move it to the exact middle of all the tapes on its team.</li>
+        <li><strong>Repeat:</strong> You keep doing this until the flags stop moving!</li>
+      </ol>
+      
+      <h3>The Seed Problem (Local Optima)</h3>
+      <p>Because you drop the flags <em>randomly</em> at the start, you might make a terrible mistake! Imagine dropping the Rock flag and the Pop flag right on top of each other. The algorithm will get confused and might get stuck in a bad arrangement forever (we call this a <strong>Local Optima</strong>). The solution? Run the game 10 different times with different random starting spots, and pick the best one!</p>
+    </section>
+  </div>
+
+  <div class="mode-tech">
+    <div class="callout teacher-note">
+      <span class="tag">🎓 Technical Notes</span>
+      <h3>3. The K-Means Algorithm: Step-by-Step Logic</h3>
+      <p>"Vanilla K-means" uses an iterative refinement technique. It is a greedy algorithm, meaning it makes the locally optimal choice at each step in hopes of finding a global optimum.</p>
+      
+      <p><strong>The Similarity Metric:</strong> To quantify the "closeness" of a point to a center, K-means typically utilizes <strong>Squared Euclidean Distance</strong>:</p>
+      <div class="formula-block" style="text-align: center; margin: 1rem 0; font-family: var(--font-mono); font-size: 1.1rem;">
+        ||x - c||² = Σ (x_j - c_j)²
+      </div>
+      <p>This metric treats all spatial dimensions equally, which is why the algorithm inherently seeks spherical clusters.</p>
+
+      <h3 style="margin-top:2rem;">4. Model Quality and the Initialization Challenge</h3>
+      <p>Because the algorithm begins with random points, K-means is not deterministic. Different initial "seeds" can lead to entirely different clustering results.</p>
+      <ul>
+        <li><strong>The Risk of Local Optima:</strong> As a greedy optimizer, K-means cannot "jump" to a better global arrangement if the initial points are poorly placed.</li>
+        <li><strong>Measuring Quality via Inertia (WCSS):</strong> Model quality is measured by the Within-Cluster Sum-of-Squares (Inertia). This is the total sum of squared distances from each point to its assigned centroid:
+          <div style="text-align:center; font-family: var(--font-mono); margin:0.5rem 0;">W_k = Σ Σ ||x - μ_i||²</div>
+        </li>
+        <li><strong>Optimization Strategy:</strong> To mitigate randomness, professionals run the algorithm multiple times (consecutive runs) with different initial seeds (e.g., <code>n_init=10</code> in Scikit-Learn) and select the output with the lowest total inertia.</li>
+      </ul>
+    </div>
+  </div>
+      <footer class="page-footer">
+    <span><a href="chapter-4-overview.html">← Previous: 4 Clustering Overview</a></span>
+    <span><a href="chapter-4-choosing-k.html">Next: 4.2 Choosing K →</a></span>
+  </footer>
+</div>
+</div>
+<script src="assets/site.js?v=4" defer></script>
+</body>
+</html>

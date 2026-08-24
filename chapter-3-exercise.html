@@ -30,7 +30,13 @@
       <a href="chapter-3-exercise.html" class="active">3.4 · Sprint Exercise</a>
       <a href="chapter-3-test.html">3.5 · Test Yourself</a>
       <a href="chapter-3-notes.html">3.6 · Technical Notes</a>
-      <a href="chapter-4-clustering.html">4 · Clustering</a>
+      <a href="chapter-4-overview.html">4 · Clustering</a>
+      <a href="chapter-4-kmeans.html">4.1 · K-Means</a>
+      <a href="chapter-4-choosing-k.html">4.2 · Choosing K</a>
+      <a href="chapter-4-limitations.html">4.3 · Limitations</a>
+      <a href="chapter-4-exercise.html">4.4 · Sprint Exercise</a>
+      <a href="chapter-4-test.html">4.5 · Test Yourself</a>
+      <a href="chapter-4-notes.html">4.6 · Technical Notes</a>
       <a href="chapter-5-overview.html">5 · Regression→NN</a>
       <a href="chapter-5-regression.html">5.1 · Regression</a>
       <a href="chapter-5-neural-networks.html">5.2 · Neural Networks</a>
@@ -78,7 +84,20 @@
           <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
         </div>
       </details>
-      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod4-details">
+        <summary class="nav-summary">
+          <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-4-kmeans.html">4.1 · K-Means &amp; Initializations</a>
+          <a href="chapter-4-choosing-k.html">4.2 · Choosing K (Elbow vs Gap)</a>
+          <a href="chapter-4-limitations.html">4.3 · Geometric Bias &amp; Limitations</a>
+          <a href="chapter-4-exercise.html">4.4 · Sprint Exercise: RFM</a>
+          <a href="chapter-4-test.html">4.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-4-notes.html">4.6 · Comprehensive Notes</a>
+        </div>
+      </details>
       <details class="nav-details" id="mod5-details">
         <summary class="nav-summary">
           <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
@@ -131,7 +150,20 @@
           <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
         </div>
       </details>
-      <a href="chapter-4-clustering.html">4 · Clustering Analysis</a>
+      <details class="nav-details" id="mod4-details">
+        <summary class="nav-summary">
+          <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-4-kmeans.html">4.1 · K-Means &amp; Initializations</a>
+          <a href="chapter-4-choosing-k.html">4.2 · Choosing K (Elbow vs Gap)</a>
+          <a href="chapter-4-limitations.html">4.3 · Geometric Bias &amp; Limitations</a>
+          <a href="chapter-4-exercise.html">4.4 · Sprint Exercise: RFM</a>
+          <a href="chapter-4-test.html">4.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-4-notes.html">4.6 · Comprehensive Notes</a>
+        </div>
+      </details>
       <details class="nav-details" id="mod5-details">
         <summary class="nav-summary">
           <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
@@ -178,6 +210,16 @@
       
       <p>In this exercise, we are predicting a <code>cancer_type</code> by looking at clues inside a cell. But before our Random Forest can make any guesses, we have to clean up a massive mess! Think of the dataset like a messy playroom.</p>
 
+      <div class="callout" style="margin-bottom: 2rem;">
+        <span class="tag">🎯 What this Exercise Covers</span>
+        <ul style="margin-top:0.5rem; padding-left:1.5rem; margin-bottom:0;">
+          <li>✅ End-to-End Data Cleaning</li>
+          <li>✅ Outlier Detection (IQR Method)</li>
+          <li>✅ Random Forest Classification (RDF)</li>
+          <li>❌ <em>Note: This exercise does NOT cover AdaBoost or Decision Trees. It focuses purely on mastering the Random Forest!</em></li>
+        </ul>
+      </div>
+
       <h3>Step 1: Cleaning the Messy Room (Data Cleaning)</h3>
       <p>First, we find broken toys and weird items that don't belong:</p>
       <ul>
@@ -208,6 +250,9 @@ config = {
 
       <h3>Step 5: The Final Refit (Exam Trap!)</h3>
       <p>After we test our detective and give them a final grade (using a Confusion Matrix), we let them look at ALL the toys (train + test) one last time to make them as smart as possible for the real world! But remember: once they look at the test toys, they've seen the answers. You can never test them again!</p>
+
+
+
     </div>
 
 
@@ -215,6 +260,11 @@ config = {
       <div class="callout teacher-note">
         <span class="tag">🎓 Technical Notes: Exercise 6 Pipeline</span>
         <p>Instead of just describing the steps, here is the concrete Python code from the solution notebook to execute the end-to-end classification pipeline.</p>
+        
+        <div class="callout" style="margin-bottom: 2rem;">
+          <span class="tag">🎯 Covered Topics</span>
+          <p style="margin-top:0.5rem; margin-bottom:0;">This sprint exercise focuses <strong>exclusively</strong> on building a production-ready pipeline using a <strong>Random Forest Classifier (RDF)</strong>. While Module 3 covers other ensemble methods (like AdaBoost), this exercise is designed solely to test your RDF implementation, Outlier Detection (IQR), and Data Leakage prevention skills.</p>
+        </div>
         
         <h3>1. Data Cleaning (Pandas)</h3>
         <p>Real-world datasets contain formatting errors and impossible values that must be corrected before modeling.</p>
@@ -294,11 +344,14 @@ clf.fit(X_all, Y_all)
 </code></pre>
         </div>
 
+
+
+
       </div>
     </div>
 
   </section>
-            <footer class="page-footer">
+                  <footer class="page-footer">
     <span><a href="chapter-3-explainability.html">← Previous: 3.3 Explainability</a></span>
     <span><a href="chapter-3-test.html">Next: 3.5 Test Yourself →</a></span>
   </footer>

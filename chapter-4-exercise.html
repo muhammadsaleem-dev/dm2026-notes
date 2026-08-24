@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 4 — Clustering | DM Bootcamp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=4">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'kid';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+      <a href="chapter-3-ensembles.html">3.2 · Ensembles</a>
+      <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+      <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+      <a href="chapter-3-test.html">3.5 · Test Yourself</a>
+      <a href="chapter-3-notes.html">3.6 · Technical Notes</a>
+      <a href="chapter-4-overview.html">4 · Clustering</a>
+      <a href="chapter-4-kmeans.html">4.1 · K-Means</a>
+      <a href="chapter-4-choosing-k.html">4.2 · Choosing K</a>
+      <a href="chapter-4-limitations.html">4.3 · Limitations</a>
+      <a href="chapter-4-exercise.html" class="active">4.4 · Sprint Exercise</a>
+      <a href="chapter-4-test.html">4.5 · Test Yourself</a>
+      <a href="chapter-4-notes.html">4.6 · Technical Notes</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-5-regression.html">5.1 · Regression</a>
+      <a href="chapter-5-neural-networks.html">5.2 · Neural Networks</a>
+      <a href="chapter-5-training.html">5.3 · Training</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details">
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod4-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-4-kmeans.html">4.1 · K-Means &amp; Initializations</a>
+          <a href="chapter-4-choosing-k.html">4.2 · Choosing K (Elbow vs Gap)</a>
+          <a href="chapter-4-limitations.html">4.3 · Geometric Bias &amp; Limitations</a>
+          <a href="chapter-4-exercise.html" class="active">4.4 · Sprint Exercise: RFM</a>
+          <a href="chapter-4-test.html">4.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-4-notes.html">4.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details">
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details">
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod4-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-4-kmeans.html">4.1 · K-Means &amp; Initializations</a>
+          <a href="chapter-4-choosing-k.html">4.2 · Choosing K (Elbow vs Gap)</a>
+          <a href="chapter-4-limitations.html">4.3 · Geometric Bias &amp; Limitations</a>
+          <a href="chapter-4-exercise.html" class="active">4.4 · Sprint Exercise: RFM</a>
+          <a href="chapter-4-test.html">4.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-4-notes.html">4.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+  </aside>
+
+<div class="page">
+
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 4.4</div>
+      <h1 class="title">Project Walkthrough: Customer Segmentation</h1>
+    </div>
+  </div>
+
+  <div class="mode-kid">
+    <p class="dek" style="font-size:1.2rem; color:var(--text-light); margin-bottom:2rem;">Welcome to the project! Let's build a real-world marketing engine.</p>
+    <section class="chapter">
+      
+      <div class="callout" style="background: var(--bg-deep); border-left: 4px solid var(--accent); padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 0 8px 8px 0;">
+        <h3 style="margin-top: 0; color: var(--accent); display: flex; align-items: center; gap: 0.5rem;">
+          <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          The Mission
+        </h3>
+        <p>Imagine you just got hired as the Lead Data Scientist for a massive online gift retailer. The marketing director comes to your desk and drops a massive hard drive containing <strong>500,000 receipts</strong> from the past year.</p>
+        <p style="margin-bottom:0;">"We want to send 20% off coupons to our VIPs, and 'We Miss You' emails to people who stopped shopping with us," she says. "But we have no idea who is who. Can you group them for us?"</p>
+      </div>
+
+      <div class="callout" style="margin-bottom: 2rem; border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem;">
+        <span class="tag" style="background: var(--bg-raised); border: 1px solid var(--border); margin-bottom:1rem; display:inline-block;">🎯 What this Exercise Covers</span>
+        <ul style="margin-top:0.5rem; padding-left:1.5rem; margin-bottom:0; line-height: 1.8;">
+          <li>🧹 <strong>Data Cleansing:</strong> Handling Missing Data & Negative Values</li>
+          <li>⚙️ <strong>Feature Engineering:</strong> The RFM Framework</li>
+          <li>📏 <strong>Standard Scaling:</strong> Capping Outliers & Normalizing</li>
+          <li>📉 <strong>The Elbow Method:</strong> Finding the Optimal K</li>
+          <li>🤖 <strong>K-Means Clustering:</strong> Executing the Model</li>
+        </ul>
+      </div>
+
+      <p>Since we don't have labels, we can't use Classification. We have to use <strong>Clustering</strong>. Let's walk through exactly how we solve this, step-by-step.</p>
+
+      <div style="margin-top: 2rem;">
+        <h3 style="color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; display: inline-block;">Step 1: Taking out the Trash</h3>
+        <p>If you look closely at the receipts, some are totally broken. Some don't have a Customer ID (so we can't email them anyway!), and some have a "Negative" price because the customer returned the item. If we feed returned items into our algorithm, it's going to get very confused! So, our very first step is to delete the broken receipts.</p>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h3 style="color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; display: inline-block;">Step 2: Squishing the Data (The RFM Trick)</h3>
+        <p>We can't just feed raw receipts into a clustering algorithm. A customer might have 50 receipts, and another might have 1. How do we compare them?</p>
+        <p>Marketers use a famous trick called <strong>RFM</strong>. We take all 50 receipts for a customer and squish them into exactly three numbers:</p>
+        <div style="background: var(--bg-raised); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+          <ul style="margin-bottom:0;">
+            <li><strong style="color:var(--accent);">R (Recency):</strong> How many days has it been since they last bought something?</li>
+            <li><strong style="color:var(--accent);">F (Frequency):</strong> How many times have they ordered in total?</li>
+            <li><strong style="color:var(--accent);">M (Monetary):</strong> What is the total amount of money they've spent?</li>
+          </ul>
+        </div>
+        <p>Now, every single customer is perfectly described by just 3 numbers!</p>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h3 style="color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; display: inline-block;">Step 3: Leveling the Playing Field</h3>
+        <p>Here is a massive trap: Someone's "Monetary" score might be $5,000, but their "Frequency" is only 12 orders. K-Means measures distance using rulers. If it sees the number 5,000, it's going to think Money is the ONLY thing that matters, completely ignoring Frequency!</p>
+        <p>To fix this, we use a <strong>Scaler</strong>. This acts like a magic shrink ray that forces all three numbers (R, F, and M) to be on the exact same scale, so K-Means treats them fairly.</p>
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <h3 style="color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; display: inline-block;">Step 4: The Guessing Game</h3>
+        <p>How many groups of customers do we actually have? 3? 4? 10? We run K-Means multiple times and plot the "Error" on a graph. We look for the "Elbow" (where the line bends). In our case, the elbow bends perfectly at 4!</p>
+        <img src="assets/elbow_curve.png?v=2" alt="The Elbow graph bending at K=4" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; border: 1px solid var(--border);">
+        <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;"><em><strong>How to read this:</strong> See how the line crashes down like a steep cliff, and then flattens out at number 4? That corner is the "elbow"! It tells us 4 is the perfect number of groups.</em></p>
+
+      </div>
+
+      <div style="margin-top: 2rem; background: rgba(147, 51, 234, 0.05); padding: 1.5rem; border-radius: 8px; border: 1px dashed rgba(147, 51, 234, 0.3);">
+        <h3 style="color: var(--accent); margin-top:0;">Step 5: Labeling the VIPs</h3>
+        <p>We tell K-Means to group everyone into 4 buckets. But K-Means doesn't know what the buckets mean; it just calls them Group 0, 1, 2, and 3.</p>
+        <p>To finish our project, we look at the average scores for each group. We see that <strong>Group 3</strong> spent the most money and bought most frequently—those are our VIPs! <strong>Group 1</strong> has a huge Recency score (meaning they haven't bought anything in hundreds of days)—those are our Lost Customers. Mission accomplished!</p>
+        <img src="assets/heatmap.png?v=2" alt="Cluster profile results" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; border: 1px solid var(--border);">
+        <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;"><em><strong>How to read this:</strong> Dark blue means "High" and light yellow means "Low". Look at the bottom row (Cluster 3): it's dark blue for Frequency and Money. Those are our VIPs!</em></p>
+
+      </div>
+
+    </section>
+  </div>
+
+  <div class="mode-tech">
+    <div class="callout teacher-note">
+      <span class="tag">🎓 Technical Tutorial: E-Commerce Segmentation</span>
+      <p>Welcome to the technical walkthrough. Today we are building an end-to-end unsupervised learning pipeline using the <strong>Online Retail</strong> dataset from UCI (541K rows). Our goal is to transform raw, unstructured transaction logs into actionable marketing segments.</p>
+      
+      <h3>1. Data Cleansing: Garbage In, Garbage Out</h3>
+      <p>If you feed raw transactions into an algorithm, you will cluster noise. Here is how we clean it up:</p>
+      <ul>
+        <li><strong>Missing Data:</strong> A row without a <code>CustomerID</code> belongs to an anonymous guest. We can't send them an email, so we drop them.</li>
+        <li><strong>Negative Numbers:</strong> E-commerce datasets often use negative <code>Quantity</code> values to represent canceled orders or returns. We must filter these out so they don't skew our math.</li>
+        <li><strong>Creating Revenue:</strong> The dataset gives us Quantity and UnitPrice, but we need the total revenue per transaction (<code>TotalPrice</code>) to build our monetary feature later.</li>
+      </ul>
+      <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python">import pandas as pd
+
+# Load the dataset
+data = pd.read_csv('OnlineRetail.csv', encoding='cp1252', header=0)
+
+# Drop rows where CustomerID is NaN 
+data.dropna(subset=['CustomerID'], inplace=True)
+
+# Filter out returns and data entry errors
+data = data[(data['Quantity'] > 0) & (data['UnitPrice'] > 0)]
+
+# Create the monetary basis for our future RFM calculation
+data['TotalPrice'] = data['Quantity'] * data['UnitPrice']
+
+data.head()
+</code></pre>
+      </div>
+      <div class="code-output" style="background: var(--bg-surface); padding: 1rem; border-radius: 4px; overflow-x: auto; margin-bottom: 2rem; border-left: 4px solid var(--border);">
+        <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.5rem; text-transform: uppercase;">Output</div>
+        <table border="1" class="data-table" style="width:100%; border-collapse: collapse; margin-top:1rem;">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>InvoiceNo</th>
+      <th>StockCode</th>
+      <th>Description</th>
+      <th>Quantity</th>
+      <th>InvoiceDate</th>
+      <th>UnitPrice</th>
+      <th>CustomerID</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>536365</td>
+      <td>85123A</td>
+      <td>WHITE HANGING HEART T-LIGHT HOLDER</td>
+      <td>6</td>
+      <td>12/1/2010 8:26</td>
+      <td>2.55</td>
+      <td>17850.0</td>
+      <td>United Kingdom</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>536365</td>
+      <td>71053</td>
+      <td>WHITE METAL LANTERN</td>
+      <td>6</td>
+      <td>12/1/2010 8:26</td>
+      <td>3.39</td>
+      <td>17850.0</td>
+      <td>United Kingdom</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>536365</td>
+      <td>84406B</td>
+      <td>CREAM CUPID HEARTS COAT HANGER</td>
+      <td>8</td>
+      <td>12/1/2010 8:26</td>
+      <td>2.75</td>
+      <td>17850.0</td>
+      <td>United Kingdom</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>536365</td>
+      <td>84029G</td>
+      <td>KNITTED UNION FLAG HOT WATER BOTTLE</td>
+      <td>6</td>
+      <td>12/1/2010 8:26</td>
+      <td>3.39</td>
+      <td>17850.0</td>
+      <td>United Kingdom</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>536365</td>
+      <td>84029E</td>
+      <td>RED WOOLLY HOTTIE WHITE HEART.</td>
+      <td>6</td>
+      <td>12/1/2010 8:26</td>
+      <td>3.39</td>
+      <td>17850.0</td>
+      <td>United Kingdom</td>
+    </tr>
+  </tbody>
+</table>
+      </div>
+
+
+      <h3>2. Feature Engineering: The RFM Framework</h3>
+      <p>We cannot cluster at the "transaction" level; we must cluster at the "customer" level. We do this by collapsing 500,000 transaction rows into ~4,300 unique customer rows using Pandas <code>groupby()</code> and <code>agg()</code> (aggregate). We calculate three metrics:</p>
+      <ul>
+        <li><strong>Recency:</strong> We set a "reference date" (pretending it's today). We find the customer's most recent purchase date (<code>max()</code>), subtract it from today, and extract the number of days.</li>
+        <li><strong>Frequency:</strong> We count the number of unique invoices (<code>nunique</code>) attached to this customer.</li>
+        <li><strong>Monetary:</strong> We add up (<code>sum</code>) all the <code>TotalPrice</code> rows for this customer.</li>
+      </ul>
+      <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python"># Set our "today" anchor to 1 day after the latest transaction in the dataset
+data['InvoiceDate'] = pd.to_datetime(data['InvoiceDate'])
+reference_date = data['InvoiceDate'].max() + pd.Timedelta(days=1)
+
+# Collapse 500k transactions down to ~4,300 unique customers!
+rfm = data.groupby('CustomerID').agg(
+    Recency=('InvoiceDate', lambda x: (reference_date - x.max()).days),
+    Frequency=('InvoiceNo', 'nunique'),
+    Monetary=('TotalPrice', 'sum')
+).reset_index()
+
+rfm.head()
+
+# Visualize the distribution of our new RFM features
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+sns.histplot(rfm['Recency'], bins=30, kde=True, ax=axes[0], color="skyblue")
+axes[0].set_title('Recency Distribution')
+sns.histplot(rfm['Frequency'], bins=30, kde=True, ax=axes[1], color="olive")
+axes[1].set_title('Frequency Distribution')
+sns.histplot(rfm['Monetary'], bins=30, kde=True, ax=axes[2], color="gold")
+axes[2].set_title('Monetary Distribution')
+plt.show()
+</code></pre>
+      </div>
+      <div class="code-output" style="background: var(--bg-surface); padding: 1rem; border-radius: 4px; overflow-x: auto; margin-bottom: 2rem; border-left: 4px solid var(--border);">
+        <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.5rem; text-transform: uppercase;">Output</div>
+        <table border="1" class="data-table" style="width:100%; border-collapse: collapse; margin-top:1rem;">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CustomerID</th>
+      <th>Recency</th>
+      <th>Frequency</th>
+      <th>Monetary</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>12346.0</td>
+      <td>326</td>
+      <td>1</td>
+      <td>77183.60</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>12347.0</td>
+      <td>2</td>
+      <td>7</td>
+      <td>4310.00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>12348.0</td>
+      <td>75</td>
+      <td>4</td>
+      <td>1797.24</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>12349.0</td>
+      <td>19</td>
+      <td>1</td>
+      <td>1757.55</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>12350.0</td>
+      <td>310</td>
+      <td>1</td>
+      <td>334.40</td>
+    </tr>
+  </tbody>
+</table>
+      </div>
+      <div style="margin: 2.5rem 0; padding: 1.5rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px;">
+        <p style="margin-top: 0; color: var(--text-light); font-size: 0.9rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; text-align:center;">Visual Output: RFM Distribution</p>
+        <img src="assets/histograms.png" alt="Histograms showing Recency, Frequency, and Monetary distribution" style="max-width: 100%; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem;">
+        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-left: 3px solid #3b82f6; font-size: 0.95rem;">
+          <strong>How to read this:</strong> A histogram shows "how many" customers fall into each bucket. Notice the <em>Monetary</em> graph (right): it's a massive spike near $0, with a long invisible tail trailing to the right. This proves visually that 99% of our customers are normal spenders, but we have a tiny fraction of massive "whales" hiding in the tail!
+        </div>
+      </div>
+
+
+      <h3>3. Outlier Handling & Standard Scaling</h3>
+      <p>Here is where most junior data scientists fail: <strong>K-Means is incredibly sensitive to scale and outliers.</strong> Why? Because K-Means calculates similarity using <strong>Squared Euclidean Distance</strong> (literally measuring the straight-line distance between data points using a mathematical ruler).</p>
+      
+      <ul style="margin-bottom: 1.5rem;">
+        <li style="margin-bottom: 0.5rem;"><strong>1. The Outlier Problem:</strong> A "centroid" is just the average (the physical center) of a cluster. If a wholesale customer spent £200,000 while everyone else spent £50, that single massive number will drag the average (the centroid) miles away from the normal users, ruining the cluster. We use the <strong>IQR (Interquartile Range) method</strong> to cap these extreme "whale" spenders so they don't break the math.</li>
+        <li><strong>2. The Scaling Problem:</strong> Imagine measuring distance using <code>Recency</code> (which ranges from 1 to 365 days) and <code>Monetary</code> (which ranges from £1 to £10,000). Because £10,000 is mathematically so much larger than 365, the algorithm will basically ignore Recency entirely! We fix this using <code>StandardScaler</code>, which shrinks all columns down so they share the exact same scale (Mean=0, Variance=1). Now, Recency and Monetary get an equal vote!</li>
+      </ul>
+
+      <div style="margin: 2.5rem 0; padding: 1.5rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px;">
+        <p style="margin-top: 0; color: var(--text-light); font-size: 0.9rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; text-align:center;">Visual Output: Outlier Detection</p>
+        <img src="assets/boxplots.png" alt="Boxplots showing outliers for Monetary, Frequency, and Recency" style="max-width: 100%; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem;">
+        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-left: 3px solid #3b82f6; font-size: 0.95rem;">
+          <strong>How to read this:</strong> Boxplots are designed specifically to spot outliers. The colored box represents the "normal" middle 50% of our customers. Look at the <em>Monetary</em> graph (left): every single black circle stacked vertically above the box is an extreme outlier! If we don't cap these circles, they will physically drag the K-Means centroids away from the normal customers.
+        </div>
+      </div>
+      <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python"># Visualize outliers with Boxplots
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+for i, attr in enumerate(['Monetary', 'Frequency', 'Recency']):
+    axes[i].boxplot(rfm[attr], vert=True, patch_artist=True, 
+                    boxprops=dict(facecolor="skyblue", color="blue"),
+                    medianprops=dict(color="red"),
+                    whiskerprops=dict(color="blue"),
+                    capprops=dict(color="blue"))
+    axes[i].set_title(f"{attr} Outliers")
+plt.show()
+
+# Remove statistical outliers for Monetary
+Q1, Q3 = rfm.Monetary.quantile(0.25), rfm.Monetary.quantile(0.75)
+rfm = rfm[(rfm.Monetary >= Q1 - 1.5*(Q3-Q1)) & (rfm.Monetary <= Q3 + 1.5*(Q3-Q1))]
+
+# Remove statistical outliers for Recency
+Q1, Q3 = rfm.Recency.quantile(0.25), rfm.Recency.quantile(0.75)
+rfm = rfm[(rfm.Recency >= Q1 - 1.5*(Q3-Q1)) & (rfm.Recency <= Q3 + 1.5*(Q3-Q1))]
+
+# Remove statistical outliers for Frequency
+Q1, Q3 = rfm.Frequency.quantile(0.25), rfm.Frequency.quantile(0.75)
+rfm = rfm[(rfm.Frequency >= Q1 - 1.5*(Q3-Q1)) & (rfm.Frequency <= Q3 + 1.5*(Q3-Q1))]
+
+# Standardize the RFM metrics to improve clustering performance
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+rfm_scaled = scaler.fit_transform(rfm[['Recency', 'Frequency', 'Monetary']])
+
+# Convert scaled data to DataFrame for easier handling (matches notebook exactly)
+import pandas as pd
+rfm_scaled_df = pd.DataFrame(rfm_scaled, columns=['Recency', 'Frequency', 'Monetary'])
+</code></pre>
+      </div>
+
+      <h3>4. Hyperparameter Tuning: The Elbow Method</h3>
+      <p>Unsupervised learning doesn't give us the "k" (number of clusters) upfront. We have to discover it. We will run K-Means for k=1 through 10 and record the <strong>Inertia</strong>.</p>
+      <p>What is Inertia? It is the total "error" (how far, on average, the points are from their centroids). As we add more clusters, Inertia always goes down. But we want to find the "Elbow"—the point where adding more clusters stops giving us a massive drop in error. This represents the optimal trade-off.</p>
+      <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python">from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+inertia = []
+k_range = range(2, 11)
+
+# Run KMeans for k=2 through k=10
+for k in k_range:
+    kmeans = KMeans(n_clusters=k, random_state=42)
+    kmeans.fit(rfm_scaled_df)
+    inertia.append(kmeans.inertia_)
+
+# Plot the Elbow Method results
+plt.figure(figsize=(10, 5))
+plt.plot(k_range, inertia, marker='o')
+plt.xlabel('Number of clusters')
+plt.ylabel('Inertia')
+plt.title('Elbow Method for Optimal K')
+plt.show()
+</code></pre>
+      </div>
+
+      <div style="margin: 2.5rem 0; padding: 1.5rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px;">
+        <p style="margin-top: 0; color: var(--text-light); font-size: 0.9rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; text-align:center;">Visual Output: The Elbow Method</p>
+        <img src="assets/elbow_curve.png?v=2" alt="Elbow Plot showing WCSS against K, with an inflection point at K=4" style="max-width: 100%; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem;">
+        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-left: 3px solid #3b82f6; font-size: 0.95rem;">
+          <strong>How to read this:</strong> The X-axis is the number of clusters (K), and the Y-axis is the Error (Inertia). Notice how the error plummets steeply as we go from K=1 to K=4. But after K=4, the line flattens out into a gentle slope. K=4 is the "elbow"—the exact point of diminishing returns!
+        </div>
+      </div>
+
+
+      <h3>5. Execution & Business Interpretation</h3>
+      <p>We've found k=4. We fit our final model, but the output is just an array of labels like <code>[0, 1, 2, 3]</code>. What do these groups actually mean?</p>
+      <p>To make this actionable for the marketing team, we group our original RFM dataframe by these new cluster labels and calculate the <code>mean()</code> for each group. Finally, we divide everything by the maximum value to create a "normalized score" (from 0.0 to 1.0). This makes it instantly visually obvious which group is the highest in Recency, Frequency, or Monetary!</p>
+      <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
+<pre><code class="language-python"># Apply K-means with optimal number of clusters
+optimal_k = 4
+kmeans = KMeans(n_clusters=optimal_k, random_state=42)
+rfm['Cluster'] = kmeans.fit_predict(rfm_scaled_df)
+
+# Calculate average values per cluster
+cluster_summary = rfm.groupby('Cluster').agg({
+    'Recency': 'mean',
+    'Frequency': 'mean',
+    'Monetary': 'mean'
+}).round(2)
+
+# Normalize per feature (so we can compare clusters on a 0-1 scale)
+cluster_summary /= cluster_summary.max(axis=0)
+print(cluster_summary)
+
+# Plot heatmap of cluster summary
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10, 6))
+sns.heatmap(cluster_summary, annot=True, fmt=".2f", cmap="YlGnBu", cbar=True)
+plt.title("Average RFM Values per Cluster", fontsize=16, fontweight='bold')
+plt.xlabel("RFM Metrics", fontweight='bold')
+plt.ylabel("Cluster", fontweight='bold')
+plt.show()
+</code></pre>
+      </div>
+
+      <div style="margin: 2.5rem 0; padding: 1.5rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px;">
+        <p style="margin-top: 0; color: var(--text-light); font-size: 0.9rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; text-align:center;">Visual Output: Cluster Profiles</p>
+        <img src="assets/heatmap.png?v=2" alt="Heatmap showing the normalized RFM scores for each of the 4 clusters" style="max-width: 100%; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem;">
+        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-left: 3px solid #3b82f6; font-size: 0.95rem;">
+          <strong>How to read this:</strong> This heatmap color-codes our normalized scores. Dark blue means "High Score" and light yellow means "Low Score". <br><br>
+          • <strong>Cluster 3 (Bottom Row):</strong> Dark blue for Monetary and Frequency! These are our <strong>VIPs</strong>.<br>
+          • <strong>Cluster 1:</strong> Dark blue for Recency (meaning it has been a long time since they bought), and yellow for everything else. These are our <strong>Lost Customers</strong>.
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+<footer class="page-footer">
+    <span><a href="chapter-4-limitations.html">← Previous: 4.3 Core Limitations</a></span>
+    <span><a href="chapter-4-test.html">Next: 4.5 Test Yourself →</a></span>
+  </footer>
+</div>
+</div>
+<script src="assets/site.js?v=4" defer></script>
+</body>
+</html>
