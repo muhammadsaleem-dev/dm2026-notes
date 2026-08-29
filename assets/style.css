@@ -171,6 +171,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
   gap: 0.15rem;
   flex-wrap: nowrap;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   flex: 1;
   min-width: 0;
 }
@@ -212,8 +213,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 }
 
 /* Mode toggling */
-html[data-mode="tech"] .mode-kid { display: none !important; }
-html[data-mode="kid"] .mode-tech { display: none !important; }
+html[data-mode="tech"] .mode-concept { display: none !important; }
+html[data-mode="concept"] .mode-tech { display: none !important; }
 
 
 .theme-toggle svg {
@@ -584,6 +585,7 @@ code {
   margin: 0.7rem 0 1rem;
   font-size: 0.9rem;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   font-variant-numeric: tabular-nums;
   white-space: pre-wrap;
   box-shadow: var(--shadow-sm);
@@ -706,6 +708,7 @@ code {
   border-radius: 6px;
   padding: 0.45rem 0.7rem;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .we-calc strong { color: var(--example-ink); }
 .we-result {
@@ -1229,6 +1232,7 @@ code {
 /* ---------- Tables ---------- */
 .table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin: 0.8rem 0 1.2rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -1631,3 +1635,32 @@ footer.page-footer a:hover { color: var(--accent-ink); }
   opacity: 1;
   bottom: 40px;
 }
+pre { overflow-x: auto;
+  -webkit-overflow-scrolling: touch; max-width: 100%; }
+
+/* Fix for raw pre code blocks getting cut off on mobile */
+pre {
+  background: var(--code-bg);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  box-shadow: var(--shadow-sm);
+  margin: 1rem 0;
+}
+pre code {
+  background: transparent;
+  padding: 0;
+  display: block;
+  white-space: pre;
+}
+
+
+/* Force highlight.js to respect our pre container */
+pre code.hljs {
+  background: transparent !important;
+  padding: 0 !important;
+  overflow-x: visible !important;
+}
+

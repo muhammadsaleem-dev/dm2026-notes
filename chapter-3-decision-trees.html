@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css?v=4">
-<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'kid';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'concept';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
 </head>
 <body>
 
@@ -206,8 +206,8 @@
     <div class="chapter-head"><span class="chapter-num">1</span><h2>Decision Trees</h2></div>
     <p class="chapter-dek">Classification is like learning the rules to a game so you can guess what comes next!</p>
 
-    <h3>1. The Toy Sorter</h3>
-    <p><strong>The Single Sorter:</strong> Imagine you have one kid trying to sort a giant pile of toys into two boxes: "Keep" and "Donate". They use a simple checklist: "Is it broken? If no, is it a Lego?" It's super easy to watch them and understand their rules. But, if their checklist gets way too long and confusing, they might start making silly mistakes. We call this <span class="important-term">overfitting</span>.</p>
+    <h3>1. The file Sorter</h3>
+    <p><strong>The Single Sorter:</strong> Imagine you have one analyst trying to sort a giant pile of files into two boxes: "Keep" and "Donate". They use a simple checklist: "Is it broken? If no, is it a Lego?" It's super easy to watch them and understand their rules. But, if their checklist gets way too long and confusing, they might start making silly mistakes. We call this <span class="important-term">overfitting</span>.</p>
 
     <div class="mini-box" style="margin: 1rem 0;">
       <h4>Key Terms</h4>
@@ -215,8 +215,8 @@
         <li><strong><span class="important-term">Overfitting</span>:</strong> This is like memorizing all the answers to a math test without learning how to actually add numbers. You'll fail if the teacher gives you a new test!</li>
         <li><strong><span class="important-term">Underfitting</span>:</strong> This is when you barely study at all. You fail the practice test AND the real test because your rules are too simple.</li>
         <li><strong><span class="important-term">Regularization</span>:</strong> A strict rule that penalizes a model for being too complicated. It stops the model from memorizing the data like a parrot!</li>
-        <li><strong>Pruning:</strong> A type of regularization. Taking away a kid's massive cheat sheet so they are forced to learn the real, simple rules. We "cut off" the deep, crazy questions!</li>
-        <li><strong><span class="important-term">Entropy</span> / <span class="important-term">Information Gain</span>:</strong> <strong>Entropy</strong> is how messy a room of toys is. <strong>Information Gain</strong> is how much cleaner the room gets when you ask a really smart question to sort them (like "Is it red?").</li>
+        <li><strong>Pruning:</strong> A type of regularization. Taking away a analyst's massive cheat sheet so they are forced to learn the real, simple rules. We "cut off" the deep, crazy questions!</li>
+        <li><strong><span class="important-term">Entropy</span> / <span class="important-term">Information Gain</span>:</strong> <strong>Entropy</strong> is how messy a room of files is. <strong>Information Gain</strong> is how much cleaner the room gets when you ask a really smart question to sort them (like "Is it red?").</li>
       </ul>
     </div>
 
@@ -225,11 +225,11 @@
       <span class="pn-label">Python (Scikit-Learn)</span>
       <pre style="white-space:pre-wrap;margin:0"><code>from sklearn.tree import DecisionTreeClassifier
 
-# min_samples_leaf=3 means: "Don't make a rule unless it applies to at least 3 toys!" 
-# This stops the tree from making a crazy rule for just one weird toy (Pruning).
+# min_samples_leaf=3 means: "Don't make a rule unless it applies to at least 3 files!" 
+# This stops the tree from making a crazy rule for just one weird file (Pruning).
 clf = DecisionTreeClassifier(criterion="entropy", min_samples_leaf=3)
 
-# X_train = The clues (like a toy's color, size, and weight)
+# X_train = The clues (like a file's color, size, and weight)
 # y_train = The answers (like "Keep" or "Donate")
 clf.fit(X_train, y_train)</code></pre>
     </div></div>
@@ -253,7 +253,7 @@ clf.fit(X_train, y_train)</code></pre>
       </div>
       <p style="font-size: 0.9rem;"><em>Where X is the whole messy room, 'a' is the question asked, and X_v are the neat little piles created after asking the question.</em></p>
     </div>
-<div class="mode-kid">
+<div class="mode-concept">
 <h3>3. Exam Cheat Sheet</h3>
     <ul>
       <li><strong>Entropy & Information Gain:</strong> Entropy measures the messiness. Information gain measures how much a question cleans up the mess. The tree always picks the question with the highest Information Gain.</li>
@@ -261,7 +261,7 @@ clf.fit(X_train, y_train)</code></pre>
       <li><strong>Decision Boundaries:</strong> A decision tree boundary is ALWAYS blocky and axis-aligned (like drawing rectangles), never diagonal or smooth.</li>
       <li><strong>Limitations of a Single Tree:</strong>
         <ul>
-          <li><em>Instability:</em> A tiny change in the toys you give the kid might completely change all their rules!</li>
+          <li><em>Instability:</em> A tiny change in the files you give the analyst might completely change all their rules!</li>
           <li><em>Overfitting Risk:</em> Very easy to overcomplicate the rules if not pruned.</li>
           <li><em>Lower Power:</em> Usually less accurate than a whole team (Ensemble).</li>
         </ul>

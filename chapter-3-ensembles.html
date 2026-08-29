@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css?v=4">
-<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'kid';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'concept';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
 </head>
 <body>
 
@@ -213,17 +213,17 @@
     <!-- ============ 2 ============ -->
   <section class="chapter" id="random-forests">
     <div class="chapter-head"><span class="chapter-num">2</span><h2>Random Forests</h2></div>
-    <p class="chapter-dek">Asking a whole classroom of kids to guess, and letting the majority win!</p>
+    <p class="chapter-dek">Asking a whole room of analysts to guess, and letting the majority win!</p>
 
-    <h3>1. The Classroom Analogy</h3>
-    <p><strong>The Sorting Team:</strong> One kid sorting toys makes a lot of mistakes, so we hire a whole classroom! Each kid gets to look at a random handful of toys (<span class="important-term">Bagging</span>) and is only allowed to look at certain clues, like color or shape (<span class="important-term">Random Subspace</span>). They all cast a vote on where the toy goes, and the majority wins.</p>
+    <h3>1. The room Analogy</h3>
+    <p><strong>The Sorting Team:</strong> One analyst sorting files makes a lot of mistakes, so we hire a whole room! Each analyst gets to look at a random handful of files (<span class="important-term">Bagging</span>) and is only allowed to look at certain clues, like color or shape (<span class="important-term">Random Subspace</span>). They all cast a vote on where the file goes, and the majority wins.</p>
 
     <div class="mini-box" style="margin: 1rem 0;">
       <h4>Key Terms</h4>
       <ul style="margin:0; padding-left:1.2rem;">
-        <li><strong><span class="important-term">Ensemble Learning</span>:</strong> Teaming up a bunch of simple guessers (like a classroom of kids) into one super smart team.</li>
-        <li><strong><span class="important-term">Bagging</span> (Bootstrap Aggregating):</strong> Giving each kid a random handful of toys (with replacement) so they all learn slightly different things.</li>
-        <li><strong><span class="important-term">Random Subspace</span>:</strong> Forcing each kid to only look at a random set of clues (like only looking at color and size, but ignoring weight). This makes sure no two kids are exactly the same!</li>
+        <li><strong><span class="important-term">Ensemble Learning</span>:</strong> Teaming up a bunch of simple guessers (like a room of analysts) into one super smart team.</li>
+        <li><strong><span class="important-term">Bagging</span> (Bootstrap Aggregating):</strong> Giving each analyst a random handful of files (with replacement) so they all learn slightly different things.</li>
+        <li><strong><span class="important-term">Random Subspace</span>:</strong> Forcing each analyst to only look at a random set of clues (like only looking at color and size, but ignoring weight). This makes sure no two analysts are exactly the same!</li>
       </ul>
     </div>
 
@@ -232,7 +232,7 @@
       <span class="pn-label">Python (Scikit-Learn)</span>
       <pre style="white-space:pre-wrap;margin:0"><code>from sklearn.ensemble import RandomForestClassifier
 
-# n_estimators is the number of kids in our classroom (trees in the forest). 
+# n_estimators is the number of analysts in our room (trees in the forest). 
 clf = RandomForestClassifier(n_estimators=100)
 
 # X_train = Clues (Features), y_train = Answers (Labels)
@@ -241,17 +241,17 @@ clf.fit(X_train, y_train)</code></pre>
 
     <div class="worked-example">
       <span class="we-label">Quick Example: Why Randomize?</span>
-      <p>Why do we need to randomize? Because if we gave 100 kids the exact same toys and the exact same clues, they would all make the exact same guess! That defeats the purpose of having a team!</p>
+      <p>Why do we need to randomize? Because if we gave 100 analysts the exact same files and the exact same clues, they would all make the exact same guess! That defeats the purpose of having a team!</p>
       <ol class="we-steps">
-        <li><div><span class="we-step-label">Bagging (Rows)</span><span class="we-calc">Kid 1 gets random toys: [Car, Car, Ball]. Bear is left out! Kid 2 gets [Bear, Ball, Ball].</span></div></li>
-        <li><div><span class="we-step-label">Random Subspace (Columns)</span><span class="we-calc">Kid 1 is only allowed to look at [Color, Weight]. Kid 2 is only allowed to look at [Size, Shape].</span></div></li>
+        <li><div><span class="we-step-label">Bagging (Rows)</span><span class="we-calc">analyst 1 gets random files: [Car, Car, Ball]. Bear is left out! analyst 2 gets [Bear, Ball, Ball].</span></div></li>
+        <li><div><span class="we-step-label">Random Subspace (Columns)</span><span class="we-calc">analyst 1 is only allowed to look at [Color, Weight]. analyst 2 is only allowed to look at [Size, Shape].</span></div></li>
       </ol>
       <p>Because they see different things, their mistakes are totally different, making their final team vote extremely reliable.</p>
     </div>
 
     <div class="callout teacher-note">
       <span class="tag">💡 Key Concept</span>
-      <p>Because Random Forests are opaque "black boxes" (you can't ask all 100 kids exactly what they were thinking), it's critical to know which clues are actually driving the team's decisions. We calculate <strong>Permutation Feature Importance</strong> using the "Blindfold Test". We randomly blindfold the kids to one clue at a time (like hiding all the colors) and measure how much their accuracy drops. The larger the drop, the more important the clue!</p>
+      <p>Because Random Forests are opaque "black boxes" (you can't ask all 100 analysts exactly what they were thinking), it's critical to know which clues are actually driving the team's decisions. We calculate <strong>Permutation Feature Importance</strong> using the "Blindfold Test". We randomly blindfold the analysts to one clue at a time (like hiding all the colors) and measure how much their accuracy drops. The larger the drop, the more important the clue!</p>
     </div>
 
     
@@ -260,7 +260,7 @@ clf.fit(X_train, y_train)</code></pre>
       <p><strong>Random Forest</strong> is highly robust for massive user bases. By looking at age, location, and timing across parallel trees, it handles a massive range of scenarios well (even if Netflix can't explain exactly <em>why</em> it recommended a movie).</p>
       <p><strong>AdaBoost</strong> provides high iterative accuracy for specific patterns (e.g., "Under 25s like pop... unless they follow indie artists"). But, a few users with weird outlier tastes could skew the entire model's logic!</p>
     </div>
-<div class="mode-kid">
+<div class="mode-concept">
 <h3>3. Exam Cheat Sheet</h3>
     <ul>
       <li><strong>Ensemble Learning:</strong> Combining many weak models into one strong model.</li>
@@ -273,16 +273,16 @@ clf.fit(X_train, y_train)</code></pre>
   <!-- ============ 3 ============ -->
   <section class="chapter" id="adaboost">
     <div class="chapter-head"><span class="chapter-num">3</span><h2>Adaptive Boosting (AdaBoost)</h2></div>
-    <p class="chapter-dek">A relay race where each kid tries to fix the mistakes of the kid before them.</p>
+    <p class="chapter-dek">A relay race where each analyst tries to fix the mistakes of the analyst before them.</p>
 
     <h3>1. The Relay Race Analogy</h3>
-    <p><strong>Reweighting:</strong> Kids form a line. The first kid tries to sort the toys. Any toys they get wrong get a giant, glowing URGENT sticker (<span class="important-term">reweighting</span>) slapped on them, so the next kid in line knows to focus extra hard on those specific toys!</p>
+    <p><strong>Reweighting:</strong> analysts form a line. The first analyst tries to sort the files. Any files they get wrong get a giant, glowing URGENT sticker (<span class="important-term">reweighting</span>) slapped on them, so the next analyst in line knows to focus extra hard on those specific files!</p>
 
     <div class="mini-box" style="margin: 1rem 0;">
       <h4>Key Terms</h4>
       <ul style="margin:0; padding-left:1.2rem;">
-        <li><strong><span class="important-term">Decision Stump</span>:</strong> A tiny, silly kid who can only ask 1 question before guessing. They are barely better than flipping a coin!</li>
-        <li><strong><span class="important-term">Reweighting</span>:</strong> Slapping the URGENT sticker on toys. After every round, incorrectly sorted toys get their "weight" magically increased so the next kid is forced to fix the mistake.</li>
+        <li><strong><span class="important-term">Decision Stump</span>:</strong> A tiny, silly analyst who can only ask 1 question before guessing. They are barely better than flipping a coin!</li>
+        <li><strong><span class="important-term">Reweighting</span>:</strong> Slapping the URGENT sticker on files. After every round, incorrectly sorted files get their "weight" magically increased so the next analyst is forced to fix the mistake.</li>
       </ul>
     </div>
 
@@ -299,13 +299,13 @@ clf.fit(X_train, y_train)</code></pre>
 
     <div class="worked-example">
       <span class="we-label">Quick Example: The Urgent Sticker</span>
-      <p>Suppose we have 5 toys. They all start equally important (20% each).</p>
+      <p>Suppose we have 5 files. They all start equally important (20% each).</p>
       <ol class="we-steps">
-        <li><div><span class="we-step-label">Round 1</span><span class="we-calc">Kid #1 gets 4 toys right, but accidentally puts the Robot in the wrong box.</span></div></li>
-        <li><div><span class="we-step-label">Reweighting</span><span class="we-calc">AdaBoost slaps a giant URGENT sticker on the Robot! The other 4 toys become less important, and the Robot's importance boosts to 50%.</span></div></li>
-        <li><div><span class="we-step-label">Round 2</span><span class="we-calc">Kid #2 steps up and is forced to prioritize the Robot above everything else.</span></div></li>
+        <li><div><span class="we-step-label">Round 1</span><span class="we-calc">analyst #1 gets 4 files right, but accidentally puts the Robot in the wrong box.</span></div></li>
+        <li><div><span class="we-step-label">Reweighting</span><span class="we-calc">AdaBoost slaps a giant URGENT sticker on the Robot! The other 4 files become less important, and the Robot's importance boosts to 50%.</span></div></li>
+        <li><div><span class="we-step-label">Round 2</span><span class="we-calc">analyst #2 steps up and is forced to prioritize the Robot above everything else.</span></div></li>
       </ol>
-      <p>At the end, all the kids vote, but the kids who made fewer mistakes get to shout their vote <strong>louder (higher alpha weight)</strong>.</p>
+      <p>At the end, all the analysts vote, but the analysts who made fewer mistakes get to shout their vote <strong>louder (higher alpha weight)</strong>.</p>
     </div>
 
     
@@ -314,7 +314,7 @@ clf.fit(X_train, y_train)</code></pre>
       <p><strong>Random Forest</strong> is highly robust for massive user bases. By looking at age, location, and timing across parallel trees, it handles a massive range of scenarios well (even if Netflix can't explain exactly <em>why</em> it recommended a movie).</p>
       <p><strong>AdaBoost</strong> provides high iterative accuracy for specific patterns (e.g., "Under 25s like pop... unless they follow indie artists"). But, a few users with weird outlier tastes could skew the entire model's logic!</p>
     </div>
-<div class="mode-kid">
+<div class="mode-concept">
 <h3>3. Exam Cheat Sheet</h3>
     <ul>
       <li><strong>Sequential vs Parallel:</strong> Random Forest trains all trees at the same time (parallel). AdaBoost trains them one by one in a line (sequential).</li>
@@ -368,7 +368,7 @@ clf.fit(X_train, y_train)</code></pre>
       <p><strong>Random Forest</strong> is highly robust for massive user bases. By looking at age, location, and timing across parallel trees, it handles a massive range of scenarios well (even if Netflix can't explain exactly <em>why</em> it recommended a movie).</p>
       <p><strong>AdaBoost</strong> provides high iterative accuracy for specific patterns (e.g., "Under 25s like pop... unless they follow indie artists"). But, a few users with weird outlier tastes could skew the entire model's logic!</p>
     </div>
-<div class="mode-kid">
+<div class="mode-concept">
 <h3>3. Exam Cheat Sheet</h3>
     <ul>
       <li><strong>Sequential vs Parallel:</strong> Random Forest trains all trees at the same time (parallel). AdaBoost trains them one by one (sequential).</li>

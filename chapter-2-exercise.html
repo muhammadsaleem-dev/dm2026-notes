@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprint Exercise · DM 2026 Bootcamp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=13">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'concept';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Overview</a>
+      <a href="chapter-2-pandas.html">2.1 · Pandas/EDA</a>
+      <a href="chapter-2-preprocessing.html">2.2 · Preprocessing</a>
+      <a href="chapter-2-modelling.html">2.3 · Modelling</a>
+      <a href="chapter-2-pca.html">2.4 · PCA</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+      <a href="chapter-3-ensembles.html">3.2 · Ensembles</a>
+      <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+      <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+      <a href="chapter-3-test.html">3.5 · Test Yourself</a>
+      <a href="chapter-3-notes.html">3.6 · Technical Notes</a>
+      <a href="chapter-4-overview.html">4 · Clustering</a>
+      <a href="chapter-4-kmeans.html">4.1 · K-Means</a>
+      <a href="chapter-4-choosing-k.html">4.2 · Choosing K</a>
+      <a href="chapter-4-limitations.html">4.3 · Limitations</a>
+      <a href="chapter-4-exercise.html" class="active">4.4 · Sprint Exercise</a>
+      <a href="chapter-4-test.html">4.5 · Test Yourself</a>
+      <a href="chapter-4-notes.html">4.6 · Technical Notes</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-5-regression.html">5.1 · Regression</a>
+      <a href="chapter-5-neural-networks.html">5.2 · Neural Networks</a>
+      <a href="chapter-5-training.html">5.3 · Training</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details">
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod4-details">
+        <summary class="nav-summary">
+          <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-4-kmeans.html">4.1 · K-Means &amp; Initializations</a>
+          <a href="chapter-4-choosing-k.html">4.2 · Choosing K (Elbow vs Gap)</a>
+          <a href="chapter-4-limitations.html">4.3 · Geometric Bias &amp; Limitations</a>
+          <a href="chapter-4-exercise.html" class="active">4.4 · Sprint Exercise: RFM</a>
+          <a href="chapter-4-test.html">4.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-4-notes.html">4.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+  </div>
+</nav>
+
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <details class="nav-details" id="mod2-details" open>
+        <summary class="nav-summary">
+          <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-2-pandas.html" class="active">2.1 · Pandas &amp; EDA</a>
+          <a href="chapter-2-preprocessing.html">2.2 · Data Preprocessing</a>
+          <a href="chapter-2-modelling.html">2.3 · Modelling &amp; Evaluation</a>
+          <a href="chapter-2-pca.html">2.4 · PCA &amp; t-SNE</a>
+          <a href="chapter-2-exercise.html">2.5 · Sprint Exercise</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod3-details">
+        <summary class="nav-summary">
+          <a href="chapter-3-overview.html">3 · Classification</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-3-decision-trees.html">3.1 · Decision Trees</a>
+          <a href="chapter-3-ensembles.html">3.2 · Ensembles (Random Forest, AdaBoost)</a>
+          <a href="chapter-3-explainability.html">3.3 · Explainability</a>
+          <a href="chapter-3-exercise.html">3.4 · Sprint Exercise</a>
+          <a href="chapter-3-test.html">3.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-3-notes.html">3.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod4-details">
+        <summary class="nav-summary">
+          <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-4-kmeans.html">4.1 · K-Means &amp; Initializations</a>
+          <a href="chapter-4-choosing-k.html">4.2 · Choosing K (Elbow vs Gap)</a>
+          <a href="chapter-4-limitations.html">4.3 · Geometric Bias &amp; Limitations</a>
+          <a href="chapter-4-exercise.html">4.4 · Sprint Exercise: RFM</a>
+          <a href="chapter-4-test.html">4.5 · Test Yourself &amp; Exam Drill</a>
+          <a href="chapter-4-notes.html">4.6 · Comprehensive Notes</a>
+        </div>
+      </details>
+      <details class="nav-details" id="mod5-details">
+        <summary class="nav-summary">
+          <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+          <span class="nav-chevron"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+        </summary>
+        <div class="sub-modules">
+          <a href="chapter-5-regression.html">5.1 · Linear &amp; Logistic Regression</a>
+          <a href="chapter-5-neural-networks.html">5.2 · Building Neural Networks</a>
+          <a href="chapter-5-training.html">5.3 · Training at Scale &amp; Exercises</a>
+        </div>
+      </details>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+    </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">On this page</span>
+      <a href="#overview"><span class="toc-num">0</span>High-Level Overview</a>
+      <a href="#objects"><span class="toc-num">1</span>Pandas Objects</a>
+      <a href="#cleaning"><span class="toc-num">2</span>Data Cleaning</a>
+      <a href="#eda"><span class="toc-num">3</span>EDA</a>
+      <a href="#exam-drills"><span class="toc-num">4</span>Test Yourself</a>
+    </div>
+  </aside>
+
+<div class="page">
+  <div class="masthead">
+    <div>
+      <div class="eyebrow">Data Mining Bootcamp · Module 2.5</div>
+      <h1 class="title">Sprint Exercise: The Full Pipeline</h1>
+    </div>
+    <div class="masthead-meta">Sprint Exercises 3, 4, and 5<br><strong>Preparation → Pipeline → Visualization</strong></div>
+  </div>
+
+  <!-- INTRO -->
+  <section class="chapter" id="intro">
+    <p class="chapter-dek">In this sprint, we cover all three of the official Module 2 exercises (Exercise 3, 4, and 5) bridging EDA, Pipeline Engineering, and Dimensionality Reduction.</p>
+    
+    <div class="callout teacher-note">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong>How to use this page</strong>
+        <p>This page features the <strong>Concept/Tech Toggle</strong> (the toggle icon in the top right). Start in Concept Mode to understand the intuition of the pipeline, then flip to Tech Mode to see the exact Python code and exam traps used in the Jupyter Notebooks.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 1 -->
+  <section class="chapter" id="step1">
+    <div class="chapter-head"><span class="chapter-num">3</span><h2>Exercise 3: Pandas &amp; The Setup</h2></div>
+    
+    <div class="mode-concept">
+      <p>Imagine you are baking a cake for a competition. You have a giant bowl of raw ingredients (our dataset). Before you even look at the recipe or start sifting flour, you MUST take 30% of your ingredients and lock them in a safe.</p>
+      <p>Why? Because you need pristine, untouched ingredients to bake the final cake for the judges (the <strong class="important-term">Test Set</strong>). If you mix everything together early on, you ruin the test!</p>
+    </div>
+
+    <div class="mode-tech">
+      <p>In data mining, we always split our data into Training and Testing sets <em>before</em> we do any imputation or scaling. This prevents <strong class="important-term">Data Leakage</strong>, where statistics from the test set accidentally influence the training process.</p>
+      
+      <div class="callout exam-trap">
+        <div class="callout-icon">🚨</div>
+        <div class="callout-content">
+          <strong>Exam Trap: The numerical selector</strong>
+          <p>Exams frequently test if you know how to programmatically grab only the numerical columns before doing math operations. The magic function is <code>df.select_dtypes(include=np.number).columns</code>.</p>
+        </div>
+      </div>
+
+<pre><code class="language-python"># Load the dataset
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+
+url = 'https://www.openml.org/data/get_csv/16826755/phpMYEkMl'
+df = pd.read_csv(url)
+
+# EXAM TRAP: Programmatically identify numerical columns
+numerical_cols = df.select_dtypes(include=np.number).columns.tolist()
+print("Numerical cols:", numerical_cols)
+
+# Separate features (X) and target (y)
+X = df.drop(columns=['survived'])
+y = df['survived']
+
+# The Golden Rule: Split FIRST! (30% test)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)</code></pre>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="chapter" id="step2">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Exercise 4: The Full Pipeline</h2></div>
+    
+    <div class="mode-concept">
+      <p>Now we look at our ingredients. Oh no! Some eggs are missing, and someone wrote "Large" instead of giving us a number of cups of flour.</p>
+      <ul>
+        <li><strong>Missing Values:</strong> If we are missing a little bit of sugar, we just guess the amount using the average (Mean Imputation). If a whole bag of flour is missing, we throw it away (Drop).</li>
+        <li><strong>Words to Numbers:</strong> Computers can't bake with the word "Large". We have to translate it into a number. We create a new label called "Is_Large" and set it to 1 or 0 (<strong class="important-term">One-Hot Encoding</strong>).</li>
+      </ul>
+    </div>
+
+    <div class="mode-tech">
+      <p>We replace garbage characters (like <code>?</code>) with <code>NaN</code> so Pandas recognizes them as missing. Then we impute missing numericals and apply <strong class="important-term">One-Hot Encoding</strong> to categorical variables so our ML models can process them.</p>
+
+<pre><code class="language-python"># Replace garbage '?' with standard NaNs
+X_train = X_train.replace('?', pd.NA)
+X_test = X_test.replace('?', pd.NA)
+
+# Fill missing numerical values with the mean (fit ONLY on train)
+mean_age = X_train['age'].astype(float).mean()
+X_train['age'] = X_train['age'].fillna(mean_age)
+X_test['age'] = X_test['age'].fillna(mean_age)
+
+# One-Hot Encoding for categorical data (e.g. Sex)
+X_train = pd.get_dummies(X_train, columns=['sex'], drop_first=True)
+X_test = pd.get_dummies(X_test, columns=['sex'], drop_first=True)
+# drop_first=True avoids the Dummy Variable Trap!</code></pre>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="chapter" id="step3">
+    <div class="chapter-head"><span class="chapter-num">4</span><h2>Exercise 4 (Cont.): Scaling</h2></div>
+    
+    <div class="mode-concept">
+      <p>We have a problem: Our recipe calls for 1,000 grams of flour, but only 2 teaspoons of baking powder. A robot baker might look at "1,000" and "2" and think flour is 500x more important than baking powder!</p>
+      <p>To fix this, we <strong class="important-term">Scale</strong> everything. We shrink the flour down to a scale of 0 to 1, and we stretch the baking powder to a scale of 0 to 1. Now they are perfectly balanced.</p>
+    </div>
+
+    <div class="mode-tech">
+      <p>Distance-based algorithms (like K-Means or Neural Networks) are extremely sensitive to the magnitude of features. We must scale them. For exam purposes, the most popular scaler is <strong class="important-term">MinMaxScaler</strong>.</p>
+      
+      <div class="callout exam-trap">
+        <div class="callout-icon">🚨</div>
+        <div class="callout-content">
+          <strong>Exam Trap: fit_transform vs transform</strong>
+          <p>You MUST use <code>fit_transform()</code> on the training data to learn the Min and Max. You MUST use <code>transform()</code> on the test data. If you fit on the test data, you just committed Data Leakage.</p>
+        </div>
+      </div>
+
+<pre><code class="language-python">from sklearn.preprocessing import MinMaxScaler
+
+# Initialize the scaler
+scaler = MinMaxScaler()
+
+# 1. FIT and TRANSFORM on the Training Data
+numerical_features = ['age', 'fare']
+X_train[numerical_features] = scaler.fit_transform(X_train[numerical_features])
+
+# 2. ONLY TRANSFORM on the Test Data
+X_test[numerical_features] = scaler.transform(X_test[numerical_features])
+</code></pre>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="chapter" id="step4">
+    <div class="chapter-head"><span class="chapter-num">5</span><h2>Exercise 5: PCA vs t-SNE</h2></div>
+    
+    <div class="mode-concept">
+      <p>Imagine trying to map out a massive 3D city onto a flat 2D piece of paper.</p>
+      <ul>
+        <li><strong>PCA (The Mapmaker):</strong> Takes a photo from an airplane. It creates a rigid, perfectly mathematical map. If you take the photo twice from the exact same spot, it looks identical every time.</li>
+        <li><strong>t-SNE (The Tourist):</strong> Walks around the city and draws a map based on which buildings are next to each other. It's beautiful and colorful, but if they draw it twice, the map might look totally different!</li>
+      </ul>
+      <p>In Sprint Exercise 5, we explored scRNA-seq (Genomics) data with thousands of features. <strong>Why run PCA before t-SNE?</strong> Because t-SNE gets overwhelmed if you give it too much data. We use PCA to filter out the noise (like stripping away the clouds in the airplane photo), and then we hand that clean, simplified data to t-SNE to draw the final colorful clusters!</p>
+    </div>
+
+    <div class="mode-tech">
+      <p>In Sprint Exercise 5, we explored scRNA-seq (Genomics) data with thousands of features. We used Dimensionality Reduction to visualize it.</p>
+      
+      <div class="callout exam-trap">
+        <div class="callout-icon">🚨</div>
+        <div class="callout-content">
+          <strong>Exam Trap: Why PCA before t-SNE?</strong>
+          <p>This is a classic question. The official solution notes that PCA is applied first because it: <strong>1. Removes irrelevant variance and noise</strong> (improving t-SNE stability) and <strong>2. Reduces computational cost/runtime</strong>.</p>
+        </div>
+      </div>
+      
+      <div class="callout teacher-note">
+        <div class="callout-icon">💡</div>
+        <div class="callout-content">
+          <strong>Interpreting the Plots (Q7 Solution)</strong>
+          <p>The PCA plot typically shows a continuous spread without clearly separated groups because it preserves <em>global variance</em>. The t-SNE plot reveals compact clusters because it captures <em>local structure</em>.<br><br><strong>🚨 THE 2 MAJOR t-SNE TRAPS:</strong><br>1. <strong>Distance is meaningless:</strong> If two clusters are close together, it does NOT mean they are related! The white space is artificially expanded.<br>2. <strong>Size is meaningless:</strong> A large spread-out cluster does not mean it has more variance than a tightly packed one.</p>
+        </div>
+      </div>
+
+<pre><code class="language-python">from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+from sklearn.preprocessing import StandardScaler
+
+# 1. ALWAYS scale before dimensionality reduction
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# 2. PCA: Deterministic, linear, preserves global variance
+# We reduce thousands of genes down to the top 50 components
+pca_50 = PCA(n_components=50)
+X_pca_50 = pca_50.fit_transform(X_scaled)
+
+# 3. t-SNE: Stochastic, non-linear, preserves local neighbors
+# We feed the PCA output (X_pca_50) into t-SNE
+tsne = TSNE(n_components=2, perplexity=30, random_state=42)
+X_tsne = tsne.fit_transform(X_pca_50)
+</code></pre>
+    </div>
+
+  </section>
+
+</div>
+</div>
+<script src="assets/site.js?v=13" defer></script>
+</body>
+</html>

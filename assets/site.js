@@ -10,6 +10,13 @@
       var next = current === "dark" ? "light" : "dark";
       root.setAttribute("data-theme", next);
       try { localStorage.setItem("dm2026-theme", next); } catch (e) {}
+      
+      var hljsTheme = document.getElementById('hljs-theme');
+      if (hljsTheme) {
+        hljsTheme.href = next === "dark" 
+          ? 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css' 
+          : 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css';
+      }
     });
   }
 
@@ -31,13 +38,13 @@
   var modeBtn = document.getElementById("modeToggle");
   if (modeBtn) {
     // Initialize button icon based on current state
-    var currentMode = document.documentElement.getAttribute("data-mode") || "kid";
+    var currentMode = document.documentElement.getAttribute("data-mode") || "concept";
     modeBtn.textContent = currentMode === "tech" ? "📖" : "🎓";
     
     modeBtn.addEventListener("click", function () {
       var root = document.documentElement;
-      var current = root.getAttribute("data-mode") === "tech" ? "tech" : "kid";
-      var next = current === "tech" ? "kid" : "tech";
+      var current = root.getAttribute("data-mode") === "tech" ? "tech" : "concept";
+      var next = current === "tech" ? "concept" : "tech";
       root.setAttribute("data-mode", next);
       try { localStorage.setItem("dm2026-mode", next); } catch (e) {}
       
@@ -66,12 +73,23 @@
       }
     });
   }
-})();
 
-  // Simple syntax highlighting for python comments
-  var codeBlocks = document.querySelectorAll('.python-note pre code');
-  codeBlocks.forEach(function(block) {
-    var html = block.innerHTML;
-    var highlighted = html.replace(/^( *)(#.*)$/gm, '$1<span class="py-comment">$2</span>');
-    block.innerHTML = highlighted;
-  });
+
+  // Highlight.js initialization
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var hljsStyle = document.createElement('link');
+  hljsStyle.rel = 'stylesheet';
+  hljsStyle.id = 'hljs-theme';
+  hljsStyle.href = isDark 
+    ? 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css' 
+    : 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css';
+  document.head.appendChild(hljsStyle);
+
+  var hljsScript = document.createElement('script');
+  hljsScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js';
+  hljsScript.onload = function() {
+    // Also load python language explicitly if needed, but core includes it.
+    hljs.highlightAll();
+  };
+  document.head.appendChild(hljsScript);
+})();
