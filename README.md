@@ -6,17 +6,20 @@ Condensed, chapter-by-chapter reference notes for *Basic Data Mining Practice* �
 
 ```
 index.html                     landing page (chapter grid)
-chapter-1-intro.html
-chapter-2-pipeline.html
-chapter-3-classification.html
-chapter-4-clustering.html
-chapter-5-regression-nn.html
-chapter-6-llm-rag.html
-chapter-7-explainability.html
-assets/style.css                shared design system used by every page
+past-papers.html               Mock Exams Hub & syllabus weight matrix
+mock-1.html                    Mock 1 (75 pts · 13 questions with solutions)
+mock-2.html                    Mock 2 (95 pts · 16 questions with solutions)
+assets/style.css               shared design system used by every page
+assets/site.js                 theme, mode, and interactive collapsible logic
 ```
 
 Every chapter page is self-contained HTML + one shared stylesheet — open `index.html` directly in a browser locally, no server needed.
+
+## Exam Practice & Mock Papers
+- **`past-papers.html`**: Interactive Past Papers Hub featuring the 7-module syllabus weight matrix, 5 golden exam rules, and quick launches.
+- **`mock-1.html`**: Mock 1 (75 points · 13 questions) covering MinMaxScaler, PCA, NN forward/backward passes, temperature softmax, greedy decoding, and permutation importance.
+- **`mock-2.html`**: Mock 2 (95 points · 16 questions) covering supervised task identification, t-SNE, OneHotEncoder, binary cross-entropy, Keras layer sizing, RAG pipelines, and SHAP beeswarms.
+- Both mock pages feature **Collapse All Questions**, **Mock Exam Mode (hide solutions)**, real-time readiness progress tracking, and professor starter templates.
 
 ## Publish to GitHub Pages
 

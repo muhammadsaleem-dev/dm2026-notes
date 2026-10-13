@@ -235,11 +235,14 @@ function parseNotebookFull(filePath) {
   return modules;
 }
 
-function generatePastPaperPage(year, modules, totalPoints, totalQuestions) {
-  const is2025 = year === '2025';
-  const otherYear = is2025 ? '2026' : '2025';
-  const otherYearPts = is2025 ? '95 pts' : '75 pts';
-  const otherYearQs = is2025 ? '16 questions' : '13 questions';
+function generatePastPaperPage(mockId, modules, totalPoints, totalQuestions) {
+  const isMock1 = mockId === '1' || mockId === '2025';
+  const mockNum = isMock1 ? '1' : '2';
+  const otherMockNum = isMock1 ? '2' : '1';
+  const fileName = `mock-${mockNum}.html`;
+  const otherFileName = `mock-${otherMockNum}.html`;
+  const otherPts = isMock1 ? '95 pts' : '75 pts';
+  const otherQs = isMock1 ? '16 questions' : '13 questions';
 
   let totalQuestionsCount = 0;
   let totalPtsCount = 0;
@@ -494,8 +497,8 @@ function generatePastPaperPage(year, modules, totalPoints, totalQuestions) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${year} Data Mining Past Paper with Solutions | DM Bootcamp</title>
-<meta name="description" content="Complete ${year} Data Mining past paper practice exam with collapsible questions, official professor starter templates, verified code solutions, and critical exam pitfalls.">
+<title>Mock ${mockNum} with Solutions | DM Bootcamp</title>
+<meta name="description" content="Complete Mock ${mockNum} Data Mining practice exam with collapsible questions, official professor starter templates, verified code solutions, and critical exam pitfalls.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -540,8 +543,8 @@ function generatePastPaperPage(year, modules, totalPoints, totalQuestions) {
       <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
       <span class="nav-panel-label">Exam Practice</span>
       <a href="past-papers.html">📝 Past Papers Hub</a>
-      <a href="past-paper-2025.html" ${is2025 ? 'class="active"' : ''}>2025 Exam (75 pts)</a>
-      <a href="past-paper-2026.html" ${!is2025 ? 'class="active"' : ''}>2026 Exam (95 pts)</a>
+      <a href="mock-1.html" ${isMock1 ? 'class="active"' : ''}>Mock 1 (75 pts)</a>
+      <a href="mock-2.html" ${!isMock1 ? 'class="active"' : ''}>Mock 2 (95 pts)</a>
     </div>
   </div>
 </nav>
@@ -551,12 +554,12 @@ function generatePastPaperPage(year, modules, totalPoints, totalQuestions) {
     <div class="sidebar-block">
       <span class="sidebar-label">Exam Practice</span>
       <a href="past-papers.html">← Past Papers Overview</a>
-      <a href="past-paper-2025.html" ${is2025 ? 'class="active"' : ''}>2025 Past Paper (75 pts)</a>
-      <a href="past-paper-2026.html" ${!is2025 ? 'class="active"' : ''}>2026 Past Paper (95 pts)</a>
+      <a href="mock-1.html" ${isMock1 ? 'class="active"' : ''}>Mock 1 (75 pts)</a>
+      <a href="mock-2.html" ${!isMock1 ? 'class="active"' : ''}>Mock 2 (95 pts)</a>
     </div>
 
     <div class="sidebar-block">
-      <span class="sidebar-label">${year} Questions (${totalQuestionsCount})</span>
+      <span class="sidebar-label">Mock ${mockNum} Questions (${totalQuestionsCount})</span>
       <div class="sidebar-q-list">
         ${sidebarQuestionsList}
       </div>
@@ -567,7 +570,7 @@ function generatePastPaperPage(year, modules, totalPoints, totalQuestions) {
     <div class="masthead">
       <div>
         <div class="eyebrow">Official Practice Exam · Complete Solutions</div>
-        <h1 class="title">${year} Past Paper &amp; Detailed Walkthrough</h1>
+        <h1 class="title">Mock ${mockNum} &amp; Detailed Walkthrough</h1>
       </div>
       <div class="masthead-badge-group">
         <span class="masthead-badge masthead-badge-accent">${totalQuestionsCount} Questions</span>
@@ -577,7 +580,7 @@ function generatePastPaperPage(year, modules, totalPoints, totalQuestions) {
     </div>
 
     <p class="dek">
-      Every question from the ${year} practice exam, paired with the professor's blank starter template, 
+      Every question from the Mock ${mockNum} practice exam, paired with the professor's blank starter template, 
       verified solution code, step-by-step reasoning, and high-stakes grading pitfalls. Questions and solutions are 
       collapsible so you can test yourself before revealing the answers.
     </p>
@@ -599,7 +602,7 @@ function generatePastPaperPage(year, modules, totalPoints, totalQuestions) {
       </div>
       <div class="pp-progress-footer">
         <span id="questionsCompleted">0 of ${totalQuestionsCount} questions mastered</span>
-        <button class="pp-reset-btn" type="button" onclick="resetMastery('${year}')">Reset Progress</button>
+        <button class="pp-reset-btn" type="button" onclick="resetMastery('${mockNum}')">Reset Progress</button>
       </div>
     </div>
 
@@ -607,9 +610,9 @@ function generatePastPaperPage(year, modules, totalPoints, totalQuestions) {
     <div class="pp-switcher-banner">
       <div class="pp-switcher-text">
         <strong>Looking for the other paper?</strong>
-        <span>Switch to the ${otherYear} Exam (${otherYearPts} · ${otherYearQs})</span>
+        <span>Switch to Mock ${otherMockNum} (${otherPts} · ${otherQs})</span>
       </div>
-      <a href="past-paper-${otherYear}.html" class="pp-switcher-link">Go to ${otherYear} Exam &rarr;</a>
+      <a href="${otherFileName}" class="pp-switcher-link">Go to Mock ${otherMockNum} &rarr;</a>
     </div>
 
     <!-- Search and Filter Bar -->
@@ -716,7 +719,7 @@ function generatePastPaperPage(year, modules, totalPoints, totalQuestions) {
         <a href="past-papers.html" class="footer-link">← Past Papers Hub</a>
       </div>
       <div class="page-footer-right">
-        <a href="past-paper-${otherYear}.html" class="footer-link">Proceed to ${otherYear} Exam →</a>
+        <a href="${otherFileName}" class="footer-link">Proceed to Mock ${otherMockNum} →</a>
       </div>
     </footer>
 
@@ -726,7 +729,8 @@ function generatePastPaperPage(year, modules, totalPoints, totalQuestions) {
 <script src="assets/site.js?v=12" defer></script>
 <script>
 // Past Paper Interactive Logic
-var currentYear = "${year}";
+var currentMock = "${mockNum}";
+var currentYear = "${mockNum}";
 var totalExamPts = ${totalPtsCount};
 var totalExamQuestions = ${totalQuestionsCount};
 
@@ -748,7 +752,8 @@ function copyCode(btn) {
 
 function getMasteredStorage() {
   try {
-    var raw = localStorage.getItem('dm2026-pp-' + currentYear + '-mastery');
+    var raw = localStorage.getItem('dm2026-pp-mock' + currentMock + '-mastery') ||
+              localStorage.getItem('dm2026-pp-' + (currentMock === '1' ? '2025' : '2026') + '-mastery');
     return raw ? JSON.parse(raw) : {};
   } catch(e) {
     return {};
@@ -757,7 +762,7 @@ function getMasteredStorage() {
 
 function saveMasteredStorage(data) {
   try {
-    localStorage.setItem('dm2026-pp-' + currentYear + '-mastery', JSON.stringify(data));
+    localStorage.setItem('dm2026-pp-mock' + currentMock + '-mastery', JSON.stringify(data));
   } catch(e) {}
 }
 
@@ -775,9 +780,10 @@ function toggleMastered(qid) {
   }
 }
 
-function resetMastery(year) {
-  if (confirm("Reset your mastery progress for the " + year + " exam?")) {
-    localStorage.removeItem('dm2026-pp-' + year + '-mastery');
+function resetMastery(mockNum) {
+  if (confirm("Reset your mastery progress for Mock " + mockNum + "?")) {
+    localStorage.removeItem('dm2026-pp-mock' + mockNum + '-mastery');
+    localStorage.removeItem('dm2026-pp-' + (mockNum === '1' ? '2025' : '2026') + '-mastery');
     updateMasteryUI();
   }
 }
@@ -962,8 +968,8 @@ function generateHubPage() {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Past Exam Papers Hub (2025 &amp; 2026) | DM Bootcamp</title>
-<meta name="description" content="Master real Data Mining past papers with verified solutions, official professor starter templates, points breakdowns, and critical grading traps.">
+<title>Past Papers &amp; Mock Exams Hub (Mock 1 &amp; Mock 2) | DM Bootcamp</title>
+<meta name="description" content="Master real Data Mining past papers (Mock 1 &amp; Mock 2) with verified solutions, official professor starter templates, points breakdowns, and critical grading traps.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1008,8 +1014,8 @@ function generateHubPage() {
       <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
       <span class="nav-panel-label">Exam Practice</span>
       <a href="past-papers.html" class="active">📝 Past Papers Hub</a>
-      <a href="past-paper-2025.html">2025 Exam (75 pts)</a>
-      <a href="past-paper-2026.html">2026 Exam (95 pts)</a>
+      <a href="mock-1.html">Mock 1 (75 pts)</a>
+      <a href="mock-2.html">Mock 2 (95 pts)</a>
     </div>
   </div>
 </nav>
@@ -1025,18 +1031,18 @@ function generateHubPage() {
     </div>
     <div class="sidebar-block">
       <span class="sidebar-label">Direct Practice Links</span>
-      <a href="past-paper-2025.html">2025 Past Paper (75 pts)</a>
-      <a href="past-paper-2026.html">2026 Past Paper (95 pts)</a>
+      <a href="mock-1.html">Mock 1 (75 pts)</a>
+      <a href="mock-2.html">Mock 2 (95 pts)</a>
     </div>
   </aside>
 
   <div class="page">
     <div class="hero">
       <div class="eyebrow">Real Exam Archive &amp; Interactive Trainer</div>
-      <h1>Data Mining Past Papers Hub</h1>
+      <h1>Data Mining Past Papers &amp; Mock Exams Hub</h1>
       <p>
         The definitive preparation portal for your Data Mining final exam. 
-        Solve 2 complete official past papers (29 real questions, 170 points combined) 
+        Solve 2 complete official practice exams (Mock 1 &amp; Mock 2 — 29 real questions, 170 points combined) 
         with interactive collapsibles, official professor templates, verified code solutions, and grading trap alerts.
       </p>
     </div>
@@ -1045,7 +1051,7 @@ function generateHubPage() {
     <section class="pp-hub-grid" id="papers-overview">
       <div class="pp-hub-card pp-hub-card-featured">
         <div class="pp-hub-card-tag">Practice Exam 1</div>
-        <h2>2025 Past Paper</h2>
+        <h2>Mock 1</h2>
         <div class="pp-hub-stats-row">
           <div class="pp-hub-stat">
             <span class="stat-number">13</span>
@@ -1072,12 +1078,12 @@ function generateHubPage() {
           <span class="hub-pill">SHAP / PDP</span>
           <span class="hub-pill">Permutation Importance</span>
         </div>
-        <a href="past-paper-2025.html" class="pp-hub-btn">Launch 2025 Interactive Paper &rarr;</a>
+        <a href="mock-1.html" class="pp-hub-btn">Launch Mock 1 Interactive Paper &rarr;</a>
       </div>
 
       <div class="pp-hub-card pp-hub-card-featured">
         <div class="pp-hub-card-tag pp-hub-tag-2026">Practice Exam 2</div>
-        <h2>2026 Past Paper</h2>
+        <h2>Mock 2</h2>
         <div class="pp-hub-stats-row">
           <div class="pp-hub-stat">
             <span class="stat-number">16</span>
@@ -1105,7 +1111,7 @@ function generateHubPage() {
           <span class="hub-pill">RAG Steps</span>
           <span class="hub-pill">SHAP Beeswarm</span>
         </div>
-        <a href="past-paper-2026.html" class="pp-hub-btn">Launch 2026 Interactive Paper &rarr;</a>
+        <a href="mock-2.html" class="pp-hub-btn">Launch Mock 2 Interactive Paper &rarr;</a>
       </div>
     </section>
 
@@ -1119,8 +1125,8 @@ function generateHubPage() {
           <thead>
             <tr>
               <th>Module</th>
-              <th>2025 Exam (75 pts)</th>
-              <th>2026 Exam (95 pts)</th>
+              <th>Mock 1 (75 pts)</th>
+              <th>Mock 2 (95 pts)</th>
               <th>Core Question Archetypes</th>
             </tr>
           </thead>
@@ -1169,8 +1175,8 @@ function generateHubPage() {
             </tr>
             <tr style="background: rgba(12, 122, 115, 0.08); font-weight: bold;">
               <td>Total</td>
-              <td>75 Points (13 Questions)</td>
-              <td>95 Points (16 Questions)</td>
+              <td>Mock 1: 75 Points (13 Questions)</td>
+              <td>Mock 2: 95 Points (16 Questions)</td>
               <td>Combined Total: 170 Points (29 Questions)</td>
             </tr>
           </tbody>
@@ -1227,7 +1233,7 @@ function generateHubPage() {
 
     <footer class="page-footer">
       <span>Basic Data Mining Practice</span>
-      <span>29 Real Exam Questions · 170 Total Points</span>
+      <span>29 Real Exam Questions Across Mock 1 &amp; Mock 2 · 170 Total Points</span>
     </footer>
   </div>
 </div>
@@ -1241,13 +1247,15 @@ console.log('Generating files...');
 const parsed2025 = parseNotebookFull(p2025Path);
 const parsed2026 = parseNotebookFull(p2026Path);
 
-const html2025 = generatePastPaperPage('2025', parsed2025, 75, 13);
-fs.writeFileSync(path.join(__dirname, 'past-paper-2025.html'), html2025, 'utf8');
-console.log('Created past-paper-2025.html');
+const htmlMock1 = generatePastPaperPage('1', parsed2025, 75, 13);
+fs.writeFileSync(path.join(__dirname, 'mock-1.html'), htmlMock1, 'utf8');
+fs.writeFileSync(path.join(__dirname, 'past-paper-2025.html'), htmlMock1, 'utf8');
+console.log('Created mock-1.html & past-paper-2025.html');
 
-const html2026 = generatePastPaperPage('2026', parsed2026, 95, 16);
-fs.writeFileSync(path.join(__dirname, 'past-paper-2026.html'), html2026, 'utf8');
-console.log('Created past-paper-2026.html');
+const htmlMock2 = generatePastPaperPage('2', parsed2026, 95, 16);
+fs.writeFileSync(path.join(__dirname, 'mock-2.html'), htmlMock2, 'utf8');
+fs.writeFileSync(path.join(__dirname, 'past-paper-2026.html'), htmlMock2, 'utf8');
+console.log('Created mock-2.html & past-paper-2026.html');
 
 const hubHtml = generateHubPage();
 fs.writeFileSync(path.join(__dirname, 'past-papers.html'), hubHtml, 'utf8');
