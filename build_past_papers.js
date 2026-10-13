@@ -471,7 +471,13 @@ function generatePastPaperPage(year, modules, totalPoints, totalQuestions) {
             <span class="pp-module-num-badge">Module ${m.modNum}</span>
             <h2 class="pp-module-title">${escapeHtml(m.title.replace(/^Module [0-9]+ — /, ''))}</h2>
           </div>
-          <span class="pp-module-subtotal">${modPts} pts subtotal · ${m.questions.length} questions</span>
+          <div class="pp-module-actions">
+            <span class="pp-module-subtotal">${modPts} pts subtotal · ${m.questions.length} questions</span>
+            <button class="pp-mod-toggle-btn" type="button" onclick="toggleModuleQuestions('${m.modNum}', this)" title="Collapse or expand all questions in this module">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>
+              <span>Toggle Module</span>
+            </button>
+          </div>
         </div>
 
         ${modNotesHtml}
@@ -657,9 +663,51 @@ function generatePastPaperPage(year, modules, totalPoints, totalQuestions) {
       </div>
     </div>
 
+    <!-- Prominent Quick-View / Collapse All Bar -->
+    <div class="pp-quick-view-bar" id="quickViewBar">
+      <div class="pp-quick-view-title">
+        <strong>⚡ Fast View Controls</strong>
+        <span>Collapse all questions to skim topics &amp; points, or expand for in-depth practice</span>
+      </div>
+      <div class="pp-quick-view-buttons">
+        <button class="pp-btn-pill pp-btn-collapse" type="button" onclick="toggleAllQuestions(false)" title="Collapse all questions to view titles and points only">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="17 11 12 6 7 11"></polyline><polyline points="17 18 12 13 7 18"></polyline></svg>
+          <span>Collapse All Questions</span>
+        </button>
+        <button class="pp-btn-pill pp-btn-expand" type="button" onclick="toggleAllQuestions(true)" title="Expand all questions for full detailed study">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>
+          <span>Expand All Questions</span>
+        </button>
+        <button class="pp-btn-pill pp-btn-sol-hide" type="button" onclick="toggleAllSolutions(false)" title="Hide all solutions to test yourself in mock exam mode">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+          <span>Collapse Solutions (Mock Mode)</span>
+        </button>
+        <button class="pp-btn-pill" type="button" onclick="toggleAllSolutions(true)" title="Reveal all verified solution walk-throughs">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <span>Reveal All Solutions</span>
+        </button>
+      </div>
+    </div>
+
     <!-- Main Content: Modules & Questions -->
     <div class="pp-content-container" id="questionsContainer">
       ${modulesContent}
+    </div>
+
+    <!-- Floating Quick Actions Dock -->
+    <div class="pp-floating-dock" id="floatingDock" aria-label="Quick Actions Dock">
+      <button class="floating-btn" type="button" onclick="toggleAllQuestions(false)" title="Collapse all questions">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="17 11 12 6 7 11"></polyline><polyline points="17 18 12 13 7 18"></polyline></svg>
+        <span>Collapse All</span>
+      </button>
+      <button class="floating-btn" type="button" onclick="toggleAllQuestions(true)" title="Expand all questions">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>
+        <span>Expand All</span>
+      </button>
+      <button class="floating-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Scroll back to top">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+        <span>Top ↑</span>
+      </button>
     </div>
 
     <!-- Bottom Navigation / Links -->
@@ -784,17 +832,41 @@ function updateMasteryUI() {
 function toggleAllQuestions(expand) {
   var detailsList = document.querySelectorAll('.pp-qdetails');
   detailsList.forEach(function(d) {
+    d.open = !!expand;
     if (expand) d.setAttribute('open', '');
     else d.removeAttribute('open');
   });
+  if (window.showToast) {
+    window.showToast(expand ? 'All questions expanded' : 'All questions collapsed');
+  }
+}
+
+function toggleModuleQuestions(modNum, btn) {
+  var sec = document.getElementById('mod-' + modNum);
+  if (!sec) return;
+  var detailsList = sec.querySelectorAll('.pp-qdetails');
+  var hasOpen = Array.from(detailsList).some(function(d) { return d.open || d.hasAttribute('open'); });
+  var shouldOpen = !hasOpen;
+  detailsList.forEach(function(d) {
+    d.open = shouldOpen;
+    if (shouldOpen) d.setAttribute('open', '');
+    else d.removeAttribute('open');
+  });
+  if (window.showToast) {
+    window.showToast(shouldOpen ? 'Module ' + modNum + ' questions expanded' : 'Module ' + modNum + ' questions collapsed');
+  }
 }
 
 function toggleAllSolutions(reveal) {
   var solDetailsList = document.querySelectorAll('.pp-sol-details');
   solDetailsList.forEach(function(d) {
+    d.open = !!reveal;
     if (reveal) d.setAttribute('open', '');
     else d.removeAttribute('open');
   });
+  if (window.showToast) {
+    window.showToast(reveal ? 'All solutions revealed' : 'Solutions hidden (Mock Test Mode)');
+  }
 }
 
 var currentModFilter = 'all';

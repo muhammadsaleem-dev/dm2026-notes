@@ -2813,3 +2813,206 @@ pre code.hljs {
   }
 }
 
+/* Quick View Mode Bar (Prominent Collapse / Expand All) */
+.pp-quick-view-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  padding: 0.95rem 1.35rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.pp-quick-view-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.pp-quick-view-title strong {
+  font-size: 0.92rem;
+  color: var(--text);
+}
+
+.pp-quick-view-title span {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.pp-quick-view-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pp-btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--code-bg);
+  color: var(--text);
+  transition: all 0.18s ease;
+}
+
+.pp-btn-pill:hover {
+  background: var(--bg);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+.pp-btn-collapse {
+  background: rgba(12, 122, 115, 0.1);
+  border-color: rgba(12, 122, 115, 0.35);
+  color: var(--accent);
+}
+
+.pp-btn-collapse:hover {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+:root[data-theme="dark"] .pp-btn-collapse {
+  background: rgba(69, 214, 201, 0.15);
+  border-color: rgba(69, 214, 201, 0.4);
+  color: #5eead4;
+}
+
+:root[data-theme="dark"] .pp-btn-collapse:hover {
+  background: var(--accent);
+  color: #0b0f14;
+}
+
+.pp-btn-expand {
+  background: var(--bg-raised);
+}
+
+.pp-btn-sol-hide {
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.25);
+  color: #dc2626;
+}
+
+:root[data-theme="dark"] .pp-btn-sol-hide {
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.3);
+  color: #f87171;
+}
+
+/* Module Action Header */
+.pp-module-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pp-mod-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-raised);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pp-mod-toggle-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Floating Quick Action Dock */
+.pp-floating-dock {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.5rem;
+  background: rgba(246, 247, 249, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  box-shadow: var(--shadow-md);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+:root[data-theme="dark"] .pp-floating-dock {
+  background: rgba(19, 25, 32, 0.95);
+}
+
+.floating-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background: var(--bg-raised);
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.15s ease;
+}
+
+.floating-btn:hover {
+  background: var(--accent);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.floating-btn.floating-top {
+  padding: 0.4rem 0.55rem;
+}
+
+/* Universal Quiz / Drill List Toolbar */
+.list-toggle-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+  margin-bottom: 0.75rem;
+}
+
+.list-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.list-toggle-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+

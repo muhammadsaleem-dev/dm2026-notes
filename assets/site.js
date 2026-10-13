@@ -33,6 +33,7 @@
     toast.className = "toast show";
     setTimeout(function(){ toast.className = "toast"; }, 2500);
   }
+  window.showToast = showToast;
 
   // Mode toggle
   var modeBtn = document.getElementById("modeToggle");
@@ -119,5 +120,41 @@
     if (e.target.classList.contains('modal')) {
       e.target.style.display = 'none';
     }
+  });
+
+  // Universal Expand/Collapse All Toolbar for .quiz-list and .drill-list
+  document.querySelectorAll('.quiz-list, .drill-list').forEach(function(container) {
+    var items = container.querySelectorAll('details');
+    if (items.length < 2) return;
+    
+    var toolbar = document.createElement('div');
+    toolbar.className = 'list-toggle-toolbar';
+    toolbar.innerHTML = 
+      '<button type="button" class="list-toggle-btn expand-btn" title="Expand all questions in this section">' +
+        '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>' +
+        '<span>Expand All</span>' +
+      '</button>' +
+      '<button type="button" class="list-toggle-btn collapse-btn" title="Collapse all questions in this section">' +
+        '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 11 12 6 7 11"></polyline><polyline points="17 18 12 13 7 18"></polyline></svg>' +
+        '<span>Collapse All</span>' +
+      '</button>';
+      
+    container.parentNode.insertBefore(toolbar, container);
+    
+    toolbar.querySelector('.expand-btn').addEventListener('click', function() {
+      container.querySelectorAll('details').forEach(function(d) {
+        d.open = true;
+        d.setAttribute('open', '');
+      });
+      showToast('All items expanded');
+    });
+    
+    toolbar.querySelector('.collapse-btn').addEventListener('click', function() {
+      container.querySelectorAll('details').forEach(function(d) {
+        d.open = false;
+        d.removeAttribute('open');
+      });
+      showToast('All items collapsed');
+    });
   });
 })();
