@@ -46,6 +46,12 @@
       <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
       <a href="chapter-7-explainability.html">7 · Explainability</a>
     </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">Exam Practice</span>
+      <a href="past-papers.html">📝 Past Papers Hub</a>
+      <a href="past-paper-2025.html">2025 Exam (75 pts)</a>
+      <a href="past-paper-2026.html">2026 Exam (95 pts)</a>
+    </div>
     <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       Menu
@@ -114,6 +120,10 @@
       </details>
       <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
       <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+          <span class="nav-panel-label">Exam Practice</span>
+      <a href="past-papers.html">📝 Past Papers Hub</a>
+      <a href="past-paper-2025.html">2025 Exam (75 pts)</a>
+      <a href="past-paper-2026.html">2026 Exam (95 pts)</a>
     </div>
     <div class="nav-panel-section">
       <span class="nav-panel-label">On this page</span>
@@ -122,7 +132,8 @@
       <a href="#missing"><span class="toc-num">2</span>Handling Missing Data</a>
       <a href="#categorical"><span class="toc-num">3</span>Categorical Data & OHE</a>
       <a href="#scaling"><span class="toc-num">4</span>Scaling</a>
-      <a href="#exam-drills"><span class="toc-num">5</span>Test Yourself</a>
+      <a href="#outliers-iqr"><span class="toc-num">5</span>Outlier Detection (IQR)</a>
+      <a href="#exam-drills"><span class="toc-num">6</span>Test Yourself</a>
     </div>
   </div>
 </nav>
@@ -194,7 +205,8 @@
       <a href="#missing"><span class="toc-num">2</span>Handling Missing Data</a>
       <a href="#categorical"><span class="toc-num">3</span>Categorical Data & OHE</a>
       <a href="#scaling"><span class="toc-num">4</span>Scaling</a>
-      <a href="#exam-drills"><span class="toc-num">5</span>Test Yourself</a>
+      <a href="#outliers-iqr"><span class="toc-num">5</span>Outlier Detection (IQR)</a>
+      <a href="#exam-drills"><span class="toc-num">6</span>Test Yourself</a>
     </div>
   </aside>
 
@@ -216,7 +228,8 @@
       <li><a href="#missing"><span class="toc-num">2</span>Handling Missing Data</a></li>
       <li><a href="#categorical"><span class="toc-num">3</span>Categorical Data & OHE</a></li>
       <li><a href="#scaling"><span class="toc-num">4</span>Scaling</a></li>
-      <li><a href="#exam-drills"><span class="toc-num">5</span>Test Yourself</a></li>
+      <li><a href="#outliers-iqr"><span class="toc-num">5</span>Outlier Detection (IQR)</a></li>
+      <li><a href="#exam-drills"><span class="toc-num">6</span>Test Yourself</a></li>
     </ul>
   </div>
 
@@ -380,9 +393,70 @@ X_train_minmax = minmax.fit_transform(X_train[['Age', 'Fare']])
 X_test_minmax = minmax.transform(X_test[['Age', 'Fare']])
 </code></pre>
 
+  <!-- ============ OUTLIER DETECTION (IQR) ============ -->
+  <section class="chapter" id="outliers-iqr">
+    <div class="chapter-head"><span class="chapter-num">5</span><h2>Outlier Detection (IQR Method)</h2></div>
+    
+    <figure class="carousel-container">
+      <div class="carousel-caption">Sometimes your data contains extreme values (like a height of 40.2 or 1.2). We can use the Interquartile Range (IQR) to detect and remove these outliers mathematically.</div>
+    </figure>
+
+    <h3>What is the IQR?</h3>
+    <p>The IQR is the difference between the 75th percentile (Q3) and the 25th percentile (Q1) of the data. It represents the middle 50% of the dataset.</p>
+    
+    <div class="callout" style="margin: 1.5rem 0;">
+      <div class="callout-icon">🎥</div>
+      <div class="callout-content">
+        <strong>Need a visual explanation?</strong>
+        <p>Check out <a href="https://www.youtube.com/watch?v=sytBDWefYb0" target="_blank">this excellent YouTube video</a> that explains Boxplots and the IQR method in detail.</p>
+      </div>
+    </div>
+
+    <div class="concept-cards">
+      <div class="concept-card">
+        <h4>1. Calculate Q1 and Q3</h4>
+        <p>Sort the data. Find the value at the 25th percentile (<strong>Q1</strong>) and the 75th percentile (<strong>Q3</strong>).</p>
+      </div>
+      <div class="concept-card">
+        <h4>2. Calculate IQR</h4>
+        <p><strong>IQR = Q3 - Q1</strong></p>
+      </div>
+      <div class="concept-card">
+        <h4>3. Find Limits</h4>
+        <p><strong>Lower Limit</strong> = Q1 - 1.5 * IQR<br><strong>Upper Limit</strong> = Q3 + 1.5 * IQR</p>
+      </div>
+    </div>
+    
+    <h3>Example based on Heights</h3>
+    <p>If Q1 = 5.35 and Q3 = 6.27:</p>
+    <ul>
+      <li><strong>IQR</strong> = 6.27 - 5.35 = <strong>0.925</strong></li>
+      <li><strong>Lower Limit</strong> = 5.35 - 1.5 * 0.925 = <strong>3.96</strong></li>
+      <li><strong>Upper Limit</strong> = 6.27 + 1.5 * 0.925 = <strong>7.66</strong></li>
+    </ul>
+    <p>Any height below 3.96 (e.g., 1.2, 2.3) or above 7.66 (e.g., 14.5, 40.2) is considered an outlier!</p>
+
+    <h3>The Code Reality</h3>
+    <pre><code>import pandas as pd
+
+# 1. Calculate Q1 and Q3
+Q1 = df['height'].quantile(0.25)
+Q3 = df['height'].quantile(0.75)
+
+# 2. Calculate IQR
+IQR = Q3 - Q1
+
+# 3. Calculate lower and upper limits
+lower_limit = Q1 - 1.5 * IQR
+upper_limit = Q3 + 1.5 * IQR
+
+# 4. Filter out the outliers
+df_clean = df[(df['height'] >= lower_limit) &amp; (df['height'] &lt;= upper_limit)]</code></pre>
+  </section>
+
   <!-- ============ EXAM DRILLS ============ -->
   <section class="chapter" id="exam-drills">
-    <div class="chapter-head"><span class="chapter-num">5</span><h2>Test Yourself (Concept Drills)</h2></div>
+    <div class="chapter-head"><span class="chapter-num">6</span><h2>Test Yourself (Concept Drills)</h2></div>
     <p class="chapter-dek">Test your knowledge with essential exam-style concept questions.</p>
     
     <div class="drill-list">

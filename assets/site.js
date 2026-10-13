@@ -92,4 +92,32 @@
     hljs.highlightAll();
   };
   document.head.appendChild(hljsScript);
+
+  // Universal Modal Logic
+  var openModalBtns = document.querySelectorAll('.open-modal');
+  var closeBtns = document.querySelectorAll('.close-modal');
+
+  openModalBtns.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      var targetId = btn.getAttribute('data-target');
+      if (targetId) {
+        var modal = document.getElementById(targetId);
+        if (modal) modal.style.display = 'block';
+      }
+    });
+  });
+
+  closeBtns.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      var modal = e.target.closest('.modal');
+      if (modal) modal.style.display = 'none';
+    });
+  });
+
+  window.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal')) {
+      e.target.style.display = 'none';
+    }
+  });
 })();

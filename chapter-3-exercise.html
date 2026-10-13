@@ -44,6 +44,12 @@
       <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
       <a href="chapter-7-explainability.html">7 · Explainability</a>
     </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">Exam Practice</span>
+      <a href="past-papers.html">📝 Past Papers Hub</a>
+      <a href="past-paper-2025.html">2025 Exam (75 pts)</a>
+      <a href="past-paper-2026.html">2026 Exam (95 pts)</a>
+    </div>
     <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       Menu
@@ -111,6 +117,10 @@
       </details>
       <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
       <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+          <span class="nav-panel-label">Exam Practice</span>
+      <a href="past-papers.html">📝 Past Papers Hub</a>
+      <a href="past-paper-2025.html">2025 Exam (75 pts)</a>
+      <a href="past-paper-2026.html">2026 Exam (95 pts)</a>
     </div>
   </div>
 </nav>
@@ -222,7 +232,7 @@
 
       <div style="margin-top: 2rem;">
         <h3 style="color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; display: inline-block;">Step 3: Fixing the Weird Cells (Outliers)</h3>
-        <p>Sometimes a cell size is listed as the size of a basketball. That's a typo from the doctors! We use a math trick called the <strong>IQR (Interquartile Range)</strong> to spot these crazy mistakes and delete them.</p>
+        <p>Sometimes a cell size is listed as the size of a basketball. That's a typo from the doctors! We use a math trick called the <a href="#" class="open-modal" data-target="iqrModal"><strong>IQR (Interquartile Range)</strong></a> to spot these crazy mistakes and delete them.</p>
         <img src="assets/mod3_plot_2.png?v=2" alt="Boxplots showing outliers for cell features" style="max-width: 100%; border-radius: 8px; margin-top: 1rem; border: 1px solid var(--border); background: white;">
         <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;"><em><strong>How to read this:</strong> Boxplots spot mistakes! The colored box is the "normal" cells. Any black dot floating way above the box is an impossible typo we need to delete.</em></p>
       </div>
@@ -248,18 +258,31 @@
       <p>Welcome to the technical walkthrough. Today we are building an end-to-end supervised learning pipeline using clinical data. Our goal is to transform raw, unstructured measurements into an accurate Random Forest classifier.</p>
 
       <h3>1. Global Configuration</h3>
-      <p>A good pipeline is driven by a configuration dictionary, allowing us to easily swap out strategies without rewriting core logic.</p>
+      <p>A good pipeline is driven by a configuration dictionary, allowing us to easily swap out strategies without rewriting core logic. <br><br><strong>Confused by these Random Forest settings?</strong> <a href="#" class="open-modal" data-target="rfModal">Watch this explanation video!</a></p>
       <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
 <pre><code class="language-python"># Configuration dictionary to track preprocessing and modeling choices
 config = {
     "missing_value_strategy": "replace_by_mean_cancer_type",
     "scaling_method": "StandardScaler",
-    "RDF": {"n_estimators": 1000,
+    "RDF": {
+            # Plant 1,000 decision trees in our forest
+            "n_estimators": 1000,
+            
+            # Don't let any tree grow deeper than 6 branches (prevents memorizing the data)
             "max_depth": 6,
+            
+            # A node needs at least 2 patients before it's allowed to split again
             "min_samples_split": 2,
+            
+            # Every final "leaf" (diagnosis) must contain at least 2 patients
             "min_samples_leaf": 2,
+            
+            # Trees only look at 70% of available features (forces trees to be diverse!)
             "max_features": 0.7,
-            "class_weight": 'balanced'}
+            
+            # Pays extra attention if one class (like cancer) is rare
+            "class_weight": 'balanced'
+           }
 }
 
 # Set global random seed for reproducibility
@@ -316,13 +339,13 @@ X_train, X_test, y_train, y_test = train_test_split(
       </div>
 
       <h3>4. Outlier Detection (IQR Method)</h3>
-      <p>We use the <strong>IQR (Interquartile Range) method</strong> to detect outliers, and replace them with NaN so our Imputer can handle them later.</p>
+      <p>We use the <a href="#" class="open-modal" data-target="iqrModal"><strong>IQR (Interquartile Range) method</strong></a> to detect outliers, and replace them with NaN so our Imputer can handle them later.</p>
       
       <div style="margin: 2.5rem 0; padding: 1.5rem; background: var(--bg-raised); border: 1px solid var(--border); border-radius: 8px;">
         <p style="margin-top: 0; color: var(--text-light); font-size: 0.9rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; text-align:center;">Visual Output: Outlier Detection</p>
         <img src="assets/mod3_plot_2.png?v=2" alt="Boxplots showing outliers for features" style="max-width: 100%; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem; background: white;">
         <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-left: 3px solid #3b82f6; font-size: 0.95rem;">
-          <strong>How to read this:</strong> The boxplots reveal massive outliers in features like <code>perimeter_0</code> and <code>perimeter_2</code>. Any dots floating above the whiskers are considered statistically anomalous and will be removed.
+          <strong>How to read this:</strong> The boxplots reveal massive outliers in features like <code>perimeter_0</code>, <code>perimeter_1</code>, and the <code>radius</code> measurements. Any dots floating above the whiskers are considered statistically anomalous and will be removed.
         </div>
       </div>
 
@@ -346,22 +369,31 @@ X_test = X_test.where(~outlier_mask_test, np.nan)
       </div>
 
       <h3>5. Imputation & Scaling</h3>
-      <p>We dynamically execute the strategies we defined in our <code>config</code> dictionary.</p>
+      <p>We dynamically execute the strategies we defined in our <code>config</code> dictionary. <br><br><strong>Why do we fit on training data ONLY?</strong> <a href="#" class="open-modal" data-target="leakageModal">Watch this video on Data Leakage!</a></p>
       <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
 <pre><code class="language-python">from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler, RobustScaler, Normalizer, MinMaxScaler
 
-# 1. IMPUTATION
+# 1. IMPUTATION (Filling in the blanks)
 if config['missing_value_strategy'] == 'replace_by_mean_cancer_type':
     imp = SimpleImputer(missing_values=np.nan, strategy='mean')
-imp.fit(X_train)  # Fit on training data ONLY
+
+# ⚠️ CRITICAL: Only calculate the "mean" using the Training Set!
+imp.fit(X_train)  
+
+# Now apply those training means to fill blanks in both train and test sets
 X_train = imp.transform(X_train)
 X_test = imp.transform(X_test)
 
-# 2. SCALING
+
+# 2. SCALING (Shrinking all features to be fair and on the same scale)
 if config['scaling_method'] == 'StandardScaler':
     scaler = StandardScaler()
-scaler.fit(X_train)  # Fit on training data ONLY
+
+# ⚠️ CRITICAL: Only calculate the "variance" using the Training Set!
+scaler.fit(X_train)  
+
+# Now apply that shrink ray to both train and test sets
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 
@@ -371,7 +403,7 @@ X_test = pd.DataFrame(X_test, columns=features_list)
       </div>
 
       <h3>6. Random Forest Classification</h3>
-      <p>We initialize the model using our config, fit it to our clean training data, and generate predictions on the test data.</p>
+      <p>We initialize the model using our config, fit it to our clean training data, and generate predictions on the test data. <br><br><strong>Not sure how to read the final score?</strong> <a href="#" class="open-modal" data-target="metricsModal">Watch this video on Confusion Matrices!</a></p>
       <div class="python-note" style="margin: 0.5rem 0 1.5rem;">
 <pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
@@ -387,13 +419,16 @@ clf = RandomForestClassifier(
     random_state=RANDOM_STATE
 )
 
+# 1. THE EXAM: The AI studies the training patients (X) and their true diagnoses (y)
 clf.fit(X_train, y_train)
+
+# 2. THE TEST: We give the AI the unseen test patients and ask it to guess the diagnosis
 y_predict = clf.predict(X_test)
 
-# Print metrics
+# 3. THE REPORT CARD: Shows Precision, Recall, and F1-Score for our guesses
 print(classification_report(y_test, y_predict, target_names=['healthy','cancer']))
 
-# Plot Confusion Matrix
+# 4. THE BREAKDOWN: A 2x2 grid showing exactly how many patients we got right vs wrong
 cm = confusion_matrix(y_test, y_predict)
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=clf.classes_)
 disp.plot()
@@ -406,8 +441,10 @@ plt.show()
         <img src="assets/mod3_plot_4.png?v=2" alt="Confusion Matrix for Random Forest" style="max-width: 100%; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1rem; background: white;">
         <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-left: 3px solid #3b82f6; font-size: 0.95rem;">
           <strong>How to read this:</strong> A Confusion Matrix visualizes True Positives, True Negatives, False Positives, and False Negatives. <br><br>
-          • <strong>Top-Left:</strong> Healthy patients correctly identified as healthy.<br>
-          • <strong>Bottom-Right:</strong> Cancerous patients correctly identified as cancerous.
+          • <strong>Top-Left:</strong> Healthy patients correctly identified as healthy (True Negative).<br>
+          • <strong>Top-Right:</strong> Healthy patients incorrectly identified as cancerous (False Positive).<br>
+          • <strong style="color:red;">Bottom-Left:</strong> Cancerous patients incorrectly identified as healthy (False Negative).<br>
+          • <strong>Bottom-Right:</strong> Cancerous patients correctly identified as cancerous (True Positive).
         </div>
       </div>
 
@@ -431,6 +468,132 @@ clf.fit(X_all, Y_all)
   </footer>
 </div>
 </div>
+
+<!-- IQR Modal -->
+<div id="iqrModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h2 style="margin-top:0;">Outlier Detection (IQR Method)</h2>
+    <p>Sometimes your data contains extreme values. We can use the Interquartile Range (IQR) to detect and remove these outliers mathematically.</p>
+    
+    <div class="callout" style="margin: 1.5rem 0;">
+      <div class="callout-icon">🎥</div>
+      <div class="callout-content">
+        <strong>Need a visual explanation?</strong>
+        <p>Check out <a href="https://www.youtube.com/watch?v=sytBDWefYb0" target="_blank">this excellent YouTube video</a> that explains Boxplots and the IQR method in detail.</p>
+      </div>
+    </div>
+    
+    <h3>What is the IQR?</h3>
+    <p>The IQR is the difference between the 75th percentile (Q3) and the 25th percentile (Q1) of the data. It represents the middle 50% of the dataset.</p>
+    <ul>
+      <li><strong>IQR</strong> = Q3 - Q1</li>
+      <li><strong>Lower Limit</strong> = Q1 - 1.5 * IQR</li>
+      <li><strong>Upper Limit</strong> = Q3 + 1.5 * IQR</li>
+    </ul>
+    
+    <h3>The Code Reality</h3>
+    <pre><code>import pandas as pd
+
+# 1. Calculate Q1 and Q3
+Q1 = df['feature'].quantile(0.25)
+Q3 = df['feature'].quantile(0.75)
+
+# 2. Calculate IQR
+IQR = Q3 - Q1
+
+# 3. Calculate lower and upper limits
+lower_limit = Q1 - 1.5 * IQR
+upper_limit = Q3 + 1.5 * IQR
+
+# 4. Filter out the outliers
+df_clean = df[(df['feature'] >= lower_limit) &amp; (df['feature'] &lt;= upper_limit)]</code></pre>
+  </div>
+</div>
+
+<!-- Random Forest Modal -->
+<div id="rfModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h2 style="margin-top:0;">Random Forest Hyperparameters</h2>
+    <p>A Random Forest is an algorithm that plants many Decision Trees. These hyperparameters control how those trees grow.</p>
+    
+    <div class="callout" style="margin: 1.5rem 0;">
+      <div class="callout-icon">🎥</div>
+      <div class="callout-content">
+        <strong>Need a visual explanation?</strong>
+        <p>Check out <a href="https://www.youtube.com/watch?v=J4Wdy0Wc_xQ" target="_blank">StatQuest: Random Forests Part 1</a> to see how they are built!</p>
+      </div>
+    </div>
+    
+    <h3>The Cheat Sheet</h3>
+    <ul>
+      <li><code>n_estimators</code>: How many decision trees to plant.</li>
+      <li><code>max_depth</code>: The maximum number of branches a tree can have (stops it from just memorizing data).</li>
+      <li><code>min_samples_split</code>: A node needs this many patients before it can split into two smaller nodes.</li>
+      <li><code>min_samples_leaf</code>: A final diagnosis "leaf" must contain at least this many patients.</li>
+      <li><code>max_features</code>: The percentage of features (e.g. 0.7 = 70%) the tree is allowed to look at when making a decision.</li>
+      <li><code>class_weight</code>: How much extra attention to pay to rare outcomes (like 'cancer' if it's less common).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Data Leakage Modal -->
+<div id="leakageModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h2 style="margin-top:0;">Data Leakage (The Cardinal Sin)</h2>
+    <p>Why do we <code>fit()</code> on the training data ONLY, but <code>transform()</code> both?</p>
+    
+    <div class="callout" style="margin: 1.5rem 0;">
+      <div class="callout-icon">🎥</div>
+      <div class="callout-content">
+        <strong>Need a visual explanation?</strong>
+        <p>Check out <a href="https://www.youtube.com/results?search_query=Data+leakage+fit_transform+machine+learning" target="_blank">these top tutorials on Data Leakage and fit_transform</a> to understand how scaling works under the hood.</p>
+      </div>
+    </div>
+    
+    <h3>The Cheat Sheet</h3>
+    <ul>
+      <li><strong>The Rule:</strong> Never let your model learn *anything* from the test set!</li>
+      <li><strong>Fit (Learn):</strong> When you run <code>imp.fit()</code>, it calculates the average cell size. If you let it see the test set, the average will be influenced by the hidden patients! This is called <strong>Data Leakage</strong>.</li>
+      <li><strong>Transform (Apply):</strong> Once the training average is learned, we use it to fill in the blanks (<code>imp.transform()</code>) for both the training patients and the new, unseen test patients.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Evaluation Metrics Modal -->
+<div id="metricsModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h2 style="margin-top:0;">Evaluation Metrics (The Report Card)</h2>
+    <p>How do we know if our AI is actually good at diagnosing patients?</p>
+    
+    <div class="callout" style="margin: 1.5rem 0;">
+      <div class="callout-icon">🎥</div>
+      <div class="callout-content">
+        <strong>Need a visual explanation?</strong>
+        <p>Check out <a href="https://www.youtube.com/results?search_query=StatQuest+Confusion+Matrix+Clearly+Explained" target="_blank">StatQuest's legendary Confusion Matrix tutorial!</a></p>
+      </div>
+    </div>
+    
+    <h3>The Cheat Sheet</h3>
+    <ul>
+      <li><strong>Confusion Matrix:</strong> A 2x2 grid. 
+        <ul>
+          <li><strong>True Positive:</strong> AI said Cancer, Patient had Cancer. (Yay!)</li>
+          <li><strong>True Negative:</strong> AI said Healthy, Patient was Healthy. (Yay!)</li>
+          <li><strong>False Positive (Type 1 Error):</strong> AI said Cancer, Patient was Healthy. (Scary for the patient, but they live.)</li>
+          <li><strong style="color:red;">False Negative (Type 2 Error):</strong> AI said Healthy, Patient had Cancer. (<strong>FATAL ERROR.</strong> We must avoid this at all costs!)</li>
+        </ul>
+      </li>
+      <li><strong style="color:var(--accent)">Precision:</strong> "When the AI yells 'CANCER!', how often is it actually right?"</li>
+      <li><strong style="color:var(--accent)">Recall (Sensitivity):</strong> "Out of ALL the people who actually have cancer, how many did the AI successfully find?" (In medicine, Recall is the most important metric!)</li>
+      <li><strong style="color:var(--accent)">F1-Score:</strong> The balanced average of Precision and Recall.</li>
+    </ul>
+  </div>
+</div>
+
 <script src="assets/site.js?v=4" defer></script>
 </body>
 </html>

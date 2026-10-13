@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Past Exam Papers Hub (2025 &amp; 2026) | DM Bootcamp</title>
+<meta name="description" content="Master real Data Mining past papers with verified solutions, official professor starter templates, points breakdowns, and critical grading traps.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=12">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'concept';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Pipeline</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-4-overview.html">4 · Clustering</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+      <a href="past-papers.html" class="active">📝 Past Papers</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+      <span class="nav-panel-label">Exam Practice</span>
+      <a href="past-papers.html" class="active">📝 Past Papers Hub</a>
+      <a href="past-paper-2025.html">2025 Exam (75 pts)</a>
+      <a href="past-paper-2026.html">2026 Exam (95 pts)</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Navigation</span>
+      <a href="index.html">← Bootcamp Home</a>
+      <a href="#papers-overview">Papers Overview</a>
+      <a href="#syllabus-matrix">Syllabus Matrix</a>
+      <a href="#exam-golden-rules">Golden Exam Rules</a>
+    </div>
+    <div class="sidebar-block">
+      <span class="sidebar-label">Direct Practice Links</span>
+      <a href="past-paper-2025.html">2025 Past Paper (75 pts)</a>
+      <a href="past-paper-2026.html">2026 Past Paper (95 pts)</a>
+    </div>
+  </aside>
+
+  <div class="page">
+    <div class="hero">
+      <div class="eyebrow">Real Exam Archive &amp; Interactive Trainer</div>
+      <h1>Data Mining Past Papers Hub</h1>
+      <p>
+        The definitive preparation portal for your Data Mining final exam. 
+        Solve 2 complete official past papers (29 real questions, 170 points combined) 
+        with interactive collapsibles, official professor templates, verified code solutions, and grading trap alerts.
+      </p>
+    </div>
+
+    <!-- Paper Selection Cards -->
+    <section class="pp-hub-grid" id="papers-overview">
+      <div class="pp-hub-card pp-hub-card-featured">
+        <div class="pp-hub-card-tag">Practice Exam 1</div>
+        <h2>2025 Past Paper</h2>
+        <div class="pp-hub-stats-row">
+          <div class="pp-hub-stat">
+            <span class="stat-number">13</span>
+            <span class="stat-desc">Questions</span>
+          </div>
+          <div class="pp-hub-stat">
+            <span class="stat-number">75</span>
+            <span class="stat-desc">Points</span>
+          </div>
+          <div class="pp-hub-stat">
+            <span class="stat-number">4</span>
+            <span class="stat-desc">Modules</span>
+          </div>
+        </div>
+        <p class="pp-hub-desc">
+          High-yield coverage of MinMaxScaler, PCA, NN forward/backward reordering, Temperature Softmax implementation, Greedy Decoding, and Permutation Feature Importance.
+        </p>
+        <div class="pp-hub-topics">
+          <span class="hub-pill">PCA</span>
+          <span class="hub-pill">train_test_split</span>
+          <span class="hub-pill">MinMaxScaler</span>
+          <span class="hub-pill">NN Pass Order</span>
+          <span class="hub-pill">Softmax Temp</span>
+          <span class="hub-pill">SHAP / PDP</span>
+          <span class="hub-pill">Permutation Importance</span>
+        </div>
+        <a href="past-paper-2025.html" class="pp-hub-btn">Launch 2025 Interactive Paper &rarr;</a>
+      </div>
+
+      <div class="pp-hub-card pp-hub-card-featured">
+        <div class="pp-hub-card-tag pp-hub-tag-2026">Practice Exam 2</div>
+        <h2>2026 Past Paper</h2>
+        <div class="pp-hub-stats-row">
+          <div class="pp-hub-stat">
+            <span class="stat-number">16</span>
+            <span class="stat-desc">Questions</span>
+          </div>
+          <div class="pp-hub-stat">
+            <span class="stat-number">95</span>
+            <span class="stat-desc">Points</span>
+          </div>
+          <div class="pp-hub-stat">
+            <span class="stat-number">5</span>
+            <span class="stat-desc">Modules</span>
+          </div>
+        </div>
+        <p class="pp-hub-desc">
+          Comprehensive exam covering Supervised Tasks, t-SNE, OneHotEncoder, Binary Cross-Entropy calculations, Keras output layer sizing, RAG pipelines, and SHAP beeswarm interpretation.
+        </p>
+        <div class="pp-hub-topics">
+          <span class="hub-pill">Task Types</span>
+          <span class="hub-pill">t-SNE</span>
+          <span class="hub-pill">OneHotEncoder</span>
+          <span class="hub-pill">Stochastic Models</span>
+          <span class="hub-pill">BCE Math</span>
+          <span class="hub-pill">Keras Output</span>
+          <span class="hub-pill">RAG Steps</span>
+          <span class="hub-pill">SHAP Beeswarm</span>
+        </div>
+        <a href="past-paper-2026.html" class="pp-hub-btn">Launch 2026 Interactive Paper &rarr;</a>
+      </div>
+    </section>
+
+    <!-- Syllabus & Points Matrix -->
+    <section class="chapter" id="syllabus-matrix">
+      <div class="chapter-head"><span class="chapter-num">1</span><h2>Syllabus &amp; Exam Weight Matrix</h2></div>
+      <p class="chapter-dek">Notice how the questions are distributed across the 7 bootcamp modules.</p>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Module</th>
+              <th>2025 Exam (75 pts)</th>
+              <th>2026 Exam (95 pts)</th>
+              <th>Core Question Archetypes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Module 1: Intro to DM</strong></td>
+              <td>— (0 pts)</td>
+              <td><strong>5 pts</strong> (1 Q)</td>
+              <td>Identify task type (Classification vs. Regression vs. Clustering) in &le; 2 words</td>
+            </tr>
+            <tr>
+              <td><strong>Module 2: Pipeline &amp; Preprocessing</strong></td>
+              <td><strong>20 pts</strong> (3 Qs)</td>
+              <td><strong>30 pts</strong> (5 Qs)</td>
+              <td>PCA, t-SNE, <code>train_test_split</code>, <code>OneHotEncoder</code>, <code>MinMaxScaler</code>, stochastic algorithms</td>
+            </tr>
+            <tr>
+              <td><strong>Module 3: Classification</strong></td>
+              <td>— (covered in sprint)</td>
+              <td>— (covered in sprint)</td>
+              <td>Tested via Module 2 / 7 integration (Decision boundaries, F1 score)</td>
+            </tr>
+            <tr>
+              <td><strong>Module 4: Clustering</strong></td>
+              <td>— (covered in sprint)</td>
+              <td>— (covered in sprint)</td>
+              <td>K-Means initialization sensitivity tested as part of stochastic methods</td>
+            </tr>
+            <tr>
+              <td><strong>Module 5: Regression &amp; Neural Nets</strong></td>
+              <td><strong>5 pts</strong> (1 Q)</td>
+              <td><strong>15 pts</strong> (3 Qs)</td>
+              <td>NN training loop order, manual binary cross-entropy calculation, Keras output layer shape</td>
+            </tr>
+            <tr>
+              <td><strong>Module 6: LLM &amp; RAG Pipeline</strong></td>
+              <td><strong>25 pts</strong> (5 Qs)</td>
+              <td><strong>15 pts</strong> (3 Qs)</td>
+              <td>Cosine similarity, vocabulary size calculation, greedy decoding index, Softmax with temperature</td>
+            </tr>
+            <tr>
+              <td><strong>Module 7: Explainability &amp; Causality</strong></td>
+              <td><strong>25 pts</strong> (4 Qs)</td>
+              <td><strong>30 pts</strong> (4 Qs)</td>
+              <td>Permutation feature importance code, SHAP efficiency property, SHAP summary beeswarm plot</td>
+            </tr>
+            <tr style="background: rgba(12, 122, 115, 0.08); font-weight: bold;">
+              <td>Total</td>
+              <td>75 Points (13 Questions)</td>
+              <td>95 Points (16 Questions)</td>
+              <td>Combined Total: 170 Points (29 Questions)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Golden Rules & Traps -->
+    <section class="chapter" id="exam-golden-rules">
+      <div class="chapter-head"><span class="chapter-num">2</span><h2>5 Golden Rules to Ace the Exam</h2></div>
+      <p class="chapter-dek">Avoid the pitfalls that cost students full points on automated test runners.</p>
+
+      <div class="concept-cards">
+        <div class="concept-card">
+          <h4>🚨 1. Never Hardcode Global Variables</h4>
+          <p>
+            When writing a function like <code>def find_num(Dataframe):</code>, <strong>always use the parameter name</strong> (<code>Dataframe</code>), 
+            never the test dataframe <code>X</code> from the outer scope! The grading script evaluates with unseen test data.
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h4>🎯 2. Follow Exact Output Formatting</h4>
+          <p>
+            If the question asks for <em>"≤ 2 words"</em> (e.g. <code>technique = "PCA"</code>), do not write full sentences like <em>"We should use PCA because..."</em>. 
+            Automated grading checks exact string matches!
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h4>📊 3. Fit on Train Only, Transform Both</h4>
+          <p>
+            When scaling with <code>MinMaxScaler</code> or encoding with <code>OneHotEncoder</code>: 
+            <code>scaler.fit_transform(X_train)</code>, but strictly <code>scaler.transform(X_test)</code> to prevent data leakage!
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h4>📐 4. Permutation Importance Scoring</h4>
+          <p>
+            For regression tasks (like Remaining Useful Life RUL), <code>permutation_importance</code> requires a metric where higher is better. 
+            Use <code>neg_mean_squared_error</code> or <code>r2</code>, never raw positive MSE!
+          </p>
+        </div>
+
+        <div class="concept-card">
+          <h4>🔍 5. Greedy Decoding is Just Argmax</h4>
+          <p>
+            Greedy decoding selects the token index with the maximum logit value. You don't even need to compute softmax to find the greedy token index!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <span>Basic Data Mining Practice</span>
+      <span>29 Real Exam Questions · 170 Total Points</span>
+    </footer>
+  </div>
+</div>
+
+<script src="assets/site.js?v=12" defer></script>
+</body>
+</html>

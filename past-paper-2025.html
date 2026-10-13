@@ -1,0 +1,2320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2025 Data Mining Past Paper with Solutions | DM Bootcamp</title>
+<meta name="description" content="Complete 2025 Data Mining past paper practice exam with collapsible questions, official professor starter templates, verified code solutions, and critical exam pitfalls.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=12">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'concept';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Pipeline</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-4-overview.html">4 · Clustering</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+      <a href="past-papers.html" class="active">📝 Past Papers</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+      <span class="nav-panel-label">Exam Practice</span>
+      <a href="past-papers.html">📝 Past Papers Hub</a>
+      <a href="past-paper-2025.html" class="active">2025 Exam (75 pts)</a>
+      <a href="past-paper-2026.html" >2026 Exam (95 pts)</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page-shell">
+  <aside class="sidebar-toc">
+    <div class="sidebar-block">
+      <span class="sidebar-label">Exam Practice</span>
+      <a href="past-papers.html">← Past Papers Overview</a>
+      <a href="past-paper-2025.html" class="active">2025 Past Paper (75 pts)</a>
+      <a href="past-paper-2026.html" >2026 Past Paper (95 pts)</a>
+    </div>
+
+    <div class="sidebar-block">
+      <span class="sidebar-label">2025 Questions (13)</span>
+      <div class="sidebar-q-list">
+        
+    <div class="sidebar-mod-group">
+      <span class="sidebar-sublabel">Module 2</span>
+      
+        <a href="#q-n1-2-q3" class="sidebar-q-link" data-qid="q-n1-2-q3">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N1.2·Q3</span>
+          <span class="sidebar-q-pts">5p</span>
+        </a>
+      
+        <a href="#q-n2-2-q1" class="sidebar-q-link" data-qid="q-n2-2-q1">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N2.2·Q1</span>
+          <span class="sidebar-q-pts">5p</span>
+        </a>
+      
+        <a href="#q-n2-2-q2" class="sidebar-q-link" data-qid="q-n2-2-q2">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N2.2·Q2</span>
+          <span class="sidebar-q-pts">10p</span>
+        </a>
+      
+    </div>
+  
+    <div class="sidebar-mod-group">
+      <span class="sidebar-sublabel">Module 5</span>
+      
+        <a href="#q-n1-2-q1" class="sidebar-q-link" data-qid="q-n1-2-q1">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N1.2·Q1</span>
+          <span class="sidebar-q-pts">5p</span>
+        </a>
+      
+    </div>
+  
+    <div class="sidebar-mod-group">
+      <span class="sidebar-sublabel">Module 6</span>
+      
+        <a href="#q-n4-2-q2" class="sidebar-q-link" data-qid="q-n4-2-q2">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N4.2·Q2</span>
+          <span class="sidebar-q-pts">5p</span>
+        </a>
+      
+        <a href="#q-n4-2-q3-1" class="sidebar-q-link" data-qid="q-n4-2-q3-1">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N4.2·Q3_1</span>
+          <span class="sidebar-q-pts">2p</span>
+        </a>
+      
+        <a href="#q-n4-2-q3-2" class="sidebar-q-link" data-qid="q-n4-2-q3-2">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N4.2·Q3_2</span>
+          <span class="sidebar-q-pts">10p</span>
+        </a>
+      
+        <a href="#q-n4-2-q3-3" class="sidebar-q-link" data-qid="q-n4-2-q3-3">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N4.2·Q3_3</span>
+          <span class="sidebar-q-pts">5p</span>
+        </a>
+      
+        <a href="#q-n4-2-q3-4" class="sidebar-q-link" data-qid="q-n4-2-q3-4">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N4.2·Q3_4</span>
+          <span class="sidebar-q-pts">3p</span>
+        </a>
+      
+    </div>
+  
+    <div class="sidebar-mod-group">
+      <span class="sidebar-sublabel">Module 7</span>
+      
+        <a href="#q-n1-2-q2" class="sidebar-q-link" data-qid="q-n1-2-q2">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N1.2·Q2</span>
+          <span class="sidebar-q-pts">5p</span>
+        </a>
+      
+        <a href="#q-n3-2-q1" class="sidebar-q-link" data-qid="q-n3-2-q1">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N3.2·Q1</span>
+          <span class="sidebar-q-pts">10p</span>
+        </a>
+      
+        <a href="#q-n3-2-q2" class="sidebar-q-link" data-qid="q-n3-2-q2">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N3.2·Q2</span>
+          <span class="sidebar-q-pts">5p</span>
+        </a>
+      
+        <a href="#q-n3-2-q3" class="sidebar-q-link" data-qid="q-n3-2-q3">
+          <span class="sidebar-q-check">○</span>
+          <span class="sidebar-q-ref">N3.2·Q3</span>
+          <span class="sidebar-q-pts">5p</span>
+        </a>
+      
+    </div>
+  
+      </div>
+    </div>
+  </aside>
+
+  <div class="page">
+    <div class="masthead">
+      <div>
+        <div class="eyebrow">Official Practice Exam · Complete Solutions</div>
+        <h1 class="title">2025 Past Paper &amp; Detailed Walkthrough</h1>
+      </div>
+      <div class="masthead-badge-group">
+        <span class="masthead-badge masthead-badge-accent">13 Questions</span>
+        <span class="masthead-badge masthead-badge-gold">75 Total Points</span>
+        <span class="masthead-badge masthead-badge-teal">4 Modules</span>
+      </div>
+    </div>
+
+    <p class="dek">
+      Every question from the 2025 practice exam, paired with the professor's blank starter template, 
+      verified solution code, step-by-step reasoning, and high-stakes grading pitfalls. Questions and solutions are 
+      collapsible so you can test yourself before revealing the answers.
+    </p>
+
+    <!-- Interactive Mastery Progress Tracker -->
+    <div class="pp-progress-card" id="progressCard">
+      <div class="pp-progress-header">
+        <div class="pp-progress-info">
+          <span class="pp-progress-title">Exam Readiness Tracker</span>
+          <span class="pp-progress-subtitle" id="progressSubtitle">Check off questions as you solve them</span>
+        </div>
+        <div class="pp-progress-score">
+          <span class="pp-score-digits" id="scoreDigits">0 / 75</span>
+          <span class="pp-score-pct" id="scorePct">0%</span>
+        </div>
+      </div>
+      <div class="pp-progress-bar-bg">
+        <div class="pp-progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+      </div>
+      <div class="pp-progress-footer">
+        <span id="questionsCompleted">0 of 13 questions mastered</span>
+        <button class="pp-reset-btn" type="button" onclick="resetMastery('2025')">Reset Progress</button>
+      </div>
+    </div>
+
+    <!-- Switcher Banner -->
+    <div class="pp-switcher-banner">
+      <div class="pp-switcher-text">
+        <strong>Looking for the other paper?</strong>
+        <span>Switch to the 2026 Exam (95 pts · 16 questions)</span>
+      </div>
+      <a href="past-paper-2026.html" class="pp-switcher-link">Go to 2026 Exam &rarr;</a>
+    </div>
+
+    <!-- Search and Filter Bar -->
+    <div class="pp-filter-toolbar" id="filterToolbar">
+      <div class="pp-search-box">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="ppSearchInput" class="pp-search-input" placeholder="Search questions, topics, code terms (e.g. PCA, MinMaxScaler, logits)..." oninput="applyFilters()">
+        <button id="clearSearchBtn" class="clear-search-btn" type="button" aria-label="Clear search" onclick="clearSearch()" style="display:none;">&times;</button>
+      </div>
+
+      <div class="pp-filters-row">
+        <div class="pp-filter-group">
+          <span class="filter-group-label">Module:</span>
+          <div class="pp-filter-pills" id="modFilters">
+            <button class="pp-filter-btn active" type="button" data-filter-mod="all">All Modules</button>
+            
+    <button class="pp-filter-btn" type="button" data-filter-mod="2">
+      Mod 2 (3)
+    </button>
+  
+    <button class="pp-filter-btn" type="button" data-filter-mod="5">
+      Mod 5 (1)
+    </button>
+  
+    <button class="pp-filter-btn" type="button" data-filter-mod="6">
+      Mod 6 (5)
+    </button>
+  
+    <button class="pp-filter-btn" type="button" data-filter-mod="7">
+      Mod 7 (4)
+    </button>
+  
+          </div>
+        </div>
+
+        <div class="pp-filter-group">
+          <span class="filter-group-label">Type:</span>
+          <div class="pp-filter-pills" id="typeFilters">
+            
+    <button class="pp-filter-btn active" type="button" data-filter-type="all">All Types</button>
+    <button class="pp-filter-btn" type="button" data-filter-type="Code">Code</button>
+    <button class="pp-filter-btn" type="button" data-filter-type="Theory">Theory</button>
+    <button class="pp-filter-btn" type="button" data-filter-type="Reorder">Reorder</button>
+    <button class="pp-filter-btn" type="button" data-filter-type="Select All">Select All</button>
+    <button class="pp-filter-btn" type="button" data-filter-type="Name It">Name It</button>
+  
+          </div>
+        </div>
+      </div>
+
+      <div class="pp-actions-row">
+        <div class="pp-view-actions">
+          <button class="pp-action-btn" type="button" onclick="toggleAllQuestions(true)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>
+            Expand All
+          </button>
+          <button class="pp-action-btn" type="button" onclick="toggleAllQuestions(false)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 11 12 6 7 11"></polyline><polyline points="17 18 12 13 7 18"></polyline></svg>
+            Collapse All
+          </button>
+          <span class="pp-action-divider"></span>
+          <button class="pp-action-btn" type="button" onclick="toggleAllSolutions(true)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            Reveal All Solutions
+          </button>
+          <button class="pp-action-btn" type="button" onclick="toggleAllSolutions(false)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+            Mock Exam Mode (Hide Solutions)
+          </button>
+        </div>
+        <div class="pp-count-indicator" id="visibleCount">
+          Showing 13 of 13 questions
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content: Modules & Questions -->
+    <div class="pp-content-container" id="questionsContainer">
+      
+      <section class="pp-module-section" id="mod-2" data-mod="2">
+        <div class="pp-module-header">
+          <div class="pp-module-title-wrap">
+            <span class="pp-module-num-badge">Module 2</span>
+            <h2 class="pp-module-title">The Data Mining Pipeline</h2>
+          </div>
+          <span class="pp-module-subtotal">20 pts subtotal · 3 questions</span>
+        </div>
+
+        
+        <details class="pp-mod-notes">
+          <summary class="pp-mod-notes-summary">
+            <div class="pp-mod-notes-summary-inner">
+              <span class="pp-mod-notes-icon">📖</span>
+              <span class="pp-mod-notes-title">Module 2 Bootcamp Core Notes &amp; Theory Cheat Sheet</span>
+              <span class="pp-mod-notes-hint">Click to expand refresher before solving</span>
+            </div>
+            <span class="pp-chevron">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
+          </summary>
+          <div class="pp-mod-notes-content">
+            <h4 class="pp-h4">PCA — linear, deterministic dimensionality reduction</h4>
+
+<ul class="pp-list">
+<li>Use PCA when the data is high-dimensional, relationships are mostly <strong>linear</strong>, and you care about</li>
+</ul>
+  preserving <strong>global</strong> structure and interpretability of components.
+<ul class="pp-list">
+<li>PCA finds new orthogonal axes ("principal components") ranked by how much variance they capture, then</li>
+</ul>
+  rotates the data onto them — most of the real information collapses into the first handful of axes.
+<ul class="pp-list">
+<li><strong>Deterministic</strong>: run it twice on the same data, get the identical answer — unlike t-SNE, which is</li>
+</ul>
+  stochastic and only preserves local neighborhoods, not global structure.
+
+<p class="pp-p"><em>(Module 2 §3)</em></p>
+
+<h4 class="pp-h4">Identifying numerical columns + train_test_split</h4>
+
+<ul class="pp-list">
+<li><code class="inline-code">Dataframe.select_dtypes(include=np.number).columns</code> returns exactly the numeric columns of a</li>
+</ul>
+  DataFrame — the standard way to separate numeric from categorical before scaling/encoding.
+<ul class="pp-list">
+<li>Always split into <strong>train / validation / test</strong> before modelling; the test set stays untouched until</li>
+</ul>
+  the very end.
+<ul class="pp-list">
+<li><code class="inline-code">train_test_split(X, y, test_size=0.3, random_state=RANDOM_STATE)</code> — fixing <code class="inline-code">random_state</code> makes the</li>
+</ul>
+  "random" split reproducible.
+
+<p class="pp-p"><em>(Module 2 §1)</em></p>
+
+<h4 class="pp-h4">MinMaxScaler — rescaling to a fixed range</h4>
+
+<ul class="pp-list">
+<li><strong>Min-Max scaling</strong> rescales every value to <code class="inline-code">[0, 1]</code>: <code class="inline-code">x_scaled = (x - min) / (max - min)</code>. Common for</li>
+</ul>
+  neural nets and image data.
+<ul class="pp-list">
+<li>Contrast with <strong>Z-score (standardization)</strong>, which centers to mean 0, std 1 — the more general-purpose</li>
+</ul>
+  default. Min-Max is preferred when you need values in a bounded range, not just comparable scale.
+<ul class="pp-list">
+<li><strong>Fit the scaler on training data only</strong>, then apply the identical fitted transform to test data.</li>
+</ul>
+  Never re-fit on test data — the min/max learned from training are part of the model.
+
+<p class="pp-p"><em>(Module 2 §2)</em></p>
+          </div>
+        </details>
+      
+
+        <div class="pp-questions-list">
+          
+        <article class="pp-qcard" id="q-n1-2-q3" data-mod="2" data-type="Name It" data-pts="5">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n1-2-q3" data-pts="5" onchange="toggleMastered('q-n1-2-q3')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N1.2·Q3</span>
+                <span class="badge-mod">Mod 2</span>
+                <span class="badge-type badge-type-nameit">Name It</span>
+                <span class="pp-qtopic">: Identify the Suitable Visualization Technique (Answer...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">5 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">✅ <strong>Task for students</strong>: Identify the Suitable Visualization Technique (Answer in ≤ 2 words)</p>
+
+<p class="pp-p">You are working with a dataset that has <strong>dozens of numerical features</strong>. Before running more complex models, you want to <strong>visualize the major directions of variance</strong> in the data and potentially reduce its dimensionality in a computationally efficient and interpretable way.</p>
+
+<p class="pp-p">👉 <strong>Important context</strong>: The data is <strong>high-dimensional</strong>; you expect <strong>mostly linear relationships</strong> between variables; you care about <strong>preserving global structure</strong> and interpretability of components.</p>
+
+<p class="pp-p">➡️ <strong>Use abbreviation - your answer should be 1-3 words only.</strong></p>
+              </div>
+
+              
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given by the professor (before solving)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python"># YOUR ANSWER HERE
+technique = &quot;...&quot;
+
+print(&quot;Selected Technique:&quot;, technique)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n1-2-q3">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python"># YOUR ANSWER HERE
+# [SOLUTION]: Principal Component Analysis
+technique = &quot;PCA&quot;
+
+print(&quot;Selected Technique:&quot;, technique)</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+            </div>
+          </details>
+        </article>
+      
+
+        <article class="pp-qcard" id="q-n2-2-q1" data-mod="2" data-type="Code" data-pts="5">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n2-2-q1" data-pts="5" onchange="toggleMastered('q-n2-2-q1')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N2.2·Q1</span>
+                <span class="badge-mod">Mod 2</span>
+                <span class="badge-type badge-type-code">Code</span>
+                <span class="pp-qtopic">: complete the following function to find all numerical...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">5 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">✅ <strong>Task for students</strong>: complete the following function to find all numerical variables in the data. By completing and running this cell, the numerical columns names will be saved as a list of strings in "numerical_cols".</p>
+
+<p class="pp-p">Notice: the function itself is not graded — you just need a list of numerical columns names.</p>
+
+<p class="pp-p">Then: apply the given random state with the proper sklearn function to split the data into train, test. 30% of the samples should go to test.</p>
+              </div>
+
+              
+          <div class="pp-pitfall-alert">
+            <div class="pp-pitfall-header">
+              <span class="pp-pitfall-icon">🚨</span>
+              <strong>CRITICAL EXAM PITFALL</strong>
+            </div>
+            <div class="pp-pitfall-content">
+              <p class="pp-p"><strong>DO NOT hardcode global variables inside your functions!</strong></p>
+
+<p class="pp-p">When solving functions like <code class="inline-code">def find_num(Dataframe):</code>, <strong>always</strong> use the exact parameter name (<code class="inline-code">Dataframe</code>) inside your code, not the global test variable (<code class="inline-code">X</code>).</p>
+
+<p class="pp-p">❌ <strong>Bad (Will fail grading script):</strong><br>
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python">def find_num(Dataframe):
+    return X.select_dtypes(...) # Breaks when professor passes a secret dataframe!</code></pre>
+</div></p>
+
+<p class="pp-p">✅ <strong>Good:</strong><br>
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python">def find_num(Dataframe):
+    return Dataframe.select_dtypes(...)</code></pre>
+</div></p>
+            </div>
+          </div>
+        
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given — part 1 (find numerical columns)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python"># Dummy data for testing
+np.random.seed(42)
+X = pd.DataFrame({
+    &#39;age&#39;: [25, 30, 45, 35],
+    &#39;salary&#39;: [50000, 60000, 80000, 65000],
+    &#39;department&#39;: [&#39;IT&#39;, &#39;HR&#39;, &#39;IT&#39;, &#39;Finance&#39;],
+    &#39;is_manager&#39;: [&#39;No&#39;, &#39;No&#39;, &#39;Yes&#39;, &#39;No&#39;]
+})
+y = pd.Series([0, 0, 1, 0])
+RANDOM_STATE = 42
+
+# Identify numerical columns
+def find_num(Dataframe):
+    # YOUR CODE HERE
+    # Hint: use Dataframe.select_dtypes(include=np.number).columns
+    numerical_cols = []
+    return list(numerical_cols)
+
+numerical_cols = find_num(X)
+print(&quot;Numerical columns:&quot;, numerical_cols)</code></pre>
+</div>
+
+
+<div class="pp-given-label-badge">As given — part 2 (train_test_split)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python"># Train-test split
+# Apply the given random state with the proper sklearn function to split the data into train, test. 30% of the samples should go to test
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=RANDOM_STATE)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n2-2-q1">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python"># Dummy data for testing
+np.random.seed(42)
+X = pd.DataFrame({
+    &#39;age&#39;: [25, 30, 45, 35],
+    &#39;salary&#39;: [50000, 60000, 80000, 65000],
+    &#39;department&#39;: [&#39;IT&#39;, &#39;HR&#39;, &#39;IT&#39;, &#39;Finance&#39;],
+    &#39;is_manager&#39;: [&#39;No&#39;, &#39;No&#39;, &#39;Yes&#39;, &#39;No&#39;]
+})
+y = pd.Series([0, 0, 1, 0])
+RANDOM_STATE = 42
+
+# Identify numerical columns
+def find_num(Dataframe):
+    # YOUR CODE HERE
+    # Hint: use Dataframe.select_dtypes(include=np.number).columns
+    # [SOLUTION]: Select columns with numerical data types (integers and floats)
+    numerical_cols = Dataframe.select_dtypes(include=np.number).columns.tolist()
+    return list(numerical_cols)
+
+numerical_cols = find_num(X)
+print(&quot;Numerical columns:&quot;, numerical_cols)
+
+# Train-test split
+# [SOLUTION]: 30% test split using random_state=42
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=RANDOM_STATE)
+
+print(f&quot;Train shape: {X_train.shape}, Test shape: {X_test.shape}&quot;)</code></pre>
+              </div>
+            
+
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python"># Dummy dataset with ALL Pandas data types
+X_comprehensive = pd.DataFrame({
+    &#39;age_int&#39;: [25, 30],                         # integer (Numerical)
+    &#39;salary_float&#39;: [50000.5, 60000.0],          # float (Numerical)
+    &#39;department_obj&#39;: [&#39;IT&#39;, &#39;HR&#39;],              # object (Categorical text)
+    &#39;status_cat&#39;: pd.Categorical([&#39;A&#39;, &#39;B&#39;]),    # category (Strict categorical)
+    &#39;hire_date&#39;: pd.to_datetime([&#39;2020-01-01&#39;, &#39;2021-05-15&#39;]), # datetime
+    &#39;is_remote&#39;: [True, False]                   # boolean
+})
+
+def extract_all_types(Dataframe):
+    # YOUR CODE HERE
+    
+    # Task 1: Extract ONLY numerical columns (ints and floats)
+    # [SOLUTION]
+    num_cols = Dataframe.select_dtypes(include=np.number).columns.tolist()
+    
+    # Task 2: Extract ONLY categorical/text columns (objects and categories)
+    # [SOLUTION]
+    cat_cols = Dataframe.select_dtypes(include=[&#39;object&#39;, &#39;category&#39;]).columns.tolist()
+    
+    # Task 3: Extract ONLY datetime columns
+    # [SOLUTION]
+    date_cols = Dataframe.select_dtypes(include=[&#39;datetime&#39;, &#39;datetimetz&#39;]).columns.tolist()
+    
+    # Task 4: Extract ONLY boolean columns
+    # [SOLUTION]
+    bool_cols = Dataframe.select_dtypes(include=&#39;bool&#39;).columns.tolist()
+    
+    return num_cols, cat_cols, date_cols, bool_cols
+
+num_c, cat_c, date_c, bool_c = extract_all_types(X_comprehensive)
+print(f&quot;Numerical: {num_c}\nCategorical: {cat_c}\nDates: {date_c}\nBooleans: {bool_c}&quot;)</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+          <div class="pp-bonus-box">
+            <div class="pp-bonus-header">
+              <span class="pp-bonus-icon">💡</span>
+              <strong>Bootcamp Bonus Study &amp; Edge Cases</strong>
+            </div>
+            <div class="pp-bonus-body">
+              <p class="pp-p"><br/><br/><br><h3 class="pp-h3">💡 Bootcamp Bonus Study: Full Coverage Column Extraction</h3><br>✅ <strong>Task for students</strong>: Extract the correct columns for every single pandas data type.<br><em>(Use <code class="inline-code">include</code> with the proper types instead of relying on <code class="inline-code">exclude</code>!)</em></p>
+            </div>
+          </div>
+        
+            </div>
+          </details>
+        </article>
+      
+
+        <article class="pp-qcard" id="q-n2-2-q2" data-mod="2" data-type="Code" data-pts="10">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n2-2-q2" data-pts="10" onchange="toggleMastered('q-n2-2-q2')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N2.2·Q2</span>
+                <span class="badge-mod">Mod 2</span>
+                <span class="badge-type badge-type-code">Code</span>
+                <span class="pp-qtopic">: use min-max scaler from sklearn to scale the numerica...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">10 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">✅ <strong>Task for students</strong>: use min-max scaler from sklearn to scale the numerical columns (no need to convert the output back to a dataframe). The function should return a numpy array containing the scaled numerical variables ONLY.</p>
+
+<p class="pp-p">Notice: DO NOT convert the output back to a dataframe.</p>
+              </div>
+
+              
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given by the professor (before solving)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python">def scale_num_var(train_df, test_df, num_cols):
+    &quot;&quot;&quot;
+    Fit and scale numerical columns in both train and test dataframes using MinMax scaler.
+
+    Args:
+        train_df (pd.DataFrame): Training dataframe
+        test_df (pd.DataFrame): Test dataframe
+        num_cols (list): List of numerical column names
+
+    Returns:
+        scaler: Fitted sklearn scaler
+        train_arr_num_scaled (sparse array or ndarray): scaled training data
+        test_arr_num_scaled (sparse array or ndarray): scaled test data
+    &quot;&quot;&quot;
+    # YOUR CODE HERE
+    scaler = None
+    train_arr_num_scaled = None
+    test_arr_num_scaled = None
+
+    return scaler, train_arr_num_scaled, test_arr_num_scaled
+
+# scaler, X_train_num_scaled, X_test_num_scaled = scale_num_var(X_train, X_test, numerical_cols)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n2-2-q2">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python">def scale_num_var(train_df, test_df, num_cols):
+    &quot;&quot;&quot;
+    Fit and scale numerical columns in both train and test dataframes using MinMax scaler.
+
+    Args:
+        train_df (pd.DataFrame): Training dataframe
+        test_df (pd.DataFrame): Test dataframe
+        num_cols (list): List of numerical column names
+
+    Returns:
+        scaler: Fitted sklearn scaler
+        train_arr_num_scaled (sparse array or ndarray): scaled training data
+        test_arr_num_scaled (sparse array or ndarray): scaled test data
+    &quot;&quot;&quot;
+    # YOUR CODE HERE
+    # [SOLUTION]: Fit MinMaxScaler on training data and transform train numerical columns
+    scaler = MinMaxScaler()
+    train_arr_num_scaled = scaler.fit_transform(train_df[num_cols])
+
+    # [SOLUTION]: Transform test numerical columns using the fitted scaler
+    test_arr_num_scaled = scaler.transform(test_df[num_cols])
+
+    return scaler, train_arr_num_scaled, test_arr_num_scaled
+
+# [SOLUTION]: Execute function and display results
+scaler, X_train_num_scaled, X_test_num_scaled = scale_num_var(X_train, X_test, numerical_cols)
+print(&quot;Scaled Train Data (first 2 rows):\n&quot;, X_train_num_scaled[:2])
+print(&quot;Scaled Test Data (first 2 rows):\n&quot;, X_test_num_scaled[:2])</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+            </div>
+          </details>
+        </article>
+      
+        </div>
+      </section>
+    
+
+      <section class="pp-module-section" id="mod-5" data-mod="5">
+        <div class="pp-module-header">
+          <div class="pp-module-title-wrap">
+            <span class="pp-module-num-badge">Module 5</span>
+            <h2 class="pp-module-title">From Regression to Neural Networks</h2>
+          </div>
+          <span class="pp-module-subtotal">5 pts subtotal · 1 questions</span>
+        </div>
+
+        
+        <details class="pp-mod-notes">
+          <summary class="pp-mod-notes-summary">
+            <div class="pp-mod-notes-summary-inner">
+              <span class="pp-mod-notes-icon">📖</span>
+              <span class="pp-mod-notes-title">Module 5 Bootcamp Core Notes &amp; Theory Cheat Sheet</span>
+              <span class="pp-mod-notes-hint">Click to expand refresher before solving</span>
+            </div>
+            <span class="pp-chevron">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
+          </summary>
+          <div class="pp-mod-notes-content">
+            <h4 class="pp-h4">The NN training loop — forward/backward pass ordering</h4>
+
+<p class="pp-p">Define architecture → initialize weights/biases → repeat:</p>
+
+<ul class="pp-list">
+<li><strong>Forward pass</strong> — push the input through every layer to get a prediction.</li>
+<li><strong>Compute cost</strong> — how wrong was that prediction?</li>
+<li><strong>Backpropagation</strong> — compute how much each weight needs to change, moving backward from output to input.</li>
+<li><strong>Update parameters</strong>, then monitor progress (print train/test error).</li>
+</ul>
+
+<p class="pp-p">…until a stopping condition (enough epochs, or the loss stops improving).</p>
+
+<p class="pp-p"><em>(Module 5 §5 — ① forward propagation ② backpropagation)</em></p>
+          </div>
+        </details>
+      
+
+        <div class="pp-questions-list">
+          
+        <article class="pp-qcard" id="q-n1-2-q1" data-mod="5" data-type="Reorder" data-pts="5">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n1-2-q1" data-pts="5" onchange="toggleMastered('q-n1-2-q1')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N1.2·Q1</span>
+                <span class="badge-mod">Mod 5</span>
+                <span class="badge-type badge-type-reorder">Reorder</span>
+                <span class="pp-qtopic">: Reorder the following steps to correctly describe the...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">5 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">✅ <strong>Task for students</strong>: Reorder the following steps to correctly describe the typical forward pass and backpropagation process in training a neural network. Steps to reorder:</p>
+
+<p class="pp-p">1: "Perform a backward pass to update the weights using an optimization algorithm (e.g., SGD)."  <br>2: "Compute the loss using a loss function."  <br>3: "Stop when you have satisfactory results or you reach the maximum number of epochs."  <br>4: "Print the test and train error and monitor the training."  <br>5: "Define the network architecture (e.g., layer sizes and activation functions)."  <br>6: "Compute gradients of the loss function with respect to every parameter."  <br>7: "Initialize weights and biases."  <br>8: "Perform a forward pass to calculate predicted outputs."</p>
+
+<p class="pp-p">👉 <strong>Important Instructions</strong>: only modify ORDERED_pipeline_steps list to add the order. Don't cast or change the datatype of the numbers</p>
+              </div>
+
+              
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given by the professor (before solving)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python">UNORDERED_list = [1, 2, 3, 4, 5, 6, 7, 8]
+
+# YOUR CODE HERE
+ORDERED_pipeline_steps = []
+
+print(&quot;Ordered pipeline steps:&quot;, ORDERED_pipeline_steps)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n1-2-q1">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python">UNORDERED_list = [1, 2, 3, 4, 5, 6, 7, 8]
+
+# YOUR CODE HERE
+# [SOLUTION]: Chronological order of training a neural network:
+# [SOLUTION]: 5: Define architecture
+# [SOLUTION]: 7: Initialize weights
+# [SOLUTION]: 8: Forward pass
+# [SOLUTION]: 2: Compute loss
+# [SOLUTION]: 6: Compute gradients
+# [SOLUTION]: 1: Backward pass (update weights)
+# [SOLUTION]: 4: Monitor error
+# [SOLUTION]: 3: Stop condition
+ORDERED_pipeline_steps = [5, 7, 8, 2, 6, 1, 4, 3]
+
+print(&quot;Ordered pipeline steps:&quot;, ORDERED_pipeline_steps)</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+            </div>
+          </details>
+        </article>
+      
+        </div>
+      </section>
+    
+
+      <section class="pp-module-section" id="mod-6" data-mod="6">
+        <div class="pp-module-header">
+          <div class="pp-module-title-wrap">
+            <span class="pp-module-num-badge">Module 6</span>
+            <h2 class="pp-module-title">LLM &amp; RAG Pipeline</h2>
+          </div>
+          <span class="pp-module-subtotal">25 pts subtotal · 5 questions</span>
+        </div>
+
+        
+        <details class="pp-mod-notes">
+          <summary class="pp-mod-notes-summary">
+            <div class="pp-mod-notes-summary-inner">
+              <span class="pp-mod-notes-icon">📖</span>
+              <span class="pp-mod-notes-title">Module 6 Bootcamp Core Notes &amp; Theory Cheat Sheet</span>
+              <span class="pp-mod-notes-hint">Click to expand refresher before solving</span>
+            </div>
+            <span class="pp-chevron">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
+          </summary>
+          <div class="pp-mod-notes-content">
+            <h4 class="pp-h4">Semantic search & cosine similarity</h4>
+
+<ul class="pp-list">
+<li>Once every chunk and query is embedded, "search" becomes geometry: find the nearest stored points.</li>
+<li><strong>Cosine similarity</strong> measures the <em>angle</em> between two vectors, ignoring magnitude — robust to</li>
+</ul>
+  incidental differences like passage length. It's the standard mathematical method for ranking chunk
+  relevance in the semantic-search step of a RAG pipeline.
+
+<p class="pp-p"><em>(Module 6 §4)</em></p>
+
+<h4 class="pp-h4">Vocabulary size & greedy decoding</h4>
+
+<ul class="pp-list">
+<li>The LLM's output layer is a <strong>softmax over the entire vocabulary</strong> — its size equals vocabulary size,</li>
+</ul>
+  <em>not</em> embedding dimension, <em>not</em> context length. So <code class="inline-code">vocab_size = len(logits)</code>.
+<ul class="pp-list">
+<li><strong>Greedy decoding</strong> — always pick <code class="inline-code">argmax(logits)</code>. Deterministic: same input, same output every time —</li>
+</ul>
+  safe and reproducible, but repetitive.
+
+<p class="pp-p"><em>(Module 6 §1–2)</em></p>
+
+<h4 class="pp-h4">Temperature — reshaping the distribution before sampling</h4>
+
+<ul class="pp-list">
+<li>Temperature reshapes the probability distribution before sampling, instead of always taking the single</li>
+</ul>
+  most likely token: <code class="inline-code">p(zᵢ) = exp(zᵢ/T) / Σⱼ exp(zⱼ/T)</code>.
+<ul class="pp-list">
+<li>Dividing every logit by <code class="inline-code">T</code> before exponentiating compresses or stretches the <em>gaps</em> between logits.</li>
+</ul>
+  Softmax is monotonic — dividing by T never changes <em>which</em> token has the highest score, only how much
+  more likely it is relative to the rest.
+<ul class="pp-list">
+<li><strong>Low T (< 1)</strong> sharpens the distribution toward the front-runner — more deterministic, less varied.</li>
+</ul>
+  <strong>High T (> 1)</strong> flattens it — every token becomes more competitive, more random/creative. <strong>T = 1</strong>
+  leaves the raw distribution untouched.
+
+<p class="pp-p"><em>(Module 6 §2)</em></p>
+          </div>
+        </details>
+      
+
+        <div class="pp-questions-list">
+          
+        <article class="pp-qcard" id="q-n4-2-q2" data-mod="6" data-type="Theory" data-pts="5">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n4-2-q2" data-pts="5" onchange="toggleMastered('q-n4-2-q2')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N4.2·Q2</span>
+                <span class="badge-mod">Mod 6</span>
+                <span class="badge-type badge-type-theory">Theory</span>
+                <span class="pp-qtopic">: In the semantic search step of a RAG pipeline, which ...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">5 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">✅ <strong>Task for students</strong>: In the semantic search step of a RAG pipeline, which mathematical method or equation is commonly used to find the most relevant chunks?</p>
+              </div>
+
+              
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given by the professor (before solving)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python"># YOUR ANSWER HERE
+Q2_answer = &quot;...&quot;
+
+print(&quot;Semantic Search Method:&quot;, Q2_answer)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n4-2-q2">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python"># YOUR ANSWER HERE
+# [SOLUTION]: Cosine similarity (or vector dot product)
+Q2_answer = &quot;Cosine similarity&quot;
+
+print(&quot;Semantic Search Method:&quot;, Q2_answer)</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+            </div>
+          </details>
+        </article>
+      
+
+        <article class="pp-qcard" id="q-n4-2-q3-1" data-mod="6" data-type="Compute" data-pts="2">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n4-2-q3-1" data-pts="2" onchange="toggleMastered('q-n4-2-q3-1')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N4.2·Q3_1</span>
+                <span class="badge-mod">Mod 6</span>
+                <span class="badge-type badge-type-compute">Compute</span>
+                <span class="pp-qtopic">: What is the vocabulary size of the language model wit...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">2 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">A language model has the following logits at its output.<br><code class="inline-code">[2.0, 1.0, 0.5, 0.01, 3, 2, 1.5]</code></p>
+
+<p class="pp-p">✅ <strong>Task for students</strong>: What is the vocabulary size of the language model with these logits at its output?</p>
+              </div>
+
+              
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given by the professor (before solving)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python"># Answer with a number here:
+Q3_1_vocabulary_size = None
+
+print(&quot;Vocabulary size:&quot;, Q3_1_vocabulary_size)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n4-2-q3-1">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python"># Answer with a number here:
+# [SOLUTION]: Number of output logits equals vocabulary size
+logits_example = [2.0, 1.0, 0.5, 0.01, 3, 2, 1.5]
+Q3_1_vocabulary_size = len(logits_example)
+
+print(&quot;Vocabulary size:&quot;, Q3_1_vocabulary_size)</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+            </div>
+          </details>
+        </article>
+      
+
+        <article class="pp-qcard" id="q-n4-2-q3-2" data-mod="6" data-type="Code" data-pts="10">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n4-2-q3-2" data-pts="10" onchange="toggleMastered('q-n4-2-q3-2')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N4.2·Q3_2</span>
+                <span class="badge-mod">Mod 6</span>
+                <span class="badge-type badge-type-code">Code</span>
+                <span class="pp-qtopic">: Complete the code for the function to convert the log...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">10 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">✅ <strong>Task for students</strong>: Complete the code for the function to convert the logits above into probabilities with a temperature parameter: t=0.5, t=1, t=3</p>
+
+<p class="pp-p">Notice: the code is not graded, only the output (3 lists).</p>
+              </div>
+
+              
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given by the professor (before solving)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python">def right_function(logits, temperature):
+    logits = np.array(logits)
+    # YOUR CODE HERE
+    # Hint: Apply softmax with temperature scaling: exp(logits/T) / sum(exp(logits/T))
+    output_list = []
+    return np.round(output_list, 3)
+
+# compute the probabilities
+probs_T05 = right_function([2.0, 1.0, 0.5, 0.01, 3, 2, 1.5], 0.5)
+probs_T1 = right_function([2.0, 1.0, 0.5, 0.01, 3, 2, 1.5], 1)
+probs_T3 = right_function([2.0, 1.0, 0.5, 0.01, 3, 2, 1.5], 3)
+
+# check the output
+print(&quot;T = 0.5:&quot;, probs_T05)
+print(&quot;T = 1.0:&quot;, probs_T1)
+print(&quot;T = 3.0:&quot;, probs_T3)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n4-2-q3-2">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python">def right_function(logits, temperature):
+    logits = np.array(logits)
+    # YOUR CODE HERE
+    # Hint: Apply softmax with temperature scaling: exp(logits/T) / sum(exp(logits/T))
+    # [SOLUTION]: Scale logits by temperature and apply softmax
+    scaled_logits = logits / temperature
+    exp_logits = np.exp(scaled_logits - np.max(scaled_logits))
+    probabilities = exp_logits / np.sum(exp_logits)
+
+    return np.round(probabilities, 3).tolist()
+
+# compute the probabilities
+probs_T05 = right_function([2.0, 1.0, 0.5, 0.01, 3, 2, 1.5], 0.5)
+probs_T1 = right_function([2.0, 1.0, 0.5, 0.01, 3, 2, 1.5], 1)
+probs_T3 = right_function([2.0, 1.0, 0.5, 0.01, 3, 2, 1.5], 3)
+
+# check the output
+print(&quot;T = 0.5:&quot;, probs_T05)
+print(&quot;T = 1.0:&quot;, probs_T1)
+print(&quot;T = 3.0:&quot;, probs_T3)</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+            </div>
+          </details>
+        </article>
+      
+
+        <article class="pp-qcard" id="q-n4-2-q3-3" data-mod="6" data-type="Theory" data-pts="5">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n4-2-q3-3" data-pts="5" onchange="toggleMastered('q-n4-2-q3-3')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N4.2·Q3_3</span>
+                <span class="badge-mod">Mod 6</span>
+                <span class="badge-type badge-type-theory">Theory</span>
+                <span class="pp-qtopic">: in less than two lines, explain how the temperature a...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">5 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">✅ <strong>Task for students</strong>: in less than two lines, explain how the temperature affects the output</p>
+              </div>
+
+              
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given by the professor (before solving)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python"># YOUR ANSWER HERE
+Q3_3_answer = &quot;...&quot;
+
+print(&quot;Explanation:&quot;, Q3_3_answer)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n4-2-q3-3">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python"># YOUR ANSWER HERE
+# [SOLUTION]: Low T &lt; 1 sharpens probabilities (more deterministic); high T &gt; 1 flattens them (more random).
+Q3_3_answer = &quot;Low T &lt; 1 sharpens probabilities (more deterministic); high T &gt; 1 flattens them (more random).&quot;
+
+print(&quot;Explanation:&quot;, Q3_3_answer)</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+            </div>
+          </details>
+        </article>
+      
+
+        <article class="pp-qcard" id="q-n4-2-q3-4" data-mod="6" data-type="Theory" data-pts="3">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n4-2-q3-4" data-pts="3" onchange="toggleMastered('q-n4-2-q3-4')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N4.2·Q3_4</span>
+                <span class="badge-mod">Mod 6</span>
+                <span class="badge-type badge-type-theory">Theory</span>
+                <span class="pp-qtopic">: use Greedy Decoding to select the most probable token...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">3 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">✅ <strong>Task for students</strong>: use Greedy Decoding to select the most probable token index (indices start with 0).</p>
+              </div>
+
+              
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given by the professor (before solving)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python"># Answer with a number here:
+Q3_4_answer = None
+
+print(&quot;Greedy decoding token index:&quot;, Q3_4_answer)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n4-2-q3-4">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python"># Answer with a number here:
+# [SOLUTION]: Greedy decoding selects the index of the maximum logit/probability (value 3.0 is at index 4)
+logits_example = [2.0, 1.0, 0.5, 0.01, 3, 2, 1.5]
+Q3_4_answer = int(np.argmax(logits_example))
+
+print(&quot;Greedy decoding token index:&quot;, Q3_4_answer)</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+            </div>
+          </details>
+        </article>
+      
+        </div>
+      </section>
+    
+
+      <section class="pp-module-section" id="mod-7" data-mod="7">
+        <div class="pp-module-header">
+          <div class="pp-module-title-wrap">
+            <span class="pp-module-num-badge">Module 7</span>
+            <h2 class="pp-module-title">Explainability &amp; Causality</h2>
+          </div>
+          <span class="pp-module-subtotal">25 pts subtotal · 4 questions</span>
+        </div>
+
+        
+        <details class="pp-mod-notes">
+          <summary class="pp-mod-notes-summary">
+            <div class="pp-mod-notes-summary-inner">
+              <span class="pp-mod-notes-icon">📖</span>
+              <span class="pp-mod-notes-title">Module 7 Bootcamp Core Notes &amp; Theory Cheat Sheet</span>
+              <span class="pp-mod-notes-hint">Click to expand refresher before solving</span>
+            </div>
+            <span class="pp-chevron">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
+          </summary>
+          <div class="pp-mod-notes-content">
+            <h4 class="pp-h4">Permutation importance — breaking a feature to measure it</h4>
+
+<ul class="pp-list">
+<li><strong>Insight:</strong> if a feature matters, destroying its information should hurt performance; if it's</li>
+</ul>
+  irrelevant, scrambling it shouldn't change anything.
+<ul class="pp-list">
+<li><strong>Procedure:</strong> train, measure baseline score → shuffle one feature's column → re-evaluate → importance =</li>
+</ul>
+  baseline − new score → repeat K times per feature, average, rank.
+<ul class="pp-list">
+<li><strong>Model-agnostic</strong> — never looks inside the model, only shuffles inputs and reads outputs. This is</li>
+</ul>
+  exactly the technique to reach for when asked "how do I find out which features/risk factors actually
+  drive this model's predictions?"
+
+<p class="pp-p"><em>(Module 7 §3)</em></p>
+
+<h4 class="pp-h4">PDP / SHAP for directional impact</h4>
+
+<ul class="pp-list">
+<li>Permutation importance tells you <em>how much</em> a feature matters, but not <em>which direction</em> it pushes the</li>
+</ul>
+  prediction. To show whether a feature pushes predictions up or down, use:
+<ul class="pp-list">
+<li><strong>Partial Dependence Plots (PDP)</strong> — show the model's average predicted outcome as one feature varies,</li>
+</ul>
+    holding others fixed, directly visualizing the direction of effect.
+<ul class="pp-list">
+<li><strong>SHAP summary/beeswarm plots</strong> — dot position = impact on the prediction, color = the feature's</li>
+</ul>
+    actual value, revealing direction and magnitude together for every instance.
+
+<p class="pp-p"><em>(Module 7 §4)</em></p>
+
+<h4 class="pp-h4">Choosing a scoring function for permutation importance</h4>
+
+<ul class="pp-list">
+<li>The <code class="inline-code">scoring</code> argument must satisfy "higher is better." Classification metrics (accuracy, F1) already</li>
+</ul>
+  work that way.
+<ul class="pp-list">
+<li>A regression target (like Remaining Useful Life, measured in continuous operating hours) needs a</li>
+</ul>
+  <em>negated</em> error metric instead — <code class="inline-code">scoring='neg_root_mean_squared_error'</code> or
+  <code class="inline-code">'neg_mean_absolute_error'</code> — since raw RMSE/MAE are "lower is better," and negating flips that so the
+  same "baseline − shuffled" subtraction still works correctly.
+
+<p class="pp-p"><em>(Module 7 §3)</em></p>
+          </div>
+        </details>
+      
+
+        <div class="pp-questions-list">
+          
+        <article class="pp-qcard" id="q-n1-2-q2" data-mod="7" data-type="Name It" data-pts="5">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n1-2-q2" data-pts="5" onchange="toggleMastered('q-n1-2-q2')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N1.2·Q2</span>
+                <span class="badge-mod">Mod 7</span>
+                <span class="badge-type badge-type-nameit">Name It</span>
+                <span class="pp-qtopic">: Identify the Right Analysis Technique and write it do...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">5 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">✅ <strong>Task for students</strong>: Identify the Right Analysis Technique and write it down (DO NOT use more than 2 words to answer this)</p>
+
+<p class="pp-p">A health-tech startup is building a machine learning model to provide tailored advices for patients at risk of developing a chronic illness in the next 5 years. The dataset includes:</p>
+
+<ul class="pp-list">
+<li>Medical history events (e.g., past diagnoses, procedures)</li>
+<li>Lab test results</li>
+<li>Lifestyle information (e.g., smoking, exercise)</li>
+<li>Demographics (age, gender, etc.)</li>
+</ul>
+
+<p class="pp-p">The doctors achieved good prediction results with the modelling but they should understand what are the risk factors associated with the disease.</p>
+
+<p class="pp-p">What type of analysis should be used to identify and rank the risk factors?</p>
+              </div>
+
+              
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given by the professor (before solving)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python"># YOUR CODE HERE
+Analysis = &quot;...&quot;
+
+print(&quot;Selected Analysis Technique:&quot;, Analysis)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n1-2-q2">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python"># YOUR CODE HERE
+# [SOLUTION]: Permutation importance (or Feature importance / SHAP values)
+Analysis = &quot;Permutation importance&quot;
+
+print(&quot;Selected Analysis Technique:&quot;, Analysis)</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+            </div>
+          </details>
+        </article>
+      
+
+        <article class="pp-qcard" id="q-n3-2-q1" data-mod="7" data-type="Compute" data-pts="10">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n3-2-q1" data-pts="10" onchange="toggleMastered('q-n3-2-q1')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N3.2·Q1</span>
+                <span class="badge-mod">Mod 7</span>
+                <span class="badge-type badge-type-compute">Compute</span>
+                <span class="pp-qtopic">Task for Students: use sklearn `permutationimportance` ...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">10 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">✅ <strong>Task for Students</strong>: use sklearn <code class="inline-code">permutation_importance</code> to find the top 4 important features.</p>
+
+<p class="pp-p">Steps:<br><ol class="pp-list-ol"><br><li>compute the permutation features importance with: 10 shuffles of each feature, the same <code class="inline-code">RANDOM_STATE</code> of the notebook, the provided scoring function.</li><br><li>Store the <strong>top 5 features</strong> (just the feature names) in a list called <code class="inline-code">top5_features</code>.</li><br></ol></p>
+
+<p class="pp-p">Notice: the code will not be graded, only the <code class="inline-code">top5_features</code> list.</p>
+              </div>
+
+              
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given by the professor (before solving)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python"># 4. Compute permutation importances
+
+# define the scoring function
+scoring_function = &quot;accuracy&quot;
+
+# Write code to find permutation_importance here
+# YOUR CODE HERE
+
+# ENTER YOUR ANSWER HERE
+top5_features = []
+
+print(&quot;Top features:&quot;, top5_features)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n3-2-q1">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python"># 4. Compute permutation importances
+
+# define the scoring function
+scoring_function = &quot;accuracy&quot;
+
+# [SOLUTION]: Create sample dataset and fit model so code executes cleanly
+np.random.seed(42)
+X_sample = pd.DataFrame({
+    &#39;vibration&#39;: np.random.normal(10, 2, 150),
+    &#39;temperature&#39;: np.random.normal(75, 5, 150),
+    &#39;pressure&#39;: np.random.normal(50, 10, 150),
+    &#39;mean_area&#39;: np.random.normal(100, 15, 150),
+    &#39;noise_level&#39;: np.random.normal(30, 3, 150),
+    &#39;humidity&#39;: np.random.normal(40, 8, 150)
+})
+y_sample = ((X_sample[&#39;vibration&#39;]*2.5 + X_sample[&#39;temperature&#39;]*1.5 - X_sample[&#39;pressure&#39;]*0.8 + np.random.normal(0, 1, 150)) &gt; 100).astype(int)
+
+X_tr, X_val, y_tr, y_val = train_test_split(X_sample, y_sample, test_size=0.3, random_state=42)
+model = RandomForestClassifier(n_estimators=50, random_state=42)
+model.fit(X_tr, y_tr)
+
+# Write code to find permutation_importance here
+# YOUR CODE HERE
+# [SOLUTION]: 1. Compute permutation feature importance (10 repeats, random_state=42)
+perm_importance = permutation_importance(
+    model, X_val, y_val,
+    n_repeats=10,
+    random_state=42,
+    scoring=scoring_function
+)
+
+# [SOLUTION]: Create sorted pandas Series of importances (vectorized, no loops!)
+importances = pd.Series(perm_importance.importances_mean, index=X_val.columns).sort_values(ascending=False)
+
+# ENTER YOUR ANSWER HERE
+# [SOLUTION]: 2. Store top 5 feature names directly using index slicing
+top5_features = importances.head(5).index.tolist()
+
+print(&quot;Feature Importances:\n&quot;, importances.round(4))
+print(&quot;\nTop features:&quot;, top5_features)</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+            </div>
+          </details>
+        </article>
+      
+
+        <article class="pp-qcard" id="q-n3-2-q2" data-mod="7" data-type="Theory" data-pts="5">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n3-2-q2" data-pts="5" onchange="toggleMastered('q-n3-2-q2')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N3.2·Q2</span>
+                <span class="badge-mod">Mod 7</span>
+                <span class="badge-type badge-type-theory">Theory</span>
+                <span class="pp-qtopic">Task for Students: We need a way to understand in which...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">5 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">✅ <strong>Task for Students</strong>: We need a way to understand in which direction does the feature "mean area" push the prediction. Propose a method for this?</p>
+              </div>
+
+              
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given by the professor (before solving)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python"># YOUR ANSWER HERE
+Q2_answer = &quot;...&quot;
+
+print(&quot;Proposed Method:&quot;, Q2_answer)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n3-2-q2">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python"># YOUR ANSWER HERE
+# [SOLUTION]: PDP or SHAP values clearly show directional impact (+/-)
+Q2_answer = &quot;Use Partial Dependence Plots (PDP) or SHAP summary plots to show positive/negative directional impact.&quot;
+
+print(&quot;Proposed Method:&quot;, Q2_answer)</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+            </div>
+          </details>
+        </article>
+      
+
+        <article class="pp-qcard" id="q-n3-2-q3" data-mod="7" data-type="Code" data-pts="5">
+          <details class="pp-qdetails" open>
+            <summary class="pp-qsummary">
+              <div class="pp-qsummary-left">
+                <label class="pp-check-label" title="Mark question as mastered / solved" onclick="event.stopPropagation();">
+                  <input type="checkbox" class="pp-qcheck" data-qid="q-n3-2-q3" data-pts="5" onchange="toggleMastered('q-n3-2-q3')">
+                  <span class="pp-checkmark"></span>
+                </label>
+                <span class="badge-ref">N3.2·Q3</span>
+                <span class="badge-mod">Mod 7</span>
+                <span class="badge-type badge-type-code">Code</span>
+                <span class="pp-qtopic">: propose a scoring function that you could use with `p...</span>
+              </div>
+              <div class="pp-qsummary-right">
+                <span class="badge-pts">5 pts</span>
+                <span class="pp-chevron">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+              </div>
+            </summary>
+            
+            <div class="pp-qbody">
+              <div class="pp-prompt-box">
+                <p class="pp-p">Imagine you are tasked to develop a predictive maintenance model that estimates the <strong>remaining useful life (RUL)</strong> of a critical turbine component, measured in <strong>operating hours</strong>, based on sensor readings (e.g., temperature, vibration, and pressure).</p>
+
+<p class="pp-p">You want to understand which sensor readings are most influential in predicting the component's remaining lifetime.</p>
+
+<p class="pp-p">✅ <strong>Tasks for Students</strong>: propose a scoring function that you could use with <code class="inline-code">permutation_importance</code> for this task.</p>
+              </div>
+
+              
+              
+          <div class="pp-given-section">
+            <div class="pp-section-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Starter Template (As Given Before Solving)</span>
+            </div>
+            <div class="pp-given-body">
+              <div class="pp-given-label-badge">As given by the professor (before solving)</div>
+
+
+<div class="code-block-wrapper">
+  <div class="code-block-header">
+    <span class="code-lang">python</span>
+    <button class="copy-code-btn" type="button" aria-label="Copy code" onclick="copyCode(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>Copy</span>
+    </button>
+  </div>
+  <pre><code class="language-python"># YOUR ANSWER HERE
+Q3_scoring_function = &quot;...&quot;
+
+print(&quot;Proposed Scoring Function:&quot;, Q3_scoring_function)</code></pre>
+</div>
+
+
+            </div>
+          </div>
+        
+              
+          <details class="pp-sol-details" id="sol-q-n3-2-q3">
+            <summary class="pp-sol-summary">
+              <span class="pp-sol-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span class="sol-toggle-text">Reveal Official Solution &amp; Explanation</span>
+              </span>
+            </summary>
+            <div class="pp-sol-content">
+              <div class="pp-sol-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Official Solution &amp; Grading Logic</span>
+              </div>
+              
+              <div class="code-block-wrapper solution-code">
+                <div class="code-block-header">
+                  <span class="code-lang">python (solution)</span>
+                  <button class="copy-code-btn" type="button" aria-label="Copy solution code" onclick="copyCode(this)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre><code class="language-python"># YOUR ANSWER HERE
+# [SOLUTION]: Continuous regression task (operating hours) -&gt; use RMSE or MSE
+Q3_scoring_function = &quot;neg_root_mean_squared_error&quot;
+
+print(&quot;Proposed Scoring Function:&quot;, Q3_scoring_function)</code></pre>
+              </div>
+            
+            </div>
+          </details>
+        
+              
+            </div>
+          </details>
+        </article>
+      
+        </div>
+      </section>
+    
+    </div>
+
+    <!-- Bottom Navigation / Links -->
+    <footer class="page-footer">
+      <div class="page-footer-left">
+        <a href="past-papers.html" class="footer-link">← Past Papers Hub</a>
+      </div>
+      <div class="page-footer-right">
+        <a href="past-paper-2026.html" class="footer-link">Proceed to 2026 Exam →</a>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<script src="assets/site.js?v=12" defer></script>
+<script>
+// Past Paper Interactive Logic
+var currentYear = "2025";
+var totalExamPts = 75;
+var totalExamQuestions = 13;
+
+function copyCode(btn) {
+  var wrapper = btn.closest('.code-block-wrapper');
+  var codeElem = wrapper ? wrapper.querySelector('code') : null;
+  if (!codeElem) return;
+  var text = codeElem.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    var original = btn.innerHTML;
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Copied!</span>';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.innerHTML = original;
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function getMasteredStorage() {
+  try {
+    var raw = localStorage.getItem('dm2026-pp-' + currentYear + '-mastery');
+    return raw ? JSON.parse(raw) : {};
+  } catch(e) {
+    return {};
+  }
+}
+
+function saveMasteredStorage(data) {
+  try {
+    localStorage.setItem('dm2026-pp-' + currentYear + '-mastery', JSON.stringify(data));
+  } catch(e) {}
+}
+
+function toggleMastered(qid) {
+  var data = getMasteredStorage();
+  var checkbox = document.querySelector('.pp-qcheck[data-qid="' + qid + '"]');
+  if (checkbox) {
+    if (checkbox.checked) {
+      data[qid] = true;
+    } else {
+      delete data[qid];
+    }
+    saveMasteredStorage(data);
+    updateMasteryUI();
+  }
+}
+
+function resetMastery(year) {
+  if (confirm("Reset your mastery progress for the " + year + " exam?")) {
+    localStorage.removeItem('dm2026-pp-' + year + '-mastery');
+    updateMasteryUI();
+  }
+}
+
+function updateMasteryUI() {
+  var data = getMasteredStorage();
+  var checkboxes = document.querySelectorAll('.pp-qcheck');
+  var masteredCount = 0;
+  var masteredPts = 0;
+
+  checkboxes.forEach(function(cb) {
+    var qid = cb.getAttribute('data-qid');
+    var pts = parseInt(cb.getAttribute('data-pts') || '5', 10);
+    var isMastered = !!data[qid];
+    cb.checked = isMastered;
+
+    var card = cb.closest('.pp-qcard');
+    if (card) {
+      if (isMastered) card.classList.add('is-mastered');
+      else card.classList.remove('is-mastered');
+    }
+
+    // Sidebar link update
+    var sidebarLink = document.querySelector('.sidebar-q-link[data-qid="' + qid + '"]');
+    if (sidebarLink) {
+      var checkSpan = sidebarLink.querySelector('.sidebar-q-check');
+      if (checkSpan) {
+        checkSpan.textContent = isMastered ? '✓' : '○';
+        if (isMastered) sidebarLink.classList.add('mastered');
+        else sidebarLink.classList.remove('mastered');
+      }
+    }
+
+    if (isMastered) {
+      masteredCount++;
+      masteredPts += pts;
+    }
+  });
+
+  var pct = Math.round((masteredPts / totalExamPts) * 100);
+  var scoreDigits = document.getElementById('scoreDigits');
+  var scorePct = document.getElementById('scorePct');
+  var progressBar = document.getElementById('progressBarFill');
+  var questionsCompleted = document.getElementById('questionsCompleted');
+
+  if (scoreDigits) scoreDigits.textContent = masteredPts + ' / ' + totalExamPts + ' pts';
+  if (scorePct) scorePct.textContent = pct + '%';
+  if (progressBar) progressBar.style.width = pct + '%';
+  if (questionsCompleted) questionsCompleted.textContent = masteredCount + ' of ' + totalExamQuestions + ' questions mastered';
+}
+
+function toggleAllQuestions(expand) {
+  var detailsList = document.querySelectorAll('.pp-qdetails');
+  detailsList.forEach(function(d) {
+    if (expand) d.setAttribute('open', '');
+    else d.removeAttribute('open');
+  });
+}
+
+function toggleAllSolutions(reveal) {
+  var solDetailsList = document.querySelectorAll('.pp-sol-details');
+  solDetailsList.forEach(function(d) {
+    if (reveal) d.setAttribute('open', '');
+    else d.removeAttribute('open');
+  });
+}
+
+var currentModFilter = 'all';
+var currentTypeFilter = 'all';
+
+function setupFilterEvents() {
+  var modBtns = document.querySelectorAll('#modFilters .pp-filter-btn');
+  modBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      modBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentModFilter = btn.getAttribute('data-filter-mod');
+      applyFilters();
+    });
+  });
+
+  var typeBtns = document.querySelectorAll('#typeFilters .pp-filter-btn');
+  typeBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      typeBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentTypeFilter = btn.getAttribute('data-filter-type');
+      applyFilters();
+    });
+  });
+}
+
+function applyFilters() {
+  var searchInput = document.getElementById('ppSearchInput');
+  var clearBtn = document.getElementById('clearSearchBtn');
+  var query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+  if (clearBtn) {
+    clearBtn.style.display = query.length > 0 ? 'inline-flex' : 'none';
+  }
+
+  var cards = document.querySelectorAll('.pp-qcard');
+  var visibleCount = 0;
+
+  cards.forEach(function(card) {
+    var cardMod = card.getAttribute('data-mod');
+    var cardType = card.getAttribute('data-type');
+    var cardText = card.innerText.toLowerCase();
+
+    var matchesMod = (currentModFilter === 'all' || cardMod === currentModFilter);
+    var matchesType = (currentTypeFilter === 'all' || cardType === currentTypeFilter);
+    var matchesSearch = (!query || cardText.indexOf(query) !== -1);
+
+    if (matchesMod && matchesType && matchesSearch) {
+      card.style.display = 'block';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  // Check section visibility
+  var sections = document.querySelectorAll('.pp-module-section');
+  sections.forEach(function(sec) {
+    var hasVisible = Array.from(sec.querySelectorAll('.pp-qcard')).some(function(c) {
+      return c.style.display !== 'none';
+    });
+    sec.style.display = hasVisible ? 'block' : 'none';
+  });
+
+  var indicator = document.getElementById('visibleCount');
+  if (indicator) {
+    indicator.textContent = 'Showing ' + visibleCount + ' of ' + totalExamQuestions + ' questions';
+  }
+}
+
+function clearSearch() {
+  var searchInput = document.getElementById('ppSearchInput');
+  if (searchInput) {
+    searchInput.value = '';
+    applyFilters();
+    searchInput.focus();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  setupFilterEvents();
+  updateMasteryUI();
+});
+</script>
+</body>
+</html>
