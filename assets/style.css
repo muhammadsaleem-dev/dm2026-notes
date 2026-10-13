@@ -2939,54 +2939,7 @@ pre code.hljs {
   color: var(--accent);
 }
 
-/* Floating Quick Action Dock */
-.pp-floating-dock {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 0.5rem;
-  background: rgba(246, 247, 249, 0.95);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--border);
-  border-radius: 9999px;
-  box-shadow: var(--shadow-md);
-  transition: opacity 0.2s, transform 0.2s;
-}
 
-:root[data-theme="dark"] .pp-floating-dock {
-  background: rgba(19, 25, 32, 0.95);
-}
-
-.floating-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.4rem 0.75rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  border-radius: 9999px;
-  border: 1px solid transparent;
-  background: var(--bg-raised);
-  color: var(--text);
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  transition: all 0.15s ease;
-}
-
-.floating-btn:hover {
-  background: var(--accent);
-  color: #ffffff;
-  transform: translateY(-1px);
-}
-
-.floating-btn.floating-top {
-  padding: 0.4rem 0.55rem;
-}
 
 /* Universal Quiz / Drill List Toolbar */
 .list-toggle-toolbar {
