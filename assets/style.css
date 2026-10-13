@@ -1988,9 +1988,8 @@ pre code.hljs {
 
 /* Filter Toolbar */
 .pp-filter-toolbar {
-  position: sticky;
-  top: 60px;
-  z-index: 40;
+  position: relative;
+  z-index: 10;
   background: rgba(246, 247, 249, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -2794,10 +2793,12 @@ pre code.hljs {
 }
 
 /* Mobile Responsiveness for Past Papers */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .pp-filter-toolbar {
-    top: 50px;
+    position: static !important;
+    top: auto !important;
     padding: 0.85rem;
+    margin-bottom: 1.25rem;
   }
   
   .pp-qsummary {
