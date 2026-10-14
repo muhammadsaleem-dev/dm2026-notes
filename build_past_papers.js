@@ -1,8 +1,345 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
+
+const VAULT_PIN = '252525';
+
+function encryptPayload(htmlString, pin = VAULT_PIN) {
+  const salt = crypto.randomBytes(16);
+  const iv = crypto.randomBytes(12);
+  const key = crypto.pbkdf2Sync(pin, salt, 100000, 32, 'sha256');
+  const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
+  const ciphertext = Buffer.concat([cipher.update(htmlString, 'utf8'), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  const combined = Buffer.concat([ciphertext, tag]);
+  return {
+    salt: salt.toString('hex'),
+    iv: iv.toString('hex'),
+    data: combined.toString('base64')
+  };
+}
+
+function generateVaultLockScreenHtml(paperTitle) {
+  return `
+    <div id="dmVaultLockScreen" class="dm-vault-lock-screen">
+      <div class="dm-vault-card">
+        <div class="dm-vault-icon-wrap">
+          <div class="dm-vault-icon-ring"></div>
+          <svg class="dm-vault-lock-icon" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        
+        <div class="dm-vault-badge-tag">🔒 AES-256 Encrypted Vault</div>
+        <h2 class="dm-vault-title">Private Exam Vault</h2>
+        <p class="dm-vault-subtitle">${paperTitle}<br>Enter your 6-digit access PIN to decrypt and unlock.</p>
+        
+        <!-- 6 Passcode Indicators -->
+        <div class="dm-vault-dots" id="vaultDots" aria-label="PIN entry">
+          <div class="dm-vault-dot" data-idx="0"></div>
+          <div class="dm-vault-dot" data-idx="1"></div>
+          <div class="dm-vault-dot" data-idx="2"></div>
+          <div class="dm-vault-dot" data-idx="3"></div>
+          <div class="dm-vault-dot" data-idx="4"></div>
+          <div class="dm-vault-dot" data-idx="5"></div>
+        </div>
+        
+        <div class="dm-vault-feedback" id="vaultFeedback" role="alert" aria-live="polite"></div>
+        
+        <!-- Virtual Keypad (3x4 grid) -->
+        <div class="dm-vault-keypad" id="vaultKeypad">
+          <button type="button" class="dm-vk-btn" data-key="1">1</button>
+          <button type="button" class="dm-vk-btn" data-key="2">2</button>
+          <button type="button" class="dm-vk-btn" data-key="3">3</button>
+          <button type="button" class="dm-vk-btn" data-key="4">4</button>
+          <button type="button" class="dm-vk-btn" data-key="5">5</button>
+          <button type="button" class="dm-vk-btn" data-key="6">6</button>
+          <button type="button" class="dm-vk-btn" data-key="7">7</button>
+          <button type="button" class="dm-vk-btn" data-key="8">8</button>
+          <button type="button" class="dm-vk-btn" data-key="9">9</button>
+          <button type="button" class="dm-vk-btn dm-vk-fn" data-action="clear" title="Clear">C</button>
+          <button type="button" class="dm-vk-btn" data-key="0">0</button>
+          <button type="button" class="dm-vk-btn dm-vk-fn" data-action="backspace" title="Delete">⌫</button>
+        </div>
+        
+        <div class="dm-vault-options">
+          <label class="dm-vault-remember">
+            <input type="checkbox" id="vaultRememberCheck" checked>
+            <span>Remember on this device</span>
+          </label>
+        </div>
+
+        <div class="dm-vault-footer">
+          <a href="index.html" class="dm-vault-return-link">&larr; Return to Public Study Notes</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function generateVaultClientScript() {
+  return `
+<script>
+(function() {
+  var currentEnteredPin = '';
+  var isDecrypting = false;
+  var payloadElem = document.getElementById('vaultPayload');
+  if (!payloadElem) return;
+  
+  var encryptedPayload;
+  try {
+    encryptedPayload = JSON.parse(payloadElem.textContent);
+  } catch(e) {
+    console.error('Failed to parse vault payload:', e);
+    return;
+  }
+
+  function hexToBuf(hex) {
+    var bytes = new Uint8Array(hex.length / 2);
+    for (var i = 0; i < hex.length; i += 2) {
+      bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+    }
+    return bytes.buffer;
+  }
+
+  function base64ToBuf(b64) {
+    var bin = atob(b64);
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) {
+      bytes[i] = bin.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+
+  async function decryptVault(pin) {
+    var subtle = window.crypto && window.crypto.subtle;
+    if (!subtle) {
+      throw new Error('Web Cryptography API is not supported in this browser.');
+    }
+    var enc = new TextEncoder();
+    var dec = new TextDecoder('utf-8');
+
+    var saltBuf = hexToBuf(encryptedPayload.salt);
+    var ivBuf = hexToBuf(encryptedPayload.iv);
+    var dataBuf = base64ToBuf(encryptedPayload.data);
+
+    var keyMaterial = await subtle.importKey('raw', enc.encode(pin), { name: 'PBKDF2' }, false, ['deriveKey']);
+    var key = await subtle.deriveKey(
+      { name: 'PBKDF2', salt: saltBuf, iterations: 100000, hash: 'SHA-256' },
+      keyMaterial,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['decrypt']
+    );
+
+    var decryptedBuf = await subtle.decrypt(
+      { name: 'AES-GCM', iv: ivBuf },
+      key,
+      dataBuf
+    );
+
+    return dec.decode(decryptedBuf);
+  }
+
+  function updateDots() {
+    var dots = document.querySelectorAll('#vaultDots .dm-vault-dot');
+    dots.forEach(function(dot, idx) {
+      if (idx < currentEnteredPin.length) {
+        dot.classList.add('is-filled');
+      } else {
+        dot.classList.remove('is-filled');
+      }
+    });
+  }
+
+  function setFeedback(msg, type) {
+    var fb = document.getElementById('vaultFeedback');
+    if (!fb) return;
+    fb.textContent = msg;
+    fb.className = 'dm-vault-feedback' + (type ? ' is-' + type : '');
+  }
+
+  async function attemptUnlock(pin, isAuto) {
+    if (isDecrypting) return;
+    isDecrypting = true;
+    setFeedback(isAuto ? 'Unlocking saved session...' : 'Decrypting exam vault...', '');
+
+    try {
+      var decryptedHtml = await decryptVault(pin);
+      setFeedback('Unlocked successfully!', 'success');
+      
+      var rememberCheck = document.getElementById('vaultRememberCheck');
+      var shouldRemember = rememberCheck ? rememberCheck.checked : true;
+      if (shouldRemember) {
+        try { localStorage.setItem('dm2026_vault_pin', pin); } catch(e){}
+      } else {
+        try { sessionStorage.setItem('dm2026_vault_pin', pin); } catch(e){}
+      }
+
+      var lockScreen = document.getElementById('dmVaultLockScreen');
+      var container = document.getElementById('vaultProtectedContainer');
+      
+      if (container) {
+        container.innerHTML = decryptedHtml;
+        container.style.display = 'block';
+      }
+
+      if (lockScreen) {
+        lockScreen.style.opacity = '0';
+        lockScreen.style.transform = 'translateY(-10px)';
+        setTimeout(function() {
+          lockScreen.classList.add('is-hidden');
+        }, 220);
+      }
+
+      updateNavLockButton(true);
+
+      if (typeof window.onVaultUnlocked === 'function') {
+        window.onVaultUnlocked();
+      }
+
+    } catch (err) {
+      console.warn('Vault unlock attempt failed:', err);
+      if (isAuto) {
+        try {
+          localStorage.removeItem('dm2026_vault_pin');
+          sessionStorage.removeItem('dm2026_vault_pin');
+        } catch(e){}
+        var lockScreen = document.getElementById('dmVaultLockScreen');
+        if (lockScreen) lockScreen.classList.remove('is-hidden');
+      }
+      
+      var dotsWrap = document.getElementById('vaultDots');
+      if (dotsWrap) {
+        dotsWrap.classList.add('is-error', 'is-shaking');
+        setTimeout(function() {
+          dotsWrap.classList.remove('is-shaking', 'is-error');
+          currentEnteredPin = '';
+          updateDots();
+        }, 600);
+      } else {
+        currentEnteredPin = '';
+        updateDots();
+      }
+      setFeedback('Incorrect PIN. Access denied.', 'error');
+    } finally {
+      isDecrypting = false;
+    }
+  }
+
+  function handleDigit(d) {
+    if (isDecrypting || currentEnteredPin.length >= 6) return;
+    currentEnteredPin += d;
+    updateDots();
+    setFeedback('', '');
+    if (currentEnteredPin.length === 6) {
+      attemptUnlock(currentEnteredPin, false);
+    }
+  }
+
+  function handleBackspace() {
+    if (isDecrypting || currentEnteredPin.length === 0) return;
+    currentEnteredPin = currentEnteredPin.slice(0, -1);
+    updateDots();
+    setFeedback('', '');
+  }
+
+  function handleClear() {
+    if (isDecrypting) return;
+    currentEnteredPin = '';
+    updateDots();
+    setFeedback('', '');
+  }
+
+  function setupKeypad() {
+    var keypad = document.getElementById('vaultKeypad');
+    if (!keypad) return;
+    keypad.addEventListener('click', function(e) {
+      var btn = e.target.closest('.dm-vk-btn');
+      if (!btn) return;
+      var key = btn.getAttribute('data-key');
+      var action = btn.getAttribute('data-action');
+      if (key) handleDigit(key);
+      else if (action === 'backspace') handleBackspace();
+      else if (action === 'clear') handleClear();
+    });
+  }
+
+  window.addEventListener('keydown', function(e) {
+    var lockScreen = document.getElementById('dmVaultLockScreen');
+    if (!lockScreen || lockScreen.classList.contains('is-hidden')) return;
+
+    if (e.key >= '0' && e.key <= '9') {
+      handleDigit(e.key);
+    } else if (e.key === 'Backspace') {
+      handleBackspace();
+    } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') {
+      handleClear();
+    }
+  });
+
+  window.lockVault = function() {
+    try {
+      localStorage.removeItem('dm2026_vault_pin');
+      sessionStorage.removeItem('dm2026_vault_pin');
+    } catch(e){}
+    var container = document.getElementById('vaultProtectedContainer');
+    if (container) {
+      container.innerHTML = '';
+      container.style.display = 'none';
+    }
+    var lockScreen = document.getElementById('dmVaultLockScreen');
+    if (lockScreen) {
+      lockScreen.style.opacity = '1';
+      lockScreen.style.transform = 'none';
+      lockScreen.classList.remove('is-hidden');
+    }
+    currentEnteredPin = '';
+    updateDots();
+    setFeedback('Vault locked.', '');
+    updateNavLockButton(false);
+  };
+
+  function updateNavLockButton(isUnlocked) {
+    var existing = document.getElementById('vaultNavLockBtn');
+    if (isUnlocked) {
+      if (!existing) {
+        var links = document.querySelector('.sitenav-links');
+        if (links) {
+          var btn = document.createElement('button');
+          btn.id = 'vaultNavLockBtn';
+          btn.className = 'vault-nav-lock';
+          btn.type = 'button';
+          btn.title = 'Lock exam vault';
+          btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><span>Lock Vault</span>';
+          btn.onclick = window.lockVault;
+          links.appendChild(btn);
+        }
+      }
+    } else {
+      if (existing) existing.remove();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    setupKeypad();
+    var saved = null;
+    try {
+      saved = localStorage.getItem('dm2026_vault_pin') || sessionStorage.getItem('dm2026_vault_pin');
+    } catch(e){}
+    if (saved) {
+      attemptUnlock(saved, true);
+    }
+  });
+})();
+</script>
+  `;
+}
 
 const p2025Path = path.join(__dirname, '..', 'private-study', 'past-papers-with-notes', 'past-paper-2025.ipynb');
 const p2026Path = path.join(__dirname, '..', 'private-study', 'past-papers-with-notes', 'past-paper-2026.ipynb');
+
 
 function escapeHtml(str) {
   if (!str) return '';
@@ -492,63 +829,7 @@ function generatePastPaperPage(mockId, modules, totalPoints, totalQuestions) {
     `;
   }).join('\n');
 
-  return `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mock ${mockNum} with Solutions | DM Bootcamp</title>
-<meta name="description" content="Complete Mock ${mockNum} Data Mining practice exam with collapsible questions, official professor starter templates, verified code solutions, and critical exam pitfalls.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=14">
-<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'concept';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
-</head>
-<body>
-
-<nav class="sitenav">
-  <div class="sitenav-inner">
-    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
-    <div class="sitenav-links">
-      <a href="chapter-1-intro.html">1 · Intro</a>
-      <a href="chapter-2-overview.html">2 · Pipeline</a>
-      <a href="chapter-3-overview.html">3 · Classification</a>
-      <a href="chapter-4-overview.html">4 · Clustering</a>
-      <a href="chapter-5-overview.html">5 · Regression→NN</a>
-      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
-      <a href="chapter-7-explainability.html">7 · Explainability</a>
-      <a href="past-papers.html" class="active">📝 Past Papers</a>
-    </div>
-    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-      Menu
-    </button>
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
-      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
-      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-    </button>
-    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
-  </div>
-  <div class="nav-panel" id="navPanel">
-    <div class="nav-panel-section">
-      <span class="nav-panel-label">Modules</span>
-      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
-      <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
-      <a href="chapter-3-overview.html">3 · Classification</a>
-      <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
-      <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
-      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
-      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
-      <span class="nav-panel-label">Exam Practice</span>
-      <a href="past-papers.html">📝 Past Papers Hub</a>
-      <a href="mock-1.html" ${isMock1 ? 'class="active"' : ''}>Mock 1 (75 pts)</a>
-      <a href="mock-2.html" ${!isMock1 ? 'class="active"' : ''}>Mock 2 (95 pts)</a>
-    </div>
-  </div>
-</nav>
-
+  const pageShellHtml = `
 <div class="page-shell">
   <aside class="sidebar-toc">
     <div class="sidebar-block">
@@ -690,8 +971,79 @@ function generatePastPaperPage(mockId, modules, totalPoints, totalQuestions) {
 
   </div>
 </div>
+`;
+
+  const encryptedPayload = encryptPayload(pageShellHtml, VAULT_PIN);
+  const paperTitle = 'Mock ' + mockNum + ' — ' + (isMock1 ? '2025' : '2026') + ' Data Mining Exam (' + totalPtsCount + ' pts)';
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mock ${mockNum} with Solutions | DM Bootcamp</title>
+<meta name="description" content="Complete Mock ${mockNum} Data Mining practice exam with collapsible questions, official professor starter templates, verified code solutions, and critical exam pitfalls.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=15">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'concept';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Pipeline</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-4-overview.html">4 · Clustering</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+      <a href="past-papers.html" class="active">📝 Past Papers</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+      <span class="nav-panel-label">Exam Practice</span>
+      <a href="past-papers.html">📝 Past Papers Hub</a>
+      <a href="mock-1.html" ${isMock1 ? 'class="active"' : ''}>Mock 1 (75 pts)</a>
+      <a href="mock-2.html" ${!isMock1 ? 'class="active"' : ''}>Mock 2 (95 pts)</a>
+    </div>
+  </div>
+</nav>
+
+${generateVaultLockScreenHtml(paperTitle)}
+
+<div id="vaultProtectedContainer" style="display:none;"></div>
+
+<script id="vaultPayload" type="application/json">
+${JSON.stringify(encryptedPayload)}
+</script>
 
 <script src="assets/site.js?v=12" defer></script>
+${generateVaultClientScript()}
+
 <script>
 // Past Paper Interactive Logic
 var currentMock = "${mockNum}";
@@ -918,73 +1270,33 @@ function clearSearch() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+window.onVaultUnlocked = function() {
   setupFilterEvents();
   updateMasteryUI();
-});
+  applyFilters();
+  if (window.hljs) {
+    document.querySelectorAll('#vaultProtectedContainer pre code').forEach(function(el) {
+      hljs.highlightElement(el);
+    });
+  }
+  if (window.location.hash) {
+    try {
+      var target = document.querySelector(window.location.hash);
+      if (target) {
+        setTimeout(function() {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }, 120);
+      }
+    } catch(e) {}
+  }
+};
 </script>
 </body>
 </html>`;
 }
 
 function generateHubPage() {
-  return `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Past Papers &amp; Mock Exams Hub (Mock 1 &amp; Mock 2) | DM Bootcamp</title>
-<meta name="description" content="Master real Data Mining past papers (Mock 1 &amp; Mock 2) with verified solutions, official professor starter templates, points breakdowns, and critical grading traps.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=14">
-<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'concept';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
-</head>
-<body>
-
-<nav class="sitenav">
-  <div class="sitenav-inner">
-    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
-    <div class="sitenav-links">
-      <a href="chapter-1-intro.html">1 · Intro</a>
-      <a href="chapter-2-overview.html">2 · Pipeline</a>
-      <a href="chapter-3-overview.html">3 · Classification</a>
-      <a href="chapter-4-overview.html">4 · Clustering</a>
-      <a href="chapter-5-overview.html">5 · Regression→NN</a>
-      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
-      <a href="chapter-7-explainability.html">7 · Explainability</a>
-      <a href="past-papers.html" class="active">📝 Past Papers</a>
-    </div>
-    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-      Menu
-    </button>
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
-      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
-      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-    </button>
-    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
-  </div>
-  <div class="nav-panel" id="navPanel">
-    <div class="nav-panel-section">
-      <span class="nav-panel-label">Modules</span>
-      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
-      <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
-      <a href="chapter-3-overview.html">3 · Classification</a>
-      <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
-      <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
-      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
-      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
-      <span class="nav-panel-label">Exam Practice</span>
-      <a href="past-papers.html" class="active">📝 Past Papers Hub</a>
-      <a href="mock-1.html">Mock 1 (75 pts)</a>
-      <a href="mock-2.html">Mock 2 (95 pts)</a>
-    </div>
-  </div>
-</nav>
-
+  const hubShellHtml = `
 <div class="page-shell">
   <aside class="sidebar-toc">
     <div class="sidebar-block">
@@ -1202,8 +1514,96 @@ function generateHubPage() {
     </footer>
   </div>
 </div>
+`;
+
+  const encryptedHub = encryptPayload(hubShellHtml, VAULT_PIN);
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Past Papers &amp; Mock Exams Hub (Mock 1 &amp; Mock 2) | DM Bootcamp</title>
+<meta name="description" content="Master real Data Mining past papers (Mock 1 &amp; Mock 2) with verified solutions, official professor starter templates, points breakdowns, and critical grading traps.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230c7a73'/%3E%3Ccircle cx='10' cy='11' r='3' fill='%23fff'/%3E%3Ccircle cx='22' cy='9' r='2.4' fill='%23fff'/%3E%3Ccircle cx='22' cy='23' r='3' fill='%23fff'/%3E%3Cpath d='M12.5 12.5L19.5 10M12 13.5L20 21' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=15">
+<script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'concept';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
+</head>
+<body>
+
+<nav class="sitenav">
+  <div class="sitenav-inner">
+    <a class="sitenav-home" href="index.html">DM Bootcamp</a>
+    <div class="sitenav-links">
+      <a href="chapter-1-intro.html">1 · Intro</a>
+      <a href="chapter-2-overview.html">2 · Pipeline</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-4-overview.html">4 · Clustering</a>
+      <a href="chapter-5-overview.html">5 · Regression→NN</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM/RAG</a>
+      <a href="chapter-7-explainability.html">7 · Explainability</a>
+      <a href="past-papers.html" class="active">📝 Past Papers</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      Menu
+    </button>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="mode-toggle" id="modeToggle" type="button" aria-label="Toggle technical mode" style="font-size: 1.1rem; line-height: 1;">🎓</button>
+  </div>
+  <div class="nav-panel" id="navPanel">
+    <div class="nav-panel-section">
+      <span class="nav-panel-label">Modules</span>
+      <a href="chapter-1-intro.html">1 · Introduction to Data Mining</a>
+      <a href="chapter-2-overview.html">2 · The Data Mining Pipeline</a>
+      <a href="chapter-3-overview.html">3 · Classification</a>
+      <a href="chapter-4-overview.html">4 · Clustering Analysis</a>
+      <a href="chapter-5-overview.html">5 · From Regression to Neural Networks</a>
+      <a href="chapter-6-llm-rag.html">6 · LLM &amp; RAG Pipeline</a>
+      <a href="chapter-7-explainability.html">7 · Explainability &amp; Causality</a>
+      <span class="nav-panel-label">Exam Practice</span>
+      <a href="past-papers.html" class="active">📝 Past Papers Hub</a>
+      <a href="mock-1.html">Mock 1 (75 pts)</a>
+      <a href="mock-2.html">Mock 2 (95 pts)</a>
+    </div>
+  </div>
+</nav>
+
+${generateVaultLockScreenHtml('Past Papers &amp; Mock Exams Hub (Mock 1 &amp; Mock 2)')}
+
+<div id="vaultProtectedContainer" style="display:none;"></div>
+
+<script id="vaultPayload" type="application/json">
+${JSON.stringify(encryptedHub)}
+</script>
 
 <script src="assets/site.js?v=12" defer></script>
+${generateVaultClientScript()}
+<script>
+window.onVaultUnlocked = function() {
+  if (window.hljs) {
+    document.querySelectorAll('#vaultProtectedContainer pre code').forEach(function(el) {
+      hljs.highlightElement(el);
+    });
+  }
+  if (window.location.hash) {
+    try {
+      var target = document.querySelector(window.location.hash);
+      if (target) {
+        setTimeout(function() {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }, 120);
+      }
+    } catch(e) {}
+  }
+};
+</script>
 </body>
 </html>`;
 }

@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=14">
+<link rel="stylesheet" href="assets/style.css?v=15">
 <script>(function(){try{var t=localStorage.getItem('dm2026-theme')||'light';document.documentElement.setAttribute('data-theme',t);var m=localStorage.getItem('dm2026-mode')||'concept';document.documentElement.setAttribute('data-mode',m);}catch(e){}})();</script>
 </head>
 <body>
@@ -55,224 +55,344 @@
   </div>
 </nav>
 
-<div class="page-shell">
-  <aside class="sidebar-toc">
-    <div class="sidebar-block">
-      <span class="sidebar-label">Navigation</span>
-      <a href="index.html">← Bootcamp Home</a>
-      <a href="#papers-overview">Papers Overview</a>
-      <a href="#syllabus-matrix">Syllabus Matrix</a>
-      <a href="#exam-golden-rules">Golden Exam Rules</a>
+
+    <div id="dmVaultLockScreen" class="dm-vault-lock-screen">
+      <div class="dm-vault-card">
+        <div class="dm-vault-icon-wrap">
+          <div class="dm-vault-icon-ring"></div>
+          <svg class="dm-vault-lock-icon" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        
+        <div class="dm-vault-badge-tag">🔒 AES-256 Encrypted Vault</div>
+        <h2 class="dm-vault-title">Private Exam Vault</h2>
+        <p class="dm-vault-subtitle">Past Papers &amp; Mock Exams Hub (Mock 1 &amp; Mock 2)<br>Enter your 6-digit access PIN to decrypt and unlock.</p>
+        
+        <!-- 6 Passcode Indicators -->
+        <div class="dm-vault-dots" id="vaultDots" aria-label="PIN entry">
+          <div class="dm-vault-dot" data-idx="0"></div>
+          <div class="dm-vault-dot" data-idx="1"></div>
+          <div class="dm-vault-dot" data-idx="2"></div>
+          <div class="dm-vault-dot" data-idx="3"></div>
+          <div class="dm-vault-dot" data-idx="4"></div>
+          <div class="dm-vault-dot" data-idx="5"></div>
+        </div>
+        
+        <div class="dm-vault-feedback" id="vaultFeedback" role="alert" aria-live="polite"></div>
+        
+        <!-- Virtual Keypad (3x4 grid) -->
+        <div class="dm-vault-keypad" id="vaultKeypad">
+          <button type="button" class="dm-vk-btn" data-key="1">1</button>
+          <button type="button" class="dm-vk-btn" data-key="2">2</button>
+          <button type="button" class="dm-vk-btn" data-key="3">3</button>
+          <button type="button" class="dm-vk-btn" data-key="4">4</button>
+          <button type="button" class="dm-vk-btn" data-key="5">5</button>
+          <button type="button" class="dm-vk-btn" data-key="6">6</button>
+          <button type="button" class="dm-vk-btn" data-key="7">7</button>
+          <button type="button" class="dm-vk-btn" data-key="8">8</button>
+          <button type="button" class="dm-vk-btn" data-key="9">9</button>
+          <button type="button" class="dm-vk-btn dm-vk-fn" data-action="clear" title="Clear">C</button>
+          <button type="button" class="dm-vk-btn" data-key="0">0</button>
+          <button type="button" class="dm-vk-btn dm-vk-fn" data-action="backspace" title="Delete">⌫</button>
+        </div>
+        
+        <div class="dm-vault-options">
+          <label class="dm-vault-remember">
+            <input type="checkbox" id="vaultRememberCheck" checked>
+            <span>Remember on this device</span>
+          </label>
+        </div>
+
+        <div class="dm-vault-footer">
+          <a href="index.html" class="dm-vault-return-link">&larr; Return to Public Study Notes</a>
+        </div>
+      </div>
     </div>
-    <div class="sidebar-block">
-      <span class="sidebar-label">Direct Practice Links</span>
-      <a href="mock-1.html">Mock 1 (75 pts)</a>
-      <a href="mock-2.html">Mock 2 (95 pts)</a>
-    </div>
-  </aside>
+  
 
-  <div class="page">
-    <div class="hero">
-      <div class="eyebrow">Real Exam Archive &amp; Interactive Trainer</div>
-      <h1>Data Mining Past Papers &amp; Mock Exams Hub</h1>
-      <p>
-        The definitive preparation portal for your Data Mining final exam. 
-        Solve 2 complete official practice exams (Mock 1 &amp; Mock 2 — 29 real questions, 170 points combined) 
-        with interactive collapsibles, official professor templates, verified code solutions, and grading trap alerts.
-      </p>
-    </div>
+<div id="vaultProtectedContainer" style="display:none;"></div>
 
-    <!-- Paper Selection Cards -->
-    <section class="pp-hub-grid" id="papers-overview">
-      <div class="pp-hub-card pp-hub-card-featured">
-        <div class="pp-hub-card-tag">Practice Exam 1</div>
-        <h2>Mock 1</h2>
-        <div class="pp-hub-stats-row">
-          <div class="pp-hub-stat">
-            <span class="stat-number">13</span>
-            <span class="stat-desc">Questions</span>
-          </div>
-          <div class="pp-hub-stat">
-            <span class="stat-number">75</span>
-            <span class="stat-desc">Points</span>
-          </div>
-          <div class="pp-hub-stat">
-            <span class="stat-number">4</span>
-            <span class="stat-desc">Modules</span>
-          </div>
-        </div>
-        <p class="pp-hub-desc">
-          High-yield coverage of MinMaxScaler, PCA, NN forward/backward reordering, Temperature Softmax implementation, Greedy Decoding, and Permutation Feature Importance.
-        </p>
-        <div class="pp-hub-topics">
-          <span class="hub-pill">PCA</span>
-          <span class="hub-pill">train_test_split</span>
-          <span class="hub-pill">MinMaxScaler</span>
-          <span class="hub-pill">NN Pass Order</span>
-          <span class="hub-pill">Softmax Temp</span>
-          <span class="hub-pill">SHAP / PDP</span>
-          <span class="hub-pill">Permutation Importance</span>
-        </div>
-        <a href="mock-1.html" class="pp-hub-btn">Launch Mock 1 Interactive Paper &rarr;</a>
-      </div>
-
-      <div class="pp-hub-card pp-hub-card-featured">
-        <div class="pp-hub-card-tag pp-hub-tag-2026">Practice Exam 2</div>
-        <h2>Mock 2</h2>
-        <div class="pp-hub-stats-row">
-          <div class="pp-hub-stat">
-            <span class="stat-number">16</span>
-            <span class="stat-desc">Questions</span>
-          </div>
-          <div class="pp-hub-stat">
-            <span class="stat-number">95</span>
-            <span class="stat-desc">Points</span>
-          </div>
-          <div class="pp-hub-stat">
-            <span class="stat-number">5</span>
-            <span class="stat-desc">Modules</span>
-          </div>
-        </div>
-        <p class="pp-hub-desc">
-          Comprehensive exam covering Supervised Tasks, t-SNE, OneHotEncoder, Binary Cross-Entropy calculations, Keras output layer sizing, RAG pipelines, and SHAP beeswarm interpretation.
-        </p>
-        <div class="pp-hub-topics">
-          <span class="hub-pill">Task Types</span>
-          <span class="hub-pill">t-SNE</span>
-          <span class="hub-pill">OneHotEncoder</span>
-          <span class="hub-pill">Stochastic Models</span>
-          <span class="hub-pill">BCE Math</span>
-          <span class="hub-pill">Keras Output</span>
-          <span class="hub-pill">RAG Steps</span>
-          <span class="hub-pill">SHAP Beeswarm</span>
-        </div>
-        <a href="mock-2.html" class="pp-hub-btn">Launch Mock 2 Interactive Paper &rarr;</a>
-      </div>
-    </section>
-
-    <!-- Syllabus & Points Matrix -->
-    <section class="chapter" id="syllabus-matrix">
-      <div class="chapter-head"><span class="chapter-num">1</span><h2>Syllabus &amp; Exam Weight Matrix</h2></div>
-      <p class="chapter-dek">Notice how the questions are distributed across the 7 bootcamp modules.</p>
-
-      <div class="table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Module</th>
-              <th>Mock 1 (75 pts)</th>
-              <th>Mock 2 (95 pts)</th>
-              <th>Core Question Archetypes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Module 1: Intro to DM</strong></td>
-              <td>— (0 pts)</td>
-              <td><strong>5 pts</strong> (1 Q)</td>
-              <td>Identify task type (Classification vs. Regression vs. Clustering) in &le; 2 words</td>
-            </tr>
-            <tr>
-              <td><strong>Module 2: Pipeline &amp; Preprocessing</strong></td>
-              <td><strong>20 pts</strong> (3 Qs)</td>
-              <td><strong>30 pts</strong> (5 Qs)</td>
-              <td>PCA, t-SNE, <code>train_test_split</code>, <code>OneHotEncoder</code>, <code>MinMaxScaler</code>, stochastic algorithms</td>
-            </tr>
-            <tr>
-              <td><strong>Module 3: Classification</strong></td>
-              <td>— (covered in sprint)</td>
-              <td>— (covered in sprint)</td>
-              <td>Tested via Module 2 / 7 integration (Decision boundaries, F1 score)</td>
-            </tr>
-            <tr>
-              <td><strong>Module 4: Clustering</strong></td>
-              <td>— (covered in sprint)</td>
-              <td>— (covered in sprint)</td>
-              <td>K-Means initialization sensitivity tested as part of stochastic methods</td>
-            </tr>
-            <tr>
-              <td><strong>Module 5: Regression &amp; Neural Nets</strong></td>
-              <td><strong>5 pts</strong> (1 Q)</td>
-              <td><strong>15 pts</strong> (3 Qs)</td>
-              <td>NN training loop order, manual binary cross-entropy calculation, Keras output layer shape</td>
-            </tr>
-            <tr>
-              <td><strong>Module 6: LLM &amp; RAG Pipeline</strong></td>
-              <td><strong>25 pts</strong> (5 Qs)</td>
-              <td><strong>15 pts</strong> (3 Qs)</td>
-              <td>Cosine similarity, vocabulary size calculation, greedy decoding index, Softmax with temperature</td>
-            </tr>
-            <tr>
-              <td><strong>Module 7: Explainability &amp; Causality</strong></td>
-              <td><strong>25 pts</strong> (4 Qs)</td>
-              <td><strong>30 pts</strong> (4 Qs)</td>
-              <td>Permutation feature importance code, SHAP efficiency property, SHAP summary beeswarm plot</td>
-            </tr>
-            <tr style="background: rgba(12, 122, 115, 0.08); font-weight: bold;">
-              <td>Total</td>
-              <td>Mock 1: 75 Points (13 Questions)</td>
-              <td>Mock 2: 95 Points (16 Questions)</td>
-              <td>Combined Total: 170 Points (29 Questions)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Golden Rules & Traps -->
-    <section class="chapter" id="exam-golden-rules">
-      <div class="chapter-head"><span class="chapter-num">2</span><h2>5 Golden Rules to Ace the Exam</h2></div>
-      <p class="chapter-dek">Avoid the pitfalls that cost students full points on automated test runners.</p>
-
-      <div class="concept-cards">
-        <div class="concept-card">
-          <h4>🚨 1. Never Hardcode Global Variables</h4>
-          <p>
-            When writing a function like <code>def find_num(Dataframe):</code>, <strong>always use the parameter name</strong> (<code>Dataframe</code>), 
-            never the test dataframe <code>X</code> from the outer scope! The grading script evaluates with unseen test data.
-          </p>
-        </div>
-
-        <div class="concept-card">
-          <h4>🎯 2. Follow Exact Output Formatting</h4>
-          <p>
-            If the question asks for <em>"≤ 2 words"</em> (e.g. <code>technique = "PCA"</code>), do not write full sentences like <em>"We should use PCA because..."</em>. 
-            Automated grading checks exact string matches!
-          </p>
-        </div>
-
-        <div class="concept-card">
-          <h4>📊 3. Fit on Train Only, Transform Both</h4>
-          <p>
-            When scaling with <code>MinMaxScaler</code> or encoding with <code>OneHotEncoder</code>: 
-            <code>scaler.fit_transform(X_train)</code>, but strictly <code>scaler.transform(X_test)</code> to prevent data leakage!
-          </p>
-        </div>
-
-        <div class="concept-card">
-          <h4>📐 4. Permutation Importance Scoring</h4>
-          <p>
-            For regression tasks (like Remaining Useful Life RUL), <code>permutation_importance</code> requires a metric where higher is better. 
-            Use <code>neg_mean_squared_error</code> or <code>r2</code>, never raw positive MSE!
-          </p>
-        </div>
-
-        <div class="concept-card">
-          <h4>🔍 5. Greedy Decoding is Just Argmax</h4>
-          <p>
-            Greedy decoding selects the token index with the maximum logit value. You don't even need to compute softmax to find the greedy token index!
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <footer class="page-footer">
-      <span>Basic Data Mining Practice</span>
-      <span>29 Real Exam Questions Across Mock 1 &amp; Mock 2 · 170 Total Points</span>
-    </footer>
-  </div>
-</div>
+<script id="vaultPayload" type="application/json">
+{"salt":"3d9e67b027ff7b3a1922ed3b27b72b3e","iv":"5e0f5764c68268452bdbf667","data":"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"}
+</script>
 
 <script src="assets/site.js?v=12" defer></script>
+
+<script>
+(function() {
+  var currentEnteredPin = '';
+  var isDecrypting = false;
+  var payloadElem = document.getElementById('vaultPayload');
+  if (!payloadElem) return;
+  
+  var encryptedPayload;
+  try {
+    encryptedPayload = JSON.parse(payloadElem.textContent);
+  } catch(e) {
+    console.error('Failed to parse vault payload:', e);
+    return;
+  }
+
+  function hexToBuf(hex) {
+    var bytes = new Uint8Array(hex.length / 2);
+    for (var i = 0; i < hex.length; i += 2) {
+      bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+    }
+    return bytes.buffer;
+  }
+
+  function base64ToBuf(b64) {
+    var bin = atob(b64);
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) {
+      bytes[i] = bin.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+
+  async function decryptVault(pin) {
+    var subtle = window.crypto && window.crypto.subtle;
+    if (!subtle) {
+      throw new Error('Web Cryptography API is not supported in this browser.');
+    }
+    var enc = new TextEncoder();
+    var dec = new TextDecoder('utf-8');
+
+    var saltBuf = hexToBuf(encryptedPayload.salt);
+    var ivBuf = hexToBuf(encryptedPayload.iv);
+    var dataBuf = base64ToBuf(encryptedPayload.data);
+
+    var keyMaterial = await subtle.importKey('raw', enc.encode(pin), { name: 'PBKDF2' }, false, ['deriveKey']);
+    var key = await subtle.deriveKey(
+      { name: 'PBKDF2', salt: saltBuf, iterations: 100000, hash: 'SHA-256' },
+      keyMaterial,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['decrypt']
+    );
+
+    var decryptedBuf = await subtle.decrypt(
+      { name: 'AES-GCM', iv: ivBuf },
+      key,
+      dataBuf
+    );
+
+    return dec.decode(decryptedBuf);
+  }
+
+  function updateDots() {
+    var dots = document.querySelectorAll('#vaultDots .dm-vault-dot');
+    dots.forEach(function(dot, idx) {
+      if (idx < currentEnteredPin.length) {
+        dot.classList.add('is-filled');
+      } else {
+        dot.classList.remove('is-filled');
+      }
+    });
+  }
+
+  function setFeedback(msg, type) {
+    var fb = document.getElementById('vaultFeedback');
+    if (!fb) return;
+    fb.textContent = msg;
+    fb.className = 'dm-vault-feedback' + (type ? ' is-' + type : '');
+  }
+
+  async function attemptUnlock(pin, isAuto) {
+    if (isDecrypting) return;
+    isDecrypting = true;
+    setFeedback(isAuto ? 'Unlocking saved session...' : 'Decrypting exam vault...', '');
+
+    try {
+      var decryptedHtml = await decryptVault(pin);
+      setFeedback('Unlocked successfully!', 'success');
+      
+      var rememberCheck = document.getElementById('vaultRememberCheck');
+      var shouldRemember = rememberCheck ? rememberCheck.checked : true;
+      if (shouldRemember) {
+        try { localStorage.setItem('dm2026_vault_pin', pin); } catch(e){}
+      } else {
+        try { sessionStorage.setItem('dm2026_vault_pin', pin); } catch(e){}
+      }
+
+      var lockScreen = document.getElementById('dmVaultLockScreen');
+      var container = document.getElementById('vaultProtectedContainer');
+      
+      if (container) {
+        container.innerHTML = decryptedHtml;
+        container.style.display = 'block';
+      }
+
+      if (lockScreen) {
+        lockScreen.style.opacity = '0';
+        lockScreen.style.transform = 'translateY(-10px)';
+        setTimeout(function() {
+          lockScreen.classList.add('is-hidden');
+        }, 220);
+      }
+
+      updateNavLockButton(true);
+
+      if (typeof window.onVaultUnlocked === 'function') {
+        window.onVaultUnlocked();
+      }
+
+    } catch (err) {
+      console.warn('Vault unlock attempt failed:', err);
+      if (isAuto) {
+        try {
+          localStorage.removeItem('dm2026_vault_pin');
+          sessionStorage.removeItem('dm2026_vault_pin');
+        } catch(e){}
+        var lockScreen = document.getElementById('dmVaultLockScreen');
+        if (lockScreen) lockScreen.classList.remove('is-hidden');
+      }
+      
+      var dotsWrap = document.getElementById('vaultDots');
+      if (dotsWrap) {
+        dotsWrap.classList.add('is-error', 'is-shaking');
+        setTimeout(function() {
+          dotsWrap.classList.remove('is-shaking', 'is-error');
+          currentEnteredPin = '';
+          updateDots();
+        }, 600);
+      } else {
+        currentEnteredPin = '';
+        updateDots();
+      }
+      setFeedback('Incorrect PIN. Access denied.', 'error');
+    } finally {
+      isDecrypting = false;
+    }
+  }
+
+  function handleDigit(d) {
+    if (isDecrypting || currentEnteredPin.length >= 6) return;
+    currentEnteredPin += d;
+    updateDots();
+    setFeedback('', '');
+    if (currentEnteredPin.length === 6) {
+      attemptUnlock(currentEnteredPin, false);
+    }
+  }
+
+  function handleBackspace() {
+    if (isDecrypting || currentEnteredPin.length === 0) return;
+    currentEnteredPin = currentEnteredPin.slice(0, -1);
+    updateDots();
+    setFeedback('', '');
+  }
+
+  function handleClear() {
+    if (isDecrypting) return;
+    currentEnteredPin = '';
+    updateDots();
+    setFeedback('', '');
+  }
+
+  function setupKeypad() {
+    var keypad = document.getElementById('vaultKeypad');
+    if (!keypad) return;
+    keypad.addEventListener('click', function(e) {
+      var btn = e.target.closest('.dm-vk-btn');
+      if (!btn) return;
+      var key = btn.getAttribute('data-key');
+      var action = btn.getAttribute('data-action');
+      if (key) handleDigit(key);
+      else if (action === 'backspace') handleBackspace();
+      else if (action === 'clear') handleClear();
+    });
+  }
+
+  window.addEventListener('keydown', function(e) {
+    var lockScreen = document.getElementById('dmVaultLockScreen');
+    if (!lockScreen || lockScreen.classList.contains('is-hidden')) return;
+
+    if (e.key >= '0' && e.key <= '9') {
+      handleDigit(e.key);
+    } else if (e.key === 'Backspace') {
+      handleBackspace();
+    } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') {
+      handleClear();
+    }
+  });
+
+  window.lockVault = function() {
+    try {
+      localStorage.removeItem('dm2026_vault_pin');
+      sessionStorage.removeItem('dm2026_vault_pin');
+    } catch(e){}
+    var container = document.getElementById('vaultProtectedContainer');
+    if (container) {
+      container.innerHTML = '';
+      container.style.display = 'none';
+    }
+    var lockScreen = document.getElementById('dmVaultLockScreen');
+    if (lockScreen) {
+      lockScreen.style.opacity = '1';
+      lockScreen.style.transform = 'none';
+      lockScreen.classList.remove('is-hidden');
+    }
+    currentEnteredPin = '';
+    updateDots();
+    setFeedback('Vault locked.', '');
+    updateNavLockButton(false);
+  };
+
+  function updateNavLockButton(isUnlocked) {
+    var existing = document.getElementById('vaultNavLockBtn');
+    if (isUnlocked) {
+      if (!existing) {
+        var links = document.querySelector('.sitenav-links');
+        if (links) {
+          var btn = document.createElement('button');
+          btn.id = 'vaultNavLockBtn';
+          btn.className = 'vault-nav-lock';
+          btn.type = 'button';
+          btn.title = 'Lock exam vault';
+          btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><span>Lock Vault</span>';
+          btn.onclick = window.lockVault;
+          links.appendChild(btn);
+        }
+      }
+    } else {
+      if (existing) existing.remove();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    setupKeypad();
+    var saved = null;
+    try {
+      saved = localStorage.getItem('dm2026_vault_pin') || sessionStorage.getItem('dm2026_vault_pin');
+    } catch(e){}
+    if (saved) {
+      attemptUnlock(saved, true);
+    }
+  });
+})();
+</script>
+  
+<script>
+window.onVaultUnlocked = function() {
+  if (window.hljs) {
+    document.querySelectorAll('#vaultProtectedContainer pre code').forEach(function(el) {
+      hljs.highlightElement(el);
+    });
+  }
+  if (window.location.hash) {
+    try {
+      var target = document.querySelector(window.location.hash);
+      if (target) {
+        setTimeout(function() {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }, 120);
+      }
+    } catch(e) {}
+  }
+};
+</script>
 </body>
 </html>

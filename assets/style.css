@@ -2970,3 +2970,287 @@ pre code.hljs {
   border-color: var(--accent);
 }
 
+/* ==========================================================================
+   Exam Vault & AES-256 PIN Lock Screen
+   ========================================================================== */
+.dm-vault-lock-screen {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+  position: relative;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.dm-vault-lock-screen.is-hidden {
+  display: none !important;
+}
+
+.dm-vault-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.15), 0 0 0 1px var(--border);
+  padding: 2.25rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+:root[data-theme="dark"] .dm-vault-card {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.dm-vault-icon-wrap {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(12, 122, 115, 0.1);
+  border-radius: 50%;
+  color: var(--accent);
+}
+
+:root[data-theme="dark"] .dm-vault-icon-wrap {
+  background: rgba(69, 214, 201, 0.15);
+  color: #5eead4;
+}
+
+.dm-vault-icon-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px dashed rgba(12, 122, 115, 0.35);
+  animation: dmVaultSpin 20s linear infinite;
+}
+
+:root[data-theme="dark"] .dm-vault-icon-ring {
+  border-color: rgba(94, 234, 212, 0.35);
+}
+
+@keyframes dmVaultSpin {
+  100% { transform: rotate(360deg); }
+}
+
+.dm-vault-badge-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(12, 122, 115, 0.12);
+  border-radius: 999px;
+  margin-bottom: 0.75rem;
+}
+
+:root[data-theme="dark"] .dm-vault-badge-tag {
+  background: rgba(69, 214, 201, 0.15);
+  color: #5eead4;
+}
+
+.dm-vault-title {
+  font-family: var(--font-serif, "Fraunces", serif);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 0.5rem;
+  line-height: 1.2;
+}
+
+.dm-vault-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0 0 1.5rem;
+}
+
+/* 6-dot Passcode slots */
+.dm-vault-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-bottom: 0.85rem;
+  padding: 0.4rem 0;
+}
+
+.dm-vault-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong, #cbd5e1);
+  background: transparent;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dm-vault-dot.is-filled {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(12, 122, 115, 0.5);
+  transform: scale(1.15);
+}
+
+:root[data-theme="dark"] .dm-vault-dot.is-filled {
+  box-shadow: 0 0 10px rgba(94, 234, 212, 0.6);
+}
+
+.dm-vault-dots.is-error .dm-vault-dot {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.25);
+}
+
+.dm-vault-dots.is-shaking {
+  animation: dmShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes dmShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-9px); }
+  40%, 80% { transform: translateX(9px); }
+}
+
+/* Feedback message */
+.dm-vault-feedback {
+  min-height: 1.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+
+.dm-vault-feedback.is-error {
+  color: #ef4444;
+}
+
+.dm-vault-feedback.is-success {
+  color: #10b981;
+}
+
+/* 3x4 Virtual Keypad */
+.dm-vault-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  max-width: 270px;
+  margin: 0 auto 1.5rem;
+}
+
+.dm-vk-btn {
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.12s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.dm-vk-btn:hover {
+  background: var(--bg-hover, var(--border));
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.dm-vk-btn:active {
+  transform: scale(0.92);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.dm-vk-btn.dm-vk-fn {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: transparent;
+  border-color: transparent;
+}
+
+.dm-vk-btn.dm-vk-fn:hover {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.dm-vault-options {
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dm-vault-remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.dm-vault-remember input {
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.dm-vault-footer {
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.dm-vault-return-link {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.dm-vault-return-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* Nav Lock Button */
+.vault-nav-lock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm, 6px);
+  border: 1px solid var(--border);
+  background: var(--bg-raised);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-left: 0.5rem;
+}
+
+.vault-nav-lock:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+
